@@ -1,0 +1,78 @@
+Downloading openai (2.3MiB)
+ Downloaded openai
+Installed 15 packages in 47ms
+rows: /tmp/devjudge_O3q_glm_lint.jsonl
+summary: /tmp/devjudge_O3q_glm_lint.summary.json
+{
+  "a": "dev_O3q_glm_lint.jsonl",
+  "b": "hack_strong_claude-opus-5-5.jsonl",
+  "model": "accounts/fireworks/models/glm-5p3",
+  "judge_family": "glm",
+  "mock": false,
+  "heldout": false,
+  "provider": "fireworks",
+  "reasoning_effort": "low",
+  "max_tokens": 4096,
+  "eval": "evals/eval_all.jsonl",
+  "cfg": "25946c446ab964c4",
+  "win": 9,
+  "loss": 17,
+  "tie": 14,
+  "n": 40,
+  "flip_rate": 0.35,
+  "pos1_rate": 0.5263,
+  "facts": {
+    "win": 0,
+    "loss": 0,
+    "tie": 40,
+    "n": 40,
+    "flip_rate": 0.2
+  },
+  "style": {
+    "win": 10,
+    "loss": 18,
+    "tie": 12,
+    "n": 40,
+    "flip_rate": 0.3
+  },
+  "n_expected": 130,
+  "missing_in_a": {
+    "count": 90,
+    "first": [
+      "dev-001",
+      "dev-002",
+      "dev-003"
+    ]
+  },
+  "missing_in_b": {
+    "count": 0,
+    "first": []
+  },
+  "not_in_eval": {
+    "count": 0,
+    "first": []
+  },
+  "dup_ids": {
+    "count": 0,
+    "first": []
+  },
+  "n_complete": 40,
+  "incomplete_ids": {
+    "count": 90,
+    "first": [
+      "dev-001",
+      "dev-002",
+      "dev-003"
+    ]
+  },
+  "empty_facts": 0,
+  "unparsed": 0,
+  "finish_length": 0,
+  "errors": 0,
+  "skipped_resume": 0,
+  "limit": null,
+  "seed": 0,
+  "prompt_tokens_total": 72346,
+  "completion_tokens_total": 7748,
+  "reasoning_tokens_total": 3961
+}

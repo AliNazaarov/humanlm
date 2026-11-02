@@ -1,0 +1,73 @@
+{
+  "a": "dev_O3m_glm_plainclaim.jsonl",
+  "b": "hack_strong_claude-opus-5-5.jsonl",
+  "model": "accounts/fireworks/models/glm-5p3",
+  "judge_family": "glm",
+  "mock": false,
+  "heldout": false,
+  "provider": "fireworks",
+  "reasoning_effort": "low",
+  "max_tokens": 4096,
+  "eval": "evals/eval_all.jsonl",
+  "cfg": "25946c446ab964c4",
+  "win": 12,
+  "loss": 15,
+  "tie": 13,
+  "n": 40,
+  "flip_rate": 0.325,
+  "pos1_rate": 0.5063,
+  "facts": {
+    "win": 1,
+    "loss": 3,
+    "tie": 36,
+    "n": 40,
+    "flip_rate": 0.125
+  },
+  "style": {
+    "win": 12,
+    "loss": 14,
+    "tie": 14,
+    "n": 40,
+    "flip_rate": 0.35
+  },
+  "n_expected": 130,
+  "missing_in_a": {
+    "count": 90,
+    "first": [
+      "dev-001",
+      "dev-002",
+      "dev-003"
+    ]
+  },
+  "missing_in_b": {
+    "count": 0,
+    "first": []
+  },
+  "not_in_eval": {
+    "count": 0,
+    "first": []
+  },
+  "dup_ids": {
+    "count": 0,
+    "first": []
+  },
+  "n_complete": 40,
+  "incomplete_ids": {
+    "count": 90,
+    "first": [
+      "dev-001",
+      "dev-002",
+      "dev-003"
+    ]
+  },
+  "empty_facts": 0,
+  "unparsed": 0,
+  "finish_length": 0,
+  "errors": 0,
+  "skipped_resume": 0,
+  "limit": null,
+  "seed": 0,
+  "prompt_tokens_total": 70704,
+  "completion_tokens_total": 8569,
+  "reasoning_tokens_total": 4667
+}
