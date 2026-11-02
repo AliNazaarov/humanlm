@@ -1,0 +1,21 @@
+{
+ "system": "F2_gpt61_terra",
+ "provider": "openai",
+ "model": "gpt-6.1-terra",
+ "loops": 0,
+ "prompt_sha256": "2418895249c0e139",
+ "prompt_file": null,
+ "decoding": {
+  "max_completion_tokens": 1500,
+  "reasoning_effort": "low"
+ },
+ "prices_usd_per_m": [
+  0.0,
+  0.0
+ ],
+ "eval": "evals/heldout_pairs.jsonl",
+ "rows": 120,
+ "pass_rate": 0.6166666666666667,
+ "commit": "041968053e3906ec91b89a6598e4d328d73e19d3",
+ "finished": "2026-11-02T11:09:44-0800"
+}

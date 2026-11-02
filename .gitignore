@@ -16,3 +16,4 @@ hackathon/bus/.seen
 .env
 
 .devfleet-worktrees/
+hackathon/runs/logs/
