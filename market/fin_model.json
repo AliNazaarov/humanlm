@@ -1,0 +1,401 @@
+{
+  "measured": {
+    "avg_prompt_tokens": 4346,
+    "avg_completion_tokens": 290,
+    "price_in_per_m": 0.15,
+    "price_out_per_m": 0.5,
+    "price_cached_in_per_m": 0.03,
+    "claude_strong_cost_per_1k": 9.11,
+    "claude_harness_cost_per_1k": 15.85
+  },
+  "assumptions": {
+    "cogs_buffer": 2.0,
+    "cached_share_of_input": 0.8,
+    "payment_fee": 0.035,
+    "plans": {
+      "solo": {
+        "price": 19,
+        "rewrites": 200
+      },
+      "team": {
+        "price": 79,
+        "rewrites": 1500
+      }
+    },
+    "api_price_per_1k": 4.0,
+    "free_users_per_paid": 10,
+    "free_rewrites": 20,
+    "cac": {
+      "solo": 40,
+      "team": 300
+    },
+    "monthly_churn": {
+      "solo": 0.06,
+      "team": 0.03
+    },
+    "fixed_cost": [
+      250000,
+      1200000,
+      3000000
+    ],
+    "dedicated_gpu_per_hour": 8.0,
+    "scenarios": {
+      "conservative": {
+        "solo": [
+          300,
+          1500,
+          5000
+        ],
+        "team": [
+          20,
+          100,
+          400
+        ],
+        "api": [
+          1000000.0,
+          10000000.0,
+          30000000.0
+        ]
+      },
+      "base": {
+        "solo": [
+          1000,
+          5000,
+          15000
+        ],
+        "team": [
+          60,
+          400,
+          1500
+        ],
+        "api": [
+          5000000.0,
+          30000000.0,
+          100000000.0
+        ]
+      },
+      "upside": {
+        "solo": [
+          3000,
+          15000,
+          50000
+        ],
+        "team": [
+          150,
+          1200,
+          5000
+        ],
+        "api": [
+          20000000.0,
+          150000000.0,
+          500000000.0
+        ]
+      }
+    }
+  },
+  "cost_per_1k_measured": 0.797,
+  "cost_per_1k_with_buffer": 1.594,
+  "cost_per_1k_with_caching": 0.38,
+  "cheaper_than_claude_strong_x": 11.4,
+  "cheaper_than_claude_harness_x": 19.9,
+  "api_gross_margin": 0.602,
+  "dedicated_breakeven_rewrites_month": 3664199,
+  "units": {
+    "solo": {
+      "price": 19,
+      "rewrites": 200,
+      "cogs_month": 0.98,
+      "gross_margin": 0.948,
+      "ltv": 300,
+      "cac": 40,
+      "ltv_cac": 7.5,
+      "payback_months": 2.2
+    },
+    "team": {
+      "price": 79,
+      "rewrites": 1500,
+      "cogs_month": 5.16,
+      "gross_margin": 0.935,
+      "ltv": 2461,
+      "cac": 300,
+      "ltv_cac": 8.2,
+      "payback_months": 4.1
+    }
+  },
+  "scenarios": {
+    "conservative": [
+      {
+        "year": 1,
+        "arr_exit": 135360,
+        "rewrites_per_month": 1154000,
+        "compute_cost": 22071,
+        "gross_margin": 0.814,
+        "fixed_cost": 250000,
+        "run_rate_operating_result": -139769
+      },
+      {
+        "year": 2,
+        "arr_exit": 916800,
+        "rewrites_per_month": 10770000,
+        "compute_cost": 205983,
+        "gross_margin": 0.759,
+        "fixed_cost": 1200000,
+        "run_rate_operating_result": -504471
+      },
+      {
+        "year": 3,
+        "arr_exit": 2959200,
+        "rewrites_per_month": 32680000,
+        "compute_cost": 625025,
+        "gross_margin": 0.771,
+        "fixed_cost": 3000000,
+        "run_rate_operating_result": -718997
+      }
+    ],
+    "base": [
+      {
+        "year": 1,
+        "arr_exit": 524880,
+        "rewrites_per_month": 5502000,
+        "compute_cost": 105229,
+        "gross_margin": 0.781,
+        "fixed_cost": 250000,
+        "run_rate_operating_result": 159680
+      },
+      {
+        "year": 2,
+        "arr_exit": 2959200,
+        "rewrites_per_month": 32680000,
+        "compute_cost": 625025,
+        "gross_margin": 0.771,
+        "fixed_cost": 1200000,
+        "run_rate_operating_result": 1081003
+      },
+      {
+        "year": 3,
+        "arr_exit": 9642000,
+        "rewrites_per_month": 108550000,
+        "compute_cost": 2076084,
+        "gross_margin": 0.767,
+        "fixed_cost": 3000000,
+        "run_rate_operating_result": 4396446
+      }
+    ],
+    "upside": [
+      {
+        "year": 1,
+        "arr_exit": 1786200,
+        "rewrites_per_month": 21455000,
+        "compute_cost": 410340,
+        "gross_margin": 0.754,
+        "fixed_cost": 250000,
+        "run_rate_operating_result": 1096943
+      },
+      {
+        "year": 2,
+        "arr_exit": 11757600,
+        "rewrites_per_month": 158040000,
+        "compute_cost": 3022610,
+        "gross_margin": 0.729,
+        "fixed_cost": 1200000,
+        "run_rate_operating_result": 7375474
+      },
+      {
+        "year": 3,
+        "arr_exit": 40140000,
+        "rewrites_per_month": 528500000,
+        "compute_cost": 10107880,
+        "gross_margin": 0.734,
+        "fixed_cost": 3000000,
+        "run_rate_operating_result": 26467220
+      }
+    ]
+  },
+  "scale": {
+    "assumptions": {
+      "train_tokens_per_row": 371.2334,
+      "train_price_per_m": 8.89,
+      "epochs": 3,
+      "runs_per_stage": 20,
+      "dpo_cost_multiplier": 2,
+      "expert_rate_hour": 60,
+      "expert_pairs_per_hour": 6,
+      "eval_round_cost": 600,
+      "eval_rounds_per_year": 24,
+      "stages": [
+        {
+          "name": "Today's data size, full sweep",
+          "sft_pairs": 5000,
+          "expert_pairs": 0,
+          "pref_pairs": 66
+        },
+        {
+          "name": "Seed, months 0-12",
+          "sft_pairs": 50000,
+          "expert_pairs": 5000,
+          "pref_pairs": 20000
+        },
+        {
+          "name": "Series A, months 12-36",
+          "sft_pairs": 500000,
+          "expert_pairs": 25000,
+          "pref_pairs": 500000
+        }
+      ],
+      "ft_tokens_per_rewrite": {
+        "input": 1800,
+        "output": 300
+      },
+      "funded": {
+        "solo": [
+          2000,
+          12000,
+          40000,
+          90000,
+          160000
+        ],
+        "team": [
+          100,
+          1000,
+          4000,
+          10000,
+          20000
+        ],
+        "api": [
+          10000000.0,
+          80000000.0,
+          300000000.0,
+          800000000.0,
+          1500000000.0
+        ],
+        "api_price_per_1k": [
+          4.0,
+          4.0,
+          3.0,
+          3.0,
+          2.5
+        ],
+        "cogs_per_1k": [
+          1.59,
+          0.8,
+          0.5,
+          0.42,
+          0.42
+        ],
+        "fixed_cost": [
+          1500000,
+          4000000,
+          9000000,
+          16000000,
+          25000000
+        ],
+        "raised": [
+          3000000,
+          0,
+          12000000,
+          0,
+          0
+        ],
+        "monthly_churn": {
+          "solo": 0.04,
+          "team": 0.02
+        }
+      }
+    },
+    "stages": [
+      {
+        "stage": "Today's data size, full sweep",
+        "sft_pairs": 5000,
+        "expert_pairs": 0,
+        "pref_pairs": 66,
+        "sft_compute": 990,
+        "dpo_compute": 52,
+        "expert_data": 0,
+        "human_evals": 14400,
+        "total": 15442
+      },
+      {
+        "stage": "Seed, months 0-12",
+        "sft_pairs": 50000,
+        "expert_pairs": 5000,
+        "pref_pairs": 20000,
+        "sft_compute": 9901,
+        "dpo_compute": 15841,
+        "expert_data": 50000,
+        "human_evals": 14400,
+        "total": 90142
+      },
+      {
+        "stage": "Series A, months 12-36",
+        "sft_pairs": 500000,
+        "expert_pairs": 25000,
+        "pref_pairs": 500000,
+        "sft_compute": 99008,
+        "dpo_compute": 396032,
+        "expert_data": 250000,
+        "human_evals": 14400,
+        "total": 759440
+      }
+    ],
+    "ft_cost_per_1k": 0.42,
+    "ft_cost_per_1k_cached": 0.247,
+    "funded": {
+      "years": [
+        {
+          "year": 1,
+          "arr_exit": 1030800,
+          "revenue_in_year": 515400,
+          "rewrites_per_month": 10550000,
+          "gross_margin": 0.786,
+          "fixed_cost": 1500000,
+          "raised": 3000000,
+          "cash_end": 1905114
+        },
+        {
+          "year": 2,
+          "arr_exit": 7524000,
+          "revenue_in_year": 4277400,
+          "rewrites_per_month": 83900000,
+          "gross_margin": 0.876,
+          "fixed_cost": 4000000,
+          "raised": 0,
+          "cash_end": 1651318
+        },
+        {
+          "year": 3,
+          "arr_exit": 23712000,
+          "revenue_in_year": 15618000,
+          "rewrites_per_month": 314000000,
+          "gross_margin": 0.901,
+          "fixed_cost": 9000000,
+          "raised": 12000000,
+          "cash_end": 18730756
+        },
+        {
+          "year": 4,
+          "arr_exit": 58800000,
+          "revenue_in_year": 41256000,
+          "rewrites_per_month": 833000000,
+          "gross_margin": 0.911,
+          "fixed_cost": 16000000,
+          "raised": 0,
+          "cash_end": 40304363
+        },
+        {
+          "year": 5,
+          "arr_exit": 100440000,
+          "revenue_in_year": 79620000,
+          "rewrites_per_month": 1562000000,
+          "gross_margin": 0.902,
+          "fixed_cost": 25000000,
+          "raised": 0,
+          "cash_end": 87145574
+        }
+      ],
+      "ltv": {
+        "solo": 451,
+        "team": 3752
+      }
+    }
+  }
+}
