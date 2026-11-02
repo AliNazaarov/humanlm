@@ -30,7 +30,7 @@ Who pays: founders, marketers, agencies, and the agents now writing copy for the
 
 **[Slide 7, ask, 1:52]**
 
-We are asking for Fireworks credits to finish the SFT and RL rows, and ten design partners who publish copy every day. Thank you.
+We are asking for Fireworks credits to finish the SFT and RL rows, and ten design partners who publish copy every day. We didn't make an open model smarter than Claude. We made it accountable, and made accountability about [RESULT: F1H $/1k over main-row $/1k, rounded] times cheaper. Thank you.
 
 ---
 
