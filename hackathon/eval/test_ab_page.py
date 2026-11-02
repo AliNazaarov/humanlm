@@ -62,6 +62,12 @@ class TestExportVotes(unittest.TestCase):
         self.assertEqual([r["vote"] for r in rs], ["A", "tie", "B"])
         self.assertIsNone(rs[1]["winner"])
 
+    def test_store_carries_ui_version(self):
+        dump = [{"id": "u", "data": {"ballots": {"n": {"version": VER, "ui": 2, "vw": 375, "picks": {"1": {"pick": "a"}}},
+                                                 "o": {"version": VER, "picks": {"2": {"pick": "b"}}}}}}]
+        rs = ev.from_store(dump, self.SETS, [])
+        self.assertEqual([(r["ballot"], r["ui"], r["vw"]) for r in rs], [("n", 2, 375), ("o", 1, None)])
+
     def test_store_accepts_documents_wrapper(self):
         self.assertEqual(len(ev.from_store({"documents": self.DUMP}, self.SETS, [])), 3)
 

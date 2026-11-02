@@ -13,7 +13,8 @@ Sources:
   --telegram  Ali's hosted page: a JSON list (or {"votes": [...]}) of {pid, choice: X|Y|tie|both_bad, version,
               voter|voter_hash, ballot?}; X/Y are the opaque groups in that version's pairs.json
 One row per answered pair:
-  {source, version, ballot, voter, pid, id, vote: A|B|tie|both_bad, winner, a_system, b_system, first_shown, reason}
+  {source, version, ballot, voter, pid, id, vote: A|B|tie|both_bad, winner, a_system, b_system, first_shown, reason,
+   ui, vw}   ui = page version (1 = before the 2026-11-02 design pass, 2 = after; null for codes/telegram), vw = viewport px
 `vote` is relative to ab_pairs.json's a/b; `winner` names the system (null for tie/both_bad).
 Count people by `ballot` (one reader), never by `voter`: one account can collect many readers on one device.
 """
@@ -57,12 +58,12 @@ def find(sets: dict, version: str | None) -> dict | None:
     return hits[0] if len(hits) == 1 else None
 
 
-def row(source, s, ballot, voter, pid, vote, first=None, reason=""):
+def row(source, s, ballot, voter, pid, vote, first=None, reason="", ui=None, vw=None):
     p = s["pairs"][pid]
     winner = {"A": p["a_system"], "B": p["b_system"]}.get(vote)
     return {"source": source, "version": s["version"], "ballot": ballot, "voter": voter, "pid": pid, "id": p["id"],
             "vote": vote, "winner": winner, "a_system": p["a_system"], "b_system": p["b_system"],
-            "first_shown": first, "reason": (reason or "")[:300]}
+            "first_shown": first, "reason": (reason or "")[:300], "ui": ui, "vw": vw}
 
 
 def from_store(dump, sets: dict, dropped: list) -> list[dict]:
@@ -76,7 +77,8 @@ def from_store(dump, sets: dict, dropped: list) -> list[dict]:
                 dropped.append(("store", bid, b.get("version"))); continue
             for pid, pk in sorted((b.get("picks") or {}).items(), key=lambda kv: int(kv[0])):
                 if int(pid) in s["pairs"] and pk.get("pick") in PICK:
-                    out.append(row("page", s, bid, uid, int(pid), PICK[pk["pick"]], pk.get("first"), pk.get("reason")))
+                    out.append(row("page", s, bid, uid, int(pid), PICK[pk["pick"]], pk.get("first"), pk.get("reason"),
+                                   b.get("ui", 1), b.get("vw")))  # ballots before the design pass carry no ui
     return out
 
 
