@@ -29,3 +29,4 @@
 2026-11-02T20:11:02Z O3j complete: 98% strict / 99% lenient (+26 pp vs Claude strong), $2.56/1k. Judging O3j vs Claude now.
 2026-11-02T20:14:24Z O3j judge: overall n.s. (41/55), style ahead of Claude 44/37, facts behind 4/25. A/B page v7 pushed (bias fixes). Waiting: SFT B, O4/O5/O6, votes.
 2026-11-02T20:17:31Z Checklist dry pass done: mechanical checks PASS; README business/sponsor/team added. Open: licence, TRAIN_LOG job ids, deployments cleanup, public repo, video, hash.
+2026-11-02T20:23:51Z Human A/B (1 founder ballot: Claude 4, ours 0, tie 1) reported as is in README + results. Waiting for O3f calm row to judge.
