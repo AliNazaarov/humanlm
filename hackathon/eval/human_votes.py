@@ -16,7 +16,8 @@ ROOT = os.path.normpath(os.path.join(HERE, "../.."))
 sys.path.insert(0, HERE)
 import stats as st  # noqa: E402
 
-PAIRS_VERSION = "fd809333d5320427"  # O3c vs frontier-strong:claude-opus-5-5 (hackathon/demo/ab_page/pairs.json)
+PAIRS_VERSION = "fd809333d5320427"  # set 1: O3c vs frontier-strong:claude-opus-5-5 (hackathon/demo/ab_page/pairs.json)
+SET2_VERSION = "5b87855107ae620e"   # set 2: same systems, 8 fresh items (hackathon/demo/ab_page/set2/pairs.json)
 OURS = re.compile(r"O3c", re.I)
 
 
@@ -37,8 +38,8 @@ def telegram_counts(votes_md: str, key: dict) -> list[dict]:
     return out
 
 
-def page_counts(rows: list[dict]) -> dict:
-    rows = [r for r in rows if r.get("version") == PAIRS_VERSION]
+def page_counts(rows: list[dict], version: str = PAIRS_VERSION) -> dict:
+    rows = [r for r in rows if r.get("version") == version]
     ours = sum(1 for r in rows if r.get("winner") and OURS.search(r["winner"]))
     theirs = sum(1 for r in rows if r.get("winner") and not OURS.search(r["winner"]))
     return {"ours": ours, "theirs": theirs, "both_fine": sum(r.get("vote") == "tie" for r in rows),
@@ -73,6 +74,9 @@ def main() -> int:
         c = page_counts(rows)
         if c["votes"]:
             res["sources"]["page"] = summarise(c)
+        c2 = page_counts(rows, SET2_VERSION)
+        if c2["votes"]:
+            res["sources"]["page_set2"] = summarise(c2)
     venue = os.path.join(ROOT, "hackathon/social/human_ab_venue.json")
     if os.path.exists(venue):  # hand-unblinded ballot from Ali's laptop (founder: a check, not a gold rater)
         v = json.load(open(venue, encoding="utf-8"))
