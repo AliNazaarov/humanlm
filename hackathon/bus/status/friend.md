@@ -28,3 +28,4 @@
 2026-11-02T20:09:04Z Judge: O3d/O3e lose to Claude on the judge (O3e style 20/54); O3c remains best (n.s. vs Claude). Demo notebook + video script committed. Waiting: O3j main file, SFT B, O4/O5/O6, human votes.
 2026-11-02T20:11:02Z O3j complete: 98% strict / 99% lenient (+26 pp vs Claude strong), $2.56/1k. Judging O3j vs Claude now.
 2026-11-02T20:14:24Z O3j judge: overall n.s. (41/55), style ahead of Claude 44/37, facts behind 4/25. A/B page v7 pushed (bias fixes). Waiting: SFT B, O4/O5/O6, votes.
+2026-11-02T20:17:31Z Checklist dry pass done: mechanical checks PASS; README business/sponsor/team added. Open: licence, TRAIN_LOG job ids, deployments cleanup, public repo, video, hash.
