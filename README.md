@@ -56,6 +56,17 @@ Full tables (every split, every gate, secondary metrics, all judge columns): [ha
 | G3 no AI tells | stock phrases, em dashes, "not X but Y", emoji and exclamations stay within the human band's upper bound |
 | G4 not gutted | output is 0.7 to 1.3 times the draft's length |
 
+## Who it's for and why fact-safety matters
+- **Users:** founders, marketers and agencies who draft copy with AI, and the growing number of AI agents that write and post copy for companies.
+- **Pain:** AI drafts read as machine-written, and asking a frontier model to "make it human" quietly drops or changes claims. Published marketing claims carry legal risk (truth-in-advertising rules), so a rewrite that changes a fact is worse than no rewrite.
+- **Product:** an API that rewrites copy to read human and checks every number, name and quote against the draft before returning it, at open-model prices. Cost per 1k rewrites for every system is in the Results table above.
+- **Tradeoff:** the verifier keeps facts but makes the model edit conservatively; an LLM judge still prefers Claude's prose on some marketing drafts (see Results and Limitations).
+
+## Sponsor track: Fireworks
+- **Inference:** every open-model row (GLM-5.3 Flash) runs on Fireworks serverless inference, including the verify-and-revise harness.
+- **Fine-tuning:** SFT (LoRA) on the Fireworks Serverless Training API, plus DPO on human labels; job ids and settings in `hackathon/train/TRAIN_LOG.md`.
+- **Evaluation:** the pairwise judge (Kimi K3) runs on Fireworks.
+
 ## Demo
 [hackathon/demo/demo.ipynb](hackathon/demo/demo.ipynb) runs offline in seconds: one eval draft next to Claude's and FeatherLM's committed rewrites (must-keep facts and gate problems marked), the leaderboard read from `results.json`, and the chart.
 Run it with `jupyter nbconvert --execute --to notebook --inplace hackathon/demo/demo.ipynb`, or open it in Jupyter.
@@ -107,7 +118,8 @@ Re-running a system calls its API: `hackathon/eval/run_frontier.py` for the fron
 We built this with AI coding assistants (Claude Code), which wrote most of the code, tests and documents under our direction and review. No frontier-model output is used as training data. Frontier outputs appear only as baselines.
 
 ## Team
-_TODO_
+- **Ali** ([AliNazaarov](https://github.com/AliNazaarov)): data, training, harness, pitch.
+- **Ruslan Kan**: evaluation, statistics, judge, report, demo.
 
 ## Licence
 _TODO: the code licence is Ali's call. The data comes from Common Pile openly licensed and public-domain subsets, each under its own licence._
