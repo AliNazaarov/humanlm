@@ -19,3 +19,4 @@
 2026-11-02T19:37:47Z Real-text work started: (1) collecting real README copy eval split (permissive licences, AI tells, leakage-checked); (2) auditing held-out provenance/licences. CONTRACT sent to Ali for O3/O3b runs on it.
 2026-11-02T19:40:13Z O3c (style round) scored: 97% [94,99] fact-safe on 250, +25 pp vs Claude strong. Judging O3c vs Claude now. Real-copy split + held-out provenance audit still collecting.
 2026-11-02T19:43:55Z O3c judge: style gap vs Claude no longer significant (33/46, p=0.18). Held-out audit committed: 22 ids overlap train (heldout_clean block added), cccc licences need recovery. Real README split still collecting.
+2026-11-02T19:48:50Z Strict+lenient fact-safe in report: O3c 97%/98% vs Claude strong 72%/85% (both significant). F1h humanizer baseline + Claude on real README split running.
