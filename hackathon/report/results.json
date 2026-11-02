@@ -17689,6 +17689,79 @@
    "sign_test_p": 7.555811484431396e-05
   },
   {
+   "a": "hack_O3k_glm_calm_claimcheck_bo3.jsonl",
+   "b": "hack_strong_claude-opus-5-5.jsonl",
+   "model": "accounts/fireworks/models/qwen3p8-max",
+   "judge_family": "qwen",
+   "mock": false,
+   "heldout": false,
+   "provider": "fireworks",
+   "reasoning_effort": "none",
+   "max_tokens": 4096,
+   "eval": "evals/eval_all.jsonl",
+   "cfg": "aaaccc6de67c9592",
+   "win": 22,
+   "loss": 56,
+   "tie": 36,
+   "n": 114,
+   "flip_rate": 0.307,
+   "pos1_rate": 0.4397,
+   "facts": {
+    "win": 8,
+    "loss": 10,
+    "tie": 94,
+    "n": 112,
+    "flip_rate": 0.1696,
+    "sign_test_p": 0.8145294189453125
+   },
+   "style": {
+    "win": 15,
+    "loss": 55,
+    "tie": 42,
+    "n": 112,
+    "flip_rate": 0.3482,
+    "sign_test_p": 1.652519847797991e-06
+   },
+   "n_expected": 130,
+   "missing_in_a": {
+    "count": 0,
+    "first": []
+   },
+   "missing_in_b": {
+    "count": 0,
+    "first": []
+   },
+   "not_in_eval": {
+    "count": 0,
+    "first": []
+   },
+   "dup_ids": {
+    "count": 0,
+    "first": []
+   },
+   "n_complete": 114,
+   "incomplete_ids": {
+    "count": 16,
+    "first": [
+     "dev-003",
+     "dev-004",
+     "dev-008"
+    ]
+   },
+   "empty_facts": 0,
+   "unparsed": 17,
+   "finish_length": 0,
+   "errors": 0,
+   "skipped_resume": 0,
+   "limit": null,
+   "seed": 0,
+   "prompt_tokens_total": 202282,
+   "completion_tokens_total": 129226,
+   "reasoning_tokens_total": 1595,
+   "file": "hackathon/report/judge2qwen_hack_O3k_glm_calm_claimcheck_bo3_vs_hack_strong_claude-opus-5-5.summary.json",
+   "sign_test_p": 0.00014948153872377523
+  },
+  {
    "a": "hack_O3_glm_harness_heldout.jsonl",
    "b": "hack_F1H_opus_heldout.jsonl",
    "model": "accounts/fireworks/models/kimi-k3",
@@ -18537,6 +18610,75 @@
    "reasoning_tokens_total": 0,
    "file": "hackathon/report/judge_hack_O3j_glm_bestof3_judged_vs_hack_strong_claude-opus-5-5.summary.json",
    "sign_test_p": 0.1842858728803648
+  },
+  {
+   "a": "hack_O3k_glm_calm_claimcheck_bo3.jsonl",
+   "b": "hack_strong_claude-opus-5-5.jsonl",
+   "model": "accounts/fireworks/models/kimi-k3",
+   "judge_family": "kimi",
+   "mock": false,
+   "heldout": false,
+   "provider": "fireworks",
+   "reasoning_effort": "none",
+   "max_tokens": 4096,
+   "eval": "evals/eval_all.jsonl",
+   "cfg": "e7dec4baee9f9573",
+   "win": 19,
+   "loss": 72,
+   "tie": 39,
+   "n": 130,
+   "flip_rate": 0.2923,
+   "pos1_rate": 0.5099,
+   "facts": {
+    "win": 9,
+    "loss": 6,
+    "tie": 115,
+    "n": 130,
+    "flip_rate": 0.1538,
+    "sign_test_p": 0.6072387695312499
+   },
+   "style": {
+    "win": 11,
+    "loss": 68,
+    "tie": 51,
+    "n": 130,
+    "flip_rate": 0.3846,
+    "sign_test_p": 3.544560973532992e-11
+   },
+   "n_expected": 130,
+   "missing_in_a": {
+    "count": 0,
+    "first": []
+   },
+   "missing_in_b": {
+    "count": 0,
+    "first": []
+   },
+   "not_in_eval": {
+    "count": 0,
+    "first": []
+   },
+   "dup_ids": {
+    "count": 0,
+    "first": []
+   },
+   "n_complete": 130,
+   "incomplete_ids": {
+    "count": 0,
+    "first": []
+   },
+   "empty_facts": 0,
+   "unparsed": 0,
+   "finish_length": 0,
+   "errors": 0,
+   "skipped_resume": 0,
+   "limit": null,
+   "seed": 0,
+   "prompt_tokens_total": 194166,
+   "completion_tokens_total": 22306,
+   "reasoning_tokens_total": 0,
+   "file": "hackathon/report/judge_hack_O3k_glm_calm_claimcheck_bo3_vs_hack_strong_claude-opus-5-5.summary.json",
+   "sign_test_p": 1.9671283608760123e-08
   }
  ]
 }
