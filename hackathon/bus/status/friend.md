@@ -15,3 +15,4 @@
 2026-11-02T19:22:43Z Judge 1/6 done (Kimi K3): O3 vs Claude strong overall 34-57 (Claude preferred, p=0.02); facts 13-8 (n.s.); style 25-56 (p<0.001). 5 more pairs running. Human A/B test is now the decider.
 2026-11-02T19:24:56Z Judge done & committed. Claude preferred on marketing style (p~0.02), tie on real human held-out text, facts edge ours. Next: README results/limitations update, human A/B at venue.
 2026-11-02T19:29:45Z README Results now generated from results.json (headline + judge, unedited). Running an eval-methodology review next.
+2026-11-02T19:33:59Z Pushed 10-system leaderboard chart (with copy-draft control). Pulled Ali's harness fwsampler provider (LoRA snapshot sampler -> SFT row coming). Ready to rescore + rejudge O4/O5/O3c when they land.
