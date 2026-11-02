@@ -69,6 +69,15 @@ const AUDIT = {
   .q.bad { border-color: var(--accent); }
   .q mark { background: var(--accent-soft); color: var(--accent); padding: 0 0.15em; }
   .q s { color: var(--accent); text-decoration-thickness: 2px; }
+  /* dense variant for the problem slide: two full quotes per column */
+  .slide.dense { justify-content: flex-start; padding-top: clamp(18px, 4vh, 40px); }
+  .slide.dense h2 { font-size: clamp(1.5em, 3vw, 2.3em); margin-bottom: 0.35em; max-width: none; }
+  .slide.dense .kicker { margin-bottom: 0.6em; }
+  .slide.dense .q { margin: 0 0 0.6em; padding: 0.1em 0 0.1em 0.8em; }
+  .slide.dense .q p { font-size: 0.95em; line-height: 1.32; }
+  .slide.dense .q .who { font-size: 0.62em; margin-bottom: 0.15em; }
+  .slide.dense .cols { gap: clamp(12px, 3vw, 48px); }
+  .slide.dense .cap { font-size: 0.78em; margin: 0.2em 0 0; }
   /* loop diagram */
   .loop { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8em; margin: 1.2em 0; }
   .box { border: 1px solid var(--rule); padding: 0.9em 1em; border-radius: 4px; font-size: 0.85em; position: relative; background: var(--paper); }
@@ -138,7 +147,7 @@ const AUDIT = {
   the dropped '1' from '1-minute checks' -> 'checks every minute' (G2); same meaning, strict check: that is the demo
   of how literal the verifier is. Do NOT say "38 customers", and do NOT reuse dev-085 (that came from the live run).
 -->
-<section class="slide">
+<section class="slide dense">
   <div class="kicker">The problem · two rows from our eval · Claude Opus 5.5, strong rewrite prompt (the leaderboard reference)</div>
   <h2>The frontier model cleans the style. Then it trims the claims.</h2>
   <div class="cols">
@@ -147,14 +156,14 @@ const AUDIT = {
         <p>🍺 640 PRE-ORDERS. 🍺<br><br>Just 5 weeks ago, Brewlog was a dream. Today, 640 incredible home brewers have joined us on this journey! 🙌🎉<br><br><s>We're beyond grateful for this amazing community. You're not just customers — you're the heart and soul of Brewlog.</s> ❤️<br><br>Shipping March 17. Still just $79. <s>Grab yours before they're gone!</s> 👇<br>brewlog.co<br><br>#Homebrew #CraftBeer #Kickstarter #HardwareStartup</p></div>
       <div class="q bad"><div class="who">Claude Opus 5.5 · strong prompt · same item</div>
         <p>640 pre-orders.<br><br>Five weeks ago, Brewlog was an idea. Today, 640 home brewers have pre-ordered one.<br><br>Thank you. This community is the reason Brewlog exists.<br><br>It ships March 17 and is still $79. Pre-order at brewlog.co<br><br>#Homebrew #CraftBeer #Kickstarter #HardwareStartup</p></div>
-      <p class="muted" style="font-size:0.8em">Struck text is gone from the rewrite: three draft sentences, including the scarcity line. Numbers, names and length all pass; the gates do not see dropped sentences, so the audit counts them. Our main row on the same item keeps every sentence and passes all four gates.</p>
+      <p class="muted cap">Struck text is gone from the rewrite: three draft sentences, including the scarcity line. Numbers, names and length all pass; the gates do not see dropped sentences, so the audit counts them. Our main row on the same item keeps every sentence and passes all four gates.</p>
     </div>
     <div>
       <div class="q"><div class="who">Draft · dev-016 · pricing page</div>
         <p>Simple, Transparent Pricing That Grows With You<br><s>At Stackhand, we believe world-class monitoring should be accessible to everyone.</s> That's why we offer flexible plans designed to scale seamlessly alongside your business.<br>🆓 Free — Perfect for getting started. Monitor up to 3 endpoints with lightning-fast <mark>1-minute checks</mark>.<br>🚀 Team — Just $29/month for 50 monitors, with the same 1-minute checks.<br>No hidden fees. <s>No surprises. Just peace of mind.</s><br>Start free today!</p></div>
       <div class="q bad"><div class="who">Claude Opus 5.5 · strong prompt · same item</div>
         <p>Pricing That Grows With You<br><br>Stackhand plans scale as your business grows, <mark>so you can start small and add monitors when you need them</mark>.<br><br>Free: Monitor up to 3 endpoints with <mark>checks every minute</mark>.<br>Team: $29/month for 50 monitors, also checked every minute.<br><br>There are no hidden fees.<br><br>Start free today.</p></div>
-      <p class="muted" style="font-size:0.8em">Two draft sentences dropped and a clause added that the founder never wrote. The number gate flags this row: "1-minute checks" became "checks every minute", and the 1 is gone (G2). Same meaning here; the check is that literal on purpose.</p>
+      <p class="muted cap">Two draft sentences dropped and a clause added that the founder never wrote. The number gate flags this row: "1-minute checks" became "checks every minute", and the 1 is gone (G2). Same meaning here; the check is that literal on purpose.</p>
     </div>
   </div>
   <div class="foot"><span>Exact quotes · evals/runs/hack_strong_claude-opus-5-5.jsonl · emoji kept as in the file</span><span>2 / 7</span></div>
