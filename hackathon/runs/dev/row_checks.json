@@ -1,0 +1,262 @@
+{
+ "gate_floor": 0.95,
+ "gates": {
+  "O3c_glm_prompt_harness_style": {
+   "eval_all": {
+    "pass": 124,
+    "n": 130,
+    "rate": 0.9538,
+    "meets_floor": true,
+    "fail_ids": [
+     "dev-023",
+     "dev-053",
+     "dev-064",
+     "dev-080",
+     "trick-05",
+     "trick-06"
+    ],
+    "file": "evals/runs/hack_O3c_glm_prompt_harness_style.jsonl"
+   },
+   "heldout": {
+    "pass": 118,
+    "n": 120,
+    "rate": 0.9833,
+    "meets_floor": true,
+    "fail_ids": [
+     "ho-037",
+     "ho-097"
+    ],
+    "file": "evals/runs/hack_O3c_glm_prompt_harness_style_heldout.jsonl"
+   },
+   "real": {
+    "pass": 78,
+    "n": 80,
+    "rate": 0.975,
+    "meets_floor": true,
+    "fail_ids": [
+     "rr-016",
+     "rr-043"
+    ],
+    "file": "evals/runs/hack_O3c_glm_prompt_harness_style_real.jsonl"
+   }
+  },
+  "O3m_glm_plainclaim": {
+   "eval_all": {
+    "pass": 125,
+    "n": 130,
+    "rate": 0.9615,
+    "meets_floor": true,
+    "fail_ids": [
+     "dev-023",
+     "dev-037",
+     "dev-046",
+     "dev-060",
+     "trick-06"
+    ],
+    "file": "evals/runs/hack_O3m_glm_plainclaim.jsonl"
+   },
+   "heldout": {
+    "pass": 118,
+    "n": 120,
+    "rate": 0.9833,
+    "meets_floor": true,
+    "fail_ids": [
+     "ho-037",
+     "ho-097"
+    ],
+    "file": "evals/runs/hack_O3m_glm_plainclaim_heldout.jsonl"
+   },
+   "real": {
+    "pass": 79,
+    "n": 80,
+    "rate": 0.9875,
+    "meets_floor": true,
+    "fail_ids": [
+     "rr-016"
+    ],
+    "file": "evals/runs/hack_O3m_glm_plainclaim_real.jsonl"
+   }
+  },
+  "O3n_glm_frame": {
+   "eval_all": {
+    "pass": 122,
+    "n": 130,
+    "rate": 0.9385,
+    "meets_floor": false,
+    "fail_ids": [
+     "dev-001",
+     "dev-023",
+     "dev-034",
+     "dev-046",
+     "dev-080",
+     "trick-05",
+     "trick-06",
+     "trick-07"
+    ],
+    "file": "evals/runs/hack_O3n_glm_frame.jsonl"
+   },
+   "heldout": {
+    "pass": 116,
+    "n": 120,
+    "rate": 0.9667,
+    "meets_floor": true,
+    "fail_ids": [
+     "ho-018",
+     "ho-035",
+     "ho-037",
+     "ho-054"
+    ],
+    "file": "evals/runs/hack_O3n_glm_frame_heldout.jsonl"
+   },
+   "real": {
+    "pass": 78,
+    "n": 80,
+    "rate": 0.975,
+    "meets_floor": true,
+    "fail_ids": [
+     "rr-011",
+     "rr-016"
+    ],
+    "file": "evals/runs/hack_O3n_glm_frame_real.jsonl"
+   }
+  }
+ },
+ "frame_loss_eval_all": {
+  "O3c_glm_prompt_harness_style": {
+   "file": "evals/runs/hack_O3c_glm_prompt_harness_style.jsonl",
+   "hashtag_loose": {
+    "drafts_with": 34,
+    "output_drops_all": 5,
+    "ids": [
+     "dev-056",
+     "dev-068",
+     "dev-069",
+     "dev-072",
+     "dev-078"
+    ]
+   },
+   "hashtag_strict": {
+    "drafts_with": 32,
+    "output_drops_all": 6,
+    "ids": [
+     "dev-056",
+     "dev-068",
+     "dev-069",
+     "dev-072",
+     "dev-073",
+     "dev-078"
+    ]
+   },
+   "subject_line": {
+    "drafts_with": 36,
+    "output_drops": 0,
+    "ids": []
+   },
+   "median_output_to_draft_word_ratio": 0.864
+  },
+  "O3m_glm_plainclaim": {
+   "file": "evals/runs/hack_O3m_glm_plainclaim.jsonl",
+   "hashtag_loose": {
+    "drafts_with": 34,
+    "output_drops_all": 20,
+    "ids": [
+     "dev-052",
+     "dev-054",
+     "dev-055",
+     "dev-056",
+     "dev-058",
+     "dev-059",
+     "dev-063",
+     "dev-065",
+     "dev-066",
+     "dev-068",
+     "dev-070",
+     "dev-071",
+     "dev-072",
+     "dev-074",
+     "dev-075",
+     "dev-076",
+     "dev-078",
+     "dev-079",
+     "dev-085",
+     "trick-03"
+    ]
+   },
+   "hashtag_strict": {
+    "drafts_with": 32,
+    "output_drops_all": 23,
+    "ids": [
+     "dev-052",
+     "dev-054",
+     "dev-055",
+     "dev-056",
+     "dev-058",
+     "dev-059",
+     "dev-061",
+     "dev-063",
+     "dev-065",
+     "dev-066",
+     "dev-068",
+     "dev-070",
+     "dev-071",
+     "dev-072",
+     "dev-073",
+     "dev-074",
+     "dev-075",
+     "dev-076",
+     "dev-077",
+     "dev-078",
+     "dev-079",
+     "trick-03",
+     "trick-14"
+    ]
+   },
+   "subject_line": {
+    "drafts_with": 36,
+    "output_drops": 1,
+    "ids": [
+     "dev-039"
+    ]
+   },
+   "median_output_to_draft_word_ratio": 0.766
+  },
+  "O3n_glm_frame": {
+   "file": "evals/runs/hack_O3n_glm_frame.jsonl",
+   "hashtag_loose": {
+    "drafts_with": 34,
+    "output_drops_all": 0,
+    "ids": []
+   },
+   "hashtag_strict": {
+    "drafts_with": 32,
+    "output_drops_all": 0,
+    "ids": []
+   },
+   "subject_line": {
+    "drafts_with": 36,
+    "output_drops": 0,
+    "ids": []
+   },
+   "median_output_to_draft_word_ratio": 0.889
+  },
+  "frontier-strong:claude-opus-5-5": {
+   "file": "evals/runs/hack_strong_claude-opus-5-5.jsonl",
+   "hashtag_loose": {
+    "drafts_with": 34,
+    "output_drops_all": 0,
+    "ids": []
+   },
+   "hashtag_strict": {
+    "drafts_with": 32,
+    "output_drops_all": 0,
+    "ids": []
+   },
+   "subject_line": {
+    "drafts_with": 36,
+    "output_drops": 0,
+    "ids": []
+   },
+   "median_output_to_draft_word_ratio": 0.88
+  }
+ }
+}

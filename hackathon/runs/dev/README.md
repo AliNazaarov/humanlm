@@ -46,7 +46,7 @@ Dev-slice gate pass (rows' `gates.pass` in `gen/`): O3c 38/40, O3m 38/40, O3n 39
 
 | Variant | What changed vs O3c | Dev result | Full run | Status |
 |---|---|---|---|---|
-| O3m_glm_plainclaim | prompt: wider contrast ban, plus slogan, filler and "say what happens" rules, keep contractions | style 12/14/14 | yes (130/120/80) | gates 96.2 / 98.3 / 98.75. No style gain shown. Waiting for the eval judges |
+| O3m_glm_plainclaim | prompt: wider contrast ban, plus slogan, filler and "say what happens" rules, keep contractions | style 12/14/14 | yes (130/120/80) | gates 96.2 / 98.3 / 98.75. **Not a style gain: loses style and facts to Claude strong on both eval judges, worse than O3c** (see "Pass 3" below). Keep the row, do not pitch it |
 | O3n_glm_frame | prompt: frame rules (field labels, hashtags, certainty, quotes, one name) | style 7/25/8 | yes (130/120/80) | **FAILED.** eval_all gates 122/130 = 93.8%, below the 95% floor. Heldout 116/120 = 96.7%, real 78/80 = 97.5%. Keep the row, do not pitch it |
 | O3p_glm_positive | prompt rewritten as positive rules. The banned-phrase list and the 3 examples are removed | style 8/21/11 | no | dropped at dev |
 | O3q_glm_lint | prompt: wider contrast ban and keep contractions, plus `--style-round lint` (located lint feedback, harness.py:240-392) | style 10/18/12 | no | dropped at dev |
@@ -80,3 +80,57 @@ Dev-slice gate pass (rows' `gates.pass` in `gen/`): O3c 38/40, O3m 38/40, O3n 39
    prices were passed.
 5. Not copied: `/private/tmp/hk/` (12:21 claim-check test on dev-003, made before this window) and the empty
    `s.jsonl`, `sft.jsonl` and `t.jsonl`.
+
+## Pass 3: row status after the eval judges (verify pass 2 fails, 2026-11-02 ~14:05 PT)
+
+Gate and frame-loss numbers below come from `row_checks.json`, written by `python3 hackathon/runs/dev/row_checks.py`
+(reads only `evals/runs/hack_*.jsonl` and `evals/eval_all.jsonl`). Judge numbers come from the committed summaries named
+in each line (Ruslan's commit `4084c63`, now on origin; this closes the pass 2 E8 fail).
+
+**Gate floor (95% on every split, not pooled).** The README headline pools 247 items (eval 130 + held-out 117), which
+can hide a miss on one split.
+
+| Row | eval_all | heldout | real | Floor |
+|---|---|---|---|---|
+| O3c_glm_prompt_harness_style (entry) | 124/130 = 95.4% | 118/120 = 98.3% | 78/80 = 97.5% | met |
+| O3m_glm_plainclaim | 125/130 = 96.2% | 118/120 = 98.3% | 79/80 = 98.75% | met |
+| O3n_glm_frame | **122/130 = 93.8%** | 116/120 = 96.7% | 78/80 = 97.5% | **FAILED on eval_all** |
+
+The pooled "95% [92, 97]" for O3n in the headline does not clear the floor. O3n is a failed variant: it keeps its row
+(no cherry-picking) and is not judged or pitched.
+
+**O3m vs Claude strong on the eval judges (both orders, eval_all), next to O3c:**
+
+| Judge, file | O3m overall W/L/T | O3m style | O3m facts | O3c overall | O3c style | O3c facts |
+|---|---|---|---|---|---|---|
+| Kimi K3, `hackathon/report/judge_hack_O3m_glm_plainclaim_vs_hack_strong_claude-opus-5-5.summary.json` (sha256 `806ab0ac…`) | 18/64/48 | 15/54/61 | 5/23/102 | 35/52/43 | 33/46/51 | 9/15/106 |
+| Qwen 3.8 Max, `hackathon/report/judge2qwen_hack_O3m_glm_plainclaim_vs_hack_strong_claude-opus-5-5.summary.json` (sha256 `ed246056…`; n=109, 21 incomplete) | 24/50/35 | 31/31/46 | 5/20/83 | 39/43/25 | 44/27/37 | 11/19/78 |
+
+O3m is worse than O3c against Claude on every column of both judges. The Qwen judge, which leaned to O3c on style
+(44/27), is even for O3m (31/31). So O3m's +1 gate item (eval_all and real) and its lower reader-tells share
+(`hackathon/report/reader_tells.json`, a post-hoc diagnostic built from set-1 reader notes) are not a style result.
+They are what the prompt was steered toward, and the judges do not see them. This is the pattern checklist row F10
+exists to catch. **O3c stays the entry; the goal "raise style vs Claude strong" is not met by O3m, O3n, O3p or O3q.**
+
+**What O3m drops (eval_all, from `row_checks.json` `frame_loss_eval_all`):**
+
+| | O3m | O3c | O3n | Claude strong |
+|---|---|---|---|---|
+| drafts with a hashtag (`#\w+`) whose output drops every one | **20/34** | 5/34 | 0/34 | 0/34 |
+| same, strict hashtags only (`#` + letter) | **23/32** | 6/32 | 0/32 | 0/32 |
+| drafts with a `Subject:` line whose output drops it | 1/36 (dev-039) | 0/36 | 0/36 | 0/36 |
+| median output/draft word ratio | 0.766 | 0.864 | 0.889 | 0.88 |
+
+Examples: dev-059 loses its closing question and all five hashtags; dev-039 (an email) loses its subject line. Both
+pass all four gates, because the gates check numbers, names, quotes and tells, not post furniture. The likely cause is
+O3m's "rebuild each paragraph around its facts" and "delete feeling sentences" rules, which shorten the output. That is a
+plausible reason for the facts loss on both judges (5/23 Kimi, 5/20 Qwen) even with G1 at 96%; it was not checked
+item by item against the judge reasons, and no judge reason was used to change anything.
+
+**Variant count for the README limitations line.** Harness variants developed against eval items: O3, O3b, O3c, O3d,
+O3e, O3f, O3g, O3h (stopped, no row), O3j, O3k, O3l, O3m, O3n with rows, plus O3p and O3q dropped at dev with no row
+(this file). That is 15 variants, O3 to O3q (there is no O3i). Disclosures 1 to 3 above apply to O3m, O3n and O3q.
+
+**Not changed in this pass:** no new run, no prompt or harness change, no eval or judge file touched. Ruslan owns
+`README.md`, `hackathon/report/` and the generated headline, so the README text for these fixes went to him as a
+`CONTRACT:` on the bus.
