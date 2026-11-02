@@ -2,3 +2,4 @@
 2026-11-02T18:13:30Z Step 0 done (.env.example, requirements.txt, Makefile, README skeleton; make test target passes 29/29). Next: Step 1 run_frontier.py, waiting on Q: frontier model id
 2026-11-02T18:33:14Z S1 stats.py written + 9 tests pass, eval-check OK (plans/EVAL_LOG.md); in review. S2 frontier runner + S3 judge being built by subagents. S6 A/B pairs generator done (placeholder pairs).
 2026-11-02T18:34:25Z S1 stats.py committed (exact rate CIs + paired bootstrap; review fixes in). S2 run_frontier.py built, 13 offline tests pass, in review; live run blocked on key + PRICES.md. S3 judge in progress.
+2026-11-02T18:41:49Z S2 run_frontier committed (review fixes in, 25 tests). S4 score_all v2 committed: fact-safe human rewrite rate G1-G4, 250-item leaderboard + per-split, delta vs F1 w/ significance. S3 judge being fixed after review (BLOCK). S5 chart + S6 A/B page in a second session. Blocked: Anthropic key + Opus price.
