@@ -13,6 +13,7 @@ Fact-safe human rewrite rate on 250 items (eval 130 + held-out 120), 95% CI; Δ 
 
 | System | Fact-safe rate | Δ vs reference | $ / 1k rewrites | p50 latency |
 |---|---|---|---|---|
+| `O3c_glm_prompt_harness_style` | 97% [94, 99] | +25 pp [+20, +31], significant (p=0.000) | $0.81 | 3.3s |
 | `O3b_glm_prompt_harness` | 94% [91, 97] | +23 pp [+18, +28], significant (p=0.000) | $0.55 | 1.6s |
 | `F1H_opus_harness` | 94% [90, 96] | +22 pp [+17, +28], significant (p=0.000) | $16.44 | 4.9s |
 | `O3_glm_harness` | 93% [89, 96] | +21 pp [+16, +27], significant (p=0.000) | $0.28 | 2.6s |
@@ -73,6 +74,7 @@ Re-running a system calls its API: `hackathon/eval/run_frontier.py` for the fron
 - **Copying the draft is a control row.** `X0_copy_draft` scores the unchanged AI draft. It passes almost nothing on the dev split, so the gates can't be passed without rewriting there. On the held-out pairs it passes over half, because those AI-polished drafts carry few of the tells G3 checks, so that split mostly tests fact safety, not style.
 - **Many comparisons.** We report 9 systems on 5 splits and 6 judge pairs without a family-wise correction. The headline differences are p < 0.001 and survive one; the judge results near p = 0.02 should be read as suggestive.
 - **Latency is not measured the same way for every row.** Harness rows include every revise loop and any retry wait; the frontier runner times only the successful call.
+- **The Gemini row is not a frontier baseline.** Gemini 4 Argon was not tested (no paid quota on the day). The Gemini row is Gemini Flash-Lite, a small free-tier model, and is labelled as such. The reference baseline is Claude Opus 5.5 with the strong prompt.
 - **The judge is an LLM.** It has its own biases, including length and position. We run both orders and report the flip rate, but we have not calibrated it against human labels.
 - **The fact checks are strict but crude.** Numbers and capitalised names are matched as strings, so a correct paraphrase of a name can count as a loss, and a fact that changes without any number or name changing is missed.
 - **The frontier APIs can't match every decoding setting.** The open-model runs also use repetition_penalty 1.05, which the frontier APIs don't offer, and a model that rejects top_p runs at temperature only. Both are recorded per row.

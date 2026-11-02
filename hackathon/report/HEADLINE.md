@@ -2,6 +2,7 @@ Fact-safe human rewrite rate on 250 items (eval 130 + held-out 120), 95% CI; Δ 
 
 | System | Fact-safe rate | Δ vs reference | $ / 1k rewrites | p50 latency |
 |---|---|---|---|---|
+| `O3c_glm_prompt_harness_style` | 97% [94, 99] | +25 pp [+20, +31], significant (p=0.000) | $0.81 | 3.3s |
 | `O3b_glm_prompt_harness` | 94% [91, 97] | +23 pp [+18, +28], significant (p=0.000) | $0.55 | 1.6s |
 | `F1H_opus_harness` | 94% [90, 96] | +22 pp [+17, +28], significant (p=0.000) | $16.44 | 4.9s |
 | `O3_glm_harness` | 93% [89, 96] | +21 pp [+16, +27], significant (p=0.000) | $0.28 | 2.6s |
