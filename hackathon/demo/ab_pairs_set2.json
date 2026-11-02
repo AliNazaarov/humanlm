@@ -1,6 +1,6 @@
 {
  "meta": {
-  "x": "evals/runs/hack_O3k_glm_calm_claimcheck_bo3.jsonl",
+  "x": "evals/runs/hack_O3m_glm_plainclaim.jsonl",
   "y": "evals/runs/hack_strong_claude-opus-5-5.jsonl",
   "seed": 1,
   "n": 8,
@@ -32,18 +32,18 @@
    "pid": 1,
    "id": "dev-010",
    "draft": "Headline: From Conversations to Clarity — Instantly\nSubhead: Fieldnote harnesses the power of AI to transform hours of user interviews into actionable insights in minutes. Automatically transcribe, intelligently tag quotes by theme, and uncover the hidden patterns that drive better products — in 28 languages.\nSpend less time on busywork and more time on what truly matters: your users.\nCTA: Upload Your First Interview Free",
-   "a": "Headline: From Conversations to Clarity\nSubhead: Fieldnote uses AI to turn hours of user interviews into useful findings in minutes. It transcribes automatically, tags quotes by theme, and shows you patterns you might otherwise miss, in 28 languages.\nLess time on busywork means more time with your users.\nCTA: Upload Your First Interview Free",
+   "a": "Headline: From Conversations to Clarity, Instantly\n\nSubhead: Fieldnote uses AI to turn hours of user interviews into useful findings in minutes. It transcribes automatically, tags quotes by theme, and surfaces hidden patterns that lead to better products, in 28 languages. You spend less time on busywork and more time on your users.\n\nCTA: Upload Your First Interview Free",
    "b": "Headline: Turn Interviews into Clear Findings Fast\nSubhead: Fieldnote uses AI to turn hours of user interviews into insights you can act on in minutes. It transcribes your recordings, tags quotes by theme, and finds the patterns behind better products. It works in 28 languages.\nSpend less time on busywork and more time with your users.\nCTA: Upload Your First Interview Free",
-   "a_system": "O3k_glm_calm_claimcheck_bo3",
+   "a_system": "O3m_glm_plainclaim",
    "b_system": "frontier-strong:claude-opus-5-5"
   },
   {
    "pid": 2,
    "id": "trick-30",
    "draft": "Where do you visit?\nWe cover suburbs within 8 km of the Melbourne CBD, Monday to Saturday, 8am-6pm. If your pet has an emergancy after hours, please dont wait for us, go strait to your nearest emergency vet.",
-   "a": "We visit suburbs within 8 km of the Melbourne CBD, Monday to Saturday, 8am to 6pm. If your pet has an emergency after hours, please don't wait for us. Go straight to your nearest emergency vet.",
+   "a": "Where do we visit?\n\nWe cover suburbs within 8 km of the Melbourne CBD, Monday to Saturday, 8am to 6pm. If your pet has an emergency after hours, don't wait for us. Go straight to your nearest emergency vet.",
    "b": "Where do you visit?\nWe cover suburbs within 8 km of the Melbourne CBD, Monday to Saturday, 8am to 6pm. If your pet has an emergency after hours, please don't wait for us. Go straight to your nearest emergency vet.",
-   "a_system": "O3k_glm_calm_claimcheck_bo3",
+   "a_system": "O3m_glm_plainclaim",
    "b_system": "frontier-strong:claude-opus-5-5"
   },
   {
@@ -51,26 +51,26 @@
    "id": "dev-017",
    "draft": "Does Quietroom need an electrician?\nAbsolutely not! We've designed Quietroom with simplicity in mind. Our booth effortlessly plugs into any standard wall socket, powering both the whisper-quiet ventilation fan and the ambient LED lighting with a remarkably efficient 40W. There's no construction, no contractors, and no disruption to your workday — just plug in and enjoy your new oasis of calm. It truly couldn't be easier.",
    "a": "Does Quietroom need an electrician?\nNo. Quietroom plugs into any standard wall socket. That one connection runs both the ventilation fan and the LED lighting, and together they draw 40W. You don't need construction or contractors, and setup won't interrupt your workday. Plug it in and the booth is ready to use.",
-   "b": "No, Quietroom does not need an electrician. The booth plugs into any standard wall socket, and that single socket powers both the ventilation fan and the LED lighting, drawing 40W in total. There is no construction and no contractors, so nothing to disrupt your workday. You plug it in and it works.",
+   "b": "Quietroom doesn't need an electrician. The booth plugs into any standard wall socket, and that one socket powers the ventilation fan and the LED lighting using only 40W. There's no construction and no contractors, so no disruption to your workday. Just plug it in and use it.",
    "a_system": "frontier-strong:claude-opus-5-5",
-   "b_system": "O3k_glm_calm_claimcheck_bo3"
+   "b_system": "O3m_glm_plainclaim"
   },
   {
    "pid": 4,
    "id": "dev-020",
    "draft": "Less Stress for Your Pet 💙\nWe know that trips to the clinic can be overwhelming for our four-legged friends. That's why our dedicated team of 4 compassionate vets brings everything needed right to your living room with a fully equipped portable kit. From routine check-ups to blood tests — with results delivered in just 24 hours — we provide comprehensive, stress-free care in the comfort of home. Because a calm pet is a healthy pet.",
-   "a": "We know that trips to the clinic can be stressful for pets. That's why our team of 4 vets comes to your living room with a fully equipped portable kit. We handle everything from routine check-ups to blood tests, with results delivered within 24 hours, all in the comfort of home. A calm pet is a healthy pet.",
+   "a": "Clinic trips can overwhelm a four-legged friend. So we come to you. One of our 4 vets arrives at your living room with a fully equipped portable kit and does everything there: routine check-ups, blood tests, results in 24 hours. Your pet stays home, stays calm, and still gets complete care. A calm pet is a healthy pet.",
    "b": "Less Stress for Your Pet\n\nA visit to the clinic can frighten a dog or cat. So our team of 4 vets comes to you instead, carrying a fully equipped portable kit into your living room. We handle everything from routine check-ups to blood tests, and blood test results come back in 24 hours. Your pet gets full care without leaving home, and a calm pet is a healthier one.",
-   "a_system": "O3k_glm_calm_claimcheck_bo3",
+   "a_system": "O3m_glm_plainclaim",
    "b_system": "frontier-strong:claude-opus-5-5"
   },
   {
    "pid": 5,
    "id": "dev-087",
    "draft": "Primary text: ✨ Dreaming of a new adventure? Make Warsaw your home away from home! 🏙️ Pokoik offers beautifully furnished apartments for stays of 1–6 months, with one simple all-inclusive price and blazing-fast internet. No hidden fees, no stress, no hassle — just move in and start living! 🔑💫 Choose from 220 stunning apartments today.\nHeadline: Your Warsaw Adventure Awaits! 🇵🇱",
-   "a": "If you're planning a stay in Warsaw, Pokoik offers furnished apartments for terms of 1 to 6 months. The price is all-inclusive, with no hidden fees, and the internet connection is fast. There are 220 apartments to choose from, so you can pick one, move in, and settle into the city.",
+   "a": "If you're moving to Warsaw, Pokoik rents furnished apartments for stays of 1 to 6 months at one all-inclusive price with fast internet. There are no hidden fees; you move in and start living. There are 220 apartments to choose from.",
    "b": "Primary text: Planning a move to Warsaw? Pokoik rents furnished apartments for stays of 1 to 6 months. You pay one all-inclusive price, with fast internet included and no hidden fees, so you can move in and get on with your life. There are 220 apartments to choose from.\nHeadline: Furnished Warsaw apartments for 1 to 6 months",
-   "a_system": "O3k_glm_calm_claimcheck_bo3",
+   "a_system": "O3m_glm_plainclaim",
    "b_system": "frontier-strong:claude-opus-5-5"
   },
   {
@@ -78,26 +78,26 @@
    "id": "dev-037",
    "draft": "Subject: Loved Your Post on CI — Let's Supercharge Orbit Pay's Pipeline\n\nHey Dmitri,\n\nI just finished reading your insightful blog post, \"Why our CI takes 40 minutes,\" and I have to say — it really resonated with me. Your candid breakdown of how roughly a third of your reruns are caused by flaky tests is something so many engineering teams struggle with but rarely talk about.\n\nAt Patchwork CI, we're on a mission to eliminate that pain entirely. Our intelligent platform automatically detects and quarantines flaky tests in GitHub Actions, helping teams like yours reclaim valuable engineering time and ship with confidence. We're already trusted on 1,200 repositories worldwide.\n\nI'd love to offer you a free run on one of your repos — no strings attached — and share the insights we uncover.\n\nWould that be of interest?\n\nCheers,\nTomas",
    "a": "Subject: Your post on CI and flaky tests at Orbit Pay\n\nHey Dmitri,\n\nI just read your blog post, \"Why our CI takes 40 minutes.\" You wrote that roughly a third of your reruns come from flaky tests. Plenty of engineering teams have the same problem, and few say so in public.\n\nAt Patchwork CI, we build a tool for exactly this. It detects flaky tests in GitHub Actions and quarantines them automatically, so engineers spend less time on reruns. It runs on 1,200 repositories today.\n\nI'd like to offer you a free run on one of your repos, with no obligation, and send you what we find.\n\nLet me know if you'd like to try it.\n\nCheers,\nTomas",
-   "b": "Subject: Your Post on CI Times\n\nHi Dmitri,\n\nI read your blog post about why your CI takes 40 minutes. The part that stood out was that roughly a third of your reruns are caused by flaky tests. A lot of engineering teams deal with this, but few talk about it openly.\n\nAt Patchwork CI, we built a platform that detects and quarantines flaky tests in GitHub Actions, so engineers can spend their time on work instead of rerunning jobs. It's already in use on 1,200 repositories worldwide.\n\nI'd be happy to run it for free on one of your repos and share what we find. Would that be of interest?\n\nCheers,\nTomas",
+   "b": "Subject: Your Post on CI, Patchwork CI Could Help Orbit Pay\n\nHi Dmitri,\n\nI read your blog post, \"Why our CI takes 40 minutes.\" You wrote that roughly a third of your reruns are caused by flaky tests, which is a problem many engineering teams have but rarely talk about.\n\nPatchwork CI detects and quarantines flaky tests automatically in GitHub Actions, so teams get their engineering time back and can ship. We're already used on 1,200 repositories worldwide.\n\nI'd like to offer you a free run on one of your repos, no strings attached, and share what we find.\n\nWould that be of interest?\n\nCheers,\nTomas",
    "a_system": "frontier-strong:claude-opus-5-5",
-   "b_system": "O3k_glm_calm_claimcheck_bo3"
+   "b_system": "O3m_glm_plainclaim"
   },
   {
    "pid": 7,
    "id": "dev-078",
    "draft": "💸 Raised our prices by 50% in September. Here's what happened... 👀\n\nChurn? Just 2 out of 140 customers in 2 months. 🤯\n\n(And yes, we grandfathered every existing customer at $8 for 12 months — loyalty matters! 🤝)\n\nLesson: You're probably undercharging. Seriously. Your customers value what you deliver more than you think. Raise your prices. 🚀\n\n#SaaS #Pricing #BuildInPublic #Startups",
    "a": "We raised our prices by 50% in September.\n\nIn the two months since, 2 of our 140 customers have churned.\n\nEvery existing customer was grandfathered at $8 for 12 months, because we wanted to reward the people who stuck with us.\n\nThe lesson: you're probably undercharging. Your customers value what you deliver more than you think. Raise your prices.\n\n#SaaS #Pricing #BuildInPublic #Startups",
-   "b": "We raised our prices by 50% in September. Here is what happened.\n\nChurn was just 2 out of 140 customers in 2 months.\n\nWe did grandfather every existing customer at $8 for 12 months, because loyalty matters.\n\nThe lesson: you are probably undercharging. Your customers value what you deliver more than you think. Raise your prices.\n\n#SaaS #Pricing #BuildInPublic #Startups",
+   "b": "We raised our prices by 50% in September. In the two months since, only 2 of 140 customers have churned. We grandfathered every existing customer at $8 for 12 months. The takeaway from this is that you're probably undercharging, because your customers value what you deliver more than you think, and you should raise your prices.",
    "a_system": "frontier-strong:claude-opus-5-5",
-   "b_system": "O3k_glm_calm_claimcheck_bo3"
+   "b_system": "O3m_glm_plainclaim"
   },
   {
    "pid": 8,
    "id": "trick-18",
    "draft": "Subject: Pebble Pantry will cost €5.99 from March\n\nOlá,\n\nFrom March 1, Pebble Pantry will cost €5.99 a month instead of €4.99.\n\nThe company that gives us supermarket prices for Continente and Pingo Doce raised its fee, and we can't absorb it at €4.99.\n\nYou won't pay more yet. If you're subscribed today, you keep €4.99 until September 1.\n\nIf you'd rather stop, you can cancel any time in Settings. No hard feelings.\n\nInês",
-   "a": "Subject: Pebble Pantry will cost €5.99 from March\n\nOlá,\n\nI'm writing to let you know that from March 1, Pebble Pantry will cost €5.99 a month instead of €4.99.\n\nThe reason is simple. The company that provides us with supermarket prices for Continente and Pingo Doce raised its fee, and we can't absorb that increase at €4.99.\n\nYou won't pay more right away. If you're subscribed today, you keep the €4.99 price until September 1.\n\nIf you'd rather stop, you can cancel any time in Settings. No hard feelings.\n\nInês",
+   "a": "Subject: Pebble Pantry will cost €5.99 from March\n\nOlá,\n\nHeads up: from March 1, Pebble Pantry goes from €4.99 to €5.99 a month.\n\nWhy? The company that gives us Continente and Pingo Doce prices raised its fee, and €4.99 no longer covers it.\n\nYou don't pay more yet. Subscribe today and you keep €4.99 until September 1.\n\nRather not? Cancel any time in Settings.\n\nInês",
    "b": "Subject: Pebble Pantry will cost €5.99 from March\n\nOlá,\n\nStarting March 1, Pebble Pantry will cost €5.99 a month. It currently costs €4.99.\n\nWe get our Continente and Pingo Doce supermarket prices from another company, and that company has raised its fee. At €4.99 we can't cover the increase.\n\nYour price isn't going up yet. If you're subscribed today, you'll keep paying €4.99 until September 1.\n\nIf you'd rather stop, you can cancel any time in Settings. No hard feelings.\n\nInês",
-   "a_system": "O3k_glm_calm_claimcheck_bo3",
+   "a_system": "O3m_glm_plainclaim",
    "b_system": "frontier-strong:claude-opus-5-5"
   }
  ]
