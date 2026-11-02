@@ -834,50 +834,50 @@
      "tagline": 3.076923076923077
     }
    },
-   "R3_gptoss120b_prompt_harness_style_dev": {
-    "any_share": 0.225,
+   "O4m_glm_sft_modern": {
+    "any_share": 0.24615384615384617,
     "ids_with_tells": [
+     "dev-002",
+     "dev-003",
+     "dev-012",
+     "dev-013",
+     "dev-017",
+     "dev-021",
+     "dev-029",
      "dev-035",
-     "dev-058",
-     "dev-059",
-     "dev-060",
-     "dev-061",
-     "dev-063",
-     "dev-064",
-     "dev-065",
-     "dev-066"
-    ],
-    "n": 40,
-    "per_100_outputs": {
-     "echo": 2.5,
-     "fragment_run": 17.5,
-     "hook": 7.5,
-     "rhetorical_qa": 10.0,
-     "slogan": 2.5,
-     "tagline": 0.0
-    }
-   },
-   "R3_nemoultra_prompt_harness_style_dev": {
-    "any_share": 0.225,
-    "ids_with_tells": [
+     "dev-040",
      "dev-052",
+     "dev-053",
+     "dev-054",
      "dev-058",
      "dev-059",
      "dev-060",
-     "dev-061",
+     "dev-062",
      "dev-063",
      "dev-064",
      "dev-066",
-     "dev-070"
+     "dev-067",
+     "dev-070",
+     "dev-072",
+     "dev-077",
+     "dev-085",
+     "dev-093",
+     "trick-05",
+     "trick-08",
+     "trick-10",
+     "trick-18",
+     "trick-19",
+     "trick-25",
+     "trick-30"
     ],
-    "n": 40,
+    "n": 130,
     "per_100_outputs": {
-     "echo": 5.0,
-     "fragment_run": 25.0,
-     "hook": 0.0,
-     "rhetorical_qa": 0.0,
-     "slogan": 0.0,
-     "tagline": 0.0
+     "echo": 2.3076923076923075,
+     "fragment_run": 13.846153846153847,
+     "hook": 7.6923076923076925,
+     "rhetorical_qa": 12.307692307692308,
+     "slogan": 1.5384615384615385,
+     "tagline": 1.5384615384615385
     }
    },
    "WF_Pairwise_both_orders_knockout_selector_with_fact_aware_eligibility_replace_the_1_10_judge_score_": {
@@ -1417,6 +1417,22 @@
      "fragment_run": 1.6666666666666667,
      "hook": 5.0,
      "rhetorical_qa": 7.5,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "O4m_glm_sft_modern": {
+    "any_share": 0.016666666666666666,
+    "ids_with_tells": [
+     "ho-082",
+     "ho-087"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 1.6666666666666667,
+     "hook": 0.0,
+     "rhetorical_qa": 2.5,
      "slogan": 0.0,
      "tagline": 0.0
     }
