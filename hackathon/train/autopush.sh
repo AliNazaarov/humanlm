@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Commit + push Ali's finished work every 10 min. Run files go up only once their manifest exists (run complete).
+# Commit + push Ali's finished work every 5 min. Run files go up only once their manifest exists (run complete).
 cd "$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
 while true; do
   for d in hackathon/audit hackathon/pitch hackathon/train hackathon/harness hackathon/social hackathon/data; do [ -e "$d" ] && git add "$d"; done
@@ -12,5 +12,5 @@ while true; do
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
     git pull -q --rebase --autostash && git push -q && echo "$(date +%H:%M) pushed"
   fi
-  sleep 600
+  sleep 300
 done

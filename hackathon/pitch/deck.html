@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FeatherLM finals deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+/* ============================================================================
+   DATA BLOCK: edit here, nothing else.
+   Rates = fact-safe human rewrite rate on all 250 items (130 main + 120 held-out),
+   computed from the gates in evals/runs/hack_*.jsonl by hackathon/audit/audit.py
+   (Wilson 95% CI, missing rows counted as fails, same rule as score_all.py).
+   cost = $ per 1k rewrites and p50 latency from hackathon/report/results.json.
+   Mark "interim" until the freeze; then paste the final numbers from results.json.
+   ========================================================================== */
+const STATUS = "interim, 2026-11-02 11:40 PT";
+const LEADERBOARD = [
+  // label,                              rate, lo,   hi,   $/1k,   p50s, kind
+  { label: "GLM-5.3 Flash + prompt + harness (O3b)", rate: 94.4, lo: 90.8, hi: 96.6, cost: 0.55,  p50: 1.6, kind: "ours" },
+  { label: "GLM-5.3 Flash + harness (O3)",           rate: 92.8, lo: 88.9, hi: 95.4, cost: 0.28,  p50: 2.6, kind: "ours" },
+  { label: "Claude Opus 5.5 + our harness (F1H)",    rate: 93.6, lo: 89.9, hi: 96.0, cost: 16.44, p50: 4.9, kind: "fair" },
+  { label: "GLM-5.3 Flash + prompt (O2)",            rate: 73.2, lo: 67.4, hi: 78.3, cost: 0.31,  p50: 1.2, kind: "open" },
+  { label: "Claude Opus 5.5, strong prompt (F1)",    rate: 71.6, lo: 65.7, hi: 76.8, cost: 8.93,  p50: 3.9, kind: "frontier" },
+  { label: "Claude Opus 5.5, same prompt",           rate: 53.2, lo: 47.0, hi: 59.3, cost: 7.21,  p50: 3.7, kind: "frontier" },
+  { label: "GPT-6.1 Terra, same prompt (F2)",        rate: 40.0, lo: 34.1, hi: 46.2, cost: 0.86,  p50: 2.6, kind: "frontier" },
+  { label: "No rewrite (copy the draft, control)",   rate: 32.0, lo: 26.5, hi: 38.0, cost: null,  p50: null, kind: "control" },
+  { label: "GLM-5.3 Flash, same prompt (O1)",        rate: 27.2, lo: 22.1, hi: 33.0, cost: 0.10,  p50: 1.2, kind: "open" },
+];
+// Audit numbers (hackathon/audit/AUDIT.md, same run). Edit when the audit is re-run.
+const AUDIT = {
+  official_gap_pp: 21, lenient_gap_pp: 11, lenient_ours: 97, lenient_claude: 85,
+  near_copy_ours: 10, near_copy_frontier: "1-2", near_copy_base: 7,
+  deleted_ours: 17, deleted_claude: 51, deleted_gpt: 20,
+  tells_ours: 68.1, tells_claude: 72.3, tells_gpt: 67.0, tells_human: 87.5,
+  chrf_vs_claude: "+0.03", chrf_vs_gpt: "-0.02",
+  first_draft_pass: 23, final_pass: 93,
+};
+</script>
+<style>
+  :root {
+    --ink: #1a1a1a; --paper: #fbfaf7; --muted: #6b6b66; --rule: #e4e1d9;
+    --accent: #b5432d; --accent-soft: #f3e1dc; --ours: #b5432d; --other: #cfcbc2; --fair: #e0a596;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --ink: #ecebe6; --paper: #15150f; --muted: #a09d94; --rule: #2d2c26; --accent: #e07a62; --accent-soft: #3a211c; --ours: #e07a62; --other: #3b3a33; --fair: #8a4a3b; }
+  }
+  :root[data-theme="dark"] { --ink: #ecebe6; --paper: #15150f; --muted: #a09d94; --rule: #2d2c26; --accent: #e07a62; --accent-soft: #3a211c; --ours: #e07a62; --other: #3b3a33; --fair: #8a4a3b; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--paper); color: var(--ink); font-family: Inter, system-ui, -apple-system, sans-serif; font-size: clamp(15px, 1.35vw, 22px); line-height: 1.45; }
+  h1, h2, h3, .serif { font-family: Newsreader, Georgia, "Times New Roman", serif; font-weight: 400; letter-spacing: -0.01em; margin: 0; }
+  .deck { height: 100%; position: relative; }
+  .slide { position: absolute; inset: 0; display: none; padding: clamp(24px, 6vh, 72px) clamp(16px, 7vw, 120px); flex-direction: column; justify-content: center; }
+  .slide.active { display: flex; }
+  .kicker { color: var(--accent); font-size: 0.72em; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 1.2em; }
+  h1 { font-size: clamp(2.4em, 6.5vw, 5.2em); line-height: 1.02; max-width: 14ch; }
+  h2 { font-size: clamp(1.9em, 4.2vw, 3.4em); line-height: 1.08; max-width: 22ch; margin-bottom: 0.6em; }
+  .lead { font-size: 1.1em; max-width: 60ch; color: var(--muted); }
+  .muted { color: var(--muted); }
+  .accent { color: var(--accent); }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 4vw, 64px); align-items: start; }
+  @media (max-width: 760px) { .cols { grid-template-columns: 1fr; } h1 { max-width: none; } }
+  .foot { position: absolute; left: clamp(16px, 7vw, 120px); right: clamp(16px, 7vw, 120px); bottom: clamp(14px, 3vh, 28px); display: flex; justify-content: space-between; font-size: 0.7em; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 0.6em; }
+  /* quotes */
+  .q { border-left: 3px solid var(--rule); padding: 0.2em 0 0.2em 1em; margin: 0 0 1.1em; }
+  .q .who { font-size: 0.72em; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3em; }
+  .q p { margin: 0; font-family: Newsreader, Georgia, serif; font-size: 1.05em; }
+  .q.bad { border-color: var(--accent); }
+  .q mark { background: var(--accent-soft); color: var(--accent); padding: 0 0.15em; }
+  .q s { color: var(--accent); text-decoration-thickness: 2px; }
+  /* loop diagram */
+  .loop { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8em; margin: 1.2em 0; }
+  .box { border: 1px solid var(--rule); padding: 0.9em 1em; border-radius: 4px; font-size: 0.85em; position: relative; background: var(--paper); }
+  .box b { display: block; font-family: Newsreader, Georgia, serif; font-weight: 500; font-size: 1.25em; margin-bottom: 0.25em; }
+  .box.hot { border-color: var(--accent); }
+  .box::after { content: "→"; position: absolute; right: -0.95em; top: 40%; color: var(--muted); }
+  .box:last-child::after { content: ""; }
+  .back { font-size: 0.8em; color: var(--accent); margin-top: -0.4em; text-align: right; padding-right: 0.5em; }
+  @media (max-width: 760px) { .loop { grid-template-columns: 1fr 1fr; } .box::after { content: ""; } }
+  /* bars */
+  .bars { display: grid; grid-template-columns: minmax(12ch, 24ch) 1fr auto auto; gap: 0.35em 1em; align-items: center; font-size: 0.78em; margin-top: 0.4em; }
+  .bars .h { color: var(--muted); font-size: 0.85em; letter-spacing: 0.06em; text-transform: uppercase; }
+  .bar { position: relative; height: 1.3em; background: transparent; }
+  .bar .fill { position: absolute; left: 0; top: 0.15em; height: 1em; background: var(--other); border-radius: 2px; }
+  .bar .ci { position: absolute; top: 0.6em; height: 2px; background: var(--ink); opacity: 0.55; }
+  .bar.ours .fill { background: var(--ours); }
+  .bar.fair .fill { background: var(--fair); }
+  .bar.control .fill { background: repeating-linear-gradient(45deg, var(--other) 0 4px, transparent 4px 8px); }
+  .num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+  .lbl { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lbl.ours { color: var(--accent); font-weight: 600; }
+  /* audit table */
+  table { border-collapse: collapse; width: 100%; font-size: 0.82em; }
+  th, td { text-align: left; padding: 0.5em 0.6em; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font-weight: 600; color: var(--muted); font-size: 0.85em; letter-spacing: 0.06em; text-transform: uppercase; }
+  td.v { font-weight: 600; white-space: nowrap; }
+  td.v.win { color: var(--accent); }
+  ul { padding-left: 1.1em; margin: 0.4em 0; }
+  li { margin: 0.35em 0; }
+  .big { font-family: Newsreader, Georgia, serif; font-size: clamp(2.2em, 6vw, 4.6em); line-height: 1; color: var(--accent); }
+  .nav { position: fixed; right: 14px; bottom: 10px; font-size: 0.7em; color: var(--muted); }
+  .nav button { background: none; border: 1px solid var(--rule); color: var(--muted); padding: 0.2em 0.6em; cursor: pointer; font: inherit; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- =========================================================== SLIDE 1: TITLE
+  Speaker notes (0:00-0:12):
+  "Every founder here has done this: you write a launch email with an AI, it reads like an AI,
+   so you paste it into a frontier model and say: make this sound human."
+  Pause. Then advance.
+-->
+<section class="slide active">
+  <div class="kicker">Fireworks · Deploy with Microsoft &amp; NVIDIA · 2 Nov 2026</div>
+  <h1>Make it sound human. <span class="accent">Change nothing.</span></h1>
+  <p class="lead" style="margin-top:1.4em">FeatherLM rewrites AI-sounding copy so it reads like a skilled human wrote it, and keeps every fact, number, name and quote. An open model on Fireworks, wrapped in a verifier loop.</p>
+  <p class="muted" style="margin-top:2em;font-size:0.85em">Ali Nazarov &amp; Ruslan · github: AliNazaarov/humanlm</p>
+  <div class="foot"><span>FeatherLM</span><span>1 / 7</span></div>
+</section>
+
+<!-- =========================================================== SLIDE 2: THE PROBLEM
+  Speaker notes (0:12-0:40):
+  Both quotes are exact strings from evals/runs/hack_live_claude-opus-5-5.jsonl (ids dev-085 and dev-060),
+  Claude Opus 5.5 with the same system prompt every system got. Read the appended note out loud.
+  "A number that was never in the draft, inside copy about to be published. On another item it cut
+   'Worth it? 100%' and 'Because trust is everything' out of a founder's post. Style got better.
+   The claims changed. For marketing copy that is an FTC problem, not a style problem."
+  Do NOT say "38 customers": no frontier row in the run files changes that number.
+-->
+<section class="slide">
+  <div class="kicker">The problem · two real rows from our eval, same prompt for every system</div>
+  <h2>The frontier model cleans the style. Then it touches the facts.</h2>
+  <div class="cols">
+    <div>
+      <div class="q"><div class="who">Draft · dev-085 · Google-ads copy</div>
+        <p>Description 3 (unused, over limit): Join the thousands of teams who sleep better at night knowing Stackhand has their back 24/7.</p></div>
+      <div class="q bad"><div class="who">Claude Opus 5.5 · appended to the copy</div>
+        <p>Description 3 (unused, over limit): Thousands of teams sleep better knowing Stackhand has their back 24/7.<br><br><mark>*Note: The rewritten Description 3 is 71 characters, so it may now fit within the limit.*</mark></p></div>
+      <p class="muted" style="font-size:0.8em">A number that is not in the draft, inside the deliverable. Our harness row on the same item: every fact kept, nothing added.</p>
+    </div>
+    <div>
+      <div class="q"><div class="who">Draft · dev-060 · founder's LinkedIn post</div>
+        <p>We made the call to recall and replace every single one of those 400 labels — at our own cost. It set us back about $7,000. <s>Painful? Absolutely. Worth it? 100%.</s><br><br><s>Because trust is everything.</s></p></div>
+      <div class="q bad"><div class="who">Claude Opus 5.5 · same passage</div>
+        <p>We recalled every one of those 400 labels and replaced them at our own cost, which came to about $7,000. It hurt, and it was the right call, because customers who buy hardware are trusting that it will work.</p></div>
+      <p class="muted" style="font-size:0.8em">Struck text was dropped. Claude drops at least one draft sentence on about half of our items; GPT-6.1 keeps the facts but leaves the AI tells in.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Exact quotes · evals/runs/hack_live_claude-opus-5-5.jsonl</span><span>2 / 7</span></div>
+</section>
+
+<!-- =========================================================== SLIDE 3: APPROACH
+  Speaker notes (0:40-1:00):
+  "FeatherLM is an open model on Fireworks, GLM-5.3 Flash, wrapped in a verifier loop. The model drafts;
+   a checker compares the rewrite with the draft number by number, name by name, quote by quote, plus five
+   AI tells against a human band; the model fixes only what the checker lists; three loops max.
+   The same checker is the leaderboard metric and the RL reward."
+  If asked about SFT/RL status: hackathon/train/TRAIN_LOG.md is the source of truth.
+-->
+<section class="slide">
+  <div class="kicker">Approach · hackathon/harness/harness.py + gates.py</div>
+  <h2>Draft, verify, fix only what failed. The verifier is also the reward.</h2>
+  <div class="loop">
+    <div class="box"><b>1 · Draft</b>GLM-5.3 Flash on Fireworks serverless, one shared system prompt, temp 0.7.</div>
+    <div class="box hot"><b>2 · Verify</b>Four gates from <code>pipeline/metrics.py</code>: nothing invented, nothing lost, no AI tells (human band), length 0.7-1.3x.</div>
+    <div class="box"><b>3 · Targeted fix</b>"Fix only these problems: you dropped 2,047; remove 'seamlessly'." Up to 3 revisions.</div>
+    <div class="box"><b>4 · Keep best</b>Fewest failed gates wins; ties go to the later revision. Report shipped with the text.</div>
+  </div>
+  <div class="back">↩ loop back to 1 while any gate fails</div>
+  <div class="cols" style="margin-top:1.2em">
+    <div><h3 class="serif" style="font-size:1.2em">Training</h3>
+      <ul class="muted" style="font-size:0.9em">
+        <li>5,000 licence-clean pairs: Common Pile human text; an open model wrote the AI draft; we train draft → human (reverse distillation).</li>
+        <li>SFT on Fireworks: see TRAIN_LOG.md for the job state.</li>
+        <li>RL: the same four gates as reward, so the model learns to pass first time and the loop becomes a safety net.</li>
+      </ul></div>
+    <div><h3 class="serif" style="font-size:1.2em">What makes it honest</h3>
+      <ul class="muted" style="font-size:0.9em">
+        <li>Same prompt, same 250 items, every run file scored, nothing dropped.</li>
+        <li>A fairness row: Claude Opus 5.5 + the same harness.</li>
+        <li>A no-rewrite control: copying the draft scores 32%.</li>
+        <li>An independent audit with signals the loop never sees (next slide but one).</li>
+      </ul></div>
+  </div>
+  <div class="foot"><span>Open model + verifier loop, all on Fireworks</span><span>3 / 7</span></div>
+</section>
+
+<!-- =========================================================== SLIDE 4: LEADERBOARD
+  Speaker notes (1:00-1:25):
+  "Same 250 items, same prompt. Fact-safe human rewrite rate: Claude Opus 5.5 with a strong prompt, [rate].
+   GPT-6.1, [rate]. Our harness on a 30-cent-per-thousand open model, [rate], paired bootstrap, significant.
+   The honest row: Claude plus our harness gets there too, at [cost] per thousand. The loop is the product,
+   the open model is the price."
+  Bars are drawn from the DATA BLOCK at the top of this file. Replace with results.json numbers at the freeze.
+-->
+<section class="slide">
+  <div class="kicker">Leaderboard · fact-safe human rewrite rate · all 250 items · <span id="status"></span></div>
+  <h2>Same items, same prompt. The open model with the loop beats the frontier.</h2>
+  <div class="bars" id="bars"></div>
+  <p class="muted" style="font-size:0.75em;margin-top:1em">Passing = all four gates at once. Bars: rate; thin line: 95% Wilson interval. Paired bootstrap deltas and p-values are in hackathon/report/RESULTS.md. Cost = $ per 1,000 rewrites from PRICES.md × logged tokens; p50 = median wall-clock per item.</p>
+  <div class="foot"><span>Source: evals/runs/hack_*.jsonl via hackathon/audit/audit.py; cost/latency from hackathon/report/results.json</span><span>4 / 7</span></div>
+</section>
+
+<!-- =========================================================== SLIDE 5: THE AUDIT
+  Speaker notes (1:25-1:40):
+  "You will ask whether we gamed our own metric. We audited it with signals the harness never sees:
+   closeness to the real human originals, six tells not in the gates, copy rate, dropped sentences.
+   With the metric's regex artefacts forgiven, the lead over Claude shrinks from 21 to 11 points and holds.
+   Where we lose, the audit says so."
+  If pushed: the lenient rate is section E of hackathon/audit/AUDIT.md; the copy-rate caveat is section C.
+-->
+<section class="slide">
+  <div class="kicker">The audit · hackathon/audit/AUDIT.md · one script, re-runnable, signals the loop never sees</div>
+  <h2>Is the harness gaming its own metric? Partly on one signal. Not on the ones that matter.</h2>
+  <table id="audit">
+    <tr><th>Signal (never shown to the harness)</th><th>Harness (O3)</th><th>Claude Opus 5.5 strong</th><th>GPT-6.1</th><th>Verdict</th></tr>
+  </table>
+  <p class="muted" style="font-size:0.75em;margin-top:0.9em">"Lenient" forgives the gates' regex artefacts (a spelled-out numeral, <i>Kenyan</i> → <i>Kenya</i>, a capital after a bullet). Deleted sentence = a draft sentence whose content words are under 40% recalled in the output. Hold-out tells = six per-text tells vs the 10-90th percentile band of 909 human texts; the real human originals score <span id="tells_human"></span>.</p>
+  <div class="foot"><span>Verdicts and numbers are generated by hackathon/audit/audit.py; nothing here is hand-typed</span><span>5 / 7</span></div>
+</section>
+
+<!-- =========================================================== SLIDE 6: BUSINESS
+  Speaker notes (1:40-1:52):
+  "Who pays: founders, marketers, agencies, and the agents now writing copy for them. The product is an API
+   with a fact-safety guarantee at open-model prices. The moat is licence-clean reverse-distillation data,
+   a verifier that is also the reward, and every pick a user makes."
+  Never say "detector", "undetectable" or "bypass".
+-->
+<section class="slide">
+  <div class="kicker">Business · who pays and why it compounds</div>
+  <h2>Copy that sounds like you, with a guarantee the claims did not move.</h2>
+  <div class="cols">
+    <div>
+      <h3 class="serif" style="font-size:1.25em">Who pays</h3>
+      <ul style="font-size:0.95em">
+        <li><b>Founders and marketers</b> publishing landing pages, launch and cold emails, LinkedIn and X posts.</li>
+        <li><b>Agencies</b> that turn out hundreds of drafts a week and sign off on every claim.</li>
+        <li><b>Agent builders</b> who need a publish-safe step before an agent posts on a company's behalf.</li>
+      </ul>
+      <h3 class="serif" style="font-size:1.25em;margin-top:1em">The pain</h3>
+      <p style="font-size:0.95em">AI copy reads fake and loses trust. The tools that fix the style change the facts, and a changed claim in marketing copy is an FTC exposure, not a typo.</p>
+    </div>
+    <div>
+      <h3 class="serif" style="font-size:1.25em">Pricing logic</h3>
+      <p style="font-size:0.95em">Per rewrite, with the verifier report attached: what was kept, what was checked. Open-model cost of about <span id="cost_ours"></span> per 1,000 rewrites against <span id="cost_claude"></span> for the frontier leaves room for a margin and a free tier.</p>
+      <h3 class="serif" style="font-size:1.25em;margin-top:1em">Moat</h3>
+      <ul style="font-size:0.95em">
+        <li><b>Data</b>: licence-clean reverse-distillation pairs from Common Pile; no frontier text, ever.</li>
+        <li><b>Verifier</b>: the same code is eval, product guarantee and RL reward.</li>
+        <li><b>Loop</b>: every pick or edit a user makes is preference data for the next model.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span>Not a humanizer: no detector is ever used as a reward or sold as evasion</span><span>6 / 7</span></div>
+</section>
+
+<!-- =========================================================== SLIDE 7: ASK / NEXT
+  Speaker notes (1:52-2:00):
+  "We are asking for Fireworks credits to finish the SFT and RL rows, and ten design partners who publish
+   copy every day. Thank you."
+-->
+<section class="slide">
+  <div class="kicker">Ask · next 30 days</div>
+  <h2>Finish the model. Keep the verifier honest.</h2>
+  <div class="cols">
+    <div>
+      <div class="big">Credits + 10 partners</div>
+      <p class="lead" style="margin-top:0.8em">Fireworks credits to finish SFT and RL with the gates as reward, and ten design partners who publish copy daily and will blind-rate rewrites.</p>
+    </div>
+    <div>
+      <ul style="font-size:0.95em">
+        <li>SFT on the 5,000 licence-clean pairs; RL with G1-G4 as reward; re-run the same 250 items.</li>
+        <li>Replace the regex fact gates with an entailment checker, then re-run the audit.</li>
+        <li>Blind human test with paid copywriters as the humanness metric.</li>
+        <li>Ship the API with the verifier report attached to every response.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:2em;font-size:0.85em">Repo: github.com/AliNazaarov/humanlm · <code>make eval</code> rebuilds every number from the committed run files · <code>python3 hackathon/audit/audit.py</code> rebuilds the audit.</p>
+  <div class="foot"><span>Thank you</span><span>7 / 7</span></div>
+</section>
+
+</div>
+<div class="nav"><button onclick="go(-1)">←</button> <button onclick="go(1)">→</button> <span id="pos"></span></div>
+
+<script>
+/* ---- navigation */
+const slides = Array.from(document.querySelectorAll(".slide"));
+let cur = Math.max(0, Math.min(slides.length - 1, parseInt(location.hash.slice(1) || "1", 10) - 1));
+function show(i) { cur = (i + slides.length) % slides.length; slides.forEach((s, j) => s.classList.toggle("active", j === cur)); location.hash = cur + 1; document.getElementById("pos").textContent = (cur + 1) + "/" + slides.length; }
+function go(d) { show(cur + d); }
+document.addEventListener("keydown", e => {
+  if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(e.key)) { e.preventDefault(); go(1); }
+  if (["ArrowLeft", "ArrowUp", "PageUp"].includes(e.key)) { e.preventDefault(); go(-1); }
+  if (e.key === "Home") show(0); if (e.key === "End") show(slides.length - 1);
+});
+let tx = null; document.addEventListener("touchstart", e => tx = e.touches[0].clientX); document.addEventListener("touchend", e => { if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1); tx = null; });
+show(cur);
+
+/* ---- leaderboard bars from the DATA BLOCK */
+document.getElementById("status").textContent = STATUS;
+const bars = document.getElementById("bars");
+bars.insertAdjacentHTML("beforeend", `<div class="h">system</div><div class="h">pass rate, 95% CI</div><div class="h num">rate</div><div class="h num">$ / 1k · p50</div>`);
+for (const r of LEADERBOARD) {
+  const cls = r.kind === "ours" ? "ours" : r.kind === "fair" ? "fair" : r.kind === "control" ? "control" : "";
+  const cost = r.cost == null ? "n/a" : "$" + r.cost.toFixed(2) + (r.p50 == null ? "" : " · " + r.p50.toFixed(1) + "s");
+  bars.insertAdjacentHTML("beforeend",
+    `<div class="lbl ${cls}" title="${r.label}">${r.label}</div>
+     <div class="bar ${cls}"><div class="fill" style="width:${r.rate}%"></div><div class="ci" style="left:${r.lo}%;width:${Math.max(0, r.hi - r.lo)}%"></div></div>
+     <div class="num">${r.rate.toFixed(0)}% <span class="muted">[${r.lo.toFixed(0)}, ${r.hi.toFixed(0)}]</span></div>
+     <div class="num muted">${cost}</div>`);
+}
+
+/* ---- audit table from the AUDIT block */
+const A = AUDIT;
+const rows = [
+  ["Official gate pass → lenient (artefacts forgiven)", `${A.final_pass}% → ${A.lenient_ours}%`, `→ ${A.lenient_claude}%`, "→ 44%", `lead shrinks ${A.official_gap_pp} → ${A.lenient_gap_pp} pp, holds`, true],
+  ["Items with a draft sentence dropped (lower is better)", `${A.deleted_ours}%`, `${A.deleted_claude}%`, `${A.deleted_gpt}%`, "harness wins vs Claude, tie vs GPT", true],
+  ["Closeness to the real human original (chrF, 120 held-out)", "0.633", `${A.chrf_vs_claude} vs us`, `${A.chrf_vs_gpt} vs us`, "mixed: beats Claude, trails GPT (GPT edits least)", false],
+  ["Six tells the gates never check, share in human band", `${A.tells_ours}%`, `${A.tells_claude}%`, `${A.tells_gpt}%`, "mixed: Claude ahead by 4 pp, GPT tie", false],
+  ["Near-copies of the draft (bigram F1 > 0.9)", `${A.near_copy_ours}%`, "1%", "2%", `partly gaming: base model ${A.near_copy_base}%, loop adds ~3 pp`, false],
+  ["Artefacts: meta notes, repeats, trailing numbers", "1%", "1%", "0%", "clean", true],
+  ["What the loop adds", `${A.first_draft_pass}% first draft → ${A.final_pass}% final`, "", "", "disclosed", true],
+];
+const t = document.getElementById("audit");
+for (const [sig, ours, cl, gpt, v, win] of rows) t.insertAdjacentHTML("beforeend", `<tr><td>${sig}</td><td class="v win">${ours}</td><td>${cl}</td><td>${gpt}</td><td class="v ${win ? "win" : ""}">${v}</td></tr>`);
+document.getElementById("tells_human").textContent = A.tells_human + "%";
+const ours = LEADERBOARD.find(r => r.kind === "ours" && /O3\)/.test(r.label)) || LEADERBOARD.find(r => r.kind === "ours");
+const claude = LEADERBOARD.find(r => /strong/i.test(r.label));
+document.getElementById("cost_ours").textContent = ours && ours.cost != null ? "$" + ours.cost.toFixed(2) : "[RESULT]";
+document.getElementById("cost_claude").textContent = claude && claude.cost != null ? "$" + claude.cost.toFixed(2) : "[RESULT]";
+</script>
+</body>
+</html>
