@@ -16,6 +16,7 @@ Fact-safe human rewrite rate on 247 items (eval 130 + held-out 117), 95% CI; Δ 
 | `O3n_glm_frame` | 95% [92, 97] | +24 pp [+18, +30], significant (p=0.000) | 96% [93, 98] | +12 pp [+8, +16], significant (p=0.000) | $0.95 | 3.3s |
 | `R3_deepseek_harness` | 95% [91, 97] | +23 pp [+18, +29], significant (p=0.000) | 99% [96, 100] | +14 pp [+10, +19], significant (p=0.000) | n/a | 3.4s |
 | `O3b_glm_prompt_harness` | 94% [91, 97] | +23 pp [+17, +29], significant (p=0.000) | 97% [94, 99] | +12 pp [+7, +17], significant (p=0.000) | $0.54 | 1.7s |
+| `R3t_deepseek_ali_taste` | 94% [91, 97] | +23 pp [+18, +29], significant (p=0.000) | 98% [95, 99] | +13 pp [+9, +17], significant (p=0.000) | n/a | 4.0s |
 | `F1H_opus_harness` | 94% [90, 96] | +22 pp [+17, +28], significant (p=0.000) | 97% [94, 99] | +13 pp [+8, +17], significant (p=0.000) | $15.85 | 4.8s |
 | `O3_glm_harness` | 93% [89, 96] | +21 pp [+16, +27], significant (p=0.000) | 97% [94, 99] | +12 pp [+7, +17], significant (p=0.000) | $0.28 | 2.7s |
 | `O3g_glm_calm_retrieval_claimcheck` | 92% [88, 95] | +21 pp [+15, +27], significant (p=0.000) | 97% [94, 99] | +13 pp [+8, +17], significant (p=0.000) | $1.42 | 5.9s |
@@ -31,6 +32,7 @@ Fact-safe human rewrite rate on 247 items (eval 130 + held-out 117), 95% CI; Δ 
 | `X0_copy_draft (no rewrite: control)` | 32% [26, 38] | -40 pp [-47, -32], significant (p=0.000) | 32% [26, 38] | -53 pp [-60, -46], significant (p=0.000) | n/a | 0.0s |
 | `O1_glm_base` | 27% [21, 33] | -45 pp [-52, -37], significant (p=0.000) | 30% [24, 36] | -55 pp [-62, -49], significant (p=0.000) | $0.10 | 1.2s |
 | `frontier-persona-preexisting` (130 items) | 12% [7, 19] | -57 pp [-66, -48], significant (p=0.000) | 16% [10, 24] | -66 pp [-74, -58], significant (p=0.000) | n/a | n/a |
+| `L2h_qwen3_4b_dpo_harness` (100 items) | 7% [3, 14] | -62 pp [-72, -52], significant (p=0.000) | 8% [4, 15] | -74 pp [-82, -65], significant (p=0.000) | n/a | 51.3s |
 
 Human preference, O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-5 (blind A/B; FeatherLM / Claude / tie):
 
@@ -72,8 +74,10 @@ Pairwise judge (both orders; A wins / B wins / ties, two-sided sign test):
 - `hack_O3f_glm_calm.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 23/69/38 (p=0.000), style 16/62/52 (p=0.000)
 - `hack_O3g_glm_calm_retrieval_claimcheck.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 25/68/37 (p=0.000), style 18/64/48 (p=0.000)
 - `hack_O3j_glm_bestof3_judged.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 41/55/34 (p=0.184), style 44/37/49 (p=0.505)
+- `hack_O3k_glm_calm_claimcheck_bo3_first30.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 8/13/9 (p=0.383), style 4/11/15 (p=0.118)
 - `hack_O3k_glm_calm_claimcheck_bo3.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 19/72/39 (p=0.000), style 11/68/51 (p=0.000)
 - `hack_O3l_glm_style_claimcheck_bo3.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 36/57/36 (p=0.038), style 30/51/48 (p=0.026)
 - `hack_O3m_glm_plainclaim.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 18/64/48 (p=0.000), style 15/54/61 (p=0.000)
 - `hack_O3t_glm_ali_taste.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 34/63/33 (p=0.004), style 29/54/47 (p=0.008)
 - `hack_O3t_glm_ali_taste.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (qwen3p8-max): overall 35/40/30 (p=0.644), style 37/28/40 (p=0.321)
+- `hack_WF_Pairwise_both_orders_knockout_selector_with_fact_aware_eligibility_replace_the_1_10_judge_score_.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 5/17/8 (p=0.017), style 4/18/8 (p=0.004)
