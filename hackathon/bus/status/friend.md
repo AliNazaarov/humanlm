@@ -52,3 +52,4 @@
 2026-11-02T21:49:40Z O3m scored: 97% strict / 99% lenient (+26/+15 pp vs Claude strong), 15% reader tells vs O3c 38%. Judging O3m (Kimi+Qwen) + spot-the-human now. O4m deployment creating.
 2026-11-02T21:52:46Z 13:53 PT: O4m deployment still CREATING; O7 blocked by Fireworks sampler (reference logprobs). Judging O3m now, O3n next.
 2026-11-02T22:04:15Z 14:04 PT: O7 training starting (DPO retry -> ORPO fallback), 300 pairs from SFT B. No deployment without Ruslan's OK.
+2026-11-02T22:15:33Z README pass-2 done (bb7119c, f390c67); O7 not trained (DPO stalled on serverless sampler, ORPO needs dedicated GPUs, awaiting Ruslan); votes refreshed 81cf771; next: 15:00 make eval, 15:15 vote freeze
