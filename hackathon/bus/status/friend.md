@@ -11,3 +11,4 @@
 2026-11-02T19:07:19Z F1 done ($4.00). First leaderboard committed: F1 strong 57% [51,63] fact-safe on 250 items, weakest split dev 37%. Refusals count as fails for every system.
 2026-11-02T19:10:39Z All work pushed (F1 runs, first leaderboard + charts, judge, examples, names_probe). BLOCKED on Ali's ACK for the name-proxy fix in metrics.py: it moves F1 strong main pass 55->90/130.
 2026-11-02T19:14:04Z Pulled Ali's 059222e (harness decoding fix). All friend work pushed (F1 runs + leaderboard + charts + judge + FeatherLM rename). F1+H running. Waiting: Ali's O*/F2 run files (not on main yet) + ACK on name-proxy fix.
+2026-11-02T19:20:33Z Leaderboard with all 9 systems committed (b493c6a). Name-proxy bug fixed with tests. O3b 94%, O3 93%, F1H 94%, F1 strong 72%, F2 GPT 40%. Kimi K3 judge running on O3/O3b vs F1, F2, F1H.
