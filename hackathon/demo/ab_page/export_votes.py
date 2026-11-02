@@ -17,7 +17,8 @@ Sources:
               voter|voter_hash, ballot?}; X/Y are the opaque groups in that version's pairs.json
 One row per answered pair:
   {source, version, ballot, voter, pid, id, vote: A|B|tie|both_bad, winner, a_system, b_system, first_shown, reason,
-   ui, vw}   ui = page version (1 = before the 2026-11-02 design pass, 2 = after; null for codes/telegram), vw = viewport px
+   ui, vw, ts}   ui = page version (1 = before the 2026-11-02 design pass, 2 = after; null for codes/telegram), vw = viewport
+   px, ts = when the pick was made (ISO UTC from the reader's device; null for codes/telegram)
 `vote` is relative to ab_pairs.json's a/b; `winner` names the system (null for tie/both_bad).
 Count people by `ballot` (one reader), never by `voter`: one account can collect many readers on one device.
 """
@@ -64,12 +65,12 @@ def find(sets: dict, version: str | None) -> dict | None:
     return hits[0] if len(hits) == 1 else None
 
 
-def row(source, s, ballot, voter, pid, vote, first=None, reason="", ui=None, vw=None):
+def row(source, s, ballot, voter, pid, vote, first=None, reason="", ui=None, vw=None, ts=None):
     p = s["pairs"][pid]
     winner = {"A": p["a_system"], "B": p["b_system"]}.get(vote)
     return {"source": source, "version": s["version"], "ballot": ballot, "voter": voter, "pid": pid, "id": p["id"],
             "vote": vote, "winner": winner, "a_system": p["a_system"], "b_system": p["b_system"],
-            "first_shown": first, "reason": (reason or "")[:300], "ui": ui, "vw": vw}
+            "first_shown": first, "reason": (reason or "")[:300], "ui": ui, "vw": vw, "ts": ts}
 
 
 def from_store(dump, sets: dict, dropped: list) -> list[dict]:
@@ -84,7 +85,7 @@ def from_store(dump, sets: dict, dropped: list) -> list[dict]:
             for pid, pk in sorted((b.get("picks") or {}).items(), key=lambda kv: int(kv[0])):
                 if int(pid) in s["pairs"] and pk.get("pick") in PICK:
                     out.append(row("page", s, bid, uid, int(pid), PICK[pk["pick"]], pk.get("first"), pk.get("reason"),
-                                   b.get("ui", 1), b.get("vw")))  # ballots before the design pass carry no ui
+                                   b.get("ui", 1), b.get("vw"), pk.get("at")))  # ballots before the design pass carry no ui
     return out
 
 
@@ -99,7 +100,7 @@ def from_public(rows: list[dict], sets: dict, dropped: list) -> list[dict]:
         if s is None or pid not in s["pairs"] or r.get("pick") not in PICK:
             dropped.append(("public", bid, r.get("version"))); continue
         out.append(row("public", s, f"pub:{bid}", None, pid, PICK[r["pick"]], r.get("first"), r.get("reason"),
-                       r.get("ui"), r.get("vw")))
+                       r.get("ui"), r.get("vw"), r.get("at") or r.get("created_at")))
     return out
 
 

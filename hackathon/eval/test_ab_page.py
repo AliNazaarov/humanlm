@@ -68,6 +68,17 @@ class TestExportVotes(unittest.TestCase):
         rs = ev.from_store(dump, self.SETS, [])
         self.assertEqual([(r["ballot"], r["ui"], r["vw"]) for r in rs], [("n", 2, 375), ("o", 1, None)])
 
+    def test_pick_time_is_carried(self):
+        dump = [{"id": "u", "data": {"ballots": {"n": {"version": VER, "picks": {
+            "1": {"pick": "a", "at": "2026-11-02T21:03:00.979Z"}, "2": {"pick": "b"}}}}}}]
+        self.assertEqual([r["ts"] for r in ev.from_store(dump, self.SETS, [])], ["2026-11-02T21:03:00.979Z", None])
+        rows = [{"id": 1, "ballot": "p", "pid": 1, "pick": "a", "version": VER, "at": "2026-11-02T21:04:00Z"},
+                {"id": 2, "ballot": "p", "pid": 2, "pick": "b", "version": VER, "created_at": "2026-11-02T21:05:00+00:00"}]
+        self.assertEqual([r["ts"] for r in ev.from_public(rows, self.SETS, [])],
+                         ["2026-11-02T21:04:00Z", "2026-11-02T21:05:00+00:00"])
+        text = f"FLM1:{VER[:8]}:abc123:bt"
+        self.assertEqual({r["ts"] for r in ev.from_codes(text, self.SETS, [])}, {None})
+
     def test_store_accepts_documents_wrapper(self):
         self.assertEqual(len(ev.from_store({"documents": self.DUMP}, self.SETS, [])), 3)
 
