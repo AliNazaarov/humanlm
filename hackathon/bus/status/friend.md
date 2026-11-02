@@ -4,3 +4,4 @@
 2026-11-02T18:34:25Z S1 stats.py committed (exact rate CIs + paired bootstrap; review fixes in). S2 run_frontier.py built, 13 offline tests pass, in review; live run blocked on key + PRICES.md. S3 judge in progress.
 2026-11-02T18:41:49Z S2 run_frontier committed (review fixes in, 25 tests). S4 score_all v2 committed: fact-safe human rewrite rate G1-G4, 250-item leaderboard + per-split, delta vs F1 w/ significance. S3 judge being fixed after review (BLOCK). S5 chart + S6 A/B page in a second session. Blocked: Anthropic key + Opus price.
 2026-11-02T18:44:12Z S8 README draft committed: headline metric + gates, setup, make eval, method, limitations, pre-existing vs built-today, AI disclosure. Waiting on keys for live runs.
+2026-11-02T18:49:09Z Key loading aligned to keys.env. Ready to run F1/F1-live/F1+H/F2 + judge once keys are in ~/.config/humanlm/keys.env. README draft in.
