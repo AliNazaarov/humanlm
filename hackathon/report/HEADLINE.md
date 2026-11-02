@@ -29,6 +29,8 @@ Human preference, O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-
 - page: 27 / 44 / 14 (17 voter(s), 85 votes, sign test p=0.057); includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors
 - Not counted: Ali reports 5 Minerva classmates gave the same answer (preferred the Claude side) in an informal, unlogged session; not counted as data.
 
+Judge vs human on style (item level, `O3c_glm_prompt_harness_style` vs Claude strong, 15 items with a human majority): kimi-k3: agrees 2, disagrees 7; qwen3p8-max: agrees 3, disagrees 6. Small n; the LLM judges' style verdicts are not validated against readers.
+
 Spot the human (held-out real originals vs each rewrite, both orders; fooled = the rewrite picked as human in both orders; fooled-or-split adds order disagreements):
 
 | System | kimi: fooled / fooled-or-split | qwen: fooled / fooled-or-split | chrF vs human |

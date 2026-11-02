@@ -402,6 +402,13 @@ def headline(res: dict) -> str:
             note = next((s_["note"] for s_ in h["sources"].values() if s_.get("note")), None)
             if note:
                 out.append(f"- Not counted: {note}")
+    ja = os.path.join(ROOT, "hackathon/report/judge_human_agreement.json")
+    if os.path.exists(ja):  # hackathon/eval/judge_human_agreement.py
+        for st_ in json.load(open(ja, encoding="utf-8"))["sets"]:
+            bits = [f"{m}: agrees {v['agree']}, disagrees {v['disagree']}" for m, v in st_["judges"].items()]
+            out += ["", f"Judge vs human on style (item level, `{st_['ours']}` vs Claude strong, "
+                    f"{st_['human_decided_items']} items with a human majority): " + "; ".join(bits)
+                    + ". Small n; the LLM judges' style verdicts are not validated against readers."]
     sh = os.path.join(ROOT, "hackathon/report/spot_human.json")
     if os.path.exists(sh):  # hackathon/eval/spot_human.py: real human original vs the system's rewrite
         d = json.load(open(sh, encoding="utf-8"))

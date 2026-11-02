@@ -40,6 +40,8 @@ Human preference, O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-
 - page: 27 / 44 / 14 (17 voter(s), 85 votes, sign test p=0.057); includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors
 - Not counted: Ali reports 5 Minerva classmates gave the same answer (preferred the Claude side) in an informal, unlogged session; not counted as data.
 
+Judge vs human on style (item level, `O3c_glm_prompt_harness_style` vs Claude strong, 15 items with a human majority): kimi-k3: agrees 2, disagrees 7; qwen3p8-max: agrees 3, disagrees 6. Small n; the LLM judges' style verdicts are not validated against readers.
+
 Spot the human (held-out real originals vs each rewrite, both orders; fooled = the rewrite picked as human in both orders; fooled-or-split adds order disagreements):
 
 | System | kimi: fooled / fooled-or-split | qwen: fooled / fooled-or-split | chrF vs human |
@@ -138,6 +140,7 @@ Re-running a system calls its API: `hackathon/eval/run_frontier.py` for the fron
 - **Claude refusals.** Claude Opus 5.5 refused held-out items ho-013 (a gene-synthesis part description) and ho-054 (a codeine-extraction passage) in every attempt (first run plus two resumes per arm); they are counted as Claude failures, as any system's missing item is.
 - **Experiments not kept.** A workflow pairwise-selector experiment (30 items) was not kept: style got worse on the Kimi judge. It is listed in `hackathon/report/excluded_runs.json`, not on the leaderboard.
 - **No system passes as human.** In the spot-the-human test (real held-out originals vs each rewrite, both orders, two judges), the judges picked the real human text over every system's rewrite almost every time, Claude's included; O3c is confused for human slightly more often than Claude only when order disagreements count. Read "human" in our headline as "no AI tells by our gates", not "indistinguishable from a person".
+- **The LLM judges don't agree with human readers on style.** On the blind A/B items, both judges' style verdicts mostly disagree with the readers' per-item majority (counts in the Results block). Treat the judge style columns as weak evidence; the human A/B is the ground truth for "reads human", and it leans to Claude.
 - **The judge is an LLM.** It has its own biases, including length and position. We run both orders and report the flip rate, but we have not calibrated it against human labels.
 - **The fact checks are strict but crude.** Numbers and capitalised names are matched as strings, so a correct paraphrase of a name can count as a loss, and a fact that changes without any number or name changing is missed.
 - **The frontier APIs can't match every decoding setting.** The open-model runs also use repetition_penalty 1.05, which the frontier APIs don't offer, and a model that rejects top_p runs at temperature only. Both are recorded per row.
