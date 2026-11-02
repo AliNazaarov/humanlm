@@ -70,8 +70,11 @@ def all_items() -> dict[str, dict]:
 
 
 def discover() -> list[str]:
+    ex = os.path.join(ROOT, "hackathon/report/excluded_runs.json")
+    dropped = tuple(f"hack_{k}" for k in json.load(open(ex, encoding="utf-8"))["runs"]) if os.path.exists(ex) else ()
     runs = [p for p in glob.glob(os.path.join(ROOT, "evals/runs/hack_*.jsonl"))
-            if ".jsonl." not in os.path.basename(p)]  # skip side files such as X.jsonl.failures.jsonl
+            if ".jsonl." not in os.path.basename(p)  # skip side files such as X.jsonl.failures.jsonl
+            and not os.path.basename(p).startswith(dropped)]  # experiments not kept (excluded_runs.json)
     return sorted(runs) + [os.path.join(ROOT, "evals/baseline_frontier.jsonl")]
 
 

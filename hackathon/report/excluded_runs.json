@@ -1,0 +1,6 @@
+{
+ "why": "Experiments that were not kept are listed here instead of on the leaderboard (README Limitations names each one).",
+ "runs": {
+  "WF": "workflow pairwise-selector experiment on 30 items, not kept: style got worse on the Kimi judge"
+ }
+}

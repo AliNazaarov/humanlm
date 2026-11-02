@@ -21,7 +21,6 @@ Fact-safe human rewrite rate on 247 items (eval 130 + held-out 117), 95% CI; Δ 
 | `F2h_gpt61_humanizer` | 51% [45, 57] | -20 pp [-27, -13], significant (p=0.000) | 56% [50, 63] | -28 pp [-35, -22], significant (p=0.000) | $7.73 | 2.5s |
 | `F2_gpt61_terra` | 40% [34, 46] | -32 pp [-39, -24], significant (p=0.000) | 44% [38, 51] | -40 pp [-47, -34], significant (p=0.000) | $0.85 | 2.6s |
 | `X0_copy_draft (no rewrite: control)` | 32% [26, 38] | -40 pp [-47, -32], significant (p=0.000) | 32% [26, 38] | -53 pp [-60, -46], significant (p=0.000) | n/a | 0.0s |
-| `WF_Pairwise_both_orders_knockout_selector_with_fact_aware_eligibility_replace_the_1_10_judge_score_` (100 items) | 29% [20, 39] | -40 pp [-53, -27], significant (p=0.000) | 29% [20, 39] | -53 pp [-65, -40], significant (p=0.000) | $3.08 | 20.0s |
 | `O1_glm_base` | 27% [21, 33] | -45 pp [-52, -37], significant (p=0.000) | 30% [24, 36] | -55 pp [-62, -49], significant (p=0.000) | $0.10 | 1.2s |
 | `frontier-persona-preexisting` (130 items) | 12% [7, 19] | -57 pp [-66, -48], significant (p=0.000) | 16% [10, 24] | -66 pp [-74, -58], significant (p=0.000) | n/a | n/a |
 
