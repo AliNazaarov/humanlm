@@ -245,7 +245,7 @@ def block(systems: list[dict], ids: list[str], ref: dict) -> dict:
 
 def judges(report_dir: str) -> list[dict]:
     out = []
-    for f in sorted(glob.glob(os.path.join(report_dir, "judge_*.summary.json"))):
+    for f in sorted(glob.glob(os.path.join(report_dir, "judge*.summary.json"))):
         j = json.load(open(f, encoding="utf-8"))
         if j.get("mock") or str(j.get("model", "")).startswith("mock"):
             continue  # mock verdicts are for pipeline tests only

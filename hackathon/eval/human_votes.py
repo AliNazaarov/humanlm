@@ -66,19 +66,24 @@ def main() -> int:
             res["sources"]["telegram"] = {**summarise(tot), "posts": posts, "n_posts": len(posts),
                                           "votes": sum(tot.values())}
     page = os.path.join(ROOT, "hackathon/report/human_ab.jsonl")
+    venue_in_page = False
     if os.path.exists(page):
         rows = [json.loads(l) for l in open(page, encoding="utf-8") if l.strip()]
+        venue_in_page = any(r.get("source") == "local" and r.get("version") == PAIRS_VERSION for r in rows)
         c = page_counts(rows)
         if c["votes"]:
             res["sources"]["page"] = summarise(c)
     venue = os.path.join(ROOT, "hackathon/social/human_ab_venue.json")
     if os.path.exists(venue):  # hand-unblinded ballot from Ali's laptop (founder: a check, not a gold rater)
         v = json.load(open(venue, encoding="utf-8"))
-        w = [p_["winner"] for p_ in v["picks"]]
-        c = {"ours": w.count("ours"), "theirs": w.count("claude"), "both_fine": w.count("tie"), "neither": 0,
-             "people": 1, "votes": len(w)}
-        res["sources"]["venue_founder"] = {**summarise(c), "voter": v.get("voter"), "note": v.get("informal"),
-                                          "pattern": v.get("pattern")}
+        meta = {"voter": v.get("voter"), "note": v.get("informal"), "pattern": v.get("pattern")}
+        if venue_in_page:  # the same ballot is already in the export: keep only its caveats, never count it twice
+            res["sources"]["page"].update(meta)
+        else:
+            w = [p_["winner"] for p_ in v["picks"]]
+            c = {"ours": w.count("ours"), "theirs": w.count("claude"), "both_fine": w.count("tie"), "neither": 0,
+                 "people": 1, "votes": len(w)}
+            res["sources"]["venue_founder"] = {**summarise(c), **meta}
     if res["sources"]:
         pooled = {k: sum(s[k] for s in res["sources"].values()) for k in ("ours", "theirs", "both_fine", "neither")}
         res["pooled"] = summarise(pooled)

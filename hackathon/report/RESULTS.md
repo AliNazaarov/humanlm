@@ -208,4 +208,5 @@ A wins / B wins / ties, with a two-sided sign test on wins vs losses (ties dropp
 | `hack_O3c_glm_prompt_harness_style.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` | `accounts/fireworks/models/kimi-k3` | 130 | 35/52/43 (p=0.086) | 9/15/106 (p=0.307) | 33/46/51 (p=0.177) | n/a | 33% | 56% |
 | `hack_O3d_glm_harness_anticopy.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` | `accounts/fireworks/models/kimi-k3` | 130 | 34/56/40 (p=0.026) | 5/22/103 (p=0.002) | 35/44/51 (p=0.368) | n/a | 30% | 59% |
 | `hack_O3e_glm_harness_cliche.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` | `accounts/fireworks/models/kimi-k3` | 130 | 25/65/40 (p=0.000) | 6/15/109 (p=0.078) | 20/54/56 (p=0.000) | n/a | 28% | 52% |
+| `hack_O3f_glm_calm.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` | `accounts/fireworks/models/kimi-k3` | 130 | 23/69/38 (p=0.000) | 7/7/116 (p=1.000) | 16/62/52 (p=0.000) | n/a | 27% | 52% |
 | `hack_O3j_glm_bestof3_judged.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` | `accounts/fireworks/models/kimi-k3` | 130 | 41/55/34 (p=0.184) | 4/25/101 (p=0.000) | 44/37/49 (p=0.505) | n/a | 26% | 57% |

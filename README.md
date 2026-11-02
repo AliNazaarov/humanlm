@@ -34,7 +34,7 @@ Fact-safe human rewrite rate on 250 items (eval 130 + held-out 120), 95% CI; Δ 
 
 Human preference, O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-5 (blind A/B; FeatherLM / Claude / tie):
 
-- venue_founder: 0 / 4 / 1 (1 voter(s), 5 votes, sign test p=0.125); Ali (founder; knows the project, so treat as a check, not a gold rater)
+- page: 0 / 4 / 1 (1 voter(s), 5 votes, sign test p=0.125); Ali (founder; knows the project, so treat as a check, not a gold rater)
 - Not counted: Ali reports 5 Minerva classmates gave the same answer (preferred the Claude side) in an informal, unlogged session; not counted as data.
 
 Pairwise judge (both orders; A wins / B wins / ties, two-sided sign test):
@@ -48,6 +48,7 @@ Pairwise judge (both orders; A wins / B wins / ties, two-sided sign test):
 - `hack_O3c_glm_prompt_harness_style.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 35/52/43 (p=0.086), style 33/46/51 (p=0.177)
 - `hack_O3d_glm_harness_anticopy.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 34/56/40 (p=0.026), style 35/44/51 (p=0.368)
 - `hack_O3e_glm_harness_cliche.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 25/65/40 (p=0.000), style 20/54/56 (p=0.000)
+- `hack_O3f_glm_calm.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 23/69/38 (p=0.000), style 16/62/52 (p=0.000)
 - `hack_O3j_glm_bestof3_judged.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 41/55/34 (p=0.184), style 44/37/49 (p=0.505)
 <!-- HEADLINE:END -->
 

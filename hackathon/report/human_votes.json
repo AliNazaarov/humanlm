@@ -1,7 +1,7 @@
 {
  "pairs": "O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-5",
  "sources": {
-  "venue_founder": {
+  "page": {
    "ours": 0,
    "theirs": 4,
    "both_fine": 1,
