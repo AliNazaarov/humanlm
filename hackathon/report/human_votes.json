@@ -2,27 +2,27 @@
  "pairs": "O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-5",
  "sources": {
   "page": {
-   "ours": 58,
+   "ours": 59,
    "theirs": 87,
-   "both_fine": 50,
+   "both_fine": 52,
    "neither": 0,
-   "people": 41,
-   "votes": 195,
-   "win_rate": 0.4,
-   "lo": 0.31961486150718893,
-   "hi": 0.48455804977806266,
-   "sign_test_p": 0.01974093986302583,
+   "people": 42,
+   "votes": 198,
+   "win_rate": 0.4041095890410959,
+   "lo": 0.3237833690088864,
+   "hi": 0.4884090640962206,
+   "sign_test_p": 0.025111377256256825,
    "sensitivity_no_position_clickers": {
-    "ours": 42,
+    "ours": 43,
     "theirs": 71,
-    "both_fine": 27,
+    "both_fine": 29,
     "neither": 0,
-    "people": 30,
-    "votes": 140,
-    "win_rate": 0.37168141592920356,
-    "lo": 0.28263100797989876,
-    "hi": 0.4676347962649451,
-    "sign_test_p": 0.00814969137377117,
+    "people": 31,
+    "votes": 143,
+    "win_rate": 0.37719298245614036,
+    "lo": 0.288124246653438,
+    "hi": 0.47280822697524866,
+    "sign_test_p": 0.011118593448764537,
     "dropped_ballots": [
      "pub:bmvzqw3hdj8y7",
      "pub:bmvzqwssd3fxe",
@@ -59,13 +59,13 @@
   }
  },
  "pooled": {
-  "ours": 58,
+  "ours": 59,
   "theirs": 87,
-  "both_fine": 50,
+  "both_fine": 52,
   "neither": 0,
-  "win_rate": 0.4,
-  "lo": 0.31961486150718893,
-  "hi": 0.48455804977806266,
-  "sign_test_p": 0.01974093986302583
+  "win_rate": 0.4041095890410959,
+  "lo": 0.3237833690088864,
+  "hi": 0.4884090640962206,
+  "sign_test_p": 0.025111377256256825
  }
 }
