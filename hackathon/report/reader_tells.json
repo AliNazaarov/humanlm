@@ -954,6 +954,102 @@
      "tagline": 3.076923076923077
     }
    },
+   "O3t_glm_ali_taste": {
+    "any_share": 0.2153846153846154,
+    "ids_with_tells": [
+     "dev-009",
+     "dev-013",
+     "dev-014",
+     "dev-017",
+     "dev-021",
+     "dev-024",
+     "dev-053",
+     "dev-058",
+     "dev-059",
+     "dev-063",
+     "dev-064",
+     "dev-066",
+     "dev-070",
+     "dev-072",
+     "dev-073",
+     "dev-077",
+     "dev-078",
+     "dev-085",
+     "dev-086",
+     "dev-088",
+     "dev-097",
+     "dev-098",
+     "trick-02",
+     "trick-08",
+     "trick-16",
+     "trick-18",
+     "trick-25",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 3.076923076923077,
+     "fragment_run": 13.076923076923077,
+     "hook": 3.076923076923077,
+     "rhetorical_qa": 6.153846153846154,
+     "slogan": 0.7692307692307693,
+     "tagline": 2.3076923076923075
+    }
+   },
+   "O4c_glm_sft_clean": {
+    "any_share": 0.3076923076923077,
+    "ids_with_tells": [
+     "dev-002",
+     "dev-016",
+     "dev-017",
+     "dev-021",
+     "dev-026",
+     "dev-027",
+     "dev-029",
+     "dev-033",
+     "dev-035",
+     "dev-052",
+     "dev-053",
+     "dev-054",
+     "dev-058",
+     "dev-059",
+     "dev-060",
+     "dev-061",
+     "dev-062",
+     "dev-063",
+     "dev-064",
+     "dev-065",
+     "dev-066",
+     "dev-067",
+     "dev-070",
+     "dev-071",
+     "dev-072",
+     "dev-077",
+     "dev-078",
+     "dev-080",
+     "dev-085",
+     "dev-087",
+     "dev-088",
+     "dev-093",
+     "dev-098",
+     "trick-05",
+     "trick-08",
+     "trick-18",
+     "trick-19",
+     "trick-25",
+     "trick-29",
+     "trick-30"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 3.076923076923077,
+     "fragment_run": 16.153846153846153,
+     "hook": 10.76923076923077,
+     "rhetorical_qa": 18.46153846153846,
+     "slogan": 2.3076923076923075,
+     "tagline": 1.5384615384615385
+    }
+   },
    "O4m_glm_sft_modern": {
     "any_share": 0.24615384615384617,
     "ids_with_tells": [
@@ -1665,6 +1761,46 @@
      "fragment_run": 1.6666666666666667,
      "hook": 5.0,
      "rhetorical_qa": 7.5,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "O3t_glm_ali_taste": {
+    "any_share": 0.10833333333333334,
+    "ids_with_tells": [
+     "ho-016",
+     "ho-029",
+     "ho-046",
+     "ho-063",
+     "ho-068",
+     "ho-080",
+     "ho-082",
+     "ho-087",
+     "ho-100",
+     "ho-107",
+     "ho-109",
+     "ho-115",
+     "ho-118"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 2.5,
+     "hook": 4.166666666666667,
+     "rhetorical_qa": 6.666666666666667,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "O4c_glm_sft_clean": {
+    "any_share": 0.0,
+    "ids_with_tells": [],
+    "n": 76,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 0.0,
+     "hook": 0.0,
+     "rhetorical_qa": 0.0,
      "slogan": 0.0,
      "tagline": 0.0
     }
