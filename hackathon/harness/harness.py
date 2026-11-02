@@ -17,6 +17,9 @@ ROOT = gates.ROOT
 SYSTEM = ("Rewrite the user's text so it reads like a skilled human wrote it: plain, specific, varied rhythm, "
           "correct grammar. Keep every fact, name and number. Add nothing.")
 TEMP, TOP_P, MAX_TOK = 0.7, 0.9, 400
+STYLE_ASK = ("Now edit it the way a senior copywriter would: make it sound like one specific person talking to "
+             "one reader. Vary sentence length, cut filler and generic words, prefer concrete verbs. Keep every fact, "
+             "name and number exactly, add nothing, keep about the same length. Reply with the full text only.")
 
 
 def load_env():
@@ -115,6 +118,15 @@ def rewrite(item, a):
                  {"role": "user", "content": "Revise your rewrite. Fix only these problems and change nothing else:\n- "
                   + "\n- ".join(g["problems"]) + "\nReply with the full revised text only."}]
     _, _, out, g, loop = best
+    if a.style_round and g["pass"]:
+        # One style pass: a skilled copywriter's edit for voice and rhythm. Kept only if every gate still passes.
+        msgs2 = [{"role": "user", "content": draft}, {"role": "assistant", "content": out},
+                 {"role": "user", "content": STYLE_ASK}]
+        text, p, c = chat(a.provider, a.model, a.system_prompt, msgs2, a.dec)
+        pt += p; ct += c
+        out2 = clean(text); g2 = gates.check(draft, out2)
+        if g2["pass"]:
+            out, g, loop = out2, g2, loop + 1
     return {"id": item["id"], "system": a.system_name, "output": out,
             "latency_ms": round((time.time() - t0) * 1000), "prompt_tokens": pt, "completion_tokens": ct,
             "cost_usd": round(pt * a.in_price / 1e6 + ct * a.out_price / 1e6, 6), "model": a.model,
@@ -131,6 +143,7 @@ def main():
     ap.add_argument("--in-price", type=float, default=0.0); ap.add_argument("--out-price", type=float, default=0.0)
     ap.add_argument("--concurrency", type=int, default=4); ap.add_argument("--limit", type=int)
     ap.add_argument("--reasoning-effort", default="low", help="low|medium|high, or omit (not sent)")
+    ap.add_argument("--style-round", action="store_true", help="after the gates pass, one copywriter style edit, kept only if gates still pass")
     a = ap.parse_args()
     a.dec = decoding(a.provider, a.model, a.reasoning_effort)
     a.system_prompt = open(a.prompt_file).read().strip() if a.prompt_file else SYSTEM
@@ -150,7 +163,7 @@ def main():
     commit = subprocess.run(["git", "-C", ROOT, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     manifest = {"system": a.system_name, "provider": a.provider, "model": a.model, "loops": a.loops,
                 "prompt_sha256": hashlib.sha256(a.system_prompt.encode()).hexdigest()[:16],
-                "prompt_file": a.prompt_file, "decoding": a.dec,
+                "prompt_file": a.prompt_file, "decoding": a.dec, "style_round": a.style_round,
                 "prices_usd_per_m": [a.in_price, a.out_price], "eval": a.eval, "rows": len(rows),
                 "pass_rate": sum(r["gates"]["pass"] for r in rows) / len(rows), "commit": commit,
                 "finished": time.strftime("%Y-%m-%dT%H:%M:%S%z")}
