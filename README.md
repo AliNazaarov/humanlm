@@ -13,7 +13,10 @@ Fact-safe human rewrite rate on 250 items (eval 130 + held-out 120), 95% CI; Δ 
 
 | System | Fact-safe rate (strict) | Δ strict | Fact-safe rate (lenient) | Δ lenient | $ / 1k rewrites | p50 latency |
 |---|---|---|---|---|---|---|
+| `O3j_glm_bestof3_judged` (120 items) | 98% [93, 99] | +23 pp [+16, +32], significant (p=0.000) | 99% [95, 100] | +12 pp [+7, +18], significant (p=0.000) | $2.55 | 12.6s |
 | `O3c_glm_prompt_harness_style` | 97% [94, 99] | +25 pp [+20, +31], significant (p=0.000) | 98% [95, 99] | +13 pp [+9, +18], significant (p=0.000) | $0.81 | 3.3s |
+| `O3e_glm_harness_cliche` | 96% [93, 98] | +25 pp [+19, +30], significant (p=0.000) | 99% [97, 100] | +14 pp [+10, +19], significant (p=0.000) | $0.81 | 3.0s |
+| `O3d_glm_harness_anticopy` | 95% [92, 97] | +24 pp [+18, +30], significant (p=0.000) | 98% [95, 99] | +13 pp [+8, +18], significant (p=0.000) | $0.85 | 2.9s |
 | `O3b_glm_prompt_harness` | 94% [91, 97] | +23 pp [+18, +28], significant (p=0.000) | 97% [94, 99] | +12 pp [+7, +17], significant (p=0.000) | $0.55 | 1.6s |
 | `F1H_opus_harness` | 94% [90, 96] | +22 pp [+17, +28], significant (p=0.000) | 97% [94, 99] | +12 pp [+8, +17], significant (p=0.000) | $15.83 | 4.8s |
 | `O3_glm_harness` | 93% [89, 96] | +21 pp [+16, +27], significant (p=0.000) | 97% [94, 99] | +12 pp [+7, +17], significant (p=0.000) | $0.28 | 2.6s |
@@ -49,6 +52,11 @@ Full tables (every split, every gate, secondary metrics, all judge columns): [ha
 | G2 nothing lost | every number kept, at least 90% of names kept |
 | G3 no AI tells | stock phrases, em dashes, "not X but Y", emoji and exclamations stay within the human band's upper bound |
 | G4 not gutted | output is 0.7 to 1.3 times the draft's length |
+
+## Demo
+[hackathon/demo/demo.ipynb](hackathon/demo/demo.ipynb) runs offline in seconds: one eval draft next to Claude's and FeatherLM's committed rewrites (must-keep facts and gate problems marked), the leaderboard read from `results.json`, and the chart.
+Run it with `jupyter nbconvert --execute --to notebook --inplace hackathon/demo/demo.ipynb`, or open it in Jupyter.
+Set `RUN_LIVE = True` in its first code cell to rewrite the same draft live on Fireworks (needs `FIREWORKS_API_KEY`).
 
 ## Setup
 ```bash
