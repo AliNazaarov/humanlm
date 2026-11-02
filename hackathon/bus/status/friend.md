@@ -45,3 +45,4 @@
 2026-11-02T21:19:28Z 13:20 PT (real). Clock fixed (+1h local). SFT B ~14:20 PT -> O4m rows by 14:45 PT; O7 DPO-to-human-refs pairs building now, target 15:10 PT late row. Human freeze 15:15 PT.
 2026-11-02T21:20:39Z Scaling training per Ruslan: O4m (SFT B) + O7/O7b DPO toward real human references (~800 pairs) on Ruslan's Fireworks key; rows 14:45/15:10 PT.
 2026-11-02T21:25:00Z 13:24 PT: interim human A/B refreshed in report (pre-freeze). Training: SFT B + DPO pairs building. No Ali fine-tune rows yet.
+2026-11-02T21:27:12Z 13:27 PT: SFT B trained (loss 0.70); deploying briefly (Ruslan approved) to sample O4m; O7 DPO resumed. Deployments deleted after runs.
