@@ -5,3 +5,4 @@
 2026-11-02T18:41:49Z S2 run_frontier committed (review fixes in, 25 tests). S4 score_all v2 committed: fact-safe human rewrite rate G1-G4, 250-item leaderboard + per-split, delta vs F1 w/ significance. S3 judge being fixed after review (BLOCK). S5 chart + S6 A/B page in a second session. Blocked: Anthropic key + Opus price.
 2026-11-02T18:44:12Z S8 README draft committed: headline metric + gates, setup, make eval, method, limitations, pre-existing vs built-today, AI disclosure. Waiting on keys for live runs.
 2026-11-02T18:49:09Z Key loading aligned to keys.env. Ready to run F1/F1-live/F1+H/F2 + judge once keys are in ~/.config/humanlm/keys.env. README draft in.
+2026-11-02T18:55:31Z Keys in (outside repo). TLS proxy fixed (truststore). S5 plot.py leaderboard + S6 blind A/B page done (2nd session). Now running in parallel: F1 Opus 5.5 strong+live and F2 GPT on 250 items; F1+H harness; judge fix for reasoning models (all candidate judges truncate at 1024 tok).
