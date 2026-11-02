@@ -181,13 +181,22 @@ def _numbers(text: str) -> set[str]:
 
 
 def _names(text: str) -> set[str]:
-    """Capitalised words that are not sentence-initial (cheap proper-noun proxy)."""
+    """Capitalised words that are not sentence-initial (cheap proper-noun proxy).
+    Each line start and the word after a ':' label count as sentence-initial, and Title Case lines (3+ words,
+    >= 60% capitalised, e.g. headlines) are skipped: there capitalisation says nothing about names.
+    Fix 2026-11-02: line labels ("Headline: Close Faster") and headlines were read as names, so rewriting a
+    headline to sentence case counted as both dropping and inventing names."""
     out = set()
-    for s in sentences(text):
-        for w in words(s)[1:]:
-            w = re.sub(r"'s$", "", w)
-            if w[0].isupper() and w.lower() not in PRONOUN_I:
-                out.add(w.lower())
+    for line in text.splitlines():
+        ws = words(line)
+        if len(ws) >= 3 and sum(w[:1].isupper() for w in ws) / len(ws) >= 0.6:
+            continue
+        for seg in re.split(r":\s+", line):
+            for s in sentences(seg):
+                for w in words(s)[1:]:
+                    w = re.sub(r"'s$", "", w)
+                    if w[0].isupper() and w.lower() not in PRONOUN_I:
+                        out.add(w.lower())
     return out
 
 

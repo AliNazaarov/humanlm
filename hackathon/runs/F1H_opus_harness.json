@@ -1,0 +1,26 @@
+{
+ "system": "F1H_opus_harness",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "loops": 3,
+ "prompt_sha256": "6b62508ad4d8a40e",
+ "prompt_file": "hackathon/eval/F1_STRONG_PROMPT.txt",
+ "decoding": {
+  "max_tokens": 1500,
+  "thinking": {
+   "type": "adaptive"
+  },
+  "output_config": {
+   "effort": "low"
+  }
+ },
+ "prices_usd_per_m": [
+  4.0,
+  20.0
+ ],
+ "eval": "evals/eval_all.jsonl",
+ "rows": 130,
+ "pass_rate": 0.9230769230769231,
+ "commit": "c47797af338894839212f7f6bf355890a0f7522a",
+ "finished": "2026-11-02T12:14:57-0700"
+}

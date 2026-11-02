@@ -59,10 +59,21 @@ class TestScoreSystem(unittest.TestCase):
     def test_rejects_duplicates_unknown_ids_and_empty(self):
         items = {"dev-001": ITEM}
         for rows in ([{"id": "dev-001", "system": "s", "output": "x"}] * 2,
-                     [{"id": "nope", "system": "s", "output": "x"}],
-                     [{"id": "dev-001", "system": "s", "output": " "}]):
+                     [{"id": "nope", "system": "s", "output": "x"}]):
             with self.assertRaises(SystemExit):
                 sa.load_systems([self._run(rows)], items)
+        # an empty output is a refusal: kept out of rows, so score_system counts it as a fail
+        s = sa.load_systems([self._run([{"id": "dev-001", "system": "s", "output": " "}])], items)["s"]
+        self.assertEqual((s["rows"], s["empty_ids"]), ({}, ["dev-001"]))
+
+    def test_cost_from_prices_when_logged_zero(self):
+        old = dict(sa.PRICES)
+        self.addCleanup(lambda: (sa.PRICES.clear(), sa.PRICES.update(old)))
+        sa.PRICES["m-x"] = (1.0, 2.0)
+        self.assertAlmostEqual(sa.row_cost({"cost_usd": 0.0, "model": "accounts/f/models/m-x",
+                                            "prompt_tokens": 1000, "completion_tokens": 500}), 0.002)
+        self.assertIsNone(sa.row_cost({"cost_usd": 0.0, "model": "unpriced", "prompt_tokens": 10}))
+        self.assertEqual(sa.row_cost({"cost_usd": 0.5}), 0.5)
 
     def test_main_and_heldout_files_group_by_label(self):
         held = {"id": "ho-001", "ai_draft": "Ledgerline closes books in 4 days."}

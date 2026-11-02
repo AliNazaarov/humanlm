@@ -163,6 +163,29 @@ class TestFaithfulness(unittest.TestCase):
         self.assertFalse(f["hard_fail"])
 
 
+class TestNameProxy(unittest.TestCase):
+    """Bug fix 2026-11-02: line labels, greeting lines and Title Case headlines are not names."""
+
+    def test_line_label_is_sentence_initial(self):
+        self.assertNotIn("planning", m._names("Primary text: Planning a move to Warsaw? Pokoik can help."))
+
+    def test_title_case_headline_skipped(self):
+        self.assertEqual(m._names("Break Language Barriers & Unlock Nordic Markets"), set())
+
+    def test_greeting_line_start(self):
+        self.assertNotIn("hi", m._names("Subject: launch\nHi there,\nWe ship today."))
+
+    def test_real_names_still_caught(self):
+        names = m._names("Headline: Close faster\nLedgerline now syncs with NetSuite for Dana Ruiz.")
+        self.assertTrue({"netsuite", "dana", "ruiz"} <= names)
+
+    def test_headline_rewrite_to_sentence_case_is_not_a_fact_change(self):
+        src = "Headline: Your Warsaw Adventure Awaits!\nPokoik rents flats in Warsaw for 1-6 months."
+        out = "Headline: Furnished flats in Warsaw\nPokoik rents flats in Warsaw for 1 to 6 months."
+        f = m.faithfulness(src, out)
+        self.assertEqual((f["names_added"], f["names_dropped"]), ([], []))
+
+
 class TestGrammar(unittest.TestCase):
     def test_returns_none_without_languagetool(self):
         orig = m._lt_tool

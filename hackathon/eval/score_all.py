@@ -111,7 +111,8 @@ def load_systems(paths: list[str], items: dict) -> dict[str, dict]:
             if r["id"] not in items:
                 raise SystemExit(f"{label}: id {r['id']} not in the eval items ({rel(path)})")
             if not (r.get("output") or "").strip():
-                raise SystemExit(f"{label}: empty output for {r['id']} ({rel(path)})")
+                sysd.setdefault("empty_ids", []).append(r["id"])  # refusal: scored as a gap (counts as a fail)
+                continue
             sysd["rows"][r["id"]] = r
     return systems
 
@@ -125,6 +126,35 @@ def missing_scores(item: dict) -> dict:
     return s
 
 
+def prices() -> dict[str, tuple[float, float]]:
+    """model id (and its last path segment) -> (USD per 1M input, per 1M output) from PRICES.md; TODO rows skipped."""
+    out = {}
+    path = os.path.join(ROOT, "hackathon/report/PRICES.md")
+    for line in open(path, encoding="utf-8") if os.path.exists(path) else []:
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) >= 4:
+            try:
+                pin, pout = float(cells[2]), float(cells[3])
+            except ValueError:
+                continue
+            out[cells[1]] = out[cells[1].split("/")[-1]] = (pin, pout)
+    return out
+
+
+PRICES = prices()
+
+
+def row_cost(r: dict) -> float | None:
+    """Logged cost_usd; if it is 0/missing but tokens were logged, tokens x PRICES.md; None if no price is known."""
+    if r.get("cost_usd"):
+        return float(r["cost_usd"])
+    model = str(r.get("model", ""))
+    p = PRICES.get(model) or PRICES.get(model.split("/")[-1])
+    if p is None or not isinstance(r.get("prompt_tokens"), (int, float)):
+        return None
+    return (r["prompt_tokens"] * p[0] + (r.get("completion_tokens") or 0) * p[1]) / 1e6
+
+
 def score_system(sysd: dict, items: dict, band: dict) -> dict:
     rows = sysd["rows"]
     sysd["per_item"] = {i: item_scores(items[i], r["output"], band) for i, r in rows.items()}
@@ -133,7 +163,10 @@ def score_system(sysd: dict, items: dict, band: dict) -> dict:
     sysd["per_item"].update({i: missing_scores(items[i]) for i in gaps})
     sysd["missing_ids"] = gaps
     lat = [r["latency_ms"] for r in rows.values() if isinstance(r.get("latency_ms"), (int, float))]
-    cost = [r["cost_usd"] for r in rows.values() if isinstance(r.get("cost_usd"), (int, float))]
+    cost = [row_cost(r) for r in rows.values()]
+    cost = [c for c in cost if c is not None]
+    if any(not r.get("cost_usd") for r in rows.values()) and cost:
+        sysd["cost_source"] = "hackathon/report/PRICES.md x logged tokens"
     if lat and len(lat) == len(rows):
         sysd["latency_ms"] = st.percentiles(lat)
     if cost and len(cost) == len(rows):
