@@ -100,3 +100,13 @@ Disclosures (details in `hackathon/runs/dev/README.md`):
 
 Proposed README:139 wording, for the README owner (friend) to apply. README is not Ali's file:
 > Fifteen harness variants (O3, O3b to O3h, O3j to O3n, O3p, O3q) were developed against these items, and the best-judged one was chosen afterwards, so the eval numbers for those rows are optimistic. Our entry is O3c, fixed before the later variants. The 80-item real README split was never used for tuning and is the out-of-sample check. O3h (humanizer prompt + harness) was started and stopped and has no row. O3p and O3q were dropped after a 40-item GLM-5.3 dev check and have no rows (files in hackathon/runs/dev/). O3n is below the 95% gate floor on eval_all and is a failed row. Its frame-label rule was shaped by eval items outside the dev slice. The O3q lint patterns came from reading eval-judge reasons. O3m_glm_plainclaim is the prompt-rules variant, not the BOARD "O3m idea".
+
+### O4m evaluation deployment (Ruslan's account, approved, cap $45)
+| Field | Value |
+|---|---|
+| Deployment | `accounts/ruslan-kan-1eth024hr/deployments/humanlm-o4m` (live-merge of `humanlm-glm-sft-modern`) |
+| Shape | `glm-5p3-flash-rft-b300-fp8block128-w4-p1` (4x NVIDIA B300 FP8; $15/GPU-hour on fireworks.ai/pricing, about $60/hour) |
+| Created / READY / delete | 13:44:58 PT / 13:56:35 PT / delete accepted ~14:01 PT (state DELETING) |
+| Runs | smoke 3 rows; `evals/runs/hack_O4m_glm_sft_modern.jsonl` (130, done 13:57:00); `..._heldout.jsonl` (120, done 13:57:36); harness `--loops 0`, default SYSTEM |
+| Cost | **estimate** ~16 min x $60/h ≈ $16 (spin-up ~11.5 min of it); per-row `cost_usd` is 0 because billing is per GPU-hour, not per token |
+| Note | The scripted DELETE at 13:57:40 returned HTTP 400 ("received inference requests in the last hour, pass ignore_checks"); it was retried with `ignoreChecks=true` (200). Use `?ignoreChecks=true` when deleting right after an eval. |

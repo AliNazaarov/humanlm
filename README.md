@@ -33,14 +33,15 @@ Fact-safe human rewrite rate on 247 items (eval 130 + held-out 117), 95% CI; Δ 
 | `frontier-live:claude-opus-5-5` | 53% [46, 59] | -19 pp [-24, -13], significant (p=0.000) | 77% [71, 82] | -8 pp [-13, -3], significant (p=0.003) | $7.17 | 3.7s |
 | `F2h_gpt61_humanizer` | 51% [45, 57] | -20 pp [-27, -13], significant (p=0.000) | 56% [50, 63] | -28 pp [-35, -22], significant (p=0.000) | $7.73 | 2.5s |
 | `F2_gpt61_terra` | 40% [34, 46] | -32 pp [-39, -24], significant (p=0.000) | 44% [38, 51] | -40 pp [-47, -34], significant (p=0.000) | $0.85 | 2.6s |
+| `O4m_glm_sft_modern` | 33% [27, 39] | -38 pp [-46, -31], significant (p=0.000) | 41% [35, 47] | -44 pp [-51, -37], significant (p=0.000) | n/a | 1.2s |
 | `X0_copy_draft (no rewrite: control)` | 32% [26, 38] | -40 pp [-47, -32], significant (p=0.000) | 32% [26, 38] | -53 pp [-60, -46], significant (p=0.000) | n/a | 0.0s |
 | `O1_glm_base` | 27% [21, 33] | -45 pp [-52, -37], significant (p=0.000) | 30% [24, 36] | -55 pp [-62, -49], significant (p=0.000) | $0.10 | 1.2s |
 | `frontier-persona-preexisting` (130 items) | 12% [7, 19] | -57 pp [-66, -48], significant (p=0.000) | 16% [10, 24] | -66 pp [-74, -58], significant (p=0.000) | n/a | n/a |
 
 Human preference, O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-5 (blind A/B; FeatherLM / Claude / tie):
 
-- page: 49 / 74 / 22 (30 voter(s), 145 votes, sign test p=0.030); includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors
-- page, without 1 ballot(s) that were position-only or faster than 6 s per pick: 47 / 71 / 22 (sign test p=0.034)
+- page: 51 / 75 / 30 (32 voter(s), 156 votes, sign test p=0.040); includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors
+- page, without 8 ballot(s) that were position-only or faster than 6 s per pick: 36 / 59 / 21 (sign test p=0.023)
 - Not counted: Ali reports 5 Minerva classmates gave the same answer (preferred the Claude side) in an informal, unlogged session; not counted as data.
 
 Judge vs human on style (item level, `O3c_glm_prompt_harness_style` vs Claude strong, 15 items with a human majority): kimi-k3: agrees 3, disagrees 6; qwen3p8-max: agrees 1, disagrees 7. Small n; the LLM judges' style verdicts are not validated against readers.

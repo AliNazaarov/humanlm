@@ -37,6 +37,7 @@ Reference (F1): `frontier-strong:claude-opus-5-5`. 95% CIs in brackets. Δ is a 
 | `frontier-live:claude-opus-5-5` (2 refused/failed, counted as fails) | 53% [46, 59] | -19 pp [-24, -13], significant (p=0.000) | 77% | 77% | 87% | 97% | $7.17 | 3.7s |
 | `F2h_gpt61_humanizer` | 51% [45, 57] | -20 pp [-27, -13], significant (p=0.000) | 93% | 90% | 76% | 77% | $7.73 | 2.5s |
 | `F2_gpt61_terra` | 40% [34, 46] | -32 pp [-39, -24], significant (p=0.000) | 92% | 90% | 46% | 98% | $0.85 | 2.6s |
+| `O4m_glm_sft_modern` | 33% [27, 39] | -38 pp [-46, -31], significant (p=0.000) | 90% | 79% | 59% | 82% | n/a | 1.2s |
 | `X0_copy_draft (no rewrite: control)` | 32% [26, 38] | -40 pp [-47, -32], significant (p=0.000) | 100% | 100% | 32% | 100% | n/a | 0.0s |
 | `O1_glm_base` | 27% [21, 33] | -45 pp [-52, -37], significant (p=0.000) | 91% | 81% | 33% | 100% | $0.10 | 1.2s |
 | `frontier-persona-preexisting` (117 not run) | 12% [7, 19] | -57 pp [-66, -48], significant (p=0.000) | 70% | 56% | 99% | 25% | n/a | n/a |
@@ -67,6 +68,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | `frontier-live:claude-opus-5-5` | 41% [32, 50] | -28 pp [-37, -20], significant (p=0.000) | 76% | 68% | 83% | 95% | $7.17 | 3.7s |
 | `F2h_gpt61_humanizer` | 36% [28, 45] | -33 pp [-43, -23], significant (p=0.000) | 95% | 88% | 66% | 66% | $7.73 | 2.5s |
 | `F2_gpt61_terra` | 20% [14, 28] | -49 pp [-58, -40], significant (p=0.000) | 92% | 88% | 24% | 97% | $0.85 | 2.6s |
+| `O4m_glm_sft_modern` | 18% [12, 25] | -52 pp [-61, -42], significant (p=0.000) | 92% | 82% | 37% | 80% | n/a | 1.2s |
 | `O1_glm_base` | 15% [10, 23] | -54 pp [-63, -45], significant (p=0.000) | 94% | 75% | 19% | 100% | $0.10 | 1.2s |
 | `frontier-persona-preexisting` | 12% [7, 19] | -57 pp [-66, -48], significant (p=0.000) | 70% | 56% | 99% | 25% | n/a | n/a |
 | `X0_copy_draft (no rewrite: control)` | 9% [5, 16] | -60 pp [-68, -51], significant (p=0.000) | 100% | 100% | 9% | 100% | n/a | 0.0s |
@@ -98,6 +100,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | `F2h_gpt61_humanizer` | 30% [21, 40] | -39 pp [-50, -28], significant (p=0.000) | 95% | 88% | 62% | 60% | $7.73 | 2.5s |
 | `F2_gpt61_terra` | 17% [10, 26] | -52 pp [-62, -42], significant (p=0.000) | 92% | 89% | 20% | 96% | $0.85 | 2.6s |
 | `O1_glm_base` | 15% [9, 24] | -54 pp [-64, -43], significant (p=0.000) | 97% | 75% | 17% | 100% | $0.10 | 1.2s |
+| `O4m_glm_sft_modern` | 9% [4, 16] | -60 pp [-69, -50], significant (p=0.000) | 94% | 81% | 27% | 79% | n/a | 1.2s |
 | `frontier-persona-preexisting` | 5% [2, 11] | -64 pp [-74, -53], significant (p=0.000) | 72% | 54% | 100% | 13% | n/a | n/a |
 | `X0_copy_draft (no rewrite: control)` | 2% [0, 7] | -67 pp [-76, -57], significant (p=0.000) | 100% | 100% | 2% | 100% | n/a | 0.0s |
 
@@ -125,6 +128,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | `F1h_opus_humanizer` | 63% [44, 80] | -7 pp [-20, +7], n.s. (p=0.315) | 83% | 80% | 90% | 100% | $50.22 | 3.7s |
 | `F2h_gpt61_humanizer` | 57% [37, 75] | -13 pp [-33, +7], n.s. (p=0.190) | 97% | 90% | 80% | 87% | $7.73 | 2.5s |
 | `O2h_glm_humanizer` | 57% [37, 75] | -13 pp [-33, +7], n.s. (p=0.196) | 87% | 77% | 90% | 80% | $1.15 | 1.4s |
+| `O4m_glm_sft_modern` | 47% [28, 66] | -23 pp [-47, +0], significant (p=0.039) | 87% | 87% | 70% | 83% | n/a | 1.2s |
 | `frontier-live:claude-opus-5-5` | 43% [25, 63] | -27 pp [-43, -13], significant (p=0.000) | 70% | 67% | 90% | 93% | $7.17 | 3.7s |
 | `frontier-persona-preexisting` | 37% [20, 56] | -33 pp [-50, -17], significant (p=0.000) | 63% | 63% | 97% | 63% | n/a | n/a |
 | `X0_copy_draft (no rewrite: control)` | 33% [17, 53] | -37 pp [-57, -17], significant (p=0.000) | 100% | 100% | 33% | 100% | n/a | 0.0s |
@@ -158,6 +162,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | `O2h_glm_humanizer` | 65% [56, 74] | -9 pp [-18, +2], n.s. (p=0.091) | 87% | 85% | 89% | 95% | $1.15 | 1.4s |
 | `F2_gpt61_terra` | 62% [52, 70] | -12 pp [-22, -2], significant (p=0.029) | 93% | 93% | 71% | 100% | $0.85 | 2.6s |
 | `X0_copy_draft (no rewrite: control)` | 56% [47, 66] | -17 pp [-29, -5], significant (p=0.006) | 100% | 100% | 56% | 100% | n/a | 0.0s |
+| `O4m_glm_sft_modern` | 50% [40, 59] | -24 pp [-35, -13], significant (p=0.000) | 87% | 75% | 84% | 84% | n/a | 1.2s |
 | `O1_glm_base` | 39% [30, 49] | -34 pp [-45, -23], significant (p=0.000) | 87% | 89% | 48% | 100% | $0.10 | 1.2s |
 
 Gate columns show the share of items that pass each gate. An item a system refused or failed is scored as an empty rewrite (G1 and G3 pass, G2 and G4 fail), so it counts against that system.
@@ -187,6 +192,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | `O2h_glm_humanizer` | 60% [50, 70] | -11 pp [-23, +0], significant (p=0.050) | 85% | 83% | 86% | 94% | $1.15 | 1.4s |
 | `F2_gpt61_terra` | 59% [49, 69] | -12 pp [-25, +0], significant (p=0.045) | 93% | 93% | 69% | 100% | $0.85 | 2.6s |
 | `X0_copy_draft (no rewrite: control)` | 53% [43, 63] | -19 pp [-32, -5], significant (p=0.006) | 100% | 100% | 53% | 100% | n/a | 0.0s |
+| `O4m_glm_sft_modern` | 51% [41, 61] | -21 pp [-32, -9], significant (p=0.001) | 85% | 79% | 83% | 85% | n/a | 1.2s |
 | `O1_glm_base` | 33% [24, 44] | -39 pp [-51, -26], significant (p=0.000) | 85% | 88% | 43% | 100% | $0.10 | 1.2s |
 
 Gate columns show the share of items that pass each gate. An item a system refused or failed is scored as an empty rewrite (G1 and G3 pass, G2 and G4 fail), so it counts against that system.
@@ -233,6 +239,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | `frontier-live:claude-opus-5-5` | 31/130 (24% [17, 32]) | 72% [70, 73] | 0.08 [0.03, 0.14] | 0.96 [0.94, 0.99] | 86% [82, 89] |
 | `F2h_gpt61_humanizer` | 6/130 (5% [2, 10]) | 68% [67, 70] | 0.13 [0.05, 0.24] | 0.77 [0.74, 0.79] | 91% [89, 94] |
 | `F2_gpt61_terra` | 11/130 (8% [4, 15]) | 62% [60, 64] | 0.40 [0.26, 0.57] | 0.90 [0.88, 0.91] | 90% [87, 93] |
+| `O4m_glm_sft_modern` | 10/130 (8% [4, 14]) | 73% [71, 74] | 0.58 [0.41, 0.77] | 0.99 [0.83, 1.29] | 89% [87, 92] |
 | `O1_glm_base` | 8/130 (6% [3, 12]) | 62% [61, 64] | 0.55 [0.39, 0.73] | 0.98 [0.97, 0.99] | 88% [84, 90] |
 | `frontier-persona-preexisting` | 39/130 (30% [22, 39]) | 70% [69, 72] | 0.02 [0.00, 0.05] | 0.61 [0.59, 0.65] | 91% [89, 94] |
 | `X0_copy_draft (no rewrite: control)` | 0/130 (0% [0, 3]) | 54% [52, 55] | 1.31 [1.06, 1.57] | 1.00 [1.00, 1.00] | 92% [89, 94] |

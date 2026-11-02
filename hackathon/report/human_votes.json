@@ -2,34 +2,50 @@
  "pairs": "O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-5",
  "sources": {
   "page": {
-   "ours": 49,
-   "theirs": 74,
-   "both_fine": 22,
+   "ours": 51,
+   "theirs": 75,
+   "both_fine": 30,
    "neither": 0,
-   "people": 30,
-   "votes": 145,
-   "win_rate": 0.3983739837398374,
-   "lo": 0.3112185979692202,
-   "hi": 0.49054161303006727,
-   "sign_test_p": 0.03004691483554494,
+   "people": 32,
+   "votes": 156,
+   "win_rate": 0.40476190476190477,
+   "lo": 0.31827168634300623,
+   "hi": 0.495835107658444,
+   "sign_test_p": 0.04003575935628395,
    "sensitivity_no_position_clickers": {
-    "ours": 47,
-    "theirs": 71,
-    "both_fine": 22,
+    "ours": 36,
+    "theirs": 59,
+    "both_fine": 21,
     "neither": 0,
-    "people": 29,
-    "votes": 140,
-    "win_rate": 0.3983050847457627,
-    "lo": 0.30933663345516127,
-    "hi": 0.4925050866339556,
-    "sign_test_p": 0.033788175471825846,
+    "people": 24,
+    "votes": 116,
+    "win_rate": 0.37894736842105264,
+    "lo": 0.2813638921723467,
+    "hi": 0.48429607095149985,
+    "sign_test_p": 0.023488002836921144,
     "dropped_ballots": [
-     "pub:bmvzscycvfet6"
+     "pub:bmvzqw3hdj8y7",
+     "pub:bmvzqwssd3fxe",
+     "pub:bmvzqz3klruzd",
+     "pub:bmvzqzvg0s20a",
+     "pub:bmvzraxffnh1j",
+     "pub:bmvzscycvfet6",
+     "pub:bmvzsondqwy74",
+     "pub:bmvzss1q7q50s"
     ],
     "position_only": [
      "pub:bmvzscycvfet6"
     ],
-    "too_fast": []
+    "too_fast": [
+     "pub:bmvzqw3hdj8y7",
+     "pub:bmvzqwssd3fxe",
+     "pub:bmvzqz3klruzd",
+     "pub:bmvzqzvg0s20a",
+     "pub:bmvzraxffnh1j",
+     "pub:bmvzscycvfet6",
+     "pub:bmvzsondqwy74",
+     "pub:bmvzss1q7q50s"
+    ]
    },
    "voter": "includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors",
    "note": "Ali reports 5 Minerva classmates gave the same answer (preferred the Claude side) in an informal, unlogged session; not counted as data.",
@@ -37,13 +53,13 @@
   }
  },
  "pooled": {
-  "ours": 49,
-  "theirs": 74,
-  "both_fine": 22,
+  "ours": 51,
+  "theirs": 75,
+  "both_fine": 30,
   "neither": 0,
-  "win_rate": 0.3983739837398374,
-  "lo": 0.3112185979692202,
-  "hi": 0.49054161303006727,
-  "sign_test_p": 0.03004691483554494
+  "win_rate": 0.40476190476190477,
+  "lo": 0.31827168634300623,
+  "hi": 0.495835107658444,
+  "sign_test_p": 0.04003575935628395
  }
 }

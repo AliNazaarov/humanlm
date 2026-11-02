@@ -1,0 +1,36 @@
+{
+ "system": "O4m_glm_sft_modern",
+ "provider": "fireworks",
+ "model": "accounts/ruslan-kan-1eth024hr/models/humanlm-glm-sft-modern#accounts/ruslan-kan-1eth024hr/deployments/humanlm-o4m",
+ "loops": 0,
+ "prompt_sha256": "2418895249c0e139",
+ "prompt_file": null,
+ "decoding": {
+  "max_tokens": 1500,
+  "temperature": 0.7,
+  "top_p": 0.9,
+  "reasoning_effort": "low"
+ },
+ "style_round": null,
+ "retrieve": 0,
+ "claim_check": null,
+ "anti_copy": false,
+ "best_of": 1,
+ "select_judge_model": null,
+ "select": null,
+ "strict_claims": false,
+ "judge_prices_usd_per_m": [
+  0.0,
+  0.0
+ ],
+ "prices_usd_per_m": [
+  0.0,
+  0.0
+ ],
+ "eval": "evals/eval_all.jsonl",
+ "rows": 130,
+ "pass_rate": 0.17692307692307693,
+ "empty_outputs": [],
+ "commit": "fd78114ed46fa06693c4b73ecb18072021fbe2f7",
+ "finished": "2026-11-02T14:57:00-0700"
+}
