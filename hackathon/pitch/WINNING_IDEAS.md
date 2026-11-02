@@ -36,6 +36,15 @@ Fireworks API facts checked in the docs ([chat completions reference](https://do
   - [sam-paech/slop-score](https://github.com/sam-paech/slop-score) (MIT; its 10 surface regexes and 35 POS regexes for not-X-but-Y can be reused)
   - [Wikipedia: Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing)
   - [slop-forensics](https://github.com/sam-paech/slop-forensics)
+- **Evidence from practitioners in 2026 (X, read only):** The anti-slop skills ranked highest on X are aimed at exactly our problem.
+  - **stop-slop** (hardikpandya, ranked #1 by @juampitech) lists "dramatic fragmentation" and "staccato fragmentation" as clichés. It scores Directness, Rhythm ("varied or metronomic?"), Trust, Authenticity and Density from 1 to 10 each, and says to revise below 35/50.
+  - **humanizer** (blader, built on the Wikipedia guide) has "one-line closers and dramatic fragments" as pattern #2 of its five strongest tells, plus repeated sentence openings (#7) and forced triads (#6). Its fix is to cut closers that repeat or explain, and to merge fragments into a specific claim.
+
+  Both lists can be used as revise-prompt wording and as a pitch citation ("the community's top two anti-slop tools name our exact failure mode; we turned it into a measured gate").
+  - [stop-slop](https://github.com/hardikpandya/stop-slop)
+  - [humanizer](https://github.com/blader/humanizer)
+  - [@juampitech ranking](https://x.com/juampitech/status/2090834948332655011)
+  - [10 anti-slop skills list](https://x.com/Defi_Warhol/status/2115811776705241150)
 - **Expected effect:** This is the most direct fix. The judges described the gap in rhythm terms, and this gate makes rhythm a hard constraint. It also gives the pitch a chart: fragment rate and mean sentence length for FeatherLM vs Opus vs real human copy, before and after. Expect most of the "dramatic fragments / one-line closer" complaints to go away. Pairwise preference should move toward parity, but not all the way.
 - **Steps:**
   1. In `gates.py`, add a fragment counter: split on `m.sentences()`, then count sentences with fewer than 4 words, or with none of a small finite-verb list (is/are/was/has/have/will/can/-ed/-s). Also add `closer_punchy`.
@@ -97,7 +106,7 @@ Fireworks API facts checked in the docs ([chat completions reference](https://do
   1. Get the token IDs: send a probe prompt with `return_token_ids: true` (or load the GLM tokenizer from Hugging Face) and read the IDs for each banned string, including leading-space variants.
   2. Add `"logit_bias": {id: -100, ...}` in `decoding()` for the Fireworks provider only.
   3. Check outputs for broken punctuation (for example, sentences that spliced around the em dash).
-- **Time:** 20-30 min. **Risk:** Low to medium. A token can be shared with legitimate text; never ban tokens that are part of numbers or names.
+- **Time:** 20-30 min. **Risk:** Low to medium. A token can be shared with legitimate text; never ban tokens that are part of numbers or names. **Repo rule:** CLAUDE.md says the shared decoding (temperature 0.7, top_p 0.9, max 400) must not change for one system. Treat `logit_bias` as part of FeatherLM's *harness*, add it as an explicit run flag, and list it under that system's settings in the report. Do not change it quietly.
 
 ### 6. Antislop-style backtracking on the API (stretch goal)
 - **What it is:** An API version of the Antislop sampler. Stream the output and regex-match the banned pattern (a punchy closer, "Not X. Y.", or a fragment run). When it matches, cut the text at the start of the match. Then continue from that prefix (assistant prefill, or the completions endpoint with a raw prompt) with `logit_bias` set against the first token of the banned continuation. This is how the paper suppresses more than 8,000 patterns without hurting quality, and it supports regex bans for sentence-level structure.
@@ -161,7 +170,13 @@ What exists today: `claim_check` makes one GLM call that lists claims added vers
 
 ## What 1st-place-style submissions did (presentation and eval design)
 
-I could not find a verified public list of 1st-place winners from a Fireworks-run hackathon with their charts. X search needs a login, and the Chrome session I used was not signed in to X, so I read no X posts (I did not log in). The patterns below come from what Fireworks itself publishes and promotes, and from documented winners of comparable events.
+I could not find a verified public list of 1st-place winners from a Fireworks-run hackathon with their charts. On X, Fireworks posts about hosting hackathons (the RSI RL Environments hackathon with HUD and YC in June 2026, and MongoDB hackathons) but doesn't name winners. The patterns below come from what Fireworks publishes and promotes, from a 2026 index of AI-lab hackathon winners, and from documented winners of comparable events.
+
+0. **Data from 585 winners (HacksRadar: 93 AI-lab hackathons, 31,980 projects since 2025, winners tagged by an LLM):**
+   - The commonest "core trick" among winners is **generate, then run a deterministic checker that verifies and corrects**. Examples: "a deterministic beam tracer checks power, polarization and laser safety before export" (BEAMTEAM); "runs dimension and motion checks to verify and correct each result" (Morf); "stores every extracted fact with a verbatim quote" (NurseMate).
+   - Our gates (G1-G5) plus the claim check are this pattern, so lead the technical slide with it.
+   - Caution: "productivity" projects are *under*-represented among winners (23.6% of winners vs 29.1% of submissions). A copy-rewriter needs a visceral demo moment, not a feature tour.
+   - Sources: [HacksRadar insights](https://hacksradar.thepushh.com/insights); [thread by @the_pushh](https://x.com/the_pushh/status/2117113776839475552)
 
 1. **Lead with "open model within X points of first, at Y% cheaper", against a named frontier model.** This is Fireworks' own headline format. The Specialized Intelligence Index says "16 benchmarks with an open model within 5 percentage points of first" and labels each result with points behind and percent cheaper (e.g. "GLM 5.3 ... −3 Elo, 77% cheaper"). Make our hero chart the same shape: fact-safe rate vs $/1k rewrites, with Opus 5.5 labelled. ([Fireworks Specialized Intelligence Index](https://fireworks.ai/specialized-intelligence-index/))
 2. **One-line claims of parity plus a cost multiple.** Recent Fireworks customer stories are headlined "frontier-level model ... at ~98% lower inference cost" (Paper Instruments) and "Opus 5-level decks at a fraction of the cost" (Gen-1 Slides). Our line: "Opus-level human copy, 94% vs 72% fact-safe, at 1/16 the cost". ([Fireworks blog index](https://fireworks.ai/blog))
@@ -175,4 +190,4 @@ A related benchmark pattern judges will recognise: Together AI reported that ope
 
 ## One-slide framing for the style gap
 
-Plot a Pareto chart: x = fact-safe rate, y = human preference win rate (vs Opus). Show 3 points for FeatherLM (baseline, + G5 rhythm gate, + pairwise select) moving up toward Opus while staying far right of it on x. Caption: "Opus writes prettier but invents facts in 28% of rewrites. We closed most of the style gap without giving up a single fact."
+Plot a Pareto chart: x = fact-safe rate, y = human preference win rate (vs Opus). Show 3 points for FeatherLM (baseline, + G5 rhythm gate, + pairwise select) moving up toward Opus while staying far right of it on x. Caption, as a template (fill it only with numbers from `results.json`, per the CLAUDE.md rule): "Opus writes prettier, but only 72% of its rewrites pass all four fact and length gates, vs 94% for ours. We closed [X] of the style gap and kept fact safety at [Y]%." Note: 72% fact-safe is not the same as "invents facts in 28%", because some of those failures are dropped facts or length. Say what the gates actually measure.
