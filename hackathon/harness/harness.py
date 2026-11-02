@@ -207,9 +207,33 @@ def copy_overlap(draft, out):
     return 2 * p * r / (p + r)
 
 
+CLAIM_ASK = ("You check rewrites for invented content. Compare the REWRITE with the DRAFT. List every claim, detail, "
+             "example, reason, scenario or statement of fact in the REWRITE that is not stated in the DRAFT and not a "
+             "direct restatement of it. Ignore pure wording and tone changes. Reply with JSON only: {\"added\": [\"short quote\", ...]}"
+             " and an empty list if nothing was added.")
+
+
+def claim_check(draft, out, a):
+    """Open-model claim verifier (GLM-5.3). Returns (added_claims, pt, ct). Errors count as 'unchecked' (empty list)."""
+    if not a.claim_check:
+        return [], 0, 0
+    dec = decoding("fireworks", a.claim_check, "low"); dec["temperature"] = 0.0
+    msg = [{"role": "user", "content": f"{CLAIM_ASK}\n\nDRAFT:\n{draft}\n\nREWRITE:\n{out}"}]
+    try:
+        r, p, c = chat("fireworks", a.claim_check, "You are a strict fact checker.", msg, dec)
+        mt = re.search(r"\{.*\}", clean(r), re.S)
+        added = json.loads(mt.group(0)).get("added", []) if mt else []
+        return [x for x in added if isinstance(x, str) and x.strip()][:6], p, c
+    except Exception:
+        return [], 0, 0
+
+
 def one_pass(draft, a):
     """Draft -> verify -> targeted revise (max a.loops) -> optional style round. Returns (out, gates, loop, pt, ct, copy)."""
-    msgs = [{"role": "user", "content": draft}]
+    shots = []
+    for d, hm in (retrieve(draft, a.retrieve) if a.retrieve else []):
+        shots += [{"role": "user", "content": d}, {"role": "assistant", "content": hm}]
+    msgs = shots + [{"role": "user", "content": draft}]
     pt = ct = 0; best = None
     for loop in range(a.loops + 1):
         text, p, c = chat(a.provider, a.model, a.system_prompt, msgs, a.dec)
@@ -218,11 +242,15 @@ def one_pass(draft, a):
         g = gates.check(draft, out)
         cp = copy_overlap(draft, out)
         near = a.anti_copy and cp > COPY_MAX
-        cand = (g["n_fail"] + int(near), -loop, out, g, loop, cp)   # fewer failures wins; ties go to the later revision
+        added = []
+        if g["pass"] and not near:
+            added, p, c = claim_check(draft, out, a); pt += p; ct += c
+        cand = (g["n_fail"] + int(near) + int(bool(added)), -loop, out, g, loop, cp)   # fewer failures wins; ties go to the later revision
         best = cand if best is None or cand[:2] < best[:2] else best
-        if (g["pass"] and not near) or loop == a.loops:
+        if (g["pass"] and not near and not added) or loop == a.loops:
             break
-        problems = g["problems"] + ([COPY_ASK] if near else [])
+        problems = g["problems"] + ([COPY_ASK] if near else []) + (
+            ["You added content that is not in the draft: " + "; ".join(f'"{x}"' for x in added) + ". Remove it."] if added else [])
         msgs += [{"role": "assistant", "content": out},
                  {"role": "user", "content": "Revise your rewrite. Fix only these problems and change nothing else:\n- "
                   + "\n- ".join(problems) + "\nReply with the full revised text only."}]
@@ -234,7 +262,10 @@ def one_pass(draft, a):
         text, p, c = chat(a.provider, a.model, a.system_prompt, msgs2, a.dec)
         pt += p; ct += c
         out2 = clean(text); g2 = gates.check(draft, out2); cp2 = copy_overlap(draft, out2)
+        added2 = []
         if g2["pass"] and not (a.anti_copy and cp2 > COPY_MAX):
+            added2, p, c = claim_check(draft, out2, a); pt += p; ct += c
+        if g2["pass"] and not (a.anti_copy and cp2 > COPY_MAX) and not added2:
             out, g, loop, cp = out2, g2, loop + 1, cp2
     return out, g, loop, pt, ct, cp
 
@@ -300,6 +331,7 @@ def main():
     ap.add_argument("--in-price", type=float, default=0.0); ap.add_argument("--out-price", type=float, default=0.0)
     ap.add_argument("--concurrency", type=int, default=4); ap.add_argument("--limit", type=int)
     ap.add_argument("--reasoning-effort", default="low", help="low|medium|high, or omit (not sent)")
+    ap.add_argument("--claim-check", default=None, help="open model id that lists claims added vs the draft; non-empty -> revise")
     ap.add_argument("--retrieve", type=int, default=0, help="add k most similar training pairs (AI draft -> human original) as few-shot examples")
     ap.add_argument("--anti-copy", action="store_true", help="revise near-copies of the draft (word-bigram F1 > 0.9)")
     ap.add_argument("--best-of", type=int, default=1, help="run the whole pipeline N times, pick by --select-judge-model")
@@ -330,7 +362,7 @@ def main():
     commit = subprocess.run(["git", "-C", ROOT, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     manifest = {"system": a.system_name, "provider": a.provider, "model": a.model, "loops": a.loops,
                 "prompt_sha256": hashlib.sha256(a.system_prompt.encode()).hexdigest()[:16],
-                "prompt_file": a.prompt_file, "decoding": a.dec, "style_round": a.style_round, "retrieve": a.retrieve, "anti_copy": a.anti_copy, "best_of": a.best_of,
+                "prompt_file": a.prompt_file, "decoding": a.dec, "style_round": a.style_round, "retrieve": a.retrieve, "claim_check": a.claim_check, "anti_copy": a.anti_copy, "best_of": a.best_of,
                 "select_judge_model": a.select_judge_model if a.best_of > 1 else None,
                 "prices_usd_per_m": [a.in_price, a.out_price], "eval": a.eval, "rows": len(rows),
                 "pass_rate": sum(r["gates"]["pass"] for r in rows) / len(rows), "commit": commit,
