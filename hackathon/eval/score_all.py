@@ -57,8 +57,9 @@ def all_items() -> dict[str, dict]:
 
 
 def discover() -> list[str]:
-    return sorted(glob.glob(os.path.join(ROOT, "evals/runs/hack_*.jsonl"))) + \
-        [os.path.join(ROOT, "evals/baseline_frontier.jsonl")]
+    runs = [p for p in glob.glob(os.path.join(ROOT, "evals/runs/hack_*.jsonl"))
+            if ".jsonl." not in os.path.basename(p)]  # skip side files such as X.jsonl.failures.jsonl
+    return sorted(runs) + [os.path.join(ROOT, "evals/baseline_frontier.jsonl")]
 
 
 def kept(fact: str, out: str) -> bool:
@@ -115,9 +116,22 @@ def load_systems(paths: list[str], items: dict) -> dict[str, dict]:
     return systems
 
 
+def missing_scores(item: dict) -> dict:
+    """An item the system was asked to rewrite but has no row for (a refusal or a failed call) is scored as an
+    empty rewrite: nothing invented, everything lost. It counts against the headline; secondary metrics skip it."""
+    g = gt.check(item["ai_draft"], "")
+    s = {"G1": int(g["g1_nothing_invented"]), "G2": int(g["g2_nothing_lost"]), "G3": int(g["g3_no_ai_tells"]),
+         "G4": int(g["g4_not_gutted"]), "pass": int(g["pass"]), "fact_fail": 0, "missing": 1}
+    return s
+
+
 def score_system(sysd: dict, items: dict, band: dict) -> dict:
     rows = sysd["rows"]
     sysd["per_item"] = {i: item_scores(items[i], r["output"], band) for i, r in rows.items()}
+    ran = {split_of(i) for i in rows}  # a split the system ran at all must be complete; gaps count as failures
+    gaps = sorted(i for i in items if split_of(i) in ran and i not in rows)
+    sysd["per_item"].update({i: missing_scores(items[i]) for i in gaps})
+    sysd["missing_ids"] = gaps
     lat = [r["latency_ms"] for r in rows.values() if isinstance(r.get("latency_ms"), (int, float))]
     cost = [r["cost_usd"] for r in rows.values() if isinstance(r.get("cost_usd"), (int, float))]
     if lat and len(lat) == len(rows):
@@ -152,8 +166,11 @@ def paired(a: dict, b: dict, ids: list[str]) -> dict:
     if not shared:
         return res
     for key in ("pass", *GATES, "in_range"):
-        d, lo, hi, p = st.paired_bootstrap_diff([a["per_item"][i][key] for i in shared],
-                                                [b["per_item"][i][key] for i in shared])
+        ids_k = [i for i in shared if key in a["per_item"][i] and key in b["per_item"][i]]
+        if not ids_k:
+            continue
+        d, lo, hi, p = st.paired_bootstrap_diff([a["per_item"][i][key] for i in ids_k],
+                                                [b["per_item"][i][key] for i in ids_k])
         res[key] = {"diff": d, "lo": lo, "hi": hi, "p": p, "significant": p < 0.05}
     return res
 
@@ -177,7 +194,9 @@ def block(systems: list[dict], ids: list[str], ref: dict) -> dict:
         per = [s["per_item"][i] for i in ids if i in s["per_item"]]
         if not per:
             continue
-        entry = {"label": s["label"], "n": len(per), "missing": len(ids) - len(per), "summary": summarise(per)}
+        counted = sum(1 for i in ids if s["per_item"].get(i, {}).get("missing"))
+        entry = {"label": s["label"], "n": len(per), "missing": len(ids) - len(per),
+                 "counted_as_fail": counted, "summary": summarise(per)}
         if s is not ref:
             entry["vs_reference"] = paired(s, ref, ids)
         rows.append(entry)
@@ -243,10 +262,11 @@ def leaderboard(res: dict, key: str, title: str) -> list[str]:
         g, s = e["summary"]["gates"], meta[e["label"]]
         cost = f"${s['cost_per_1k_usd']:.2f}" if "cost_per_1k_usd" in s else "n/a"
         lat = f"{s['latency_ms']['p50']/1000:.1f}s" if "latency_ms" in s else "n/a"
-        miss = f" ({e['missing']} missing)" if e["missing"] else ""
+        miss = (f" ({e['missing']} not run)" if e["missing"] else "") +             (f" ({e['counted_as_fail']} refused/failed, counted as fails)" if e.get("counted_as_fail") else "")
         lines.append(f"| `{e['label']}`{miss} | {pct(e['summary']['pass'])} | {delta(e)} | "
                      + " | ".join(f"{100*g[x]['rate']:.0f}%" for x in GATES) + f" | {cost} | {lat} |")
-    return lines + ["", "Gate columns show the share of items that pass each gate.", ""]
+    return lines + ["", "Gate columns show the share of items that pass each gate. An item a system refused or failed "
+                    "is scored as an empty rewrite (G1 and G3 pass, G2 and G4 fail), so it counts against that system.", ""]
 
 
 def secondary(res: dict) -> list[str]:

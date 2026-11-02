@@ -1,0 +1,33 @@
+{
+  "system": "frontier-strong:claude-opus-5-5",
+  "provider": "anthropic",
+  "model": "claude-opus-5-5",
+  "arm": "strong",
+  "prompt_sha256": "6b62508ad4d8a40e7900967748f8e2cf821d06b16f3526e98276abf7853f81b3",
+  "decoding": {
+    "temperature": null,
+    "top_p": null,
+    "max_tokens": 1500,
+    "thinking": [
+      "adaptive, effort low"
+    ],
+    "requested": {
+      "temperature": 0.7,
+      "top_p": 0.9
+    },
+    "top_p_dropped": 130
+  },
+  "price_in": 4.0,
+  "price_out": 20.0,
+  "price_unit": "USD per 1M tokens",
+  "git_commit": "041968053e3906ec91b89a6598e4d328d73e19d3",
+  "eval_path": "evals/eval_all.jsonl",
+  "eval_sha256": "bd67a53510883e09bd33002a31ea1a86e3ba75f0a48b97c1f0479c3937346547",
+  "out_path": "evals/runs/hack_strong_claude-opus-5-5.jsonl",
+  "rows": 130,
+  "started_utc": "2026-11-02T19:01:05Z",
+  "finished_utc": "2026-11-02T19:03:14Z",
+  "cost_usd": 1.058384,
+  "latency_ms_p50": 3511,
+  "latency_ms_p95": 6376
+}

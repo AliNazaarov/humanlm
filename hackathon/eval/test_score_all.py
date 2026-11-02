@@ -90,6 +90,19 @@ class TestScoreSystem(unittest.TestCase):
         self.assertEqual(o1["vs_reference"]["pass"]["diff"], -1.0)
         self.assertIn("Fact-safe human rewrite rate", sa.render(res))
 
+    def test_gap_in_a_run_split_counts_as_fail(self):
+        held = {"id": "ho-001", "ai_draft": "Ledgerline closes books in 4 days."}
+        held2 = {"id": "ho-002", "ai_draft": "Pebble plans 7 dinners a week."}
+        items = {"dev-001": ITEM, "ho-001": held, "ho-002": held2}
+        a = self._run([{"id": "ho-001", "system": "s", "output": "Ledgerline closes the books in 4 days."}])
+        s = sa.score_system(sa.load_systems([a], items)["s"], items, BAND)
+        self.assertEqual(s["missing_ids"], ["ho-002"])  # heldout ran, so its gap counts; dev never ran
+        self.assertEqual((s["per_item"]["ho-002"]["pass"], s["per_item"]["ho-002"]["G1"]), (0, 1))
+        res = sa.build([a], items, BAND, None, tempfile.mkdtemp())
+        e = res["blocks"]["heldout"]["systems"][0]
+        self.assertEqual((e["n"], e["counted_as_fail"]), (2, 1))
+        self.assertIn("counted as fails", sa.render(res))
+
 
 if __name__ == "__main__":
     unittest.main()
