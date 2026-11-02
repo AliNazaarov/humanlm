@@ -1,0 +1,1322 @@
+{
+ "blocks": {
+  "eval": {
+   "F1H_opus": {
+    "any_share": 0.09230769230769231,
+    "ids_with_tells": [
+     "dev-009",
+     "dev-029",
+     "dev-059",
+     "dev-060",
+     "dev-072",
+     "trick-02",
+     "trick-08",
+     "trick-10",
+     "trick-18",
+     "trick-24",
+     "trick-25",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 3.076923076923077,
+     "fragment_run": 3.076923076923077,
+     "hook": 3.8461538461538463,
+     "rhetorical_qa": 0.7692307692307693,
+     "slogan": 0.0,
+     "tagline": 0.7692307692307693
+    }
+   },
+   "F1h_opus_humanizer": {
+    "any_share": 0.06923076923076923,
+    "ids_with_tells": [
+     "dev-013",
+     "dev-072",
+     "trick-02",
+     "trick-05",
+     "trick-08",
+     "trick-10",
+     "trick-18",
+     "trick-24",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 3.076923076923077,
+     "fragment_run": 1.5384615384615385,
+     "hook": 1.5384615384615385,
+     "rhetorical_qa": 1.5384615384615385,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "F2_gpt61_terra": {
+    "any_share": 0.27692307692307694,
+    "ids_with_tells": [
+     "dev-002",
+     "dev-006",
+     "dev-008",
+     "dev-009",
+     "dev-013",
+     "dev-014",
+     "dev-016",
+     "dev-029",
+     "dev-053",
+     "dev-054",
+     "dev-056",
+     "dev-058",
+     "dev-059",
+     "dev-060",
+     "dev-061",
+     "dev-063",
+     "dev-064",
+     "dev-065",
+     "dev-066",
+     "dev-070",
+     "dev-071",
+     "dev-072",
+     "dev-078",
+     "dev-079",
+     "dev-084",
+     "dev-095",
+     "dev-098",
+     "trick-02",
+     "trick-05",
+     "trick-08",
+     "trick-10",
+     "trick-18",
+     "trick-19",
+     "trick-24",
+     "trick-25",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 4.615384615384615,
+     "fragment_run": 19.23076923076923,
+     "hook": 6.153846153846154,
+     "rhetorical_qa": 5.384615384615385,
+     "slogan": 3.8461538461538463,
+     "tagline": 0.7692307692307693
+    }
+   },
+   "F2h_gpt61_humanizer": {
+    "any_share": 0.1076923076923077,
+    "ids_with_tells": [
+     "dev-009",
+     "dev-063",
+     "dev-070",
+     "dev-072",
+     "dev-085",
+     "dev-091",
+     "dev-098",
+     "trick-02",
+     "trick-08",
+     "trick-10",
+     "trick-18",
+     "trick-19",
+     "trick-24",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 3.076923076923077,
+     "fragment_run": 6.923076923076923,
+     "hook": 0.7692307692307693,
+     "rhetorical_qa": 0.7692307692307693,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "O1_glm_base": {
+    "any_share": 0.2846153846153846,
+    "ids_with_tells": [
+     "dev-002",
+     "dev-006",
+     "dev-008",
+     "dev-009",
+     "dev-013",
+     "dev-016",
+     "dev-027",
+     "dev-030",
+     "dev-035",
+     "dev-041",
+     "dev-052",
+     "dev-053",
+     "dev-054",
+     "dev-056",
+     "dev-058",
+     "dev-059",
+     "dev-060",
+     "dev-061",
+     "dev-063",
+     "dev-064",
+     "dev-065",
+     "dev-066",
+     "dev-067",
+     "dev-068",
+     "dev-071",
+     "dev-072",
+     "dev-077",
+     "dev-078",
+     "dev-080",
+     "dev-088",
+     "dev-093",
+     "dev-098",
+     "trick-08",
+     "trick-10",
+     "trick-18",
+     "trick-25",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 3.8461538461538463,
+     "fragment_run": 16.923076923076923,
+     "hook": 10.76923076923077,
+     "rhetorical_qa": 11.538461538461538,
+     "slogan": 3.076923076923077,
+     "tagline": 0.7692307692307693
+    }
+   },
+   "O2_glm_prompt": {
+    "any_share": 0.3,
+    "ids_with_tells": [
+     "dev-002",
+     "dev-006",
+     "dev-009",
+     "dev-013",
+     "dev-014",
+     "dev-016",
+     "dev-021",
+     "dev-029",
+     "dev-035",
+     "dev-052",
+     "dev-053",
+     "dev-054",
+     "dev-055",
+     "dev-056",
+     "dev-058",
+     "dev-059",
+     "dev-060",
+     "dev-061",
+     "dev-063",
+     "dev-064",
+     "dev-065",
+     "dev-066",
+     "dev-067",
+     "dev-070",
+     "dev-071",
+     "dev-072",
+     "dev-073",
+     "dev-078",
+     "dev-080",
+     "dev-085",
+     "dev-087",
+     "dev-088",
+     "dev-098",
+     "trick-08",
+     "trick-10",
+     "trick-18",
+     "trick-19",
+     "trick-25",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 4.615384615384615,
+     "fragment_run": 17.692307692307693,
+     "hook": 6.153846153846154,
+     "rhetorical_qa": 9.23076923076923,
+     "slogan": 4.615384615384615,
+     "tagline": 1.5384615384615385
+    }
+   },
+   "O2h_glm_humanizer": {
+    "any_share": 0.13846153846153847,
+    "ids_with_tells": [
+     "dev-002",
+     "dev-009",
+     "dev-058",
+     "dev-059",
+     "dev-063",
+     "dev-065",
+     "dev-070",
+     "dev-072",
+     "dev-080",
+     "dev-085",
+     "dev-086",
+     "dev-088",
+     "trick-02",
+     "trick-08",
+     "trick-10",
+     "trick-18",
+     "trick-24",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 3.076923076923077,
+     "fragment_run": 5.384615384615385,
+     "hook": 3.076923076923077,
+     "rhetorical_qa": 2.3076923076923075,
+     "slogan": 0.7692307692307693,
+     "tagline": 2.3076923076923075
+    }
+   },
+   "O3_glm_harness": {
+    "any_share": 0.3076923076923077,
+    "ids_with_tells": [
+     "dev-002",
+     "dev-006",
+     "dev-008",
+     "dev-009",
+     "dev-013",
+     "dev-014",
+     "dev-016",
+     "dev-021",
+     "dev-053",
+     "dev-054",
+     "dev-055",
+     "dev-056",
+     "dev-058",
+     "dev-059",
+     "dev-060",
+     "dev-061",
+     "dev-062",
+     "dev-063",
+     "dev-064",
+     "dev-065",
+     "dev-066",
+     "dev-067",
+     "dev-070",
+     "dev-071",
+     "dev-072",
+     "dev-077",
+     "dev-078",
+     "dev-080",
+     "dev-087",
+     "dev-088",
+     "dev-094",
+     "dev-095",
+     "dev-098",
+     "trick-01",
+     "trick-02",
+     "trick-08",
+     "trick-10",
+     "trick-18",
+     "trick-25",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 5.384615384615385,
+     "fragment_run": 18.46153846153846,
+     "hook": 6.923076923076923,
+     "rhetorical_qa": 12.307692307692308,
+     "slogan": 3.8461538461538463,
+     "tagline": 1.5384615384615385
+    }
+   },
+   "O3b_glm_prompt_harness": {
+    "any_share": 0.3076923076923077,
+    "ids_with_tells": [
+     "dev-002",
+     "dev-006",
+     "dev-009",
+     "dev-013",
+     "dev-014",
+     "dev-017",
+     "dev-021",
+     "dev-029",
+     "dev-035",
+     "dev-052",
+     "dev-053",
+     "dev-054",
+     "dev-055",
+     "dev-056",
+     "dev-058",
+     "dev-059",
+     "dev-060",
+     "dev-063",
+     "dev-064",
+     "dev-066",
+     "dev-067",
+     "dev-070",
+     "dev-071",
+     "dev-072",
+     "dev-073",
+     "dev-074",
+     "dev-078",
+     "dev-080",
+     "dev-085",
+     "dev-088",
+     "dev-093",
+     "dev-098",
+     "trick-02",
+     "trick-08",
+     "trick-10",
+     "trick-18",
+     "trick-19",
+     "trick-24",
+     "trick-25",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 5.384615384615385,
+     "fragment_run": 16.153846153846153,
+     "hook": 6.923076923076923,
+     "rhetorical_qa": 11.538461538461538,
+     "slogan": 1.5384615384615385,
+     "tagline": 1.5384615384615385
+    }
+   },
+   "O3c_glm_prompt_harness_style": {
+    "any_share": 0.3769230769230769,
+    "ids_with_tells": [
+     "dev-001",
+     "dev-002",
+     "dev-006",
+     "dev-009",
+     "dev-011",
+     "dev-013",
+     "dev-017",
+     "dev-021",
+     "dev-028",
+     "dev-030",
+     "dev-034",
+     "dev-035",
+     "dev-046",
+     "dev-050",
+     "dev-052",
+     "dev-053",
+     "dev-054",
+     "dev-055",
+     "dev-057",
+     "dev-058",
+     "dev-059",
+     "dev-060",
+     "dev-061",
+     "dev-063",
+     "dev-064",
+     "dev-065",
+     "dev-066",
+     "dev-067",
+     "dev-068",
+     "dev-070",
+     "dev-071",
+     "dev-072",
+     "dev-073",
+     "dev-074",
+     "dev-078",
+     "dev-079",
+     "dev-080",
+     "dev-085",
+     "dev-088",
+     "dev-098",
+     "trick-02",
+     "trick-04",
+     "trick-08",
+     "trick-10",
+     "trick-18",
+     "trick-19",
+     "trick-25",
+     "trick-28",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 5.384615384615385,
+     "fragment_run": 28.46153846153846,
+     "hook": 9.23076923076923,
+     "rhetorical_qa": 10.0,
+     "slogan": 6.153846153846154,
+     "tagline": 3.076923076923077
+    }
+   },
+   "O3d_glm_harness_anticopy": {
+    "any_share": 0.33076923076923076,
+    "ids_with_tells": [
+     "dev-001",
+     "dev-002",
+     "dev-003",
+     "dev-005",
+     "dev-006",
+     "dev-008",
+     "dev-009",
+     "dev-010",
+     "dev-011",
+     "dev-013",
+     "dev-014",
+     "dev-016",
+     "dev-024",
+     "dev-035",
+     "dev-043",
+     "dev-046",
+     "dev-051",
+     "dev-052",
+     "dev-054",
+     "dev-055",
+     "dev-057",
+     "dev-058",
+     "dev-059",
+     "dev-060",
+     "dev-061",
+     "dev-064",
+     "dev-066",
+     "dev-071",
+     "dev-072",
+     "dev-073",
+     "dev-075",
+     "dev-080",
+     "dev-087",
+     "dev-088",
+     "dev-098",
+     "trick-02",
+     "trick-08",
+     "trick-10",
+     "trick-16",
+     "trick-18",
+     "trick-19",
+     "trick-22",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 6.153846153846154,
+     "fragment_run": 23.076923076923077,
+     "hook": 6.153846153846154,
+     "rhetorical_qa": 7.6923076923076925,
+     "slogan": 3.8461538461538463,
+     "tagline": 1.5384615384615385
+    }
+   },
+   "O3e_glm_harness_cliche": {
+    "any_share": 0.23846153846153847,
+    "ids_with_tells": [
+     "dev-002",
+     "dev-009",
+     "dev-012",
+     "dev-013",
+     "dev-014",
+     "dev-016",
+     "dev-017",
+     "dev-035",
+     "dev-058",
+     "dev-059",
+     "dev-060",
+     "dev-061",
+     "dev-063",
+     "dev-064",
+     "dev-065",
+     "dev-066",
+     "dev-071",
+     "dev-072",
+     "dev-073",
+     "dev-074",
+     "dev-080",
+     "dev-085",
+     "dev-087",
+     "dev-088",
+     "dev-098",
+     "trick-02",
+     "trick-08",
+     "trick-10",
+     "trick-18",
+     "trick-24",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 3.076923076923077,
+     "fragment_run": 17.692307692307693,
+     "hook": 3.076923076923077,
+     "rhetorical_qa": 7.6923076923076925,
+     "slogan": 3.8461538461538463,
+     "tagline": 0.0
+    }
+   },
+   "O3f_glm_calm": {
+    "any_share": 0.12307692307692308,
+    "ids_with_tells": [
+     "dev-002",
+     "dev-029",
+     "dev-055",
+     "dev-059",
+     "dev-060",
+     "dev-064",
+     "dev-066",
+     "dev-071",
+     "dev-072",
+     "dev-073",
+     "trick-02",
+     "trick-08",
+     "trick-10",
+     "trick-18",
+     "trick-25",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 3.8461538461538463,
+     "fragment_run": 5.384615384615385,
+     "hook": 2.3076923076923075,
+     "rhetorical_qa": 2.3076923076923075,
+     "slogan": 0.0,
+     "tagline": 0.7692307692307693
+    }
+   },
+   "O3g_glm_calm_retrieval_claimcheck": {
+    "any_share": 0.13076923076923078,
+    "ids_with_tells": [
+     "dev-002",
+     "dev-006",
+     "dev-008",
+     "dev-021",
+     "dev-055",
+     "dev-058",
+     "dev-059",
+     "dev-061",
+     "dev-064",
+     "dev-072",
+     "dev-087",
+     "dev-088",
+     "dev-093",
+     "dev-098",
+     "trick-02",
+     "trick-10",
+     "trick-18"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 3.076923076923077,
+     "fragment_run": 5.384615384615385,
+     "hook": 3.076923076923077,
+     "rhetorical_qa": 3.076923076923077,
+     "slogan": 1.5384615384615385,
+     "tagline": 0.7692307692307693
+    }
+   },
+   "O3j_glm_bestof3_judged": {
+    "any_share": 0.3384615384615385,
+    "ids_with_tells": [
+     "dev-002",
+     "dev-003",
+     "dev-006",
+     "dev-008",
+     "dev-009",
+     "dev-011",
+     "dev-013",
+     "dev-014",
+     "dev-015",
+     "dev-017",
+     "dev-021",
+     "dev-029",
+     "dev-035",
+     "dev-038",
+     "dev-053",
+     "dev-054",
+     "dev-055",
+     "dev-058",
+     "dev-059",
+     "dev-060",
+     "dev-061",
+     "dev-062",
+     "dev-063",
+     "dev-064",
+     "dev-065",
+     "dev-066",
+     "dev-067",
+     "dev-071",
+     "dev-072",
+     "dev-073",
+     "dev-078",
+     "dev-087",
+     "dev-088",
+     "dev-098",
+     "dev-100",
+     "trick-02",
+     "trick-08",
+     "trick-10",
+     "trick-13",
+     "trick-18",
+     "trick-19",
+     "trick-23",
+     "trick-29",
+     "trick-30"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 3.8461538461538463,
+     "fragment_run": 23.846153846153847,
+     "hook": 6.923076923076923,
+     "rhetorical_qa": 10.0,
+     "slogan": 5.384615384615385,
+     "tagline": 1.5384615384615385
+    }
+   },
+   "O3k_glm_calm_claimcheck_bo3": {
+    "any_share": 0.13076923076923078,
+    "ids_with_tells": [
+     "dev-002",
+     "dev-012",
+     "dev-013",
+     "dev-035",
+     "dev-055",
+     "dev-059",
+     "dev-060",
+     "dev-064",
+     "dev-067",
+     "dev-071",
+     "dev-072",
+     "trick-02",
+     "trick-08",
+     "trick-10",
+     "trick-18",
+     "trick-24",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 3.076923076923077,
+     "fragment_run": 6.923076923076923,
+     "hook": 2.3076923076923075,
+     "rhetorical_qa": 3.076923076923077,
+     "slogan": 0.7692307692307693,
+     "tagline": 0.0
+    }
+   },
+   "O3l_glm_style_claimcheck_bo3": {
+    "any_share": 0.2923076923076923,
+    "ids_with_tells": [
+     "dev-002",
+     "dev-006",
+     "dev-009",
+     "dev-013",
+     "dev-014",
+     "dev-021",
+     "dev-027",
+     "dev-029",
+     "dev-034",
+     "dev-035",
+     "dev-045",
+     "dev-054",
+     "dev-058",
+     "dev-059",
+     "dev-061",
+     "dev-062",
+     "dev-064",
+     "dev-065",
+     "dev-070",
+     "dev-071",
+     "dev-072",
+     "dev-073",
+     "dev-080",
+     "dev-085",
+     "dev-087",
+     "dev-088",
+     "dev-091",
+     "dev-093",
+     "dev-098",
+     "trick-02",
+     "trick-08",
+     "trick-10",
+     "trick-13",
+     "trick-18",
+     "trick-19",
+     "trick-23",
+     "trick-25",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 3.076923076923077,
+     "fragment_run": 18.46153846153846,
+     "hook": 6.153846153846154,
+     "rhetorical_qa": 7.6923076923076925,
+     "slogan": 4.615384615384615,
+     "tagline": 1.5384615384615385
+    }
+   },
+   "WF_Pairwise_both_orders_knockout_selector_with_fact_aware_eligibility_replace_the_1_10_judge_score_": {
+    "any_share": 0.1,
+    "ids_with_tells": [
+     "dev-002",
+     "dev-013",
+     "dev-029"
+    ],
+    "n": 30,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 6.666666666666667,
+     "hook": 3.3333333333333335,
+     "rhetorical_qa": 0.0,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "X0_copy_draft": {
+    "any_share": 0.4,
+    "ids_with_tells": [
+     "dev-002",
+     "dev-006",
+     "dev-008",
+     "dev-009",
+     "dev-013",
+     "dev-016",
+     "dev-021",
+     "dev-024",
+     "dev-026",
+     "dev-027",
+     "dev-029",
+     "dev-033",
+     "dev-035",
+     "dev-040",
+     "dev-041",
+     "dev-052",
+     "dev-053",
+     "dev-054",
+     "dev-056",
+     "dev-058",
+     "dev-059",
+     "dev-060",
+     "dev-061",
+     "dev-062",
+     "dev-063",
+     "dev-064",
+     "dev-065",
+     "dev-066",
+     "dev-067",
+     "dev-069",
+     "dev-070",
+     "dev-071",
+     "dev-072",
+     "dev-073",
+     "dev-074",
+     "dev-077",
+     "dev-078",
+     "dev-080",
+     "dev-085",
+     "dev-093",
+     "dev-094",
+     "dev-095",
+     "dev-098",
+     "trick-02",
+     "trick-05",
+     "trick-08",
+     "trick-10",
+     "trick-13",
+     "trick-18",
+     "trick-19",
+     "trick-25",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 3.8461538461538463,
+     "fragment_run": 23.846153846153847,
+     "hook": 13.846153846153847,
+     "rhetorical_qa": 19.23076923076923,
+     "slogan": 3.8461538461538463,
+     "tagline": 1.5384615384615385
+    }
+   },
+   "live_claude-opus-5-5": {
+    "any_share": 0.07692307692307693,
+    "ids_with_tells": [
+     "dev-025",
+     "dev-029",
+     "dev-059",
+     "dev-072",
+     "dev-085",
+     "trick-02",
+     "trick-08",
+     "trick-18",
+     "trick-24",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 3.076923076923077,
+     "fragment_run": 2.3076923076923075,
+     "hook": 3.076923076923077,
+     "rhetorical_qa": 0.7692307692307693,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "live_claude-opus-5-5_heldout.jsonl.failures": {
+    "any_share": 0.0,
+    "ids_with_tells": [],
+    "n": 2,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 0.0,
+     "hook": 0.0,
+     "rhetorical_qa": 0.0,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "strong_claude-opus-5-5": {
+    "any_share": 0.1,
+    "ids_with_tells": [
+     "dev-009",
+     "dev-029",
+     "dev-059",
+     "dev-068",
+     "dev-072",
+     "dev-085",
+     "trick-02",
+     "trick-05",
+     "trick-08",
+     "trick-10",
+     "trick-18",
+     "trick-24",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 3.076923076923077,
+     "fragment_run": 4.615384615384615,
+     "hook": 3.8461538461538463,
+     "rhetorical_qa": 0.7692307692307693,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "strong_claude-opus-5-5_heldout.jsonl.failures": {
+    "any_share": 0.0,
+    "ids_with_tells": [],
+    "n": 2,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 0.0,
+     "hook": 0.0,
+     "rhetorical_qa": 0.0,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   }
+  },
+  "heldout": {
+   "F1H_opus": {
+    "any_share": 0.025,
+    "ids_with_tells": [
+     "ho-029",
+     "ho-082",
+     "ho-087"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.8333333333333334,
+     "fragment_run": 1.6666666666666667,
+     "hook": 0.0,
+     "rhetorical_qa": 3.3333333333333335,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "F1h_opus_humanizer": {
+    "any_share": 0.05,
+    "ids_with_tells": [
+     "ho-029",
+     "ho-056",
+     "ho-063",
+     "ho-082",
+     "ho-087",
+     "ho-100"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.8333333333333334,
+     "fragment_run": 1.6666666666666667,
+     "hook": 0.8333333333333334,
+     "rhetorical_qa": 3.3333333333333335,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "F2_gpt61_terra": {
+    "any_share": 0.03333333333333333,
+    "ids_with_tells": [
+     "ho-063",
+     "ho-082",
+     "ho-087",
+     "ho-115"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 1.6666666666666667,
+     "hook": 0.8333333333333334,
+     "rhetorical_qa": 3.3333333333333335,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "F2h_gpt61_humanizer": {
+    "any_share": 0.03333333333333333,
+    "ids_with_tells": [
+     "ho-029",
+     "ho-063",
+     "ho-082",
+     "ho-087"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 0.8333333333333334,
+     "hook": 0.0,
+     "rhetorical_qa": 3.3333333333333335,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "O1_glm_base": {
+    "any_share": 0.058333333333333334,
+    "ids_with_tells": [
+     "ho-009",
+     "ho-053",
+     "ho-055",
+     "ho-063",
+     "ho-082",
+     "ho-087",
+     "ho-115"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.8333333333333334,
+     "fragment_run": 0.8333333333333334,
+     "hook": 1.6666666666666667,
+     "rhetorical_qa": 4.166666666666667,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "O2_glm_prompt": {
+    "any_share": 0.03333333333333333,
+    "ids_with_tells": [
+     "ho-063",
+     "ho-082",
+     "ho-087",
+     "ho-115"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 0.8333333333333334,
+     "hook": 0.0,
+     "rhetorical_qa": 3.3333333333333335,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "O2h_glm_humanizer": {
+    "any_share": 0.05,
+    "ids_with_tells": [
+     "ho-029",
+     "ho-053",
+     "ho-063",
+     "ho-082",
+     "ho-087",
+     "ho-108"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.8333333333333334,
+     "fragment_run": 0.8333333333333334,
+     "hook": 0.0,
+     "rhetorical_qa": 4.166666666666667,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "O3_glm_harness": {
+    "any_share": 0.05,
+    "ids_with_tells": [
+     "ho-045",
+     "ho-063",
+     "ho-082",
+     "ho-087",
+     "ho-108",
+     "ho-115"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 0.8333333333333334,
+     "hook": 1.6666666666666667,
+     "rhetorical_qa": 4.166666666666667,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "O3b_glm_prompt_harness": {
+    "any_share": 0.03333333333333333,
+    "ids_with_tells": [
+     "ho-063",
+     "ho-082",
+     "ho-087",
+     "ho-115"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 0.8333333333333334,
+     "hook": 0.0,
+     "rhetorical_qa": 3.3333333333333335,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "O3c_glm_prompt_harness_style": {
+    "any_share": 0.075,
+    "ids_with_tells": [
+     "ho-007",
+     "ho-029",
+     "ho-046",
+     "ho-063",
+     "ho-082",
+     "ho-087",
+     "ho-107",
+     "ho-113",
+     "ho-115"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 0.8333333333333334,
+     "hook": 0.8333333333333334,
+     "rhetorical_qa": 6.666666666666667,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "O3d_glm_harness_anticopy": {
+    "any_share": 0.125,
+    "ids_with_tells": [
+     "ho-010",
+     "ho-016",
+     "ho-030",
+     "ho-035",
+     "ho-046",
+     "ho-049",
+     "ho-056",
+     "ho-062",
+     "ho-063",
+     "ho-064",
+     "ho-068",
+     "ho-082",
+     "ho-087",
+     "ho-113",
+     "ho-115"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 1.6666666666666667,
+     "fragment_run": 3.3333333333333335,
+     "hook": 3.3333333333333335,
+     "rhetorical_qa": 5.833333333333333,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "O3e_glm_harness_cliche": {
+    "any_share": 0.041666666666666664,
+    "ids_with_tells": [
+     "ho-029",
+     "ho-063",
+     "ho-082",
+     "ho-087",
+     "ho-115"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 0.8333333333333334,
+     "hook": 0.0,
+     "rhetorical_qa": 4.166666666666667,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "O3f_glm_calm": {
+    "any_share": 0.03333333333333333,
+    "ids_with_tells": [
+     "ho-029",
+     "ho-063",
+     "ho-082",
+     "ho-087"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 0.8333333333333334,
+     "hook": 0.0,
+     "rhetorical_qa": 3.3333333333333335,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "O3g_glm_calm_retrieval_claimcheck": {
+    "any_share": 0.03333333333333333,
+    "ids_with_tells": [
+     "ho-029",
+     "ho-063",
+     "ho-082",
+     "ho-087"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 0.8333333333333334,
+     "hook": 0.0,
+     "rhetorical_qa": 3.3333333333333335,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "O3j_glm_bestof3_judged": {
+    "any_share": 0.125,
+    "ids_with_tells": [
+     "ho-030",
+     "ho-034",
+     "ho-046",
+     "ho-062",
+     "ho-063",
+     "ho-068",
+     "ho-080",
+     "ho-082",
+     "ho-087",
+     "ho-088",
+     "ho-107",
+     "ho-113",
+     "ho-115",
+     "ho-116",
+     "ho-118"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.8333333333333334,
+     "fragment_run": 4.166666666666667,
+     "hook": 3.3333333333333335,
+     "rhetorical_qa": 8.333333333333334,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "O3k_glm_calm_claimcheck_bo3": {
+    "any_share": 0.041666666666666664,
+    "ids_with_tells": [
+     "ho-029",
+     "ho-063",
+     "ho-082",
+     "ho-087",
+     "ho-115"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 0.8333333333333334,
+     "hook": 0.0,
+     "rhetorical_qa": 4.166666666666667,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "O3l_glm_style_claimcheck_bo3": {
+    "any_share": 0.10833333333333334,
+    "ids_with_tells": [
+     "ho-007",
+     "ho-030",
+     "ho-035",
+     "ho-046",
+     "ho-057",
+     "ho-063",
+     "ho-068",
+     "ho-080",
+     "ho-082",
+     "ho-087",
+     "ho-101",
+     "ho-107",
+     "ho-115"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.8333333333333334,
+     "fragment_run": 3.3333333333333335,
+     "hook": 2.5,
+     "rhetorical_qa": 8.333333333333334,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "X0_copy_draft": {
+    "any_share": 0.05,
+    "ids_with_tells": [
+     "ho-009",
+     "ho-039",
+     "ho-063",
+     "ho-082",
+     "ho-087",
+     "ho-115"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 0.8333333333333334,
+     "hook": 0.8333333333333334,
+     "rhetorical_qa": 5.0,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "live_claude-opus-5-5": {
+    "any_share": 0.05084745762711865,
+    "ids_with_tells": [
+     "ho-029",
+     "ho-055",
+     "ho-063",
+     "ho-082",
+     "ho-087",
+     "ho-100"
+    ],
+    "n": 118,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 0.847457627118644,
+     "hook": 0.847457627118644,
+     "rhetorical_qa": 4.237288135593221,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "strong_claude-opus-5-5": {
+    "any_share": 0.00847457627118644,
+    "ids_with_tells": [
+     "ho-087"
+    ],
+    "n": 118,
+    "per_100_outputs": {
+     "echo": 0.847457627118644,
+     "fragment_run": 0.847457627118644,
+     "hook": 0.0,
+     "rhetorical_qa": 0.0,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   }
+  }
+ },
+ "kinds": [
+  "fragment_run",
+  "echo",
+  "hook",
+  "rhetorical_qa",
+  "slogan",
+  "tagline"
+ ],
+ "note": "post-hoc diagnostic from set 1 reader notes; not a headline gate"
+}
