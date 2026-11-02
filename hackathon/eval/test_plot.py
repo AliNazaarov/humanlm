@@ -62,6 +62,15 @@ class TestNotes(unittest.TestCase):
         self.assertEqual(pl.coverage_note(part, 250), "n=130 of 250 items only; Δ on 130 shared items")
         self.assertEqual(pl.coverage_note(_entry("Q", 0.2), 100), "n=100")
 
+    def test_lenient_bits(self):
+        e = _entry("O", 0.9, _vs(0.25, 0.001))
+        self.assertEqual(pl.lenient_bits(e), (None, "", ""))
+        e["summary"]["pass_lenient"] = _rate(0.98)
+        e["vs_reference"]["pass_lenient"] = _vs(0.132, 0.001)
+        r, head, delta = pl.lenient_bits(e)
+        self.assertAlmostEqual(r, 98.0)
+        self.assertEqual((head, delta), (" · lenient 98.0%", " · lenient +13.2 pp sig"))
+
     def test_cost_note(self):
         self.assertEqual(pl.cost_note({"cost_per_1k_usd": 8.925, "latency_ms": {"p50": 3867.0}}),
                          "$8.93 per 1k rewrites · 3.9 s p50")

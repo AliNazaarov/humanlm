@@ -30,6 +30,7 @@ BLOCKS = ("all", "main", "heldout", "heldout_clean", "dev", "trick", "real")
 # colorblind-safe pair from the dataviz reference palette (blue / orange); text stays in ink, never series color
 SYS, REF = "#2a78d6", "#eb6834"
 INK, INK2, GRID = "#0b0b0b", "#52514e", "#e4e3df"
+LEN = "#1b1b3a"  # lenient tick: dark navy, reads on both the blue and the hatched orange bar
 
 
 def _num(v) -> float | None:
@@ -121,6 +122,18 @@ def coverage_note(entry: dict, n_items) -> str:
     return note
 
 
+def lenient_bits(entry: dict) -> tuple[float | None, str, str]:
+    """(lenient rate %, ' · lenient 98.0%', ' · lenient +13.2 pp sig') from summary.pass_lenient; blanks if absent."""
+    p = ((entry.get("summary") or {}).get("pass_lenient") or {})
+    r = _num(p.get("rate"))
+    if r is None:
+        return None, "", ""
+    v = ((entry.get("vs_reference") or {}).get("pass_lenient") or {})
+    d = _num(v.get("diff"))
+    delta = "" if d is None else f" · lenient {100*d:+.1f} pp " + ("sig" if v.get("significant") else "n.s.")
+    return 100 * r, f" · lenient {100*r:.1f}%", delta
+
+
 def cost_note(meta: dict) -> str:
     """'$8.93 per 1k rewrites · 3.9 s p50' from a top-level systems[] entry; 'cost n/a' when unknown or $0."""
     cost = _num(meta.get("cost_per_1k_usd"))
@@ -129,7 +142,9 @@ def cost_note(meta: dict) -> str:
     return note + (f" · {p50 / 1000:.1f} s p50" if p50 is not None else "")
 
 
-def _leaderboard(ax, rows: list[tuple], name: str, n_items, notes: dict[str, str]) -> None:
+def _leaderboard(ax, rows: list[tuple], name: str, n_items, notes: dict[str, str],
+                 lenient: dict[str, tuple] | None = None) -> None:
+    lenient = lenient or {}
     y = list(range(len(rows)))[::-1]  # first (best) row on top
     for yi, (lab, r, lo, hi, note, is_ref) in zip(y, rows):
         if math.isnan(r):
@@ -138,21 +153,26 @@ def _leaderboard(ax, rows: list[tuple], name: str, n_items, notes: dict[str, str
                 edgecolor="white", linewidth=2, zorder=2)
         ax.errorbar(r, yi, xerr=[[max(0, r - lo)], [max(0, hi - r)]], fmt="none", ecolor=INK, elinewidth=1.4,
                     capsize=4, zorder=3)
+        lr = (lenient.get(lab) or (None,))[0]
+        if lr is not None:  # lenient rate as a tall tick across the bar
+            ax.plot([lr], [yi], marker="|", markersize=22, markeredgewidth=2.6, color=LEN, zorder=4)
     ax.set_yticks(y, [r[0] for r in rows])
     for t, row in zip(ax.get_yticklabels(), rows):
         t.set_fontweight("bold" if row[5] else "normal")
     ax.set_xlim(0, 100)
     pad = max(0.0, (6 - len(rows)) / 2)  # keep bars thin when there are few systems
     ax.set_ylim(-0.6 - pad, len(rows) - 0.4 + pad)
-    ax.set_xlabel("Fact-safe human rewrite rate (%), passes G1-G4; whiskers = 95% CI")
+    ax.set_xlabel("Fact-safe human rewrite rate (%), passes G1-G4; bar = strict with 95% CI"
+                  + ("; | = lenient (numerals/demonyms normalised)" if lenient else ""))
     ax.set_title(f"Leaderboard: block '{name}', {n_items} items", loc="left", fontsize=14, color=INK)
     tr = blended_transform_factory(ax.transAxes, ax.transData)
     below = offset_copy(tr, fig=ax.figure, y=-13, units="points")  # third line: coverage
     for yi, (lab, r, lo, hi, note, is_ref) in zip(y, rows):
-        head = "n/a" if math.isnan(r) else f"{r:.1f}% [{lo:.1f}, {hi:.1f}]"
+        _, lhead, ldelta = lenient.get(lab) or (None, "", "")
+        head = "n/a" if math.isnan(r) else f"{r:.1f}% [{lo:.1f}, {hi:.1f}]" + (" strict" if lhead else "") + lhead
         ax.text(1.02, yi, head, transform=tr, va="bottom", fontsize=10.5,
                 color=INK, fontweight="bold" if is_ref else "normal")
-        ax.text(1.02, yi, note, transform=tr, va="top", fontsize=9.5, color=INK2)
+        ax.text(1.02, yi, note + ldelta, transform=tr, va="top", fontsize=9.5, color=INK2)
         ax.text(1.02, yi, notes.get(lab, ""), transform=below, va="top", fontsize=8.5, color=INK2)
     ax.grid(axis="x", color=GRID, zorder=0)
     ax.set_axisbelow(True)
@@ -239,7 +259,8 @@ def render(res: dict, name: str, out: str) -> str:
     meta = {s.get("label"): s for s in res.get("systems") or []}
     notes = {e.get("label"): coverage_note(e, b.get("n_items", "?")) + " · " + cost_note(meta.get(e.get("label")) or {})
              for e in b["systems"]}
-    _leaderboard(fig.add_axes((0.22, 0.46, 0.40, 0.45)), rows, name, b.get("n_items", "?"), notes)
+    lenient = {e.get("label"): lenient_bits(e) for e in b["systems"] if lenient_bits(e)[0] is not None}
+    _leaderboard(fig.add_axes((0.22, 0.46, 0.40, 0.45)), rows, name, b.get("n_items", "?"), notes, lenient)
     _pareto(fig.add_axes((0.06, 0.10, 0.34, 0.25)), points, no_cost, name)
     _gates(fig.add_axes((0.62, 0.06, 0.35, 0.30)), *gate_rows(b))
     fig.suptitle("FeatherLM: fact-safe human rewrite rate vs the frontier reference", x=0.015, ha="left",
