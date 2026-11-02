@@ -57,7 +57,7 @@ Rules:
 4. No keys in the repo. .env only. Clear notebook outputs that could show headers. Before every commit: git diff --cached | grep -nE "fw_|sk-|Bearer [A-Za-z0-9]" must be empty.
 5. Disclose AI use in the README.
 6. Commit small, every 20–30 min. Pull --rebase before pushing to main at sync points only (12:00, 13:30, 15:00).
-7. Never train on or edit the eval files. Use evals/runs/out_lora_v1.jsonl for dry runs until Ali's files land.
+7. Never train on or edit the eval files. Use a small synthetic placeholder file for dry runs until Ali's files land.
 8. Do not invent provider prices or model ids; read them from the pricing page today and write them in hackathon/report/PRICES.md with the URL.
 9. Plain English, short sentences, no emojis, no marketing words in the README.
 ```

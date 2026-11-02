@@ -116,5 +116,5 @@ Rules: `id` matches the eval file; one row per id, 130 rows for the main set; `o
 
 ## 9. Pre-existing vs built today (disclosure plan)
 
-Pre-existing (2026-10-31 to 11-01, in the first commit): corpus pipeline, ~7.8k reverse-distillation pairs, `data/build_mix.py`, `pipeline/metrics.py` and its 29 tests, the 130-item eval set, the Claude persona baseline file, CPU LoRA v0/v1 on Qwen3-0.6B and their scores.
+Pre-existing (2026-10-31 to 11-01, in the first commit): corpus pipeline, ~7.8k reverse-distillation pairs, `data/build_mix.py`, `pipeline/metrics.py` and its 29 tests, the 130-item eval set, the Claude persona baseline file. No trained model is brought in; every model in the results was trained or run today.
 Built today: everything under `hackathon/`, the Fireworks dataset format + upload + SFT job + deployment, Fireworks inference runner with cost/latency logging, frontier live re-run, pairwise judge, bootstrap CIs, results table/chart, demo notebook, video, public README. AI assistants (Claude Code) used throughout; say so in the README.
