@@ -32,12 +32,18 @@ _gates: pass=True, revision rounds 2_
 
 **[Slide 6, style, 1:25] ALI**
 
-On style, we lose. In a blind test, 41 readers picked Claude's prose, 87 votes to 58, p 0.02. One judge model leans Claude, another leans us. And readers flag choppy fragments in ours far more often.
+On style, it's not a win. In a blind test, 45 readers leaned to Claude's prose, 89 votes to 64. One judge model leans Claude, another leans us. And readers flag choppy fragments in ours far more often.
 
 _gates: pass=True, revision rounds 1_
 
 **[Slide 8, next step, 1:40] RUSLAN**
 
-Next step: training toward real human writing. Today we trained three SFT models on Fireworks, plus a local DPO model where the real human original is the preferred answer. Serving fine-tunes needs a dedicated deployment, so we can only evaluate one. That's the one we're asking for.
+Next step: training toward real human writing. Today we trained three SFT models on Fireworks, plus a local DPO model where the real human original is the preferred answer. Serving fine-tunes needs a dedicated deployment, so only one is evaluated so far. That's what we're asking for.
 
 _gates: pass=True, revision rounds 1_
+
+**[1:55] ALI**
+
+We didn't make an open model smarter than Claude. We made it accountable, and made accountability about 20 times cheaper.
+
+_Human-vote numbers corrected to the 15:15 freeze (human_votes.json: 209 votes, 45 readers, 64 ours / 89 Claude / 56 both fine, p=0.052)._
