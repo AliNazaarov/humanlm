@@ -49,3 +49,4 @@
 2026-11-02T21:28:18Z Set 2 rescored as O3k vs Claude. O7 DPO now tell-targeted; O7f (facts-only harness) added. Deployment approved for SFT B / O7.
 2026-11-02T21:37:24Z 13:38 PT: deploying SFT B on 4x B300 (Ruslan, cap $45); O4m rows by 14:45, O7 by 15:10; deleted after.
 2026-11-02T21:47:35Z 13:47 PT: SFT B deployment creating (cap $45, auto-delete); O4m rows next. R2 + R3 dropped by stop rules. DPO pairs committed.
+2026-11-02T21:49:40Z O3m scored: 97% strict / 99% lenient (+26/+15 pp vs Claude strong), 15% reader tells vs O3c 38%. Judging O3m (Kimi+Qwen) + spot-the-human now. O4m deployment creating.
