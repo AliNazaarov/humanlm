@@ -82,7 +82,8 @@ def main() -> int:
         v = json.load(open(venue, encoding="utf-8"))
         meta = {"voter": v.get("voter"), "note": v.get("informal"), "pattern": v.get("pattern")}
         if venue_in_page:  # the same ballot is already in the export: keep only its caveats, never count it twice
-            res["sources"]["page"].update(meta)
+            res["sources"]["page"].update({**meta, "voter": "includes one founder ballot (Ali, venue laptop: a check, "
+                                                            "not a gold rater); the other readers are public-page visitors"})
         else:
             w = [p_["winner"] for p_ in v["picks"]]
             c = {"ours": w.count("ours"), "theirs": w.count("claude"), "both_fine": w.count("tie"), "neither": 0,
