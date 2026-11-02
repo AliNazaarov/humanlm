@@ -12,7 +12,6 @@ Goal by 15:00: `hackathon/report/RESULTS.md` with a fair, reproducible compariso
 | `evals/dev_set.jsonl` (100), `evals/trick_set.jsonl` (30) | Items. Fields: `id, type, brief{facts,numbers,names}, ai_draft, must_keep[], forbidden[]`, trick items add `verbatim[]`. |
 | `evals/baseline_frontier.jsonl` (130) | Pre-existing frontier arm: Claude Opus persona prompt, hand-cleaned. No latency/cost. Keep it in the table as "frontier, strong prompt (pre-existing)". |
 | `pipeline/metrics.py` | `score FILE --field output --source-field ai_draft --band evals/runs/band_v0.json` → per-row metrics + summary. 13 tell metrics, `in_band`, `faith_hard_fails` (added numbers/names/quotes = fail). Tests: `cd pipeline && python3 -m unittest tests.test_metrics`. |
-| `evals/runs/out_lora_v1.jsonl`, `score2_*.json` | v1 (CPU, 0.6B) outputs and scores; use as a dry-run input before A's files land. |
 | `pipeline/infer.py` | The SYSTEM prompt string. Every system uses it verbatim. |
 
 ## Step 0 (10:30–11:00): repo hygiene
@@ -54,7 +53,7 @@ Done when: 130 rows, no empties, prices logged.
 - Apply to: fact hard-fail rate, in-band share, stock-phrase rate, length ratio (output words / draft words), judge win rate, latency p50/p95 (report, no CI needed), cost per 1k rewrites (= mean cost_usd × 1000).
 - Paired bootstrap for the difference between two systems on the same ids (resample ids, recompute both).
 
-Dry run on `evals/baseline_frontier.jsonl` vs `evals/runs/out_lora_v1.jsonl` to shake out bugs before A's files arrive.
+Dry run on `evals/baseline_frontier.jsonl` and a small synthetic placeholder file to shake out bugs before A's files arrive.
 
 Done when: judge summary and CIs print for the dry run; a unit test in `hackathon/eval/test_stats.py` checks `bootstrap_ci` on a fixed array.
 
