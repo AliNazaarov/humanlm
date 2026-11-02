@@ -190,6 +190,9 @@ def score_system(sysd: dict, items: dict, band: dict) -> dict:
         sysd["latency_ms"] = st.percentiles(lat)
     if cost and len(cost) == len(rows):
         sysd["cost_per_1k_usd"] = st.cost_per_1k(cost)
+    elif len(cost) >= len(rows) / 2:  # e.g. a split logged no cost: price the rows that did, and say how many
+        sysd["cost_per_1k_usd"] = st.cost_per_1k(cost)
+        sysd["cost_rows"] = f"{len(cost)}/{len(rows)}"
     return sysd
 
 
@@ -278,8 +281,25 @@ def heldout_overlap() -> set[str]:
     return set(json.load(open(p, encoding="utf-8"))["ids"]) if os.path.exists(p) else set()
 
 
+def add_ensemble_costs(loaded: dict) -> None:
+    """An ensemble row costs every component's row for that item plus its own selector cost (model "ensemble:A,B,...")."""
+    by_label = {d["label"]: d for d in loaded.values()}
+    for d in loaded.values():
+        if not str(d.get("model", "")).startswith("ensemble:"):
+            continue
+        parts = [by_label.get(n) for n in d["model"].split(":", 1)[1].split(",")]
+        for i, r in d["rows"].items():
+            comp = [row_cost(c["rows"][i]) if c and i in c["rows"] else None for c in parts]
+            if None in comp:
+                continue  # a component's cost is unknown for this item: leave the row as logged
+            r["cost_usd"] = float(r.get("cost_usd") or 0) + sum(comp)
+        d["cost_source"] = "sum of component runs' costs + logged selector cost"
+
+
 def build(paths: list[str], items: dict, band: dict, reference: str | None, report_dir: str) -> dict:
-    systems = [score_system(s, items, band) for s in load_systems(paths, items).values()]
+    loaded = load_systems(paths, items)
+    add_ensemble_costs(loaded)
+    systems = [score_system(s, items, band) for s in loaded.values()]
     if not systems:
         raise SystemExit("no run files found")
     ref_label = pick_reference([s["label"] for s in systems], reference)
@@ -288,7 +308,7 @@ def build(paths: list[str], items: dict, band: dict, reference: str | None, repo
     rule = gt.__doc__.split("all four gates pass:")[1].strip("\n")
     res = {"reference": ref_label, "gates_rule": rule,
            "systems": [{"label": s["label"], "files": s["files"], "model": s["model"], "n": len(s["per_item"]),
-                        **{k: s[k] for k in ("cost_per_1k_usd", "latency_ms") if k in s}} for s in systems],
+                        **{k: s[k] for k in ("cost_per_1k_usd", "cost_rows", "latency_ms") if k in s}} for s in systems],
            "blocks": {"all": block(systems, sorted(i for i in items if split_of(i) != "real"), ref),
                       "main": block(systems, by_split["dev"] + by_split["trick"], ref),
                       **{sp: block(systems, ids, ref) for sp, ids in by_split.items()},
@@ -323,7 +343,8 @@ def leaderboard(res: dict, key: str, title: str) -> list[str]:
              "| $ / 1k | p50 latency |", "|---|---|---|---|---|---|---|---|---|"]
     for e in b["systems"]:
         g, s = e["summary"]["gates"], meta[e["label"]]
-        cost = f"${s['cost_per_1k_usd']:.2f}" if "cost_per_1k_usd" in s else "n/a"
+        cost = (f"${s['cost_per_1k_usd']:.2f}" + (f" ({s['cost_rows']} rows)" if s.get("cost_rows") else "")
+                if "cost_per_1k_usd" in s else "n/a")
         lat = f"{s['latency_ms']['p50']/1000:.1f}s" if "latency_ms" in s else "n/a"
         miss = (f" ({e['missing']} not run)" if e["missing"] else "") +             (f" ({e['counted_as_fail']} refused/failed, counted as fails)" if e.get("counted_as_fail") else "")
         lines.append(f"| `{e['label']}`{miss} | {pct(e['summary']['pass'])} | {delta(e)} | "
@@ -385,7 +406,8 @@ def headline(res: dict) -> str:
            "|---|---|---|---|---|---|---|"]
     for e in b["systems"]:
         s = meta[e["label"]]
-        cost = f"${s['cost_per_1k_usd']:.2f}" if "cost_per_1k_usd" in s else "n/a"
+        cost = (f"${s['cost_per_1k_usd']:.2f}" + (f" ({s['cost_rows']} rows)" if s.get("cost_rows") else "")
+                if "cost_per_1k_usd" in s else "n/a")
         lat = f"{s['latency_ms']['p50']/1000:.1f}s" if "latency_ms" in s else "n/a"
         note = f" ({e['n']} items)" if e["missing"] else ""
         out.append(f"| `{e['label']}`{note} | {pct(e['summary']['pass'])} | {delta(e)} | "

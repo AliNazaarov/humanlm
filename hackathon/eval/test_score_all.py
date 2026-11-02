@@ -117,3 +117,13 @@ class TestScoreSystem(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestEnsembleCost(unittest.TestCase):
+    def test_sums_components_and_selector(self):
+        loaded = {"a": {"label": "A", "model": "m", "rows": {"x": {"cost_usd": 0.01}}},
+                  "b": {"label": "B", "model": "m", "rows": {"x": {"cost_usd": 0.02}}},
+                  "e": {"label": "E", "model": "ensemble:A,B", "rows": {"x": {"cost_usd": 0.005}, "y": {}}}}
+        sa.add_ensemble_costs(loaded)
+        self.assertAlmostEqual(loaded["e"]["rows"]["x"]["cost_usd"], 0.035)
+        self.assertNotIn("cost_usd", loaded["e"]["rows"]["y"])  # components have no row: cost stays unknown

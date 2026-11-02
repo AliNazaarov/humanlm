@@ -13,7 +13,8 @@ Fact-safe human rewrite rate on 247 items (eval 130 + held-out 117), 95% CI; Δ 
 
 | System | Fact-safe rate (strict) | Δ strict | Fact-safe rate (lenient) | Δ lenient | $ / 1k rewrites | p50 latency |
 |---|---|---|---|---|---|---|
-| `E1_ensemble` | 99% [97, 100] | +28 pp [+22, +34], significant (p=0.000) | 100% [98, 100] | +15 pp [+11, +20], significant (p=0.000) | n/a | 9.9s |
+| `E2_ensemble_glm_deepseek` | 100% [98, 100] | +28 pp [+23, +34], significant (p=0.000) | 100% [98, 100] | +15 pp [+11, +20], significant (p=0.000) | $3.41 (247/327 rows) | 10.6s |
+| `E1_ensemble` | 99% [97, 100] | +28 pp [+22, +34], significant (p=0.000) | 100% [98, 100] | +15 pp [+11, +20], significant (p=0.000) | $15.12 (247/327 rows) | 9.9s |
 | `O3k_glm_calm_claimcheck_bo3` | 99% [97, 100] | +28 pp [+22, +34], significant (p=0.000) | 100% [99, 100] | +15 pp [+11, +20], significant (p=0.000) | $3.18 | 17.1s |
 | `O3l_glm_style_claimcheck_bo3` | 98% [96, 100] | +27 pp [+21, +33], significant (p=0.000) | 100% [99, 100] | +15 pp [+11, +20], significant (p=0.000) | $3.06 | 18.2s |
 | `O3j_glm_bestof3_judged` | 98% [95, 99] | +27 pp [+21, +32], significant (p=0.000) | 99% [96, 100] | +14 pp [+10, +19], significant (p=0.000) | $2.61 | 12.4s |

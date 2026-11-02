@@ -17,7 +17,8 @@ Reference (F1): `frontier-strong:claude-opus-5-5`. 95% CIs in brackets. Δ is a 
 
 | System | Fact-safe human rate | Δ vs reference | G1 invented | G2 lost | G3 tells | G4 gutted | $ / 1k | p50 latency |
 |---|---|---|---|---|---|---|---|---|
-| `E1_ensemble` | 99% [97, 100] | +28 pp [+22, +34], significant (p=0.000) | 99% | 100% | 100% | 100% | n/a | 9.9s |
+| `E2_ensemble_glm_deepseek` | 100% [98, 100] | +28 pp [+23, +34], significant (p=0.000) | 100% | 100% | 100% | 100% | $3.41 (247/327 rows) | 10.6s |
+| `E1_ensemble` | 99% [97, 100] | +28 pp [+22, +34], significant (p=0.000) | 99% | 100% | 100% | 100% | $15.12 (247/327 rows) | 9.9s |
 | `O3k_glm_calm_claimcheck_bo3` | 99% [97, 100] | +28 pp [+22, +34], significant (p=0.000) | 99% | 100% | 100% | 100% | $3.18 | 17.1s |
 | `O3l_glm_style_claimcheck_bo3` | 98% [96, 100] | +27 pp [+21, +33], significant (p=0.000) | 98% | 100% | 100% | 100% | $3.06 | 18.2s |
 | `O3j_glm_bestof3_judged` | 98% [95, 99] | +27 pp [+21, +32], significant (p=0.000) | 98% | 100% | 100% | 100% | $2.61 | 12.4s |
@@ -50,7 +51,8 @@ Gate columns show the share of items that pass each gate. An item a system refus
 
 | System | Fact-safe human rate | Δ vs reference | G1 invented | G2 lost | G3 tells | G4 gutted | $ / 1k | p50 latency |
 |---|---|---|---|---|---|---|---|---|
-| `E1_ensemble` | 99% [96, 100] | +30 pp [+22, +38], significant (p=0.000) | 99% | 100% | 100% | 100% | n/a | 9.9s |
+| `E2_ensemble_glm_deepseek` | 100% [97, 100] | +31 pp [+23, +38], significant (p=0.000) | 100% | 100% | 100% | 100% | $3.41 (247/327 rows) | 10.6s |
+| `E1_ensemble` | 99% [96, 100] | +30 pp [+22, +38], significant (p=0.000) | 99% | 100% | 100% | 100% | $15.12 (247/327 rows) | 9.9s |
 | `O3k_glm_calm_claimcheck_bo3` | 99% [96, 100] | +30 pp [+22, +38], significant (p=0.000) | 99% | 100% | 100% | 100% | $3.18 | 17.1s |
 | `O3j_glm_bestof3_judged` | 98% [95, 100] | +29 pp [+22, +37], significant (p=0.000) | 98% | 100% | 100% | 100% | $2.61 | 12.4s |
 | `O3l_glm_style_claimcheck_bo3` | 98% [95, 100] | +29 pp [+22, +37], significant (p=0.000) | 98% | 100% | 100% | 100% | $3.06 | 18.2s |
@@ -83,7 +85,8 @@ Gate columns show the share of items that pass each gate. An item a system refus
 
 | System | Fact-safe human rate | Δ vs reference | G1 invented | G2 lost | G3 tells | G4 gutted | $ / 1k | p50 latency |
 |---|---|---|---|---|---|---|---|---|
-| `E1_ensemble` | 100% [96, 100] | +31 pp [+22, +40], significant (p=0.000) | 100% | 100% | 100% | 100% | n/a | 9.9s |
+| `E1_ensemble` | 100% [96, 100] | +31 pp [+22, +40], significant (p=0.000) | 100% | 100% | 100% | 100% | $15.12 (247/327 rows) | 9.9s |
+| `E2_ensemble_glm_deepseek` | 100% [96, 100] | +31 pp [+22, +40], significant (p=0.000) | 100% | 100% | 100% | 100% | $3.41 (247/327 rows) | 10.6s |
 | `O3j_glm_bestof3_judged` | 100% [96, 100] | +31 pp [+22, +40], significant (p=0.000) | 100% | 100% | 100% | 100% | $2.61 | 12.4s |
 | `O3k_glm_calm_claimcheck_bo3` | 100% [96, 100] | +31 pp [+22, +40], significant (p=0.000) | 100% | 100% | 100% | 100% | $3.18 | 17.1s |
 | `O3l_glm_style_claimcheck_bo3` | 99% [95, 100] | +30 pp [+21, +39], significant (p=0.000) | 99% | 100% | 100% | 100% | $3.06 | 18.2s |
@@ -116,8 +119,9 @@ Gate columns show the share of items that pass each gate. An item a system refus
 
 | System | Fact-safe human rate | Δ vs reference | G1 invented | G2 lost | G3 tells | G4 gutted | $ / 1k | p50 latency |
 |---|---|---|---|---|---|---|---|---|
+| `E2_ensemble_glm_deepseek` | 100% [88, 100] | +30 pp [+13, +47], significant (p=0.000) | 100% | 100% | 100% | 100% | $3.41 (247/327 rows) | 10.6s |
 | `R3_deepseek_harness` | 100% [88, 100] | +30 pp [+13, +47], significant (p=0.000) | 100% | 100% | 100% | 100% | n/a | 3.4s |
-| `E1_ensemble` | 97% [83, 100] | +27 pp [+13, +43], significant (p=0.000) | 97% | 100% | 100% | 100% | n/a | 9.9s |
+| `E1_ensemble` | 97% [83, 100] | +27 pp [+13, +43], significant (p=0.000) | 97% | 100% | 100% | 100% | $15.12 (247/327 rows) | 9.9s |
 | `O3k_glm_calm_claimcheck_bo3` | 97% [83, 100] | +27 pp [+13, +43], significant (p=0.000) | 97% | 100% | 100% | 100% | $3.18 | 17.1s |
 | `O3l_glm_style_claimcheck_bo3` | 97% [83, 100] | +27 pp [+13, +43], significant (p=0.000) | 97% | 100% | 100% | 100% | $3.06 | 18.2s |
 | `O3m_glm_plainclaim` | 97% [83, 100] | +27 pp [+13, +43], significant (p=0.000) | 97% | 100% | 100% | 100% | $0.91 | 3.0s |
@@ -149,7 +153,8 @@ Gate columns show the share of items that pass each gate. An item a system refus
 
 | System | Fact-safe human rate | Δ vs reference | G1 invented | G2 lost | G3 tells | G4 gutted | $ / 1k | p50 latency |
 |---|---|---|---|---|---|---|---|---|
-| `E1_ensemble` | 99% [95, 100] | +26 pp [+18, +34], significant (p=0.000) | 99% | 100% | 100% | 100% | n/a | 9.9s |
+| `E1_ensemble` | 99% [95, 100] | +26 pp [+18, +34], significant (p=0.000) | 99% | 100% | 100% | 100% | $15.12 (247/327 rows) | 9.9s |
+| `E2_ensemble_glm_deepseek` | 99% [95, 100] | +26 pp [+18, +34], significant (p=0.000) | 99% | 100% | 100% | 100% | $3.41 (247/327 rows) | 10.6s |
 | `O3k_glm_calm_claimcheck_bo3` | 99% [95, 100] | +26 pp [+18, +34], significant (p=0.000) | 99% | 100% | 100% | 100% | $3.18 | 17.1s |
 | `O3c_glm_prompt_harness_style` | 98% [94, 100] | +25 pp [+17, +33], significant (p=0.000) | 98% | 100% | 100% | 100% | $0.81 | 3.4s |
 | `O3l_glm_style_claimcheck_bo3` | 98% [94, 100] | +25 pp [+17, +33], significant (p=0.000) | 98% | 100% | 100% | 100% | $3.06 | 18.2s |
@@ -181,7 +186,8 @@ Gate columns show the share of items that pass each gate. An item a system refus
 
 | System | Fact-safe human rate | Δ vs reference | G1 invented | G2 lost | G3 tells | G4 gutted | $ / 1k | p50 latency |
 |---|---|---|---|---|---|---|---|---|
-| `E1_ensemble` | 99% [94, 100] | +27 pp [+19, +36], significant (p=0.000) | 99% | 100% | 100% | 100% | n/a | 9.9s |
+| `E1_ensemble` | 99% [94, 100] | +27 pp [+19, +36], significant (p=0.000) | 99% | 100% | 100% | 100% | $15.12 (247/327 rows) | 9.9s |
+| `E2_ensemble_glm_deepseek` | 99% [94, 100] | +27 pp [+19, +36], significant (p=0.000) | 99% | 100% | 100% | 100% | $3.41 (247/327 rows) | 10.6s |
 | `O3b_glm_prompt_harness` | 99% [94, 100] | +27 pp [+19, +36], significant (p=0.000) | 99% | 100% | 100% | 100% | $0.54 | 1.7s |
 | `O3c_glm_prompt_harness_style` | 99% [94, 100] | +27 pp [+19, +36], significant (p=0.000) | 99% | 100% | 100% | 100% | $0.81 | 3.4s |
 | `O3j_glm_bestof3_judged` | 99% [94, 100] | +27 pp [+19, +36], significant (p=0.000) | 99% | 100% | 100% | 100% | $2.61 | 12.4s |
@@ -213,7 +219,8 @@ Gate columns show the share of items that pass each gate. An item a system refus
 
 | System | Fact-safe human rate | Δ vs reference | G1 invented | G2 lost | G3 tells | G4 gutted | $ / 1k | p50 latency |
 |---|---|---|---|---|---|---|---|---|
-| `E1_ensemble` | 99% [93, 100] | +23 pp [+14, +32], significant (p=0.000) | 100% | 99% | 100% | 100% | n/a | 9.9s |
+| `E1_ensemble` | 99% [93, 100] | +23 pp [+14, +32], significant (p=0.000) | 100% | 99% | 100% | 100% | $15.12 (247/327 rows) | 9.9s |
+| `E2_ensemble_glm_deepseek` | 99% [93, 100] | +23 pp [+14, +32], significant (p=0.000) | 100% | 99% | 100% | 100% | $3.41 (247/327 rows) | 10.6s |
 | `O3_glm_harness` | 99% [93, 100] | +23 pp [+14, +32], significant (p=0.000) | 100% | 99% | 100% | 100% | $0.28 | 2.7s |
 | `O3j_glm_bestof3_judged` | 99% [93, 100] | +23 pp [+14, +32], significant (p=0.000) | 100% | 99% | 100% | 100% | $2.61 | 12.4s |
 | `O3k_glm_calm_claimcheck_bo3` | 99% [93, 100] | +23 pp [+14, +32], significant (p=0.000) | 100% | 99% | 100% | 100% | $3.18 | 17.1s |
@@ -233,6 +240,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 
 | System | Fact hard-fails | In human range | Stock /100w | Length ratio | Must-keep (crude) |
 |---|---|---|---|---|---|
+| `E2_ensemble_glm_deepseek` | 0/130 (0% [0, 3]) | 71% [70, 72] | 0.02 [0.00, 0.04] | 0.89 [0.88, 0.91] | 90% [87, 93] |
 | `E1_ensemble` | 1/130 (1% [0, 4]) | 71% [70, 73] | 0.01 [0.00, 0.03] | 0.89 [0.87, 0.91] | 90% [87, 93] |
 | `O3k_glm_calm_claimcheck_bo3` | 1/130 (1% [0, 4]) | 74% [72, 75] | 0.02 [0.00, 0.04] | 0.94 [0.92, 0.96] | 92% [89, 94] |
 | `O3j_glm_bestof3_judged` | 2/130 (2% [0, 5]) | 71% [70, 72] | 0.00 [0.00, 0.00] | 0.89 [0.87, 0.91] | 90% [87, 92] |
