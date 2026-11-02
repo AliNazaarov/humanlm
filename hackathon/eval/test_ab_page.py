@@ -72,6 +72,30 @@ class TestExportVotes(unittest.TestCase):
         self.assertEqual([(r["pid"], r["vote"], r["winner"]) for r in rs], [(1, "B", "sys-k"), (2, "tie", None)])
         self.assertEqual(len(dropped), 1)  # unknown version; the duplicate paste is ignored, not dropped
 
+    def test_local_storage_dump(self):
+        saved = {"ballot": "b2", "local": self.DUMP[0]["data"]}
+        rs = ev.from_local(saved, self.SETS, [], "venue-mac")
+        self.assertEqual(len(rs), 3)
+        self.assertEqual({r["source"] for r in rs}, {"local"})
+        self.assertEqual(rs[0]["ballot"], "venue-mac:b1")
+
+    def test_local_beats_duplicate_code(self):
+        with tempfile.TemporaryDirectory() as d:
+            ab, pub = os.path.join(d, "ab.json"), os.path.join(d, "pub.json")
+            loc, codes, out = (os.path.join(d, n) for n in ("mac.json", "codes.txt", "out.jsonl"))
+            with open(loc, "w") as f: json.dump(json.dumps({"ballot": "bxyz123", "local": {"ballots": {
+                "bxyz123": {"version": VER, "picks": {"1": {"pick": "a"}, "2": {"pick": "b"}}}}}}), f)  # copy() gives a string
+            with open(codes, "w") as f: f.write(f"FLM1:{VER[:8]}:xyz123:ab FLM1:{VER[:8]}:other1:tt")
+            orig = ev.load_sets
+            ev.load_sets = lambda revs: self.SETS
+            try:
+                self.assertEqual(ev.main(["--local", loc, "--codes", codes, "--out", out]), 0)
+            finally:
+                ev.load_sets = orig
+            with open(out) as f: rows = [json.loads(l) for l in f]
+            self.assertEqual(sorted({r["source"] for r in rows}), ["code", "local"])
+            self.assertEqual(len(rows), 4)  # 2 local + 2 from the other code; the duplicate code is skipped
+
     def test_telegram_groups_map_through_pairs(self):
         votes = {"votes": [{"pid": 1, "choice": "X", "version": VER, "voter_hash": "h1"},   # X = sys-k = pair 1's b
                            {"pid": 2, "choice": "X", "version": VER, "voter_hash": "h1"},   # X = sys-k = pair 2's a

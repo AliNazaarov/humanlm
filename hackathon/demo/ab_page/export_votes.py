@@ -1,5 +1,5 @@
 """Merge every human A/B vote into hackathon/report/human_ab.jsonl.
-Usage: export_votes.py [--store DUMP.json] [--codes CODES.txt ...] [--telegram VOTES.json ...]
+Usage: export_votes.py [--store DUMP.json] [--local LOCALSTORAGE.json ...] [--codes CODES.txt ...] [--telegram VOTES.json ...]
                        [--rev GITREV ...] [--out OUT.jsonl]
 
 Pair sets: the current hackathon/demo/ab_pairs.json + ab_page/pairs.json, plus the same two files at each --rev
@@ -7,6 +7,8 @@ Pair sets: the current hackathon/demo/ab_pairs.json + ab_page/pairs.json, plus t
 versions never mix; votes for an unknown version are counted and dropped.
 Sources:
   --store     the page's `votes` collection (ArtifactData list: [{id, data: {ballots: {bid: {version, picks}}}}])
+  --local     the page's localStorage from one device (all ballots ever cast on it, e.g. a hand-around laptop):
+              in that browser's console run  copy(localStorage.getItem("ab-read-v1"))  and paste into a .json file
   --codes     any text holding codes from the page's done screen: FLM1:<version 8>:<ballot 6>:<a|b|t|- per pid>
   --telegram  Ali's hosted page: a JSON list (or {"votes": [...]}) of {pid, choice: X|Y|tie|both_bad, version,
               voter|voter_hash, ballot?}; X/Y are the opaque groups in that version's pairs.json
@@ -78,6 +80,15 @@ def from_store(dump, sets: dict, dropped: list) -> list[dict]:
     return out
 
 
+def from_local(saved: dict, sets: dict, dropped: list, device: str) -> list[dict]:
+    """One device's localStorage value {ballot, local: {ballots}}: every ballot on it, source 'local'."""
+    doc = {"id": f"device:{device}", "data": (saved or {}).get("local") or {}}
+    rows = from_store([doc], sets, dropped)
+    for r in rows:
+        r["source"], r["ballot"] = "local", f"{device}:{r['ballot']}"
+    return rows
+
+
 def from_codes(text: str, sets: dict, dropped: list) -> list[dict]:
     out, seen = [], set()
     for ver, tail, seq in CODE.findall(text):
@@ -123,17 +134,25 @@ def from_telegram(votes, sets: dict, dropped: list) -> list[dict]:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--store"); ap.add_argument("--codes", action="append", default=[])
+    ap.add_argument("--store"); ap.add_argument("--local", action="append", default=[])
+    ap.add_argument("--codes", action="append", default=[])
     ap.add_argument("--telegram", action="append", default=[]); ap.add_argument("--rev", action="append", default=[])
     ap.add_argument("--out", default=OUT)
     a = ap.parse_args(argv)
-    if not (a.store or a.codes or a.telegram):
+    if not (a.store or a.local or a.codes or a.telegram):
         ap.print_help(); return 1
     sets, dropped, rs = load_sets(a.rev), [], []
     if a.store:
         rs += from_store(json.load(open(a.store, encoding="utf-8")), sets, dropped)
+    for f in a.local:
+        raw = json.load(open(f, encoding="utf-8"))
+        rs += from_local(json.loads(raw) if isinstance(raw, str) else raw, sets, dropped,
+                         os.path.splitext(os.path.basename(f))[0])
+    # A code duplicates a local ballot from the same device (same version + ballot tail): keep the local copy.
+    have = {(r["version"][:8], r["ballot"].rsplit(":", 1)[-1][-6:]) for r in rs if r["source"] == "local"}
     for f in a.codes:
-        rs += from_codes(open(f, encoding="utf-8").read(), sets, dropped)
+        rs += [r for r in from_codes(open(f, encoding="utf-8").read(), sets, dropped)
+               if (r["version"][:8], r["ballot"].rsplit(":", 1)[-1]) not in have]
     for f in a.telegram:
         rs += from_telegram(json.load(open(f, encoding="utf-8")), sets, dropped)
     os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)
