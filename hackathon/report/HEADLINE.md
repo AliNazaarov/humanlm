@@ -32,12 +32,12 @@ Fact-safe human rewrite rate on 247 items (eval 130 + held-out 117), 95% CI; Δ 
 | `X0_copy_draft (no rewrite: control)` | 32% [26, 38] | -40 pp [-47, -32], significant (p=0.000) | 32% [26, 38] | -53 pp [-60, -46], significant (p=0.000) | n/a | 0.0s |
 | `O1_glm_base` | 27% [21, 33] | -45 pp [-52, -37], significant (p=0.000) | 30% [24, 36] | -55 pp [-62, -49], significant (p=0.000) | $0.10 | 1.2s |
 | `frontier-persona-preexisting` (130 items) | 12% [7, 19] | -57 pp [-66, -48], significant (p=0.000) | 16% [10, 24] | -66 pp [-74, -58], significant (p=0.000) | n/a | n/a |
-| `L2h_qwen3_4b_dpo_harness` (100 items) | 7% [3, 14] | -62 pp [-72, -52], significant (p=0.000) | 8% [4, 15] | -74 pp [-82, -65], significant (p=0.000) | n/a | 51.3s |
+| `L2h_qwen3_4b_dpo_harness` (100 items) | 8% [4, 15] | -61 pp [-71, -50], significant (p=0.000) | 9% [4, 16] | -73 pp [-82, -64], significant (p=0.000) | n/a | 51.4s |
 
 Human preference, O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-5 (blind A/B; FeatherLM / Claude / tie):
 
-- page: 59 / 87 / 52 (42 voter(s), 198 votes, sign test p=0.025); includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors
-- page, without 11 ballot(s) that were position-only or faster than 6 s per pick: 43 / 71 / 29 (sign test p=0.011)
+- page: 64 / 89 / 56 (45 voter(s), 209 votes, sign test p=0.052); includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors
+- page, without 11 ballot(s) that were position-only or faster than 6 s per pick: 48 / 73 / 33 (sign test p=0.029)
 - Not counted: Ali reports 5 Minerva classmates gave the same answer (preferred the Claude side) in an informal, unlogged session; not counted as data.
 
 Judge vs human on style (item level, `O3c_glm_prompt_harness_style` vs Claude strong, 17 items with a human majority): kimi-k3: agrees 4, disagrees 6; qwen3p8-max: agrees 3, disagrees 7. Small n; the LLM judges' style verdicts are not validated against readers.

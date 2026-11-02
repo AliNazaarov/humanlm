@@ -47,7 +47,7 @@ Reference (F1): `frontier-strong:claude-opus-5-5`. 95% CIs in brackets. Δ is a 
 | `X0_copy_draft (no rewrite: control)` | 32% [26, 38] | -40 pp [-47, -32], significant (p=0.000) | 100% | 100% | 32% | 100% | n/a | 0.0s |
 | `O1_glm_base` | 27% [21, 33] | -45 pp [-52, -37], significant (p=0.000) | 91% | 81% | 33% | 100% | $0.10 | 1.2s |
 | `frontier-persona-preexisting` (117 not run) | 12% [7, 19] | -57 pp [-66, -48], significant (p=0.000) | 70% | 56% | 99% | 25% | n/a | n/a |
-| `L2h_qwen3_4b_dpo_harness` (147 not run) (83 refused/failed, counted as fails) | 7% [3, 14] | -62 pp [-72, -52], significant (p=0.000) | 100% | 16% | 92% | 16% | n/a | 51.3s |
+| `L2h_qwen3_4b_dpo_harness` (147 not run) (82 refused/failed, counted as fails) | 8% [4, 15] | -61 pp [-71, -50], significant (p=0.000) | 100% | 17% | 92% | 17% | n/a | 51.4s |
 
 Gate columns show the share of items that pass each gate. An item a system refused or failed is scored as an empty rewrite (G1 and G3 pass, G2 and G4 fail), so it counts against that system.
 
@@ -85,7 +85,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | `O1_glm_base` | 15% [10, 23] | -54 pp [-63, -45], significant (p=0.000) | 94% | 75% | 19% | 100% | $0.10 | 1.2s |
 | `frontier-persona-preexisting` | 12% [7, 19] | -57 pp [-66, -48], significant (p=0.000) | 70% | 56% | 99% | 25% | n/a | n/a |
 | `X0_copy_draft (no rewrite: control)` | 9% [5, 16] | -60 pp [-68, -51], significant (p=0.000) | 100% | 100% | 9% | 100% | n/a | 0.0s |
-| `L2h_qwen3_4b_dpo_harness` (30 not run) (83 refused/failed, counted as fails) | 7% [3, 14] | -62 pp [-72, -52], significant (p=0.000) | 100% | 16% | 92% | 16% | n/a | 51.3s |
+| `L2h_qwen3_4b_dpo_harness` (30 not run) (82 refused/failed, counted as fails) | 8% [4, 15] | -61 pp [-71, -50], significant (p=0.000) | 100% | 17% | 92% | 17% | n/a | 51.4s |
 
 Gate columns show the share of items that pass each gate. An item a system refused or failed is scored as an empty rewrite (G1 and G3 pass, G2 and G4 fail), so it counts against that system.
 
@@ -121,7 +121,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | `O1_glm_base` | 15% [9, 24] | -54 pp [-64, -43], significant (p=0.000) | 97% | 75% | 17% | 100% | $0.10 | 1.2s |
 | `O4c_glm_sft_clean` | 12% [6, 20] | -57 pp [-67, -46], significant (p=0.000) | 99% | 89% | 22% | 91% | n/a | 1.3s |
 | `O4m_glm_sft_modern` | 9% [4, 16] | -60 pp [-69, -50], significant (p=0.000) | 94% | 81% | 27% | 79% | n/a | 1.2s |
-| `L2h_qwen3_4b_dpo_harness` (83 refused/failed, counted as fails) | 7% [3, 14] | -62 pp [-72, -52], significant (p=0.000) | 100% | 16% | 92% | 16% | n/a | 51.3s |
+| `L2h_qwen3_4b_dpo_harness` (82 refused/failed, counted as fails) | 8% [4, 15] | -61 pp [-71, -50], significant (p=0.000) | 100% | 17% | 92% | 17% | n/a | 51.4s |
 | `frontier-persona-preexisting` | 5% [2, 11] | -64 pp [-74, -53], significant (p=0.000) | 72% | 54% | 100% | 13% | n/a | n/a |
 | `X0_copy_draft (no rewrite: control)` | 2% [0, 7] | -67 pp [-76, -57], significant (p=0.000) | 100% | 100% | 2% | 100% | n/a | 0.0s |
 
@@ -293,7 +293,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | `O1_glm_base` | 8/130 (6% [3, 12]) | 62% [61, 64] | 0.55 [0.39, 0.73] | 0.98 [0.97, 0.99] | 88% [84, 90] |
 | `frontier-persona-preexisting` | 39/130 (30% [22, 39]) | 70% [69, 72] | 0.02 [0.00, 0.05] | 0.61 [0.59, 0.65] | 91% [89, 94] |
 | `X0_copy_draft (no rewrite: control)` | 0/130 (0% [0, 3]) | 54% [52, 55] | 1.31 [1.06, 1.57] | 1.00 [1.00, 1.00] | 92% [89, 94] |
-| `L2h_qwen3_4b_dpo_harness` | 0/100 (0% [0, 4]) | 66% [62, 70] | 0.00 [0.00, 0.00] | 0.92 [0.85, 1.00] | 93% [87, 98] |
+| `L2h_qwen3_4b_dpo_harness` | 0/100 (0% [0, 4]) | 66% [62, 70] | 0.00 [0.00, 0.00] | 0.94 [0.86, 1.03] | 93% [87, 98] |
 
 ## Pairwise judge (both orders; a win needs both orders to agree)
 
