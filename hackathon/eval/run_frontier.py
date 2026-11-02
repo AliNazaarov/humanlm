@@ -389,8 +389,14 @@ def is_heldout(eval_path: str) -> bool:
     return "heldout" in os.path.basename(eval_path)
 
 
+def split_suffix(eval_path: str) -> str:
+    """'' for eval_all, '_heldout' for heldout_pairs, '_real' for real_readmes: keeps run files and manifests apart."""
+    name = os.path.basename(eval_path)
+    return "_heldout" if "heldout" in name else "_real" if "real" in name else ""
+
+
 def default_out(arm: str, model: str, eval_path: str) -> str:
-    return os.path.join(OUT_DIR, f"hack_{arm}_{slug(model)}{'_heldout' if is_heldout(eval_path) else ''}.jsonl")
+    return os.path.join(OUT_DIR, f"hack_{arm}_{slug(model)}{split_suffix(eval_path)}.jsonl")
 
 
 def sha256_text(text: str) -> str:
@@ -463,7 +469,7 @@ def write_manifest(m: dict, eval_path: str, runs_dir: str | None = None) -> str:
     """hackathon/runs/<slug(label)>[_heldout].json; the suffix keeps the two eval sets from overwriting."""
     runs_dir = runs_dir or RUNS_DIR
     os.makedirs(runs_dir, exist_ok=True)
-    path = os.path.join(runs_dir, slug(m["system"]) + ("_heldout" if is_heldout(eval_path) else "") + ".json")
+    path = os.path.join(runs_dir, slug(m["system"]) + split_suffix(eval_path) + ".json")
     with open(path, "w", encoding="utf-8") as f:
         json.dump(m, f, indent=2)
         f.write("\n")
