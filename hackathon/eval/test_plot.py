@@ -71,6 +71,12 @@ class TestNotes(unittest.TestCase):
         self.assertAlmostEqual(r, 98.0)
         self.assertEqual((head, delta), (" · lenient 98.0%", " · lenient +13.2 pp sig"))
 
+    def test_short_labels(self):
+        self.assertEqual([pl.short(x) for x in ("O3c_glm_prompt_harness_style", "F1H_opus_harness", "F1h_opus_humanizer",
+                                                 "frontier-strong:claude-opus-5-5", "frontier-live:claude-opus-5-5",
+                                                 "frontier-persona-preexisting", "X0_copy_draft (no rewrite: control)")],
+                         ["O3c", "F1H", "F1h", "F1 strong", "F1 live", "persona", "X0"])
+
     def test_cost_note(self):
         self.assertEqual(pl.cost_note({"cost_per_1k_usd": 8.925, "latency_ms": {"p50": 3867.0}}),
                          "$8.93 per 1k rewrites · 3.9 s p50")

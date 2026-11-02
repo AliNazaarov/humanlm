@@ -178,30 +178,57 @@ def _leaderboard(ax, rows: list[tuple], name: str, n_items, notes: dict[str, str
     ax.set_axisbelow(True)
 
 
-# Label positions tried in order (offset in points, alignment); far ones get a leader line.
-_SPOTS = [(7, 4, "left"), (-8, 4, "right"), (7, -24, "left"), (-8, -24, "right"), (12, 22, "left"),
-          (-12, 22, "right"), (16, -46, "left"), (-16, -46, "right"), (40, 0, "left"), (-40, 0, "right")]
+# Label positions tried in order (offset in points, alignment): four snug spots, then rings of 8 directions at
+# growing distance; ring spots get a leader line.
+_SNUG = [(7, 4, "left"), (-8, 4, "right"), (7, -24, "left"), (-8, -24, "right")]
+_RINGS = [(round(d * math.cos(t)), round(d * math.sin(t)) - 8, "left" if math.cos(t) >= 0 else "right")
+          for d in (34, 56, 80) for t in [k * math.pi / 4 for k in (0, 4, 1, 3, 7, 5, 2, 6)]]
+_SPOTS = _SNUG + _RINGS
+
+
+def short(label: str) -> str:
+    """Point label on the cost panel: the system code ('O3c', 'F1H', 'X0'), or 'F1 strong' / 'F1 live' / 'persona'."""
+    if label.startswith("frontier-"):
+        kind = label.split(":")[0].removeprefix("frontier-")
+        return {"strong": "F1 strong", "live": "F1 live", "persona-preexisting": "persona"}.get(kind, kind)
+    return label.split("_")[0].split(" ")[0]
+
+
+def _area(a: Bbox, b: Bbox) -> float:
+    w = min(a.x1, b.x1) - max(a.x0, b.x0)
+    h = min(a.y1, b.y1) - max(a.y0, b.y0)
+    return w * h if w > 0 and h > 0 else 0.0
 
 
 def _place_labels(ax, points: list[tuple]) -> None:
-    """Greedy: highest rate first, each label at the first spot whose box hits no earlier label and no point."""
+    """Greedy: highest rate first, each label at the first spot whose box hits no earlier label, no point and stays
+    inside the axes; if none is free, the spot with the least overlap."""
     r = ax.figure.canvas.get_renderer()
+    frame = ax.get_window_extent(r)
     pts = [Bbox.from_bounds(x - 7, y - 7, 14, 14) for x, y in ax.transData.transform([(p[1], p[2]) for p in points])]
     boxes = []
     for lab, cost, rate, p50, is_ref in sorted(points, key=lambda p: (-p[2], p[1])):
-        txt = lab + (f"\n{p50:.1f} s p50" if p50 is not None else "")
+        txt = short(lab) + (f" · {p50:.1f} s" if p50 is not None else "")
+        best = None
         for i, (dx, dy, ha) in enumerate(_SPOTS):
             a = ax.annotate(txt, (cost, rate), xytext=(dx, dy), textcoords="offset points", ha=ha, fontsize=8.5,
-                            color=INK, arrowprops=dict(arrowstyle="-", color=INK2, lw=0.6) if i >= 4 else None)
+                            color=INK, arrowprops=dict(arrowstyle="-", color=INK2, lw=0.7, shrinkA=1, shrinkB=5))
             bb = a.get_window_extent(r).expanded(1.03, 1.08)
-            if i == len(_SPOTS) - 1 or not any(bb.overlaps(b) for b in boxes + pts):
-                boxes.append(bb)
+            clash = sum(_area(bb, o) for o in boxes + pts) + bb.width * bb.height - _area(bb, frame)
+            if best is None or clash < best[0]:  # keep only the best try so far on the axes
+                if best is not None:
+                    best[1].remove()
+                best = (clash, a, bb)
+            else:
+                a.remove()
+            if clash == 0:
                 break
-            a.remove()
+        boxes.append(best[2])
 
 
 def _pareto(ax, points: list[tuple], no_cost: list[str], name: str) -> None:
-    ax.set_title(f"Pass rate vs cost (block '{name}')", loc="left", fontsize=12, color=INK)
+    ax.set_title(f"Pass rate vs cost (block '{name}'; label = system code · p50 latency)", loc="left", fontsize=12,
+                 color=INK)
     ax.set_ylabel("Fact-safe human rate (%)")
     ax.set_xlabel("$ per 1k rewrites (log scale, whole run)")
     if points:
@@ -228,7 +255,8 @@ def _pareto(ax, points: list[tuple], no_cost: list[str], name: str) -> None:
     ax.grid(color=GRID, zorder=0)
     ax.set_axisbelow(True)
     if no_cost:
-        ax.text(0, -0.24, "not on the log axis (cost unknown or $0): " + ", ".join(no_cost), transform=ax.transAxes, fontsize=8.5,
+        ax.text(0, 0, "not on the log axis (cost unknown or $0): " + ", ".join(no_cost), fontsize=8.5,
+                transform=offset_copy(ax.transAxes, fig=ax.figure, y=-58, units="points"),
                 color=INK2, va="top", wrap=True)
 
 
@@ -255,19 +283,24 @@ def render(res: dict, name: str, out: str) -> str:
                          "xtick.color": INK2, "ytick.color": INK, "axes.spines.top": False,
                          "axes.spines.right": False})
     # Leaderboard across the top with its notes in a wide right-hand column; Pareto and gates share the bottom row.
-    fig = plt.figure(figsize=(16, 13), dpi=100, facecolor="white")
+    # Heights in inches grow with the row count so three-line row notes never touch: top, board, gap, bottom, margin.
+    n = max(len(rows), 1)
+    top, board, gap, bottom, margin = 1.15, max(4.2, 0.52 * n + 0.5), 1.3, max(3.0, 0.24 * n + 0.4), 1.0
+    H = top + board + gap + bottom + margin
+    fig = plt.figure(figsize=(16, H), dpi=100, facecolor="white")
     meta = {s.get("label"): s for s in res.get("systems") or []}
     notes = {e.get("label"): coverage_note(e, b.get("n_items", "?")) + " · " + cost_note(meta.get(e.get("label")) or {})
              for e in b["systems"]}
     lenient = {e.get("label"): lenient_bits(e) for e in b["systems"] if lenient_bits(e)[0] is not None}
-    _leaderboard(fig.add_axes((0.22, 0.46, 0.40, 0.45)), rows, name, b.get("n_items", "?"), notes, lenient)
-    _pareto(fig.add_axes((0.06, 0.10, 0.34, 0.25)), points, no_cost, name)
-    _gates(fig.add_axes((0.62, 0.06, 0.35, 0.30)), *gate_rows(b))
-    fig.suptitle("FeatherLM: fact-safe human rewrite rate vs the frontier reference", x=0.015, ha="left",
-                 fontsize=16, fontweight="bold", color=INK)
+    _leaderboard(fig.add_axes((0.22, (margin + bottom + gap) / H, 0.40, board / H)), rows, name,
+                 b.get("n_items", "?"), notes, lenient)
+    _pareto(fig.add_axes((0.06, margin / H, 0.34, bottom / H)), points, no_cost, name)
+    _gates(fig.add_axes((0.62, (margin - 0.4) / H, 0.35, (bottom + 0.45) / H)), *gate_rows(b))
+    fig.suptitle("FeatherLM: fact-safe human rewrite rate vs the frontier reference", x=0.015, y=1 - 0.3 / H,
+                 ha="left", fontsize=16, fontweight="bold", color=INK)
     ref_line = (f"Reference (hatched orange): {ref}." if any(r[5] for r in rows)
                 else f"Reference {ref} is not in this block, so no Δ is shown.")
-    fig.text(0.015, 0.935, ref_line + " Δ = paired bootstrap on shared items; significant when p < 0.05. "
+    fig.text(0.015, 1 - 0.75 / H, ref_line + " Δ = paired bootstrap on shared items; significant when p < 0.05. "
              "Each rate is over that system's n. Failed rows stay in.", fontsize=10, color=INK2)
     os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
     fig.savefig(out, dpi=100, facecolor="white")
