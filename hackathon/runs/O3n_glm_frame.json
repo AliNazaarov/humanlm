@@ -1,0 +1,36 @@
+{
+ "system": "O3n_glm_frame",
+ "provider": "fireworks",
+ "model": "accounts/fireworks/models/glm-5p3-flash",
+ "loops": 3,
+ "prompt_sha256": "0772e1efcbe1eb4f",
+ "prompt_file": "hackathon/train/prompt_O3n_glm_frame.txt",
+ "decoding": {
+  "max_tokens": 1500,
+  "temperature": 0.7,
+  "top_p": 0.9,
+  "reasoning_effort": "low"
+ },
+ "style_round": "basic",
+ "retrieve": 0,
+ "claim_check": null,
+ "anti_copy": false,
+ "best_of": 1,
+ "select_judge_model": null,
+ "select": null,
+ "strict_claims": false,
+ "judge_prices_usd_per_m": [
+  0.0,
+  0.0
+ ],
+ "prices_usd_per_m": [
+  0.0,
+  0.0
+ ],
+ "eval": "evals/eval_all.jsonl",
+ "rows": 130,
+ "pass_rate": 0.9384615384615385,
+ "empty_outputs": [],
+ "commit": "4744ec86285289b2527721ddbcc43d4bacf7d2e0",
+ "finished": "2026-11-02T13:38:14-0800"
+}
