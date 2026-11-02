@@ -248,6 +248,26 @@
      "tagline": 0.0
     }
    },
+   "L2h_qwen3_4b_dpo_harness": {
+    "any_share": 0.3333333333333333,
+    "ids_with_tells": [
+     "dev-002",
+     "dev-006",
+     "dev-009",
+     "dev-013",
+     "dev-014",
+     "dev-016"
+    ],
+    "n": 18,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 27.77777777777778,
+     "hook": 0.0,
+     "rhetorical_qa": 5.555555555555555,
+     "slogan": 11.11111111111111,
+     "tagline": 0.0
+    }
+   },
    "O1_glm_base": {
     "any_share": 0.2846153846153846,
     "ids_with_tells": [
@@ -718,6 +738,32 @@
      "tagline": 0.7692307692307693
     }
    },
+   "O3h_glm_humanizer_harness_style": {
+    "any_share": 0.19672131147540983,
+    "ids_with_tells": [
+     "dev-002",
+     "dev-003",
+     "dev-008",
+     "dev-009",
+     "dev-010",
+     "dev-013",
+     "dev-021",
+     "dev-052",
+     "dev-054",
+     "dev-059",
+     "dev-063",
+     "dev-066"
+    ],
+    "n": 61,
+    "per_100_outputs": {
+     "echo": 1.639344262295082,
+     "fragment_run": 13.114754098360656,
+     "hook": 4.918032786885246,
+     "rhetorical_qa": 3.278688524590164,
+     "slogan": 3.278688524590164,
+     "tagline": 3.278688524590164
+    }
+   },
    "O3j_glm_bestof3_judged": {
     "any_share": 0.3384615384615385,
     "ids_with_tells": [
@@ -1161,6 +1207,54 @@
      "rhetorical_qa": 10.0,
      "slogan": 6.153846153846154,
      "tagline": 1.5384615384615385
+    }
+   },
+   "R3t_deepseek_ali_taste": {
+    "any_share": 0.26153846153846155,
+    "ids_with_tells": [
+     "dev-002",
+     "dev-003",
+     "dev-004",
+     "dev-006",
+     "dev-008",
+     "dev-009",
+     "dev-012",
+     "dev-013",
+     "dev-018",
+     "dev-021",
+     "dev-028",
+     "dev-029",
+     "dev-031",
+     "dev-053",
+     "dev-054",
+     "dev-058",
+     "dev-059",
+     "dev-061",
+     "dev-063",
+     "dev-064",
+     "dev-066",
+     "dev-071",
+     "dev-072",
+     "dev-073",
+     "dev-077",
+     "dev-078",
+     "dev-087",
+     "dev-098",
+     "trick-02",
+     "trick-08",
+     "trick-10",
+     "trick-18",
+     "trick-29",
+     "trick-30"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 4.615384615384615,
+     "fragment_run": 18.46153846153846,
+     "hook": 6.153846153846154,
+     "rhetorical_qa": 3.8461538461538463,
+     "slogan": 1.5384615384615385,
+     "tagline": 0.7692307692307693
     }
    },
    "WF_Pairwise_both_orders_knockout_selector_with_fact_aware_eligibility_replace_the_1_10_judge_score_": {
@@ -1637,6 +1731,25 @@
      "tagline": 0.0
     }
    },
+   "O3h_glm_humanizer_harness_style": {
+    "any_share": 0.08333333333333333,
+    "ids_with_tells": [
+     "ho-009",
+     "ho-029",
+     "ho-033",
+     "ho-035",
+     "ho-063"
+    ],
+    "n": 60,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 1.6666666666666667,
+     "hook": 0.0,
+     "rhetorical_qa": 10.0,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
    "O3j_glm_bestof3_judged": {
     "any_share": 0.125,
     "ids_with_tells": [
@@ -1793,14 +1906,18 @@
     }
    },
    "O4c_glm_sft_clean": {
-    "any_share": 0.0,
-    "ids_with_tells": [],
-    "n": 76,
+    "any_share": 0.025,
+    "ids_with_tells": [
+     "ho-082",
+     "ho-087",
+     "ho-108"
+    ],
+    "n": 120,
     "per_100_outputs": {
      "echo": 0.0,
-     "fragment_run": 0.0,
+     "fragment_run": 0.8333333333333334,
      "hook": 0.0,
-     "rhetorical_qa": 0.0,
+     "rhetorical_qa": 2.5,
      "slogan": 0.0,
      "tagline": 0.0
     }
@@ -1841,6 +1958,25 @@
      "fragment_run": 2.5,
      "hook": 1.6666666666666667,
      "rhetorical_qa": 5.833333333333333,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "R3t_deepseek_ali_taste": {
+    "any_share": 0.041666666666666664,
+    "ids_with_tells": [
+     "ho-029",
+     "ho-063",
+     "ho-082",
+     "ho-087",
+     "ho-118"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 1.6666666666666667,
+     "hook": 0.8333333333333334,
+     "rhetorical_qa": 4.166666666666667,
      "slogan": 0.0,
      "tagline": 0.0
     }
