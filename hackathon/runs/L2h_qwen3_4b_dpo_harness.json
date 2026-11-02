@@ -32,6 +32,8 @@
  "empty_outputs": [],
  "commit": "9346d8278b64b0364e47f3e5be0d357a1629dfcb",
  "finished": "2026-11-02T15:02:09-0800",
- "notes": "LOCAL ROW, not Fireworks: Qwen3-4B-Instruct-2507-4bit + LoRA L1 (SFT, 100 iters) + L2 (DPO) trained and served with mlx-lm on Ali's Mac (M4, 16 GB). PARTIAL: 18 of 130 eval_all items (first 18 in file order), time-boxed before the 15:10 PT push; the rest were not generated. O3c recipe (prompt_v2, --loops 3, --style-round), decoding temperature 0.7 / top_p 0.9 / max_tokens 600. Training facts: hackathon/train/TRAIN_LOG.md, 'Local L1/L2 (Mac, MLX)'.",
- "items_total": 130
+ "notes": "LOCAL ROW, not Fireworks: Qwen3-4B-Instruct-2507-4bit + LoRA L1 (SFT, 100 iters) + L2 (DPO) trained and served with mlx-lm on Ali's Mac (M4, 16 GB). PARTIAL: 18 of 130 eval_all items (first 18 in file order), time-boxed before the 15:10 PT push; the rest were not generated. O3c recipe (prompt_v2, --loops 3, --style-round), decoding temperature 0.7 / top_p 0.9 / max_tokens 600. Training facts: hackathon/train/TRAIN_LOG.md, 'Local L1/L2 (Mac, MLX)'. DISCLOSURE: the harness actually finished 41 items (dev-001..dev-041; 15 of 41 passed the gates per hackathon/train/mlx_local/eval_L2h_harness.log), but the finalisation step kept only the first 18 rows and overwrote the other 23 outputs, which are lost. The 18-row file and its 8/18 pass rate are what remains; the 41-item pass/fail list is in the committed log.",
+ "items_total": 130,
+ "items_generated_per_log": 41,
+ "passed_per_log": 15
 }

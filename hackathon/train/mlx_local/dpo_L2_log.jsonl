@@ -1,0 +1,14 @@
+{"step": 5, "loss": 0.4301, "margin": 1.3719, "acc": 0.4, "sec": 108}
+{"step": 10, "loss": 0.2356, "margin": 3.1461, "acc": 0.7, "sec": 204}
+{"step": 15, "loss": 0.0686, "margin": 8.6242, "acc": 0.8, "sec": 327}
+{"step": 20, "loss": 0.0036, "margin": 13.9125, "acc": 0.85, "sec": 417}
+{"step": 25, "loss": 0.0, "margin": 18.6875, "acc": 0.88, "sec": 496}
+{"step": 30, "loss": 0.002, "margin": 15.7063, "acc": 0.9, "sec": 571}
+{"step": 35, "loss": 0.0004, "margin": 12.3438, "acc": 0.914, "sec": 648}
+{"step": 40, "loss": 0.0004, "margin": 25.4125, "acc": 0.925, "sec": 733}
+{"step": 45, "loss": 0.0001, "margin": 16.1875, "acc": 0.933, "sec": 826}
+{"step": 50, "loss": 0.0, "margin": 27.4, "acc": 0.94, "sec": 935}
+{"step": 55, "loss": 0.0, "margin": 19.4125, "acc": 0.945, "sec": 1049}
+{"step": 60, "loss": 0.0104, "margin": 16.5813, "acc": 0.95, "sec": 1149}
+{"step": 65, "loss": 0.0011, "margin": 17.5562, "acc": 0.954, "sec": 1275}
+{"step": 70, "loss": 0.0296, "margin": 19.2203, "acc": 0.957, "sec": 1387}

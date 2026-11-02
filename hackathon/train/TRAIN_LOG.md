@@ -163,3 +163,9 @@ Status: **trained and promoted (READY 14:35 PT); not deployed or evaluated yet.*
 | Deployment | `humanlm-sftc` (same shape as `humanlm-o4m`) **not created by this agent**: the create call was blocked by the agent's permission system ("real-world transactions" need the user's own go-ahead in that session) |
 
 - Deployment for SFT C eval: `humanlm-sftc` (4x B300 FP8 shape, 1 replica) created 14:36:45 PT by Ruslan's session (Ruslan approved one brief deployment in that session); sampled with no harness (`--loops 0`) on eval_all + heldout, then deleted with `?ignoreChecks=true`. READY 14:48:49 PT; sampled 14:48:52 to 14:49:40; DELETE (ignoreChecks) at 14:49:40 PT, state DELETING confirmed. About 13 min from create, roughly $13 at the ~$60/h shape price (estimate, not a bill). Result (score_all, strict gates, no harness): SFT C 93/247 (37.7%) vs SFT B 81/247 (32.8%) vs base O1 66/247 (26.7%); heldout_clean 60/96 vs 49/96. Paired bootstrap SFT C - SFT B on 247: +4.9 pp [0.0, +9.7], p=0.056 (not significant). G1/G2 improve (invented 7% vs 10%, lost 15% vs 21% on all 247); G3 AI tells on dev+trick stay the main fail (32% pass).
+
+### L2h row outcome (15:02 PT)
+- `evals/runs/hack_L2h_qwen3_4b_dpo_harness.jsonl`: 18 rows (dev-001..dev-018), gates pass 8/18 = 0.444; manifest `hackathon/runs/L2h_qwen3_4b_dpo_harness.json`.
+- Disclosure: the harness log (`hackathon/train/mlx_local/eval_L2h_harness.log`) shows 41 items finished before the stop (dev-001..dev-041), 15/41 passing. The finalisation script kept only the contiguous first 18 rows and overwrote the other 23 outputs, which are lost. Both numbers are reported; the row file is the 18.
+- DPO step log: `hackathon/train/mlx_local/dpo_L2_log.jsonl`.
+- Server stopped 15:02 PT. No heldout rows, no L1/L2 --loops 0 rows (time).
