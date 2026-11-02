@@ -5,10 +5,12 @@ Fact-safe human rewrite rate on 247 items (eval 130 + held-out 117), 95% CI; Δ 
 | `O3k_glm_calm_claimcheck_bo3` | 99% [97, 100] | +28 pp [+22, +34], significant (p=0.000) | 100% [99, 100] | +15 pp [+11, +20], significant (p=0.000) | $3.18 | 17.1s |
 | `O3l_glm_style_claimcheck_bo3` | 98% [96, 100] | +27 pp [+21, +33], significant (p=0.000) | 100% [99, 100] | +15 pp [+11, +20], significant (p=0.000) | $3.06 | 18.2s |
 | `O3j_glm_bestof3_judged` | 98% [95, 99] | +27 pp [+21, +32], significant (p=0.000) | 99% [96, 100] | +14 pp [+10, +19], significant (p=0.000) | $2.61 | 12.4s |
+| `O3m_glm_plainclaim` | 97% [94, 99] | +26 pp [+20, +32], significant (p=0.000) | 99% [97, 100] | +15 pp [+10, +19], significant (p=0.000) | $0.91 | 3.0s |
 | `O3c_glm_prompt_harness_style` | 97% [94, 99] | +26 pp [+20, +31], significant (p=0.000) | 98% [95, 99] | +13 pp [+9, +18], significant (p=0.000) | $0.81 | 3.4s |
 | `O3e_glm_harness_cliche` | 96% [93, 98] | +25 pp [+19, +31], significant (p=0.000) | 99% [96, 100] | +14 pp [+10, +19], significant (p=0.000) | $0.81 | 2.9s |
 | `O3f_glm_calm` | 96% [92, 98] | +24 pp [+19, +30], significant (p=0.000) | 98% [96, 100] | +14 pp [+9, +18], significant (p=0.000) | $0.93 | 3.4s |
 | `O3d_glm_harness_anticopy` | 95% [92, 97] | +24 pp [+18, +30], significant (p=0.000) | 98% [95, 99] | +13 pp [+8, +18], significant (p=0.000) | $0.85 | 2.9s |
+| `O3n_glm_frame` | 95% [92, 97] | +24 pp [+18, +30], significant (p=0.000) | 96% [93, 98] | +12 pp [+8, +16], significant (p=0.000) | $0.95 | 3.3s |
 | `O3b_glm_prompt_harness` | 94% [91, 97] | +23 pp [+17, +29], significant (p=0.000) | 97% [94, 99] | +12 pp [+7, +17], significant (p=0.000) | $0.54 | 1.7s |
 | `F1H_opus_harness` | 94% [90, 96] | +22 pp [+17, +28], significant (p=0.000) | 97% [94, 99] | +13 pp [+8, +17], significant (p=0.000) | $15.85 | 4.8s |
 | `O3_glm_harness` | 93% [89, 96] | +21 pp [+16, +27], significant (p=0.000) | 97% [94, 99] | +12 pp [+7, +17], significant (p=0.000) | $0.28 | 2.7s |
@@ -26,10 +28,10 @@ Fact-safe human rewrite rate on 247 items (eval 130 + held-out 117), 95% CI; Δ 
 
 Human preference, O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-5 (blind A/B; FeatherLM / Claude / tie):
 
-- page: 29 / 47 / 14 (18 voter(s), 90 votes, sign test p=0.050); includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors
+- page: 38 / 56 / 17 (23 voter(s), 111 votes, sign test p=0.079); includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors
 - Not counted: Ali reports 5 Minerva classmates gave the same answer (preferred the Claude side) in an informal, unlogged session; not counted as data.
 
-Judge vs human on style (item level, `O3c_glm_prompt_harness_style` vs Claude strong, 15 items with a human majority): kimi-k3: agrees 2, disagrees 7; qwen3p8-max: agrees 3, disagrees 7. Small n; the LLM judges' style verdicts are not validated against readers.
+Judge vs human on style (item level, `O3c_glm_prompt_harness_style` vs Claude strong, 15 items with a human majority): kimi-k3: agrees 3, disagrees 6; qwen3p8-max: agrees 1, disagrees 7. Small n; the LLM judges' style verdicts are not validated against readers.
 
 Spot the human (held-out real originals vs each rewrite, both orders; fooled = the rewrite picked as human in both orders; fooled-or-split adds order disagreements):
 

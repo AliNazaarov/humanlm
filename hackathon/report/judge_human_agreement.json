@@ -6,14 +6,14 @@
    "human_decided_items": 15,
    "judges": {
     "kimi-k3": {
-     "agree": 2,
-     "disagree": 7,
+     "agree": 3,
+     "disagree": 6,
      "n_compared": 9
     },
     "qwen3p8-max": {
-     "agree": 3,
+     "agree": 1,
      "disagree": 7,
-     "n_compared": 10
+     "n_compared": 8
     }
    }
   }

@@ -2,29 +2,29 @@
  "pairs": "O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-5",
  "sources": {
   "page": {
-   "ours": 29,
-   "theirs": 47,
-   "both_fine": 14,
+   "ours": 38,
+   "theirs": 56,
+   "both_fine": 17,
    "neither": 0,
-   "people": 18,
-   "votes": 90,
-   "win_rate": 0.3815789473684211,
-   "lo": 0.27246301456880273,
-   "hi": 0.5002213449088546,
-   "sign_test_p": 0.050452410247217666,
+   "people": 23,
+   "votes": 111,
+   "win_rate": 0.40425531914893614,
+   "lo": 0.3042335212898188,
+   "hi": 0.5104808671184191,
+   "sign_test_p": 0.07897554800108206,
    "voter": "includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors",
    "note": "Ali reports 5 Minerva classmates gave the same answer (preferred the Claude side) in an informal, unlogged session; not counted as data.",
    "pattern": "Ours over-uses dramatic fragments, repetition for effect and punchy one-line closers (e.g. 'Six minutes.', 'Click, compare, delete.' twice, 'You did the work. Get paid for it.'); Claude writes calm complete sentences. Fix tested as row O3f_glm_calm."
   }
  },
  "pooled": {
-  "ours": 29,
-  "theirs": 47,
-  "both_fine": 14,
+  "ours": 38,
+  "theirs": 56,
+  "both_fine": 17,
   "neither": 0,
-  "win_rate": 0.3815789473684211,
-  "lo": 0.27246301456880273,
-  "hi": 0.5002213449088546,
-  "sign_test_p": 0.050452410247217666
+  "win_rate": 0.40425531914893614,
+  "lo": 0.3042335212898188,
+  "hi": 0.5104808671184191,
+  "sign_test_p": 0.07897554800108206
  }
 }
