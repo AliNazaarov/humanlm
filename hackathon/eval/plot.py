@@ -1,4 +1,4 @@
-"""Leaderboard chart for the HumanLM report, drawn from hackathon/report/results.json (score_all.py). Offline.
+"""Leaderboard chart for the FeatherLM report, drawn from hackathon/report/results.json (score_all.py). Offline.
 Usage: plot.py [--results PATH] [--block all|main|heldout|dev|trick] [--out PATH]
 
 pick_block(res, name)          -> (name, block); "all" falls back to "main" when missing/empty; SystemExit if no systems
@@ -209,7 +209,7 @@ def render(res: dict, name: str, out: str) -> str:
     _leaderboard(fig.add_axes((0.22, 0.50, 0.40, 0.38)), rows, name, b.get("n_items", "?"), notes)
     _pareto(fig.add_axes((0.06, 0.12, 0.34, 0.26)), points, no_cost, name)
     _gates(fig.add_axes((0.62, 0.08, 0.35, 0.30)), *gate_rows(b))
-    fig.suptitle("HumanLM: fact-safe human rewrite rate vs the frontier reference", x=0.015, ha="left",
+    fig.suptitle("FeatherLM: fact-safe human rewrite rate vs the frontier reference", x=0.015, ha="left",
                  fontsize=16, fontweight="bold", color=INK)
     ref_line = (f"Reference (hatched orange): {ref}." if any(r[5] for r in rows)
                 else f"Reference {ref} is not in this block, so no Δ is shown.")
