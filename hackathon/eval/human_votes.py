@@ -84,9 +84,22 @@ def main() -> int:
             fs = r.get("first_shown")
             return fs in ("a", "b") and r.get("vote", "").lower() == fs
         clickers = sorted(b for b, rs in by_ballot.items() if len(rs) >= 3 and all(first_shown_pick(r) for r in rs))
-        if clickers:
-            cs = page_counts([r for r in rows if r.get("ballot") not in set(clickers)])
-            res["sources"]["page"]["sensitivity_no_position_clickers"] = {**summarise(cs), "dropped_ballots": clickers}
+        # Reading-time floor (stated rule): a ballot with 3+ picks whose first-to-last pick span averages under
+        # 6 s per pick (30 s for 5 pairs) is faster than reading; needs a per-row "ts" (ISO time) in the export.
+        def too_fast(rs):
+            ts = sorted(t for t in (r.get("ts") for r in rs) if t)
+            if len(rs) < 3 or len(ts) < len(rs):
+                return False
+            from datetime import datetime
+            span = (datetime.fromisoformat(ts[-1].replace("Z", "+00:00"))
+                    - datetime.fromisoformat(ts[0].replace("Z", "+00:00"))).total_seconds()
+            return span / len(rs) < 6
+        speeders = sorted(b for b, rs in by_ballot.items() if too_fast(rs))
+        dropped = sorted(set(clickers) | set(speeders))
+        if dropped:
+            cs = page_counts([r for r in rows if r.get("ballot") not in set(dropped)])
+            res["sources"]["page"]["sensitivity_no_position_clickers"] = {
+                **summarise(cs), "dropped_ballots": dropped, "position_only": clickers, "too_fast": speeders}
         c2 = page_counts(rows, SET2_VERSION)
         if c2["votes"]:
             res["sources"]["page_set2"] = {**summarise(c2), "pairs": "O3k_glm_calm_claimcheck_bo3 vs frontier-strong:claude-opus-5-5",

@@ -39,8 +39,8 @@ Fact-safe human rewrite rate on 247 items (eval 130 + held-out 117), 95% CI; Δ 
 
 Human preference, O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-5 (blind A/B; FeatherLM / Claude / tie):
 
-- page: 41 / 62 / 17 (25 voter(s), 120 votes, sign test p=0.048); includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors
-- page, without 1 ballot(s) where every pick was the first-shown side: 39 / 59 / 17 (sign test p=0.054)
+- page: 49 / 74 / 22 (30 voter(s), 145 votes, sign test p=0.030); includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors
+- page, without 1 ballot(s) that were position-only or faster than 6 s per pick: 47 / 71 / 22 (sign test p=0.034)
 - Not counted: Ali reports 5 Minerva classmates gave the same answer (preferred the Claude side) in an informal, unlogged session; not counted as data.
 
 Judge vs human on style (item level, `O3c_glm_prompt_harness_style` vs Claude strong, 15 items with a human majority): kimi-k3: agrees 3, disagrees 6; qwen3p8-max: agrees 1, disagrees 7. Small n; the LLM judges' style verdicts are not validated against readers.

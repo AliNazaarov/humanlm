@@ -2,30 +2,34 @@
  "pairs": "O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-5",
  "sources": {
   "page": {
-   "ours": 41,
-   "theirs": 62,
-   "both_fine": 17,
+   "ours": 49,
+   "theirs": 74,
+   "both_fine": 22,
    "neither": 0,
-   "people": 25,
-   "votes": 120,
-   "win_rate": 0.39805825242718446,
-   "lo": 0.30289348518279763,
-   "hi": 0.4992436756515829,
-   "sign_test_p": 0.0482336521709971,
+   "people": 30,
+   "votes": 145,
+   "win_rate": 0.3983739837398374,
+   "lo": 0.3112185979692202,
+   "hi": 0.49054161303006727,
+   "sign_test_p": 0.03004691483554494,
    "sensitivity_no_position_clickers": {
-    "ours": 39,
-    "theirs": 59,
-    "both_fine": 17,
+    "ours": 47,
+    "theirs": 71,
+    "both_fine": 22,
     "neither": 0,
-    "people": 24,
-    "votes": 115,
-    "win_rate": 0.3979591836734694,
-    "lo": 0.30042526454686475,
-    "hi": 0.5018319298033753,
-    "sign_test_p": 0.05439055827708829,
+    "people": 29,
+    "votes": 140,
+    "win_rate": 0.3983050847457627,
+    "lo": 0.30933663345516127,
+    "hi": 0.4925050866339556,
+    "sign_test_p": 0.033788175471825846,
     "dropped_ballots": [
      "pub:bmvzscycvfet6"
-    ]
+    ],
+    "position_only": [
+     "pub:bmvzscycvfet6"
+    ],
+    "too_fast": []
    },
    "voter": "includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors",
    "note": "Ali reports 5 Minerva classmates gave the same answer (preferred the Claude side) in an informal, unlogged session; not counted as data.",
@@ -33,13 +37,13 @@
   }
  },
  "pooled": {
-  "ours": 41,
-  "theirs": 62,
-  "both_fine": 17,
+  "ours": 49,
+  "theirs": 74,
+  "both_fine": 22,
   "neither": 0,
-  "win_rate": 0.39805825242718446,
-  "lo": 0.30289348518279763,
-  "hi": 0.4992436756515829,
-  "sign_test_p": 0.0482336521709971
+  "win_rate": 0.3983739837398374,
+  "lo": 0.3112185979692202,
+  "hi": 0.49054161303006727,
+  "sign_test_p": 0.03004691483554494
  }
 }

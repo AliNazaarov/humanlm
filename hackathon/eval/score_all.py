@@ -402,8 +402,8 @@ def headline(res: dict) -> str:
             for name, src in h["sources"].items():
                 sv = src.get("sensitivity_no_position_clickers")
                 if sv:
-                    out.append(f"- {name}, without {len(sv['dropped_ballots'])} ballot(s) where every pick was the "
-                               f"first-shown side: {sv['ours']} / {sv['theirs']} / {sv['both_fine']} "
+                    out.append(f"- {name}, without {len(sv['dropped_ballots'])} ballot(s) that were position-only or faster than "
+                               f"6 s per pick: {sv['ours']} / {sv['theirs']} / {sv['both_fine']} "
                                f"(sign test p={sv['sign_test_p']:.3f})")
             note = next((s_["note"] for s_ in h["sources"].values() if s_.get("note")), None)
             if note:
