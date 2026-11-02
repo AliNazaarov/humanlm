@@ -58,3 +58,4 @@
 2026-11-02T22:53:12Z O4c SFT C scored 37.7% (vs SFT B 32.8%, n.s.), deployment deleted, pushed 73f4c5b; next: 15:00 make eval, 15:15 vote freeze
 2026-11-02T23:02:37Z 15:00 final eval done: tests OK, score_all 31 systems on 247 (7359164); waiting for 15:15 vote freeze
 2026-11-02T23:13:32Z VERIFY pass 2 fixes pushed; final eval committed; 15:15 vote freeze next
+2026-11-02T23:20:47Z votes frozen 15:15 (64/56/89, p=0.052 n.s.; quality rule p=0.029); peer session fixing stale vote prose in README/pitch, I hold README until done, then final rescore
