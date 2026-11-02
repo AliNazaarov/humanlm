@@ -14,3 +14,6 @@ Implications: eval set = social + copy prompts with blind writer A/B vs frontier
 - Rewrites: **founder writes them himself** → use reverse distillation to scale: collect good human copy, have a model generate the AI-slop version, train slop→human. Founder writes/edits ~10/day and labels picks.
 - GPUs: **Tenki** — but Tenki Starter is CPU-only (4 CPU / 8 GB). Not enough for an 8B LoRA. OPEN: rent a GPU per run (~$2–3/hr H100; a LoRA run ≈ $10–50) or find GPU credits.
 - Audience: **businesses only**; no student essays.
+## 2026-11-02 — student positioning reviewed, not adopted
+- Considered students (job/internship applications, ESL students flagged by detectors) as a buyer; research in `market/STUDENTS.md`.
+- Decision: **founders only** stays the buyer for the hackathon pitch, README and deck. No student messaging.
