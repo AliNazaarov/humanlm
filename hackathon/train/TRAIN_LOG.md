@@ -11,7 +11,13 @@ Code: fw-ai/cookbook `recipes/sft_loop.py` (serverless) via `examples.sft.train_
 | Data | `hackathon/data/train.jsonl`, 5,000 rows (see `hackathon/data/SPLIT.md`; 0 eval overlap) |
 | LoRA | rank 16, alpha 32 (recipe default) |
 | Optimizer | 1 epoch, batch 16 → 313 steps, LR 1.5e-4, max_seq_len 4096 |
-| Session / run | ts-… / run-… (filled from the log below) |
+| Session / run | `ts-f12d2e58613c483c9421bf2c13307cc8` / `run-903ab80912a5489a8d5fba5b370cab42` |
+| Final checkpoint | `step-313` (sampler snapshot `run-903ab80912a5489a8d5fba5b370cab42-step-313-8a920662`) |
+| Promoted model | `accounts/ali-wry88cc4wb07/models/humanlm-glm-sft-v1` (HF_PEFT_ADDON, READY 13:07 PT) |
+| Steps | 313 (11:29 → 13:07 PT) |
+| Loss | step 1: 1.2393 · mean of first 10 steps: 0.849 · mean of last 10 steps: 0.686 · step 313: 0.6429 |
+| Held-out loss | not measured (the recipe logged no eval loss) |
+| Train tokens | 1,856,167 (sum of logged step tokens) → est. cost $16.50 at $8.89/M (serverless GLM-5.3 Flash train rate) |
 | Smoke test | 20 rows, 3 steps, loss 1.08 → 1.04 (session deleted after) |
 
 Command:
@@ -44,3 +50,14 @@ Status: **running; not evaluated before the freeze.** Same recipe as model A; on
 Run on Windows: the cookbook was used unchanged through a small runner (`run_sft.py`, kept outside the repo). The runner does three things: truststore for the HTTPS proxy, a stub for the Unix-only `resource` module (used only for peak-RSS logging in `utils/memlog.py`), and an `if __name__ == "__main__"` guard so the DataLoader workers that Windows spawns don't start new sessions. The first smoke attempt had no guard and leaked 5 sessions; all of them were deleted. pip couldn't fetch the `mcp` index page through the proxy, so mcp 1.30.0 was installed from its wheel URL.
 
 Sampler-hang finding: `harness.py --provider fwsampler` was tested on the smoke snapshot (`ruslan-kan-1eth024hr/run-0b655a009eb8440790a78fa85f077cf6/step-3`). The sampling client builds without error, but `POST /training/v1/serverless/inference/v1/completions` never answers: the SDK retried after a 10-minute ReadTimeout, and direct curl and httpx calls also timed out. A made-up checkpoint name hangs the same way. A likely cause is that deleting the smoke run's training session also ended its snapshot. The model B session is kept open, so its snapshot may still sample, but this is unverified.
+
+**Status: trained and promoted; not evaluated.** Serving a trained LoRA on Fireworks requires an on-demand deployment, which needs a payment method on this account (deployment creation refused). Serverless LoRA serving is "not enabled for this account" (HTTP 404 for the promoted model on the chat endpoint). The serverless sampler on the snapshot hung in our tests. Ruslan's SFT B / O7 rows are the evaluated fine-tunes.
+
+## O6 DPO-RLAIF (prepared, not trained)
+- Preference source: GLM-5.3 (`accounts/fireworks/models/glm-5p3`, reasoning low) pairwise judge on 120 training-prompt pairs (`hackathon/train/human_rl/cand1.jsonl` vs `cand2.jsonl`), both orders; kept only where both orders agree and both candidates pass the gates: 65 kept, 51 orders disagreed, 4 failed gates (`ai_labels_summary.json`).
+- Ali's labels override per id: 3 Ali labels; AI agreed with Ali on 2/2 overlapping ids.
+- Final: 66 DPO pairs in `hackathon/train/human_rl/dpo_pairs.jsonl` (`ai_labels.jsonl`). Script: `hackathon/train/dpo_serverless.py` (beta 0.1, LR 1e-5 = 15x below SFT, 2 epochs, warm start = SFT state + SFT sampler as frozen reference).
+- Not trained: the SFT model it would start from cannot be served or evaluated on this account (same reason as above).
+
+## O4/O5 rows
+Not produced (see status above). The harness supports `--provider fwsampler` for serverless sampler snapshots, but sampling the SFT snapshot did not return within 10 minutes.
