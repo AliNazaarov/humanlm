@@ -201,6 +201,7 @@ DISPLAY = {
     "O4m_glm_sft_modern": "GLM-5.3 fine-tuned (SFT B)",
     "O4c_glm_sft_clean": "GLM-5.3 fine-tuned (SFT C, gate-clean)",
     "R3t_deepseek_ali_taste": "DeepSeek + harness, Ali's taste",
+    "L2h_qwen3_4b_dpo_harness": "Qwen3-4B local DPO + harness",
     "E1_ensemble": "FeatherLM ensemble (per-item pick)",
     "E2_ensemble_glm_deepseek": "FeatherLM ensemble + DeepSeek",
     "R3_deepseek_harness": "DeepSeek V4.1 Flash + harness",
@@ -294,7 +295,7 @@ def _pareto(ax, points: list[tuple], no_cost: list[str], name: str) -> None:
     ax.grid(color=GRID, zorder=0)
     ax.set_axisbelow(True)
     if no_cost:
-        ax.text(0, 0, "not on the log axis (cost unknown or $0): " + ", ".join(display(x) for x in no_cost), fontsize=8.5,
+        ax.text(0, 0, "not on the log axis (cost unknown or $0): " + ", ".join(short(x) for x in no_cost), fontsize=8.5,
                 transform=offset_copy(ax.transAxes, fig=ax.figure, y=-58, units="points"),
                 color=INK2, va="top", wrap=True)
 
