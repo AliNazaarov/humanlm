@@ -16,3 +16,4 @@
 2026-11-02T19:24:56Z Judge done & committed. Claude preferred on marketing style (p~0.02), tie on real human held-out text, facts edge ours. Next: README results/limitations update, human A/B at venue.
 2026-11-02T19:29:45Z README Results now generated from results.json (headline + judge, unedited). Running an eval-methodology review next.
 2026-11-02T19:33:59Z Pushed 10-system leaderboard chart (with copy-draft control). Pulled Ali's harness fwsampler provider (LoRA snapshot sampler -> SFT row coming). Ready to rescore + rejudge O4/O5/O3c when they land.
+2026-11-02T19:37:47Z Real-text work started: (1) collecting real README copy eval split (permissive licences, AI tells, leakage-checked); (2) auditing held-out provenance/licences. CONTRACT sent to Ali for O3/O3b runs on it.
