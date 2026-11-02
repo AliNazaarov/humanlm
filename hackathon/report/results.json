@@ -20938,6 +20938,79 @@
    "sign_test_p": 0.37417441760470777
   },
   {
+   "a": "hack_O3m_glm_plainclaim.jsonl",
+   "b": "hack_strong_claude-opus-5-5.jsonl",
+   "model": "accounts/fireworks/models/qwen3p8-max",
+   "judge_family": "qwen",
+   "mock": false,
+   "heldout": false,
+   "provider": "fireworks",
+   "reasoning_effort": "none",
+   "max_tokens": 4096,
+   "eval": "evals/eval_all.jsonl",
+   "cfg": "aaaccc6de67c9592",
+   "win": 24,
+   "loss": 50,
+   "tie": 35,
+   "n": 109,
+   "flip_rate": 0.3211,
+   "pos1_rate": 0.4483,
+   "facts": {
+    "win": 5,
+    "loss": 20,
+    "tie": 83,
+    "n": 108,
+    "flip_rate": 0.2315,
+    "sign_test_p": 0.004077315330505371
+   },
+   "style": {
+    "win": 31,
+    "loss": 31,
+    "tie": 46,
+    "n": 108,
+    "flip_rate": 0.4074,
+    "sign_test_p": 1.0
+   },
+   "n_expected": 130,
+   "missing_in_a": {
+    "count": 0,
+    "first": []
+   },
+   "missing_in_b": {
+    "count": 0,
+    "first": []
+   },
+   "not_in_eval": {
+    "count": 0,
+    "first": []
+   },
+   "dup_ids": {
+    "count": 0,
+    "first": []
+   },
+   "n_complete": 109,
+   "incomplete_ids": {
+    "count": 21,
+    "first": [
+     "dev-003",
+     "dev-022",
+     "dev-033"
+    ]
+   },
+   "empty_facts": 0,
+   "unparsed": 24,
+   "finish_length": 0,
+   "errors": 0,
+   "skipped_resume": 0,
+   "limit": null,
+   "seed": 0,
+   "prompt_tokens_total": 198758,
+   "completion_tokens_total": 142256,
+   "reasoning_tokens_total": 1798,
+   "file": "hackathon/report/judge2qwen_hack_O3m_glm_plainclaim_vs_hack_strong_claude-opus-5-5.summary.json",
+   "sign_test_p": 0.00337223333414807
+  },
+  {
    "a": "hack_O3_glm_harness_heldout.jsonl",
    "b": "hack_F1H_opus_heldout.jsonl",
    "model": "accounts/fireworks/models/kimi-k3",

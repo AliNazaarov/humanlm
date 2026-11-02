@@ -247,6 +247,7 @@ A wins / B wins / ties, with a two-sided sign test on wins vs losses (ties dropp
 | `hack_O3f_glm_calm.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` | `accounts/fireworks/models/qwen3p8-max` | 103 | 19/53/31 (p=0.000) | 12/11/80 (p=1.000) | 9/53/41 (p=0.000) | n/a | 29% | 47% |
 | `hack_O3k_glm_calm_claimcheck_bo3.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` | `accounts/fireworks/models/qwen3p8-max` | 114 | 22/56/36 (p=0.000) | 8/10/94 (p=0.815) | 15/55/42 (p=0.000) | n/a | 31% | 44% |
 | `hack_O3l_glm_style_claimcheck_bo3.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` | `accounts/fireworks/models/qwen3p8-max` | 113 | 36/45/32 (p=0.374) | 10/14/89 (p=0.541) | 33/43/37 (p=0.302) | n/a | 27% | 45% |
+| `hack_O3m_glm_plainclaim.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` | `accounts/fireworks/models/qwen3p8-max` | 109 | 24/50/35 (p=0.003) | 5/20/83 (p=0.004) | 31/31/46 (p=1.000) | n/a | 32% | 45% |
 | `hack_O3_glm_harness_heldout.jsonl` vs `hack_F1H_opus_heldout.jsonl` | `accounts/fireworks/models/kimi-k3` | 120 | 52/31/37 (p=0.028) | 16/15/89 (p=1.000) | 41/17/62 (p=0.002) | 54/31/35 (p=0.017) | 30% | 53% |
 | `hack_O3_glm_harness_heldout.jsonl` vs `hack_strong_claude-opus-5-5_heldout.jsonl` | `accounts/fireworks/models/kimi-k3` | 118 | 42/35/41 (p=0.494) | 13/12/93 (p=1.000) | 28/30/60 (p=0.896) | 45/28/45 (p=0.060) | 35% | 57% |
 | `hack_O3_glm_harness.jsonl` vs `hack_F1H_opus.jsonl` | `accounts/fireworks/models/kimi-k3` | 130 | 40/47/43 (p=0.520) | 12/6/112 (p=0.238) | 32/46/52 (p=0.141) | n/a | 33% | 50% |
