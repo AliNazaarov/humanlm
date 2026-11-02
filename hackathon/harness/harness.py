@@ -1,9 +1,10 @@
 """Agentic rewrite harness: draft -> verify with gates.py -> targeted revision (max N loops) -> keep the best.
 
-Works with any OpenAI-compatible chat endpoint (Fireworks by default, OpenAI, Gemini) or Anthropic.
+Works with any OpenAI-compatible chat endpoint (Fireworks by default, OpenAI, Gemini, a local mlx_lm.server via
+--provider local, URL from $LOCAL_LLM_URL) or Anthropic.
 Keys: ~/.config/humanlm/keys.env (or $HUMANLM_KEYS), then repo .env.
   python3 hackathon/harness/harness.py EVAL.jsonl OUT.jsonl --model MODEL --system-name NAME
-      [--provider fireworks|anthropic|openai|gemini|fwsampler] [--loops 3] [--prompt-file P] [--in-price USD_PER_M] [--out-price USD_PER_M]
+      [--provider fireworks|anthropic|openai|gemini|fwsampler|local] [--loops 3] [--prompt-file P] [--in-price USD_PER_M] [--out-price USD_PER_M]
       [--concurrency 4] [--limit N]
 --loops 0 is a single plain call (the non-harness row for the same model).
 Writes the shared run schema plus `loops_used` and `gates`, and a manifest in hackathon/runs/<system>.json.
@@ -17,6 +18,7 @@ ROOT = gates.ROOT
 SYSTEM = ("Rewrite the user's text so it reads like a skilled human wrote it: plain, specific, varied rhythm, "
           "correct grammar. Keep every fact, name and number. Add nothing.")
 TEMP, TOP_P, MAX_TOK = 0.7, 0.9, 400
+LOCAL_URL = "http://127.0.0.1:8090/v1/chat/completions"   # --provider local: $LOCAL_LLM_URL overrides (mlx_lm.server)
 STYLE_ASK = ("Now edit it the way a senior copywriter would: make it sound like one specific person talking to "
              "one reader. Vary sentence length, cut filler and generic words, prefer concrete verbs. Keep every fact, "
              "name and number exactly, add nothing, keep about the same length. Reply with the full text only.")
@@ -114,6 +116,9 @@ def decoding(provider, model, effort):
         return {"max_tokens": 1500, "temperature": TEMP, "top_p": TOP_P}
     if provider == "gemini":
         return {"max_tokens": 4096, "temperature": TEMP, "top_p": TOP_P, "reasoning_effort": effort}
+    if provider == "local":
+        # Local OpenAI-compatible server (mlx_lm.server on the Mac). No key, no reasoning field.
+        return {"max_tokens": 600, "temperature": TEMP, "top_p": TOP_P}
     d = {"max_tokens": 1500, "temperature": TEMP, "top_p": TOP_P}
     if effort != "omit":
         d["reasoning_effort"] = effort   # GLM-5.3 is thinking-only; "low" keeps it fast and leaves room for the answer
@@ -140,6 +145,12 @@ def chat(provider, model, system, msgs, dec):
         toks = list(res.sequences[0].tokens)
         text = __import__("re").sub(r"<\|[a-z_]+\|>", "", sampler_tokenizer_decode(renderer, toks))
         return text.split("</think>")[-1].strip(), prompt.length, len(toks)
+    if provider == "local":
+        url = os.environ.get("LOCAL_LLM_URL", LOCAL_URL)
+        r = post(url, {}, {"model": model, "messages": [{"role": "system", "content": system}] + msgs, **dec})
+        text = r["choices"][0]["message"].get("content") or ""
+        u = r.get("usage", {})
+        return text, u.get("prompt_tokens", 0), u.get("completion_tokens", 0)
     url, key = {"fireworks": ("https://api.fireworks.ai/inference/v1/chat/completions", "FIREWORKS_API_KEY"),
                 "openai": ("https://api.openai.com/v1/chat/completions", "OPENAI_API_KEY"),
                 "gemini": ("https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "GEMINI_API_KEY")}[provider]
@@ -605,7 +616,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("eval"); ap.add_argument("out")
     ap.add_argument("--model", required=True); ap.add_argument("--system-name", required=True)
-    ap.add_argument("--provider", default="fireworks", choices=["fireworks", "anthropic", "openai", "gemini", "fwsampler"])
+    ap.add_argument("--provider", default="fireworks", choices=["fireworks", "anthropic", "openai", "gemini", "fwsampler", "local"])
     ap.add_argument("--loops", type=int, default=3); ap.add_argument("--prompt-file")
     ap.add_argument("--in-price", type=float, default=0.0); ap.add_argument("--out-price", type=float, default=0.0)
     ap.add_argument("--concurrency", type=int, default=4); ap.add_argument("--limit", type=int)

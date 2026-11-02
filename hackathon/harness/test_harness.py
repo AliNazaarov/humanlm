@@ -174,5 +174,34 @@ class TestGuards(unittest.TestCase):
         harness.check_select_judge("accounts/fireworks/models/glm-5p3")
 
 
+
+class TestLocalProvider(unittest.TestCase):
+    """--provider local: OpenAI-compatible POST to $LOCAL_LLM_URL (default 127.0.0.1:8090), no key, fixed decoding."""
+
+    def test_decoding(self):
+        self.assertEqual(harness.decoding("local", "any", "low"), {"max_tokens": 600, "temperature": 0.7, "top_p": 0.9})
+        self.assertEqual(harness.decoding("fireworks", "m", "low"),
+                         {"max_tokens": 1500, "temperature": 0.7, "top_p": 0.9, "reasoning_effort": "low"})  # unchanged
+
+    def test_chat_posts_to_local_url_without_key(self):
+        seen = {}
+
+        def fake_post(url, headers, body, tries=10):
+            seen.update(url=url, headers=headers, body=body)
+            return {"choices": [{"message": {"content": "rewritten"}}], "usage": {"prompt_tokens": 7, "completion_tokens": 3}}
+        dec = harness.decoding("local", "qwen3-4b", "low")
+        with mock.patch.object(harness, "post", fake_post), mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("LOCAL_LLM_URL", None)
+            out = harness.chat("local", "qwen3-4b", "sys", [{"role": "user", "content": "draft"}], dec)
+        self.assertEqual(out, ("rewritten", 7, 3))
+        self.assertEqual(seen["url"], "http://127.0.0.1:8090/v1/chat/completions")
+        self.assertEqual(seen["headers"], {})
+        self.assertEqual(seen["body"]["messages"][0], {"role": "system", "content": "sys"})
+        self.assertEqual(seen["body"]["model"], "qwen3-4b")
+        self.assertEqual(seen["body"]["max_tokens"], 600)
+        with mock.patch.object(harness, "post", fake_post), mock.patch.dict(os.environ, {"LOCAL_LLM_URL": "http://h:1/v1/chat/completions"}):
+            harness.chat("local", "m", "s", [], dec)
+        self.assertEqual(seen["url"], "http://h:1/v1/chat/completions")
+
 if __name__ == "__main__":
     unittest.main()
