@@ -42,11 +42,14 @@ def pair_set(ab: dict, pub: dict) -> dict:
     return {"version": ver, "pairs": {p["pid"]: p for p in ab["pairs"]}, "groups": bp.reveal_map(ab, pub)}
 
 
-def load_sets(revs: list[str]) -> dict:
+def load_sets(revs: list[str], extra: list | tuple = ()) -> dict:
+    """Pair sets by version: the current files, the same files at each git rev, and each extra (AB, PUB) path pair."""
     sets = {}
     def add(ab, pub):
         s = pair_set(ab, pub); sets[s["version"]] = s
     add(*(json.load(open(os.path.join(root, f), encoding="utf-8")) for f in (AB, PUB)))
+    for ab_path, pub_path in extra:
+        add(*(json.load(open(p, encoding="utf-8")) for p in (ab_path, pub_path)))
     for rev in revs:
         add(*(json.loads(subprocess.run(["git", "-C", root, "show", f"{rev}:{f}"], check=True,
                                         capture_output=True, text=True, encoding="utf-8").stdout) for f in (AB, PUB)))
@@ -157,11 +160,13 @@ def main(argv=None) -> int:
     ap.add_argument("--store"); ap.add_argument("--public"); ap.add_argument("--local", action="append", default=[])
     ap.add_argument("--codes", action="append", default=[])
     ap.add_argument("--telegram", action="append", default=[]); ap.add_argument("--rev", action="append", default=[])
+    ap.add_argument("--pairs", nargs=2, action="append", default=[], metavar=("AB_PAIRS", "PUBLIC_PAIRS"),
+                    help="another pair set, e.g. hackathon/demo/ab_pairs_set2.json hackathon/demo/ab_page/set2/pairs.json")
     ap.add_argument("--out", default=OUT)
     a = ap.parse_args(argv)
     if not (a.store or a.public or a.local or a.codes or a.telegram):
         ap.print_help(); return 1
-    sets, dropped, rs = load_sets(a.rev), [], []
+    sets, dropped, rs = load_sets(a.rev, a.pairs), [], []
     if a.store:
         rs += from_store(json.load(open(a.store, encoding="utf-8")), sets, dropped)
     if a.public:

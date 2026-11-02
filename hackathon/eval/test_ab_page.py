@@ -105,7 +105,7 @@ class TestExportVotes(unittest.TestCase):
                 "bxyz123": {"version": VER, "picks": {"1": {"pick": "a"}, "2": {"pick": "b"}}}}}}), f)  # copy() gives a string
             with open(codes, "w") as f: f.write(f"FLM1:{VER[:8]}:xyz123:ab FLM1:{VER[:8]}:other1:tt")
             orig = ev.load_sets
-            ev.load_sets = lambda revs: self.SETS
+            ev.load_sets = lambda revs, extra=(): self.SETS
             try:
                 self.assertEqual(ev.main(["--local", loc, "--codes", codes, "--out", out]), 0)
             finally:

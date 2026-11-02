@@ -1,0 +1,80 @@
+{
+ "meta": {
+  "n": 8,
+  "version": "5b87855107ae620e"
+ },
+ "pairs": [
+  {
+   "pid": 1,
+   "id": "dev-010",
+   "draft": "Headline: From Conversations to Clarity — Instantly\nSubhead: Fieldnote harnesses the power of AI to transform hours of user interviews into actionable insights in minutes. Automatically transcribe, intelligently tag quotes by theme, and uncover the hidden patterns that drive better products — in 28 languages.\nSpend less time on busywork and more time on what truly matters: your users.\nCTA: Upload Your First Interview Free",
+   "a": "Headline: From Conversations to Clarity, Instantly\nSubhead: Fieldnote uses AI to turn hours of user interviews into useful findings in minutes. It transcribes automatically, tags quotes by theme, and surfaces hidden patterns that lead to better products, in 28 languages.\nSpend less time on busywork and more time on what matters: your users.\nCTA: Upload Your First Interview Free",
+   "b": "Headline: Turn Interviews into Clear Findings Fast\nSubhead: Fieldnote uses AI to turn hours of user interviews into insights you can act on in minutes. It transcribes your recordings, tags quotes by theme, and finds the patterns behind better products. It works in 28 languages.\nSpend less time on busywork and more time with your users.\nCTA: Upload Your First Interview Free",
+   "a_group": "X",
+   "b_group": "Y"
+  },
+  {
+   "pid": 2,
+   "id": "trick-30",
+   "draft": "Where do you visit?\nWe cover suburbs within 8 km of the Melbourne CBD, Monday to Saturday, 8am-6pm. If your pet has an emergancy after hours, please dont wait for us, go strait to your nearest emergency vet.",
+   "a": "Where do we visit?\n\nWe cover suburbs within 8 km of the Melbourne CBD, Monday to Saturday, 8am-6pm. If your pet has an emergency after hours, don't wait for us. Go straight to your nearest emergency vet.",
+   "b": "Where do you visit?\nWe cover suburbs within 8 km of the Melbourne CBD, Monday to Saturday, 8am to 6pm. If your pet has an emergency after hours, please don't wait for us. Go straight to your nearest emergency vet.",
+   "a_group": "X",
+   "b_group": "Y"
+  },
+  {
+   "pid": 3,
+   "id": "dev-017",
+   "draft": "Does Quietroom need an electrician?\nAbsolutely not! We've designed Quietroom with simplicity in mind. Our booth effortlessly plugs into any standard wall socket, powering both the whisper-quiet ventilation fan and the ambient LED lighting with a remarkably efficient 40W. There's no construction, no contractors, and no disruption to your workday — just plug in and enjoy your new oasis of calm. It truly couldn't be easier.",
+   "a": "Does Quietroom need an electrician?\nNo. Quietroom plugs into any standard wall socket. That one connection runs both the ventilation fan and the LED lighting, and together they draw 40W. You don't need construction or contractors, and setup won't interrupt your workday. Plug it in and the booth is ready to use.",
+   "b": "Does Quietroom need an electrician? No. We built it to plug in and go. One standard wall socket runs the ventilation fan and the LED lighting, all on 40W. No construction, no contractors, no one tramping through your office. Plug it in and get back to work in your quiet corner.",
+   "a_group": "Y",
+   "b_group": "X"
+  },
+  {
+   "pid": 4,
+   "id": "dev-020",
+   "draft": "Less Stress for Your Pet 💙\nWe know that trips to the clinic can be overwhelming for our four-legged friends. That's why our dedicated team of 4 compassionate vets brings everything needed right to your living room with a fully equipped portable kit. From routine check-ups to blood tests — with results delivered in just 24 hours — we provide comprehensive, stress-free care in the comfort of home. Because a calm pet is a healthy pet.",
+   "a": "Less Stress for Your Pet\n\nDoes your dog tremble at the clinic door? We get it. That's why our 4 vets come to you, with a fully equipped portable kit that covers everything from routine check-ups to blood tests. Results arrive within 24 hours.\n\nYour pet stays home, calm and cared for. A calm pet is a healthy pet.",
+   "b": "Less Stress for Your Pet\n\nA visit to the clinic can frighten a dog or cat. So our team of 4 vets comes to you instead, carrying a fully equipped portable kit into your living room. We handle everything from routine check-ups to blood tests, and blood test results come back in 24 hours. Your pet gets full care without leaving home, and a calm pet is a healthier one.",
+   "a_group": "X",
+   "b_group": "Y"
+  },
+  {
+   "pid": 5,
+   "id": "dev-087",
+   "draft": "Primary text: ✨ Dreaming of a new adventure? Make Warsaw your home away from home! 🏙️ Pokoik offers beautifully furnished apartments for stays of 1–6 months, with one simple all-inclusive price and blazing-fast internet. No hidden fees, no stress, no hassle — just move in and start living! 🔑💫 Choose from 220 stunning apartments today.\nHeadline: Your Warsaw Adventure Awaits! 🇵🇱",
+   "a": "Coming to Warsaw for a while? Pokoik rents furnished apartments for 1 to 6 months. One price covers everything, including fast internet. No hidden fees. Pick an apartment, move in, start living. There are 220 to choose from.\n\nHeadline: Your Warsaw Adventure Awaits",
+   "b": "Primary text: Planning a move to Warsaw? Pokoik rents furnished apartments for stays of 1 to 6 months. You pay one all-inclusive price, with fast internet included and no hidden fees, so you can move in and get on with your life. There are 220 apartments to choose from.\nHeadline: Furnished Warsaw apartments for 1 to 6 months",
+   "a_group": "X",
+   "b_group": "Y"
+  },
+  {
+   "pid": 6,
+   "id": "dev-037",
+   "draft": "Subject: Loved Your Post on CI — Let's Supercharge Orbit Pay's Pipeline\n\nHey Dmitri,\n\nI just finished reading your insightful blog post, \"Why our CI takes 40 minutes,\" and I have to say — it really resonated with me. Your candid breakdown of how roughly a third of your reruns are caused by flaky tests is something so many engineering teams struggle with but rarely talk about.\n\nAt Patchwork CI, we're on a mission to eliminate that pain entirely. Our intelligent platform automatically detects and quarantines flaky tests in GitHub Actions, helping teams like yours reclaim valuable engineering time and ship with confidence. We're already trusted on 1,200 repositories worldwide.\n\nI'd love to offer you a free run on one of your repos — no strings attached — and share the insights we uncover.\n\nWould that be of interest?\n\nCheers,\nTomas",
+   "a": "Subject: Your post on CI and flaky tests at Orbit Pay\n\nHey Dmitri,\n\nI just read your blog post, \"Why our CI takes 40 minutes.\" You wrote that roughly a third of your reruns come from flaky tests. Plenty of engineering teams have the same problem, and few say so in public.\n\nAt Patchwork CI, we build a tool for exactly this. It detects flaky tests in GitHub Actions and quarantines them automatically, so engineers spend less time on reruns. It runs on 1,200 repositories today.\n\nI'd like to offer you a free run on one of your repos, with no obligation, and send you what we find.\n\nLet me know if you'd like to try it.\n\nCheers,\nTomas",
+   "b": "Subject: Your Post on CI and Flaky Tests\n\nHi Dmitri,\n\nI just read your blog post, Why our CI takes 40 minutes. The part about roughly a third of your reruns being caused by flaky tests stood out. It's a problem many engineering teams deal with and few talk about openly.\n\nAt Patchwork CI, we built a platform that automatically detects and quarantines flaky tests in GitHub Actions, so teams can spend less time on reruns and ship with confidence. We're already trusted on 1,200 repositories worldwide.\n\nI'd like to offer you a free run on one of your repos, no strings attached, and share what we find.\n\nWould that be of interest?\n\nCheers,\nTomas",
+   "a_group": "Y",
+   "b_group": "X"
+  },
+  {
+   "pid": 7,
+   "id": "dev-078",
+   "draft": "💸 Raised our prices by 50% in September. Here's what happened... 👀\n\nChurn? Just 2 out of 140 customers in 2 months. 🤯\n\n(And yes, we grandfathered every existing customer at $8 for 12 months — loyalty matters! 🤝)\n\nLesson: You're probably undercharging. Seriously. Your customers value what you deliver more than you think. Raise your prices. 🚀\n\n#SaaS #Pricing #BuildInPublic #Startups",
+   "a": "We raised our prices by 50% in September.\n\nIn the two months since, 2 of our 140 customers have churned.\n\nEvery existing customer was grandfathered at $8 for 12 months, because we wanted to reward the people who stuck with us.\n\nThe lesson: you're probably undercharging. Your customers value what you deliver more than you think. Raise your prices.\n\n#SaaS #Pricing #BuildInPublic #Startups",
+   "b": "We raised our prices by 50% in September. Here's what happened.\n\nChurn was just 2 out of 140 customers in 2 months.\n\nAnd yes, we grandfathered every existing customer at $8 for 12 months. Loyalty matters.\n\nThe lesson: you're probably undercharging. Your customers value what you deliver more than you think. Raise your prices.",
+   "a_group": "Y",
+   "b_group": "X"
+  },
+  {
+   "pid": 8,
+   "id": "trick-18",
+   "draft": "Subject: Pebble Pantry will cost €5.99 from March\n\nOlá,\n\nFrom March 1, Pebble Pantry will cost €5.99 a month instead of €4.99.\n\nThe company that gives us supermarket prices for Continente and Pingo Doce raised its fee, and we can't absorb it at €4.99.\n\nYou won't pay more yet. If you're subscribed today, you keep €4.99 until September 1.\n\nIf you'd rather stop, you can cancel any time in Settings. No hard feelings.\n\nInês",
+   "a": "Subject: Pebble Pantry costs €5.99 from March\n\nOlá,\n\nOn March 1, Pebble Pantry goes from €4.99 to €5.99 a month.\n\nThe company that supplies our Continente and Pingo Doce prices raised its fee. We can't cover that at €4.99.\n\nYou won't pay it yet. Subscribe today and you keep €4.99 until September 1.\n\nRather leave? Cancel any time in Settings. No hard feelings.\n\nInês",
+   "b": "Subject: Pebble Pantry will cost €5.99 from March\n\nOlá,\n\nStarting March 1, Pebble Pantry will cost €5.99 a month. It currently costs €4.99.\n\nWe get our Continente and Pingo Doce supermarket prices from another company, and that company has raised its fee. At €4.99 we can't cover the increase.\n\nYour price isn't going up yet. If you're subscribed today, you'll keep paying €4.99 until September 1.\n\nIf you'd rather stop, you can cancel any time in Settings. No hard feelings.\n\nInês",
+   "a_group": "X",
+   "b_group": "Y"
+  }
+ ]
+}
