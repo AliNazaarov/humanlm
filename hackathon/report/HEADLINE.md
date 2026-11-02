@@ -20,6 +20,11 @@ Fact-safe human rewrite rate on 250 items (eval 130 + held-out 120), 95% CI; Δ 
 | `O1_glm_base` | 27% [22, 33] | -44 pp [-52, -37], significant (p=0.000) | 30% [24, 36] | -55 pp [-62, -48], significant (p=0.000) | $0.10 | 1.2s |
 | `frontier-persona-preexisting` (130 items) | 12% [7, 19] | -57 pp [-66, -48], significant (p=0.000) | 16% [10, 24] | -66 pp [-74, -58], significant (p=0.000) | n/a | n/a |
 
+Human preference, O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-5 (blind A/B; FeatherLM / Claude / tie):
+
+- venue_founder: 0 / 4 / 1 (1 voter(s), 5 votes, sign test p=0.125); Ali (founder; knows the project, so treat as a check, not a gold rater)
+- Not counted: Ali reports 5 Minerva classmates gave the same answer (preferred the Claude side) in an informal, unlogged session; not counted as data.
+
 Pairwise judge (both orders; A wins / B wins / ties, two-sided sign test):
 
 - `hack_O3_glm_harness_heldout.jsonl` vs `hack_F1H_opus_heldout.jsonl` (kimi-k3): overall 52/31/37 (p=0.028), style 41/17/62 (p=0.002)

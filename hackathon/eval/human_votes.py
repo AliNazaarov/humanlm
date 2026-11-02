@@ -4,6 +4,7 @@ Usage: human_votes.py  -> hackathon/report/human_votes.json (score_all shows it 
 Telegram: hackathon/social/telegram/VOTES.md (per post: A | B | Both fine | Neither counts) + KEY.json (gitignored until
 the polls close), mapping each post to the side that is O3c: {"1": "A"} or {"1": {"A": "<system>", "B": "<system>"}}.
 Page: hackathon/report/human_ab.jsonl (export_votes.py), rows with version == PAIRS_VERSION; people counted by ballot.
+Venue: hackathon/social/human_ab_venue.json (one founder ballot, unblinded by hand; a check, not a gold rater).
 Win rate counts only decisive votes; "both fine" and "neither" are reported, never folded in. Sign test on wins.
 """
 from __future__ import annotations
@@ -70,6 +71,14 @@ def main() -> int:
         c = page_counts(rows)
         if c["votes"]:
             res["sources"]["page"] = summarise(c)
+    venue = os.path.join(ROOT, "hackathon/social/human_ab_venue.json")
+    if os.path.exists(venue):  # hand-unblinded ballot from Ali's laptop (founder: a check, not a gold rater)
+        v = json.load(open(venue, encoding="utf-8"))
+        w = [p_["winner"] for p_ in v["picks"]]
+        c = {"ours": w.count("ours"), "theirs": w.count("claude"), "both_fine": w.count("tie"), "neither": 0,
+             "people": 1, "votes": len(w)}
+        res["sources"]["venue_founder"] = {**summarise(c), "voter": v.get("voter"), "note": v.get("informal"),
+                                          "pattern": v.get("pattern")}
     if res["sources"]:
         pooled = {k: sum(s[k] for s in res["sources"].values()) for k in ("ours", "theirs", "both_fine", "neither")}
         res["pooled"] = summarise(pooled)

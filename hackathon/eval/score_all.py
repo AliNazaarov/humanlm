@@ -375,6 +375,18 @@ def headline(res: dict) -> str:
         note = f" ({e['n']} items)" if e["missing"] else ""
         out.append(f"| `{e['label']}`{note} | {pct(e['summary']['pass'])} | {delta(e)} | "
                    f"{pct(e['summary']['pass_lenient'])} | {delta(e, 'pass_lenient')} | {cost} | {lat} |")
+    hv = os.path.join(ROOT, "hackathon/report/human_votes.json")
+    if os.path.exists(hv):
+        h = json.load(open(hv, encoding="utf-8"))
+        if h.get("sources"):
+            out += ["", f"Human preference, {h['pairs']} (blind A/B; FeatherLM / Claude / tie):", ""]
+            for name, src in h["sources"].items():
+                out.append(f"- {name}: {src['ours']} / {src['theirs']} / {src['both_fine']} "
+                           f"({src.get('people', '?')} voter(s), {src['votes']} votes, sign test p={src['sign_test_p']:.3f})"
+                           + (f"; {src['voter']}" if src.get("voter") else ""))
+            note = next((s_["note"] for s_ in h["sources"].values() if s_.get("note")), None)
+            if note:
+                out.append(f"- Not counted: {note}")
     if res["judges"]:
         out += ["", "Pairwise judge (both orders; A wins / B wins / ties, two-sided sign test):", ""]
         for j in res["judges"]:
