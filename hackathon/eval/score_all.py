@@ -5,7 +5,8 @@ Items: evals/eval_all.jsonl ids (dev 100 + trick 30, extra fields from dev_set/t
 (120) = 250. Systems: every evals/runs/hack_*.jsonl (main and *_heldout files of one system share its `system` label)
 + evals/baseline_frontier.jsonl ("frontier-persona-preexisting", main split only). --runs replaces discovery.
 
-Headline (hackathon/PLAN_V2_JUDGES.md): fact-safe human rewrite rate = share of items passing all gates.
+Headline (hackathon/PLAN_V2_JUDGES.md): fact-safe human rewrite rate = share of items passing all gates,
+as defined once in hackathon/harness/gates.py:
   G1 nothing invented  faithfulness hard_fail is False
   G2 nothing lost      numbers_kept == 1 and names_kept >= 0.9
   G3 no AI tells       stock, em-dash, not-x-but-y, emoji, exclaim each <= the human band's upper bound
@@ -21,13 +22,14 @@ import argparse, glob, json, os, re, statistics, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, "../.."))
-sys.path[:0] = [HERE, os.path.join(ROOT, "pipeline")]
+sys.path[:0] = [HERE, os.path.join(ROOT, "pipeline"), os.path.join(ROOT, "hackathon/harness")]
+import gates as gt  # noqa: E402  the one G1-G4 definition, shared with the harness
 import metrics as m  # noqa: E402
 import stats as st  # noqa: E402
 
 PREEXISTING = {"baseline_frontier.jsonl": "frontier-persona-preexisting"}
 GATES = ("G1", "G2", "G3", "G4")
-G3_TELLS = ("stock_rate", "em_dash_rate", "not_x_but_y_rate", "emoji_rate", "exclaim_share")
+
 SPLITS = ("dev", "trick", "heldout")
 NUM = re.compile(r"\d[\d,.]*")
 CAP = re.compile(r"\b[A-Z][A-Za-z0-9]+\b")
@@ -71,20 +73,18 @@ def kept(fact: str, out: str) -> bool:
 
 def item_scores(item: dict, out: str, band: dict) -> dict:
     draft = item["ai_draft"]
-    tm, fa = m.text_metrics(out), m.faithfulness(draft, out)
-    hi = {k: band["metrics"][k][1] for k in G3_TELLS}
-    ratio = len(m.words(out)) / max(len(m.words(draft)), 1)
+    tm, g = m.text_metrics(out), gt.check(draft, out)
     s = {
-        "G1": int(not fa["hard_fail"]),
-        "G2": int(fa["numbers_kept"] == 1.0 and fa["names_kept"] >= 0.9),
-        "G3": int(all(tm[k] <= hi[k] for k in G3_TELLS)),
-        "G4": int(0.7 <= ratio <= 1.3),
-        "fact_fail": int(fa["hard_fail"]),
+        "G1": int(g["g1_nothing_invented"]),
+        "G2": int(g["g2_nothing_lost"]),
+        "G3": int(g["g3_no_ai_tells"]),
+        "G4": int(g["g4_not_gutted"]),
+        "pass": int(g["pass"]),
+        "fact_fail": int(not g["g1_nothing_invented"]),
         "in_range": statistics.fmean(v["ok"] for v in m.in_band(tm, band).values()),
         "stock_per100": tm["stock_rate"],
-        "len_ratio": ratio,
+        "len_ratio": g["len_ratio"],
     }
-    s["pass"] = int(all(s[g] for g in GATES))
     if item.get("must_keep"):
         s["must_keep"] = statistics.fmean(kept(f, out) for f in item["must_keep"])
     if "forbidden" in item:
@@ -204,7 +204,7 @@ def build(paths: list[str], items: dict, band: dict, reference: str | None, repo
     ref_label = pick_reference([s["label"] for s in systems], reference)
     ref = next(s for s in systems if s["label"] == ref_label)
     by_split = {sp: sorted(i for i in items if split_of(i) == sp) for sp in SPLITS}
-    rule = __doc__.split("Secondary")[0].split("all gates.")[1].strip("\n")
+    rule = gt.__doc__.split("all four gates pass:")[1].strip("\n")
     res = {"reference": ref_label, "gates_rule": rule,
            "systems": [{"label": s["label"], "files": s["files"], "model": s["model"], "n": len(s["per_item"]),
                         **{k: s[k] for k in ("cost_per_1k_usd", "latency_ms") if k in s}} for s in systems],
