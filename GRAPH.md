@@ -1,6 +1,6 @@
-# HumanLM agent graph
+# FeatherLM agent graph
 
-Working name: **HumanLM** — a model and app that write like real people, trained on pre-AI human writing, so text stops reading as AI slop.
+Working name: **FeatherLM** — a model and app that write like real people, trained on pre-AI human writing, so text stops reading as AI slop.
 
 ## How the agents talk
 Same board rules as Tastecut:

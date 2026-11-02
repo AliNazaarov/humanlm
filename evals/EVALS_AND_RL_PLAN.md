@@ -1,4 +1,4 @@
-# HumanLM: evals and RL plan
+# FeatherLM: evals and RL plan
 
 Written 2026-11-01. Applies your own notes on evals, RLHF and loop engineering to the startup: a model that writes like real humans instead of AI slop (continue-pretrain or fine-tune an open model on pre-2023 human writing, then RL toward human-like, high-quality prose across essays/admissions, creative, copywriting and academic).
 
@@ -30,7 +30,7 @@ Honest caveat on sources: the per-video notes under `Video Notes/` for the evals
 
 Two reusable assets from your own repos:
 - `RWD` is a working Bradley-Terry with source weights (human 3.0, panel 1.0), 5-fold held-out accuracy, a minimum-pairs guard (12) and a prior fallback that blends toward the learned model as labels grow (`pairs / 60`). The shape carries over; the features change from video stats to text-level stats plus an LM-embedding head.
-- `GRP` is the before/after-on-held-out-split pattern ("this number is your demo slide"). HumanLM's equivalent is the blind-A/B win rate vs baseline, reported on a frozen prompt set.
+- `GRP` is the before/after-on-held-out-split pattern ("this number is your demo slide"). FeatherLM's equivalent is the blind-A/B win rate vs baseline, reported on a frozen prompt set.
 
 ---
 
@@ -115,7 +115,7 @@ Judge hygiene (all from your notes):
 ### 2.5 Blind human A/B preference tests (the ground truth)
 This is the primary metric. Everything else is a diagnostic.
 - **Format:** pairwise, blind, randomised position, same prompt, length-matched within a tolerance (or length-controlled analysis). Forced choice plus a one-line reason (reasons feed the error analysis) plus an optional "both bad".
-- **Arms to compare:** HumanLM checkpoint vs (a) frontier chat model with a "write like a human" prompt (the real competitor), (b) the instruction-tuned open base, (c) a pre-2023 human piece (the ceiling), (d) previous HumanLM checkpoint (regression).
+- **Arms to compare:** FeatherLM checkpoint vs (a) frontier chat model with a "write like a human" prompt (the real competitor), (b) the instruction-tuned open base, (c) a pre-2023 human piece (the ceiling), (d) previous FeatherLM checkpoint (regression).
 - **Raters:** per style, paid writers/editors who read that kind of text for a living (admissions readers, copy chiefs, fiction editors, academics). One lead labeller per style as benevolent dictator; others for agreement checks. Track inter-rater agreement; if two experts would not grade the same way, the task is not eval-ready (HEV §6 #1).
 - **Two questions, asked separately:** "Which is better?" and "Which sounds more like a real person wrote it?" (human-ness and quality can diverge; a clumsy human sentence is human but not good).
 - **The "would you have guessed AI?" test** on single items (not pairs) with a human-piece control mixed in, to estimate a false-positive rate on real humans.
@@ -141,7 +141,7 @@ Run two or three public AI-text detectors plus a small in-house detector (classi
 ### 2.8 Eval suite layout and promotion gates (fail closed)
 
 ```
-HumanLM/evals/
+FeatherLM/evals/
   failure_modes.yaml          # axial codes + counts, versioned
   prompts/{dev,gate,canary}/  # per style, frozen with hash
   tells/                      # code graders (section 2.3)

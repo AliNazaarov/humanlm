@@ -1,4 +1,4 @@
-# HumanLM risks (owner of this file: hl-critic)
+# FeatherLM risks (owner of this file: hl-critic)
 
 Last updated 2026-11-01. Source reviews: `evals/APPLIED_PLAYBOOK.md` vs `board/DECISIONS.md` (R1-R7); `PLAN_30D.md` + `WHAT_ELSE.md` (R8-R15).
 Severity: H = can sink the plan · M = wastes weeks or money · L = annoying.
@@ -6,7 +6,7 @@ Severity: H = can sink the plan · M = wastes weeks or money · L = annoying.
 | # | Risk | Severity | Current answer | Owner | Evidence that would close it |
 |---|---|---|---|---|---|
 | R1 | APPLIED_PLAYBOOK assumes Idea A (app) was picked. DECISIONS 2026-11-01 says C: model + API first, social + copy, GPU under $2k, no CPT. App ladder, bandit, zero-edit rate and R5 CPT ($1-3k) are built on the wrong product. | H | None. Playbook line 16 states the opposite of DECISIONS. | hl-orchestrator, hl-judge | A newer DECISIONS entry switching to A, or the playbook rewritten around model gold. |
-| R2 | "Sent unedited" cannot be observed by a hotkey that works in any app without watching keystrokes. Wispr got a viral backlash for exactly that (design/WISPR_TEARDOWN.md line 84). | H (when app ships) | None. Ladder assumes the event exists. | hl-builder, hl-designer | A named, consented event the app can actually see (e.g. "accepted and not edited in the HumanLM box", explicit "sent" button). |
+| R2 | "Sent unedited" cannot be observed by a hotkey that works in any app without watching keystrokes. Wispr got a viral backlash for exactly that (design/WISPR_TEARDOWN.md line 84). | H (when app ships) | None. Ladder assumes the event exists. | hl-builder, hl-designer | A named, consented event the app can actually see (e.g. "accepted and not edited in the FeatherLM box", explicit "sent" button). |
 | R3 | Judge promotion bar 0.85 TPR/TNR is set on about 15 held-out FAILs. Wilson lower bound on 13/15 is about 0.62. Promotion is noise. | M | 80 labels per judge, 30 held-out. | hl-judge | Promote on Wilson lower bound, with at least 40 FAIL and 40 PASS held out. |
 | R4 | One rater for everything. Ali labels the 100 outputs, 480 judge labels and the voice test of his own writing (he remembers what he wrote, so it is not blind). | M | "Benevolent dictator" rule. | hl-judge | Second rater on 20% of labels with Cohen's kappa at least 0.6; voice test run by someone else. |
 | R5 | Solo-founder cost. Nightly 8-step loop, 6 judges run twice, nightly red team and writer-panel at weight 0, while app/ and model/ are empty. Label spend is not in any budget. | M | Caps in runs/loop.yaml (not built). | hl-orchestrator | Weekly manual run until a checkpoint or users exist; label cost line in model/SPEND.md. |

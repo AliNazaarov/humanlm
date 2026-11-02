@@ -1,4 +1,4 @@
-# HumanLM: copywriting evidence + founder-copy eval set v1
+# FeatherLM: copywriting evidence + founder-copy eval set v1
 
 Written 2026-11-01 by hl-researcher. All sources accessed 2026-11-01. Labels: **[S]** sourced (URL given), **[E]** my estimate, **[K]** background knowledge not re-checked today, **[V]** vendor data (has a reason to look good).
 Builds on `research/TECH.md`, `evals/APPLIED_PLAYBOOK.md` and `data/DATA_SOURCES.md`. Those cover slop metrics, FTPO, Unslopper, detectors and the general data law. This file covers copy only. It does not repeat them.
@@ -8,7 +8,7 @@ Builds on `research/TECH.md`, `evals/APPLIED_PLAYBOOK.md` and `data/DATA_SOURCES
 ## 0. Bottom line (read this if nothing else)
 
 1. **Better copy moves money, but the effect is small and is measured on real outcomes.** Meta's RL-trained ad writer lifted CTR 6.7% across ~35,000 advertisers. Alibaba's AI product descriptions lifted sales ~2%. Nobody found a 2x effect from prose alone.
-2. **Pure AI copy vs human copy is a split decision.** In small ad tests humans win on cost, not clearly on clicks. Human + AI teams beat human-only on text quality. "AI draft, then a skilled-human pass" is the pattern the evidence backs. That is exactly HumanLM's job.
+2. **Pure AI copy vs human copy is a split decision.** In small ad tests humans win on cost, not clearly on clicks. Human + AI teams beat human-only on text quality. "AI draft, then a skilled-human pass" is the pattern the evidence backs. That is exactly FeatherLM's job.
 3. **Experts and lay readers judge differently.** Expert readers strongly reject *prompted* AI text. They *prefer* a *fine-tuned* model's text. Lower cliché density explains the flip. This is the best single piece of evidence for our "own fine-tuned model" plan. It also means the gold raters must be professional copywriters, not crowd workers.
 4. **"Does this sound human?" is a broken question.** People use wrong shortcuts (contractions, "I", family topics). A model can game them. Ask raters "which would you send / which converts?" instead.
 5. **Cold email: no independent study of AI vs human reply rates exists.** Vendor averages sit near 3.4%. The best controlled analogue (phishing) shows AI = human experts (54% vs 54% clicks) when both do research first. Facts about the prospect matter more than prose. A rewriter must never invent them.
@@ -179,7 +179,7 @@ Plus code metrics, reported, never gated alone: slop-phrase rate and em-dash / t
 Not in the rubric on purpose: "sounds human", contraction rate, first-person rate (Jakesch: gameable). Detector scores: monitor only.
 
 ### 8.6 Gold: blind pairwise A/B
-- Arms: HumanLM checkpoint vs (a) best frontier model with a strong "rewrite like a senior copywriter" prompt + 3 human examples, (b) the human reference where one exists.
+- Arms: FeatherLM checkpoint vs (a) best frontier model with a strong "rewrite like a senior copywriter" prompt + 3 human examples, (b) the human reference where one exists.
 - Raters: 2-3 paid working copywriters (B2B/SaaS), not crowd workers (Chakrabarty 2025: experts and lay readers disagree). Ali is not a gold rater.
 - Question: "Which would you send for a client?" + one-line reason + "both unusable" option. Position randomised, lengths within ±15%.
 - Report win rate with Wilson 95% CI **per type**. 100 `gate` prompts × 1 comparison gives roughly ±10 points CI [E]; that is enough to see a big gap, not a small one.

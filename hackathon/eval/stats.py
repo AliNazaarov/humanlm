@@ -1,4 +1,4 @@
-"""Uncertainty for the HumanLM report. Seeded, so every number reproduces.
+"""Uncertainty for the FeatherLM report. Seeded, so every number reproduces.
 
 rate_ci(k, n)                              -> (rate, lo, hi), exact Clopper-Pearson 95%; use for fail/pass/win rates
 bootstrap_ci(values, stat, n, seed)        -> (point, lo, hi), 95% percentile bootstrap; use for continuous metrics

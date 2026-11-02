@@ -1,4 +1,4 @@
-# HumanLM at "Fireworks: Deploy with Microsoft & NVIDIA" (Mon 2026-11-02)
+# FeatherLM at "Fireworks: Deploy with Microsoft & NVIDIA" (Mon 2026-11-02)
 
 Read this first. Then your role file: `ROLE_A_ALI.md` or `ROLE_B_FRIEND.md`. Paste your block from `AGENT_INSTRUCTIONS.md` into your Claude Code session. `CHECKLIST.md` is the definition of done.
 
@@ -29,7 +29,7 @@ Both agents use the repo as a mailbox: `hackathon/bus/bus.sh` (send, recv, statu
 ## 2. Our pitch (3 lines)
 
 1. Frontier models can scrub AI tells from marketing copy, but they break facts (53/130 strict fact fails) and cut length by 40%.
-2. HumanLM is a small open model, fine-tuned on Fireworks, that removes the tells **and** keeps every fact.
+2. FeatherLM is a small open model, fine-tuned on Fireworks, that removes the tells **and** keeps every fact.
 3. Same 130-item eval, same prompt: better faithfulness, equal or better human-range score, at a fraction of the cost and latency.
 
 Task: rewrite AI-sounding marketing copy (landing pages, emails, LinkedIn) so it reads human while keeping every fact. User: founders and marketers who paste a draft and need it to sound like them without inventing claims. Business value: a fact-safe rewrite is the one thing a frontier model with a prompt does not give you; cheap enough to run on every draft.
@@ -38,7 +38,7 @@ Task: rewrite AI-sounding marketing copy (landing pages, emails, LinkedIn) so it
 
 | Judging criterion | Weight | Done when |
 |---|---|---|
-| Benchmark evaluation | 40% | `hackathon/report/RESULTS.md` has: a table of frontier vs base open model vs HumanLM-FT on the same 130 items (+ the held-out pair split if time), with fact hard-fails, in-human-range %, stock-phrase rate, length ratio, pairwise judge win rate with both orders, bootstrap 95% CIs, cost per 1k rewrites, p50/p95 latency. Method and limitations written. |
+| Benchmark evaluation | 40% | `hackathon/report/RESULTS.md` has: a table of frontier vs base open model vs FeatherLM-FT on the same 130 items (+ the held-out pair split if time), with fact hard-fails, in-human-range %, stock-phrase rate, length ratio, pairwise judge win rate with both orders, bootstrap 95% CIs, cost per 1k rewrites, p50/p95 latency. Method and limitations written. |
 | Business value | 25% | Overview states user, task, why fact-safety matters, cost per 1k rewrites vs frontier, and a 2-line tradeoff disclosure. |
 | Technical execution | 20% | Fine-tune ran on Fireworks (job id in report), inference through the Fireworks API, `make eval` reproduces the scores from committed outputs, metrics unit tests pass. |
 | Presentation/demo | 10% | Video < 60 s, one before/after example, one results chart, one sentence on Fireworks. |
@@ -55,7 +55,7 @@ Task: rewrite AI-sounding marketing copy (landing pages, emails, LinkedIn) so it
 | **12:00 SYNC 1** | Both: is the SFT job running? Is the frontier run producing rows? Agree the exact metric list for the table. Merge to main. | |
 | 12:30 | Poll the job. If it will not finish by 13:30, trigger Risk R1 (§8). Write the job id, base model, hyperparams into `hackathon/train/TRAIN_LOG.md`. | Build `hackathon/eval/score_all.py`: metrics.py + judge + stats → `hackathon/report/results.json` and `RESULTS.md` table. |
 | 13:00 | Deploy the fine-tuned model (or serverless LoRA). Smoke-test 3 prompts. | Draft the results section with the two baselines already in hand. Start the demo notebook `hackathon/demo/demo.ipynb`. |
-| **13:30 SYNC 2** | Both: run HumanLM-FT on all 130 (+ held-out). Hand the JSONL to B. Merge to main. | |
+| **13:30 SYNC 2** | Both: run FeatherLM-FT on all 130 (+ held-out). Hand the JSONL to B. Merge to main. | |
 | 14:00 | Run the held-out pair split through all three systems if time. Record cost/latency. Second SFT config only if the first is clearly weak and there is 60+ min left. | Score everything. Fill the table. Make the one chart (`hackathon/report/results.png`). |
 | 14:30 | Write limitations and tradeoffs with B. Pre-existing vs built-today list in README. | Write the 60-s video script. Record screen (notebook + chart + one example). |
 | **15:00 SYNC 3: FREEZE** | Both: no more model or eval changes. Reviewer pass with `CHECKLIST.md` (max 3 passes). Repo public check in incognito. Record commit hash. | |

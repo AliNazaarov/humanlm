@@ -34,7 +34,7 @@ Judged commit hash: `________________` (fill at 15:00 freeze; also in the form)
 | J1 | Benchmark: same cases (40%) | Every system has 130 rows with the same ids from `evals/eval_all.jsonl`; `score_all.py` raises on a missing id | |
 | J2 | Benchmark: eval separate from training | `hackathon/data/SPLIT.md` shows the leakage check result (0 dev/trick drafts in train); `evals/heldout_pairs.jsonl` ids absent from `hackathon/data/train.jsonl` (command output pasted) | |
 | J3 | Benchmark: frontier baseline not weakened | Frontier live run uses the identical SYSTEM prompt and decoding; the pre-existing persona arm is also in the table; no prompt edits in git history for the frontier runner after the first run | |
-| J4 | Benchmark: uncertainty | Bootstrap 95% CIs on fact-fail rate, in-band share, judge win rate; paired difference CI for HumanLM-FT vs frontier | |
+| J4 | Benchmark: uncertainty | Bootstrap 95% CIs on fact-fail rate, in-band share, judge win rate; paired difference CI for FeatherLM-FT vs frontier | |
 | J5 | Benchmark: judge protocol | Both orders run, inconsistent = tie, judge model id recorded, judge ≠ either compared system | |
 | J6 | Benchmark: no cherry-picking | Every `evals/runs/hack_*.jsonl` file has a row in RESULTS.md; every metric in results.json appears in the table; n = 130 everywhere | |
 | J7 | Benchmark: quality kept for cost/latency claims | Cost and latency rows sit next to the quality columns in the same table; the headline sentence names the quality tradeoff if any | |

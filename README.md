@@ -1,7 +1,7 @@
-# HumanLM
+# FeatherLM
 
 ## What it does
-HumanLM rewrites AI-sounding marketing copy (landing pages, launch emails, LinkedIn posts) so it reads like a skilled human wrote it, without changing any fact. It is an open model, fine-tuned and served on Fireworks.
+FeatherLM rewrites AI-sounding marketing copy (landing pages, launch emails, LinkedIn posts) so it reads like a skilled human wrote it, without changing any fact. It is an open model, fine-tuned and served on Fireworks.
 
 Frontier models with a good prompt remove the AI tells, but they also drop or change facts and cut the copy short. A fact-safe rewrite is the part they don't give you.
 

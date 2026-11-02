@@ -131,7 +131,7 @@ Every claim has a URL and the date it was checked or published. [E] = my estimat
 
 ---
 
-## 3. The eval stack HumanLM should copy
+## 3. The eval stack FeatherLM should copy
 
 One harness, run on every checkpoint. Gates first, then cheap metrics, then judges, then humans. Owner: hl-judge. Costs are [E].
 
@@ -182,7 +182,7 @@ The faithfulness gate is required because human-likeness trades off against fide
 - Cost [E]: 5 × 1 hr × $25–40 ≈ $150–200/week via Prolific or friends. Our own hl-writer-panel agents pre-screen but never replace this.
 
 **Layer 6: outcome study (once, at month end, about $400–800 [E]).**
-- Meguellati-style preference test on Prolific: n≈200 per condition. Human-written founder copy vs frontier AI vs HumanLM.
+- Meguellati-style preference test on Prolific: n≈200 per condition. Human-written founder copy vs frontier AI vs FeatherLM.
 - Measure preference, "spotted AI" rate and the detection penalty.
 - That is the YC slide: "people can't spot it AND prefer it".
 

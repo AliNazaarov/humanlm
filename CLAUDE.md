@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-HumanLM: an open model that rewrites AI-sounding copy so it reads like a skilled human wrote it, keeping every fact and adding nothing. Today (2026-11-02) it is being entered in the Fireworks "Deploy with Microsoft & NVIDIA" hackathon: fine-tune an open model on Fireworks and beat a frontier baseline on the same 130 eval items. Start with `CONTEXT.md` for the product, `hackathon/README_HACKATHON.md` for the event rules and timeline.
+FeatherLM: an open model that rewrites AI-sounding copy so it reads like a skilled human wrote it, keeping every fact and adding nothing. Today (2026-11-02) it is being entered in the Fireworks "Deploy with Microsoft & NVIDIA" hackathon: fine-tune an open model on Fireworks and beat a frontier baseline on the same 130 eval items. Start with `CONTEXT.md` for the product, `hackathon/README_HACKATHON.md` for the event rules and timeline.
 
 ## Commands
 

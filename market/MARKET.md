@@ -1,4 +1,4 @@
-# HumanLM market research: writing that is genuinely human, not AI slop
+# FeatherLM market research: writing that is genuinely human, not AI slop
 
 Research date: 2026-11-01. Method: web search only (no Similarweb/Ahrefs login, no Google Trends access). Labels used throughout:
 - **[F]** fact from a named source

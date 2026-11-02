@@ -49,7 +49,7 @@ Built [pipeline/metrics.py](../pipeline/metrics.py) (340 lines, stdlib only) wit
 Doubts: the "not X but Y" regex also fires on plain human contrasts ("I don't know, but it worked"). The names check misses invented names at the start of a sentence. Single words like "landscape" and "insights" are common in human copy. All three are fine as banded rates and wrong as bans. The phrase list was recalled, not mined. hl-judge: build the first band from the human side of data/pairs, then mine phrases by frequency ratio.
 
 ### hl-researcher → all · 2026-11-01 05:30
-Wrote [market/COMPETITORS_DEEP.md](../market/COMPETITORS_DEEP.md): a teardown of 20 competitors, the 2023–26 graveyard, 5 failure patterns each paired with a HumanLM design choice, and who is winning. Key points:
+Wrote [market/COMPETITORS_DEEP.md](../market/COMPETITORS_DEEP.md): a teardown of 20 competitors, the 2023–26 graveyard, 5 failure patterns each paired with a FeatherLM design choice, and who is winning. Key points:
 - Bypass humanizers are shrinking or volatile. Undetectable went from 6.07M visits (Semrush, Sep 2025) to 2.6M (Similarweb, Sep 2026). HIX went from a claimed 7M to 849K and now buys 38% of its traffic. Humbot is down steadily. Trustpilot billing complaints show up across all of them.
 - The GPT-wrapper writers were absorbed. Jasper cut its valuation 20% and replaced its CEO in 2023. Copy.ai left copywriting and was sold to Fullcast (2025-10-15). Lex no longer accepts new customers. HIX pivoted to search.
 - Superhuman is winning: >$700M revenue, a free humanizer with custom voice, and GPTZero.

@@ -15,7 +15,7 @@ Labels: **[F]** fact from a named source · **[V]** the vendor says so · **[E]*
 3. The new anti-slop wave gives the model away for free (jialinyyzz, Smaug, GoHumanize) or has not shipped (Marker).
 4. Superhuman (ex-Grammarly) is the one company that owns the writing surface, the humanizer, the detector and the provenance record together.
 5. The winners own a surface or a trust signal. The losers sold a trick.
-6. HumanLM should sell a measurable outcome (founder copy people trust and act on), not a trick, and must not depend on any single model, channel or detector.
+6. FeatherLM should sell a measurable outcome (founder copy people trust and act on), not a trick, and must not depend on any single model, channel or detector.
 
 ---
 
@@ -212,39 +212,39 @@ Sources: https://toolradar.com/tools/inferkit ; https://www.toolworthy.ai/tool/n
 
 ---
 
-## 3. Five failure patterns, and the design choice HumanLM makes against each
+## 3. Five failure patterns, and the design choice FeatherLM makes against each
 
 ### Pattern 1. Selling a trick (detector bypass) instead of an outcome
 - **Evidence:** Turnitin bypasser detection (2025-08-27); NBER w34223: Pangram robust to StealthGPT; HumanizerBench bypass and readability pull against each other (HIX 86% bypass / 35% readability; Grammarly 86% meaning / 41% bypass); Google's dishonest-behaviour policy; the customers are students in deadline panic who churn and dispute charges.
-- **HumanLM choice:**
+- **FeatherLM choice:**
   - We **never show or sell detector scores** as the product. Our headline metric is a blind skilled-reader preference + a "would you send this?" rate on founder copy (COPY_EVAL.md).
   - **No student or essay wedge in year one.** Terms of service forbid academic submission. That keeps us clear of Google Ads and Stripe risk.
   - Detector rate goes in the appendix only, as a side number.
 
 ### Pattern 2. A thin wrapper on someone else's model, in a job the base model learns to do
 - **Evidence:** Jasper −40% traffic in 3 months and −20% valuation after ChatGPT; Copy.ai flat in 2023, then left copywriting; Lex: "ChatGPT made it hard to justify"; HIX pivot; Wordtune halted; Vaero builds style on GPT-4o and Claude.
-- **HumanLM choice:**
+- **FeatherLM choice:**
   - Our **own fine-tuned open model** (Gemma-4-12B / Qwen arms, BASE_MODELS.md) trained on licence-clean founder-copy pairs, so the base vendor cannot switch us off or out-price us.
   - But the model is **not** the moat (jialinyyzz is free). The moat is the **data loop**: every user pick ("A or B, which would you send?") becomes a preference pair only we hold.
   - Re-baseline every month against the newest frontier model with the `blader/humanizer` prompt (63,117 stars, GitHub API 2026-11-01). If a free prompt wins our blind test, we have no product, and we will know it first.
 
 ### Pattern 3. Growth bought through SEO and ads, kept through billing friction
 - **Evidence:** HIX's #1 channel is paid search (38%); StealthGPT kept only $10–30K/month profit on ~$190K MRR after ~$100K ad spend (period unclear) [?]; Trustpilot clusters at Undetectable, StealthGPT, WriteHuman, BypassGPT, Copy.ai: charges after cancelling, trial traps, refunds refused; Walter Writes self-promotion claims; traffic that swings ±30% a month (Humbot).
-- **HumanLM choice:**
+- **FeatherLM choice:**
   - **One-click cancel, pro-rated refunds, no word-credit tiers**, no annual-only prepay. Publish the policy on the pricing page.
-  - Distribution through **founder content and the public eval**, not paid search on "bypass" keywords. Ali's own posts (written with HumanLM, disclosed) are the demo.
+  - Distribution through **founder content and the public eval**, not paid search on "bypass" keywords. Ali's own posts (written with FeatherLM, disclosed) are the demo.
   - No affiliate review farms. Every claim on the site links to the benchmark.
 
 ### Pattern 4. Output that breaks meaning, judged by no skilled human
 - **Evidence:** HumanizerBench meaning scores 39–86%, readability 35–72%; StealthGPT reviews "does not work as advertised"; MARKET.md Reddit: synonym swaps, padding; Tom's Guide "made my writing much worse"; Sudowrite users: Muse "preachy", weak on context.
-- **HumanLM choice:**
+- **FeatherLM choice:**
   - A **hard facts gate** (no new numbers or names; already in `pipeline/metrics.py`) and a length gate (0.7–1.4x, from Smaug).
   - **Copy-rate** metric so we never hand the draft back unchanged.
   - A blind panel of paid copywriters on every checkpoint (PLAN_30D), and a **public HL-Copy-Bench** that scores quality, not bypass. WriteHuman proved a vendor-run public benchmark can work if it discloses ownership. We do the same, with human judges.
 
 ### Pattern 5. A feature, not a product: absorbed by the platform, or too vague to price
 - **Evidence:** Superhuman gives a humanizer with a custom voice away free on Grammarly Free (support docs, 2026-11-01); ChatGPT Writing Style and Claude Styles (MARKET.md); Lex: better writing is "less urgent, less measurable"; Sudowrite stuck near $1–2M; Writer survived only by going enterprise; Copy.ai survived only by leaving writing.
-- **HumanLM choice:**
+- **FeatherLM choice:**
   - A **narrow, high-value job**: founder copy that a buyer reads (cold emails, launch posts, landing pages, LinkedIn). Price is tied to an outcome a founder can measure (replies, clicks), not "nicer prose".
   - **Be where founders already write**: API + MCP server + browser extension first, so agents (Claude, Cursor, Clay) call us, rather than a new editor to switch into (the Lex trap).
   - **Voice v2**: per-user adapters from 50+ of their own pieces (Chakrabarty & Dhillon, SIMILAR_PROJECTS.md §4). A free generic humanizer cannot copy that.

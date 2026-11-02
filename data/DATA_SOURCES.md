@@ -1,4 +1,4 @@
-# HumanLM data sources: pre-generative-AI human text
+# FeatherLM data sources: pre-generative-AI human text
 
 Researched 2026-11-01. Status tags: [V] verified on the source page this session, [S] from a secondary write-up, [?] not verified or from memory. Not legal advice; get a lawyer to sign off before any commercial training run.
 

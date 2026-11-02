@@ -1,7 +1,7 @@
-# HumanLM: the evals + RL playbook, applied
+# FeatherLM: the evals + RL playbook, applied
 
 Written 2026-11-01. Revised the same day after the hl-critic review (`market/RISKS.md` R1-R7).
-Applies `AI Learning/EVALS_RL_PLAYBOOK.md` (the startup-agnostic playbook) to HumanLM.
+Applies `AI Learning/EVALS_RL_PLAYBOOK.md` (the startup-agnostic playbook) to FeatherLM.
 It sits next to `evals/EVALS_AND_RL_PLAN.md` (the plan) and does not repeat it. Where the plan already covers something, this file links to its section (`PLAN §x`) and says what to build. Where the plan is wrong or missing something, section 1 says so.
 
 Inputs read: `BRIEF.md`, `GRAPH.md`, `board/DECISIONS.md`, `research/TECH.md`, `data/DATA_SOURCES.md`, `evals/EVALS_AND_RL_PLAN.md`, the 10 agent files `~/.claude/agents/hl-*.md`, and `Tastecut/app/engine/{reward,tells}.py`.
@@ -52,7 +52,7 @@ The plan is strong on model-level evals and RL safety. Fix these:
 
 ## 2. Gold outcome vs proxies
 
-**Model gold (the main gold).** Blind, length-matched A/B win rate of the HumanLM checkpoint against the best frontier models (each with a "write like a human" prompt and few-shot human examples), on frozen `gate` prompts for social posts and copy (ads, landing pages, emails). PLAN §2.5 has the protocol.
+**Model gold (the main gold).** Blind, length-matched A/B win rate of the FeatherLM checkpoint against the best frontier models (each with a "write like a human" prompt and few-shot human examples), on frozen `gate` prompts for social posts and copy (ads, landing pages, emails). PLAN §2.5 has the protocol.
 - Raters are named in each report, and are people who did not build or prompt the arms. Ali is not a rater on gold A/Bs.
 - Report win rate with a Wilson 95% CI, per style (post, ad, landing page, email), never pooled only.
 - Length-matched: each pair is within ±15% words; otherwise the pair is regenerated, not scored.
@@ -277,11 +277,11 @@ Not in these 2 weeks: any fine-tune, DPO, CPT, the leaderboard, anything app-sid
 
 None of this is built or planned until a DECISIONS entry starts the app. It is kept so the design is not lost.
 
-**App gold.** The text the user actually used, and they keep using HumanLM: still using it after 4 weeks, then paid. Wispr's "zero-edit rate" (BRIEF item 8) is the right shape, but it is hackable (H1) and never read alone.
+**App gold.** The text the user actually used, and they keep using FeatherLM: still using it after 4 weeks, then paid. Wispr's "zero-edit rate" (BRIEF item 8) is the right shape, but it is hackable (H1) and never read alone.
 
-**Only reward events HumanLM can see with consent:** accepted in the HumanLM box, edited in the HumanLM box, an explicit Send/Copy-final button. "Sent" outside the app is unknown and scores 0. A hotkey that works in any app cannot see a send in Gmail or LinkedIn without logging keystrokes, and Wispr got a viral backlash for exactly that (`design/WISPR_TEARDOWN.md` line 84).
+**Only reward events FeatherLM can see with consent:** accepted in the FeatherLM box, edited in the FeatherLM box, an explicit Send/Copy-final button. "Sent" outside the app is unknown and scores 0. A hotkey that works in any app cannot see a send in Gmail or LinkedIn without logging keystrokes, and Wispr got a viral backlash for exactly that (`design/WISPR_TEARDOWN.md` line 84).
 
-| Event (all inside the HumanLM box) | Reward | Notes |
+| Event (all inside the FeatherLM box) | Reward | Notes |
 |---|---|---|
 | User pays / renews | gold, user level | weekly review only, not in the bandit |
 | Accepted unedited (Copy-final / Send button), change ratio above floor **and J6 passes** | +1.0 | the floor alone is beaten by synonym swaps, so it is paired with the meaning check |

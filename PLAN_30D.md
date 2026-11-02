@@ -1,4 +1,4 @@
-# HumanLM — product definition + 30-day plan (2026-11-01, revised same day after 5 research reports)
+# FeatherLM — product definition + 30-day plan (2026-11-01, revised same day after 5 research reports)
 
 Revision note: §3–§6 rewritten to match [WHAT_ELSE.md](WHAT_ELSE.md) (synthesis of research/BENCHMARKS, SIMILAR_PROJECTS, COPY_EVAL, SOLO_PLAYBOOK, USER_VOICE). §7 founder decisions kept as written; §8 lists what the research corrected. [E] = estimate.
 

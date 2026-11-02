@@ -1,4 +1,4 @@
-# HumanLM: start here (handoff, 2026-11-02)
+# FeatherLM: start here (handoff, 2026-11-02)
 
 **What it is:** our own model, plus a simple tool, that rewrites AI-sounding copy so it reads like a skilled human wrote it. It keeps every fact and adds nothing. It answers YC's Winter 2027 request "LLMs That Write Well". It's not a GPT wrapper: the model underneath is ours.
 

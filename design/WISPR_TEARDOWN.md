@@ -1,4 +1,4 @@
-# Wispr Flow teardown (design + product), for HumanLM
+# Wispr Flow teardown (design + product), for FeatherLM
 
 Date: 2026-11-01. Purpose: borrow the feel, never the assets. Colour and font values below were read from Wispr's live Webflow stylesheet (cdn.prod.website-files.com ... flowsite-dev.webflow.shared.11de844c4.min.css). Everything else is from the pages and press linked inline. Not logged in anywhere. Motion was inferred from CSS and page structure (8 Lottie references, ScrollTrigger-style `data-w-id` hooks, short transitions), not watched frame by frame, so treat motion notes as medium confidence.
 
@@ -77,7 +77,7 @@ Sources: [docs: navigating the app](https://docs.wisprflow.ai/articles/509624072
 - **Snippets:** spoken shortcut expands to saved text.
 - **Styles / "sounds like you":** tone per app category (personal messages, work messages, email, other), levels Formal / Casual / Very casual. Mostly punctuation and casing control, not true voice cloning. Reviews say desktop English first, now a Style tab on iPhone.
 - **Context awareness:** reads surrounding app content to spell names and format correctly. This is the privacy flashpoint (below).
-- **Command Mode (important for HumanLM):** [highlight text, hold shortcut, speak a command, release; Flow replaces the selection](https://docs.wisprflow.ai/articles/4816967992-how-to-use-command-mode). Without a selection it generates inline. Paid plan/trial, Settings > Experimental. In apps without write-back (e.g. Google Docs) it shows a popup to copy. This is exactly the "rewrite selected text" primitive, but driven by voice and generic instructions, not by a model of your style.
+- **Command Mode (important for FeatherLM):** [highlight text, hold shortcut, speak a command, release; Flow replaces the selection](https://docs.wisprflow.ai/articles/4816967992-how-to-use-command-mode). Without a selection it generates inline. Paid plan/trial, Settings > Experimental. In apps without write-back (e.g. Google Docs) it shows a popup to copy. This is exactly the "rewrite selected text" primitive, but driven by voice and generic instructions, not by a model of your style.
 - **Notetaker:** meeting notes, summaries, action items (Mac/Windows).
 - **Onboarding:** sources disagree. One says it asks your use case then demos in that context; one 2026 test calls it long with a broken final mic test. Not verified first-hand (I did not install or log in).
 - **Languages:** 100+, auto-detect. **Platforms:** Mac, Windows, iOS, Android (Android launched Feb 2026).
@@ -105,13 +105,13 @@ Sources: [TechCrunch, Aug 2026](https://techcrunch.com/2026/08/17/wispr-raises-2
 - **Product bets:** Canto, a 2B-parameter proprietary speech model (claims error rate from >30% to ~5-10% in hard audio); key internal metric "zero edit rate" (share of output accepted untouched); Notetaker; hardware (Oasis ring); Wispr Interface Labs.
 - **Competitors named by TechCrunch:** Willow, Monologue, Aqua, Superwhisper; Granola, Fireflies, Read AI for notes.
 
-**Takeaway worth stealing:** "zero edit rate" as the north-star metric. For HumanLM the equivalent is "sent without edits" and "did people notice it was AI".
+**Takeaway worth stealing:** "zero edit rate" as the north-star metric. For FeatherLM the equivalent is "sent without edits" and "did people notice it was AI".
 
 ---
 
 ## 4. A "Wispr Flow for human writing"
 
-Core inversion: Wispr makes *input* faster. HumanLM makes *output* sound like a specific person. Their "Styles" are three tone presets; yours is a learned voice model with evidence. That gap is the product.
+Core inversion: Wispr makes *input* faster. FeatherLM makes *output* sound like a specific person. Their "Styles" are three tone presets; yours is a learned voice model with evidence. That gap is the product.
 
 ### Concept A: "Your voice, anywhere" system-wide rewrite (closest analogue, recommended first)
 - Desktop + iOS/Android keyboard. Select text (or an AI draft pasted in), hit a hotkey, a small pill appears near the cursor, shows 2-3 rewrites in YOUR voice, Tab to accept. Works in Gmail, Slack, Docs, X, LinkedIn, IDE comments.

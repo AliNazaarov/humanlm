@@ -1,6 +1,6 @@
 # What else do I need? (beyond evals + loops + agents)
 
-Written 2026-11-01 by the HumanLM graph (synthesis of research/BENCHMARKS.md, SIMILAR_PROJECTS.md, COPY_EVAL.md, SOLO_PLAYBOOK.md, USER_VOICE.md, TECH.md, market/MARKET.md, data/DATA_SOURCES.md, evals/EVALS_AND_RL_PLAN.md, market/RISKS.md).
+Written 2026-11-01 by the FeatherLM graph (synthesis of research/BENCHMARKS.md, SIMILAR_PROJECTS.md, COPY_EVAL.md, SOLO_PLAYBOOK.md, USER_VOICE.md, TECH.md, market/MARKET.md, data/DATA_SOURCES.md, evals/EVALS_AND_RL_PLAN.md, market/RISKS.md).
 Labels: **[S]** sourced (link + date), **[E]** our estimate, **[K]** background knowledge, not re-checked today. Every [S] claim links to the research file that holds the full citation.
 
 ---

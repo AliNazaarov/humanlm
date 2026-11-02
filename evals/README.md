@@ -1,4 +1,4 @@
-# HumanLM founder-copy evals (DEV)
+# FeatherLM founder-copy evals (DEV)
 
 > **RULE: everything in this folder is eval data. It is never training data.**
 > No row from `dev_set.jsonl`, `trick_set.jsonl` or `baseline_frontier.jsonl` may go into SFT, DPO, reward-model or RL data, as an input or as a target. The trainer's data loader must refuse any example with more than 8 words of n-gram overlap with these files (COPY_EVAL §8.2). `baseline_frontier.jsonl` is a comparison arm only. If you train on it, you have trained on a Claude-written target, and every win against it means nothing.

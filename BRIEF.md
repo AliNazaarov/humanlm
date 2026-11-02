@@ -1,4 +1,4 @@
-# HumanLM — brief (2026-11-01)
+# FeatherLM — brief (2026-11-01)
 
 Working name. A model and app that write like real people, not AI slop.
 

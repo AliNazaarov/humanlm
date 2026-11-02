@@ -1,4 +1,4 @@
-# What Hugging Face's post-training stories teach HumanLM
+# What Hugging Face's post-training stories teach FeatherLM
 
 Written 2026-11-01 by hl-researcher. All links read on 2026-11-01 unless a date says otherwise.
 
@@ -45,7 +45,7 @@ Tags: **[E]** = my estimate. **[K]** = background knowledge, not checked today. 
 - **The judge was biased, and they said so.** GPT-4 as judge favours models distilled from it and verbose answers.
 - **The handbook config differs from the paper.** The QLoRA recipe uses β=**0.01**, LR **5e-6**, 1 epoch, LoRA r=128 α=128 ([config_qlora.yaml](https://github.com/huggingface/alignment-handbook/blob/main/recipes/zephyr-7b-beta/dpo/config_qlora.yaml)). The SFT QLoRA config uses r=16, LR 2e-4, 1 epoch ([sft config](https://github.com/huggingface/alignment-handbook/blob/main/recipes/zephyr-7b-beta/sft/config_qlora.yaml)). So even HF's own β moved from 0.1 to 0.01.
 
-**How HumanLM applies it.**
+**How FeatherLM applies it.**
 - **Trainer:** TRL `SFTTrainer`, then `DPOTrainer`. Never skip SFT on a base model like Gemma-4-12B base.
 - **Recipe change:** BASE_MODELS §5 says SFT for 2 epochs. If DPO comes after, run **1 SFT epoch**. Only use the 2-epoch checkpoint if the eval proves it better *after* DPO.
 - **Hyperparameters to start from, for LoRA DPO:** LR 5e-6, β scan from 0.01, cosine, warmup 0.1, 1 epoch.
@@ -65,7 +65,7 @@ Tags: **[E]** = my estimate. **[K]** = background knowledge, not checked today. 
 - **The SmolLM3 preference config that actually shipped** ([apo.yaml](https://github.com/huggingface/alignment-handbook/blob/main/recipes/smollm3/dpo/apo.yaml)) uses `loss_type: apo_zero`, `beta: 0.05`, LR 1e-6, `cosine_with_min_lr`, 1 epoch, warmup 0.1.
 - **There is a `pref_align_scan` recipe.** It compares DPO, KTO and IPO with a β sweep (2024-01-18).
 
-**How HumanLM applies it.**
+**How FeatherLM applies it.**
 - Copy the habit, not the code. Keep `model/configs/<run-id>.yaml` with every setting, the dataset hash and the eval it should move. That also meets the GRAPH.md rule "no training run without a stated eval".
 - The handbook pins torch 2.6 / flash-attn 2.7.4. It is older than TRL 1.17, so use TRL's own scripts and Unsloth for training. Use the handbook only as a hyperparameter reference.
 
@@ -149,7 +149,7 @@ Tags: **[E]** = my estimate. **[K]** = background knowledge, not checked today. 
   - large SFT sets need rank ~256.
   - Note: HF's own page is inconsistent. The Python example uses LR 2e-4 and the CLI example uses 2e-5 for the same run.
 
-**How HumanLM applies TRL.**
+**How FeatherLM applies TRL.**
 - **Trainers in order:** `SFTTrainer` → `DPOTrainer` (stable) → `KTOTrainer` for app thumbs data → `GRPOTrainer` or `RLOOTrainer`. Avoid ORPO and Online DPO as the main path while they are experimental. They may change between releases.
 - **Replace "ORPO with small β" (TECH.md §A.5)** with `DPOTrainer(loss_type=["sigmoid","sft"])` or `apo_zero`. Both keep an anchor on the human text, and both are stable.
 - **Set `max_length` from data:** the 99th-percentile token length of prompt + completion, not 1024.
@@ -178,7 +178,7 @@ Tags: **[E]** = my estimate. **[K]** = background knowledge, not checked today. 
 - **The template broke behaviour.** Without a forced `<think>` prefill, out-of-domain prompts dropped the trained behaviour. This was found by vibe testing.
 - **Tokens were mismatched.** The README warns that Qwen base needs EOS `<|im_end|>`, and that the DeepSeek template breaks the format reward.
 
-**How HumanLM applies it.**
+**How FeatherLM applies it.**
 - **Our "verifier" is the facts gate.** It plays the role Math-Verify played. Run it on every candidate pair, and log the keep rate as Open-R1 did. If the keep rate is under ~40%, fix generation before training **[E]**.
 - **Use an LLM judge only to rescue false rejects, never as the reward.** That matches Open-R1's use and TECH.md §E.
 - **Do not assume a reward model picks better winners.** Before building one, test RM-picked chosen vs a random gate-passing chosen on 200 dev prompts. If it doesn't win, skip it. That saves the ≥70%-agreement work in BENCHMARKS.md.
@@ -202,7 +202,7 @@ Tags: **[E]** = my estimate. **[K]** = background knowledge, not checked today. 
 - **Merging repairs damage.** Preference tuning hurt long context (RULER). HF averaged ("souped") the APO checkpoints, then **linearly merged them 0.9/0.1 with a mid-training checkpoint**. That recovered RULER up to 128k (blog).
 - **SFT data:** 4 epochs, BFD packing, loss masked on user turns and tool outputs.
 
-**How HumanLM applies it.**
+**How FeatherLM applies it.**
 - **Pair recipe = strong vs weak, in our direction.** Chosen = the human rewrite. Rejected = our SFT model's own failed output, or a frontier model's slop draft. Use the "on-policy with grading" variant from the playbook for later rounds.
 - **Loss:** add `apo_zero` as a DPO arm. Our chosen side is human copy, which should beat the model's output at first. Once the model's output is beating the human references in blind tests, switch the arm to `apo_down`.
 - **Merge as a cheap fix (CPU only, about $0).** If DPO wins on blind taste but loses facts or diversity, linearly merge the DPO and SFT LoRAs. Start at 0.9/0.1 as SmolLM3 did and sweep [0.5, 0.7, 0.9] **[E]**. Use MergeKit, or merge adapters with PEFT before vLLM serving. Gemma-4-12B must be merged before serving anyway (BASE_MODELS §5).
@@ -256,7 +256,7 @@ Tags: **[E]** = my estimate. **[K]** = background knowledge, not checked today. 
 1. The playbook says "lower values [of β] encourage staying close to the reference model while higher values allow the model to match the preference data more closely". TRL's docs say the opposite, and TRL is correct: "Higher β means less deviation from the reference model" ([DPOConfig](https://huggingface.co/docs/trl/main/en/dpo_trainer)). Don't copy the playbook sentence into our configs or notes.
 2. The playbook text says β=0.1 was best, but the shipped SmolLM3 config uses β=0.05 ([apo.yaml](https://github.com/huggingface/alignment-handbook/blob/main/recipes/smollm3/dpo/apo.yaml)). Treat β as something to scan per dataset, never as a known constant.
 
-**How HumanLM applies it.**
+**How FeatherLM applies it.**
 - **Vibe set:** 20 fixed founder-copy prompts. Ali reads all outputs from every checkpoint before any number is trusted. This is a check, not a vote (COPY_EVAL keeps Ali out of the gold raters).
 - **Avg@k:** our dev set is small, so score 4 samples per prompt (BASE_MODELS already samples 4) and report avg@4 with a CI.
 - **The preference LR follows from the SFT LR.** If LoRA SFT runs at 1e-4, scan DPO at 5e-6, 1e-5 and 2e-5 (5–20× below).
@@ -277,7 +277,7 @@ Tags: **[E]** = my estimate. **[K]** = background knowledge, not checked today. 
 - **Gradient accumulation** gives a big batch without big memory.
 - **Activation recomputation** (gradient checkpointing) trades compute for memory.
 
-**How HumanLM applies it.**
+**How FeatherLM applies it.**
 - A full fine-tune of a 12B model needs about 12B × 16 B ≈ **192 GB** before activations. That is over two 80 GB GPUs. So **LoRA is required, not optional**, on one L40S or A100. LoRA keeps the frozen 12B weights in BF16 (≈24 GB) plus small adapter states **[E]**.
 - To get an effective batch of 16 (under the LoRA-friendly 32): `per_device_train_batch_size=2`, `gradient_accumulation_steps=8`. This matches BASE_MODELS.
 - **DPO with LoRA needs no second model in memory.** TRL uses the base with the adapter turned off as the reference **[K]**. Add `precompute_ref_log_probs=True` if memory is still tight.
@@ -290,10 +290,10 @@ Tags: **[E]** = my estimate. **[K]** = background knowledge, not checked today. 
 **smol-course** ([repo](https://github.com/huggingface/smol-course), 6.8k stars). v2 is live and built on SmolLM3.
 - Units: 1 instruction tuning and chat templates; 2 evaluation; 3 preference alignment (DPO); 4 VLMs; 5 RL (October 2025); 6 synthetic data (November 2025).
 - It runs on "most local machines" with minimal GPU needs.
-- **For HumanLM:** units 1, 2, 3 and 5 are the founder's 1–2 week learning path. It uses the same TRL trainers we will use. Units 1–3 can run on a Mac with a 135M–360M model to learn the mechanics before renting a GPU **[E]**.
+- **For FeatherLM:** units 1, 2, 3 and 5 are the founder's 1–2 week learning path. It uses the same TRL trainers we will use. Units 1–3 can run on a Mac with a 135M–360M model to learn the mechanics before renting a GPU **[E]**.
 
 **Deep RL course** ([intro](https://huggingface.co/learn/deep-rl-course/unit0/introduction)). This is classic RL: games and robots, with Stable-Baselines3 and CleanRL. It has no LLM unit.
-- **For HumanLM:** skip it. Read only the PPO unit if GRPO clipping needs intuition. Lambert's book (§11) covers the LLM side better.
+- **For FeatherLM:** skip it. Read only the PPO unit if GRPO clipping needs intuition. Lambert's book (§11) covers the LLM side better.
 
 ---
 
@@ -313,7 +313,7 @@ Tags: **[E]** = my estimate. **[K]** = background knowledge, not checked today. 
 - **Honest caveat.** That synthetic text "does not seem to drastically harm" small trainings, and "might actually improve it". So "pre-AI text is better" is not proven by FineWeb. It matches TECH.md's verdict.
 - **Results vary by crawl.** Some crawls were much worse than others, and they "could not find any conclusive explanation", after 192 models and 60k+ H100-hours.
 
-**How HumanLM applies it.**
+**How FeatherLM applies it.**
 - **Date check plus a slop-word check on the human side.** Run FineWeb's 7-phrase list plus `pipeline/slop_phrases.txt` on every "human" text. For anything dated after 2022-11-30, or with an unknown date, flag any document above the human-band rate. This is cheap insurance against AI text inside our "human" data.
 - **Dedup lightly.** Use exact plus near-duplicate dedup *within* a source. Don't run aggressive cross-source MinHash that throws away unique copy. Check on the dev set that dedup doesn't lower the win rate.
 - **Annotation:** use one strong open judge with an **additive** rubric for any quality filter, e.g. +1 specific, +1 concrete proof, +1 natural rhythm, and so on **[E]**. Don't use a jury unless it measurably beats one judge on 200 hand-labelled items.
@@ -329,7 +329,7 @@ This is the closest HF story to our AI-draft generation step ([blog](https://hug
   - Rewording the prompts did not stop duplicates. Prompts needed explicit instructions that the format and content must differ.
   - Early outputs repeated openers. Stories started with "Once upon a time". Telling the model to avoid them helped but did not fix it.
   - Decontamination: find 10-gram overlaps, then drop the sample if `difflib.SequenceMatcher` ratio > 0.5.
-- **For HumanLM:**
+- **For FeatherLM:**
   - The AI drafts must look like *real* user drafts in their variety. Rotate 3+ draft models (SIMILAR_PROJECTS §6), plus explicit persona/format variants: rushed founder, over-polished ChatGPT, bullet dump, and so on **[E]**.
   - Measure the duplicate rate of drafts (distinct-2 from `pipeline/metrics.py`).
   - Use the 10-gram + 0.5 SequenceMatcher check to keep eval human texts out of training.
@@ -344,7 +344,7 @@ This is the closest HF story to our AI-draft generation step ([blog](https://hug
 - One related paper, not by HF, is on HF Papers: Chung et al., "Modifying LLM Post-Training for Diverse Creative Writing" ([arXiv 2503.17126](https://arxiv.org/abs/2503.17126), 2025-03-21).
   - It adds a "deviation" weight to DPO/ORPO so that rare good outputs get more weight.
   - An 8B model matched human-written data on diversity, with quality near GPT-4o and R1.
-  - **For HumanLM:** if DPO shrinks diversity (TECH.md's Kirk et al. risk), this is the next fix to try. It is not in TRL, so it needs a small custom loss **[K]**.
+  - **For FeatherLM:** if DPO shrinks diversity (TECH.md's Kirk et al. risk), this is the next fix to try. It is not in TRL, so it needs a small custom loss **[K]**.
 
 **[RLHF book](https://rlhfbook.com/) by Nathan Lambert.** Lambert was on HF's H4 team and co-authored Zephyr. The web book was last built 2026-10-30, and the Manning print edition came out July 2026 ([source chapters](https://github.com/natolambert/rlhf-book/tree/main/book/chapters)).
 - **Appendix B, "Beyond Just Style."** Preference tuning on general chat data makes models *chattier*. Lambert's own Tulu 3 example shows DPO adding numbered lists and bold headers. "RLHF tends to make models more verbose" because average raters like longer answers. Benchmarks added length correction because "funky RLHF" shows up as length bias.
@@ -352,14 +352,14 @@ This is the closest HF story to our AI-draft generation step ([blog](https://hug
   - The proxy reward rises while true quality first improves, then falls.
   - Typical exploits: "verbose, confident-sounding responses" and repeated rare tokens.
   - Over-optimisation is different from overfitting. It is gaming the measure, not memorising data.
-- **What it means for us.** This is the clearest statement of why HumanLM exists. Generic preference data *produces* the list-heavy, verbose slop we remove. So:
+- **What it means for us.** This is the clearest statement of why FeatherLM exists. Generic preference data *produces* the list-heavy, verbose slop we remove. So:
   - (a) **Never mix in generic preference sets** (UltraFeedback, Tulu prefs) "for helpfulness". They pull toward slop.
   - (b) Our rejected side must contain exactly those patterns (lists, bold, hedges, length).
   - (c) Keep length-controlled win rates (PLAN_30D §2.6). The book confirms that this is how the field patched the problem.
 
 ---
 
-## 12. The HumanLM post-training recipe v1, borrowed from Hugging Face
+## 12. The FeatherLM post-training recipe v1, borrowed from Hugging Face
 
 **Budget frame.** The hard cap is under $2k. Plan about **$150–350 GPU [E]** for v1. The rest goes to copywriter raters (COPY_EVAL) and pair generation.
 

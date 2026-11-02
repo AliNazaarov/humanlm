@@ -64,7 +64,7 @@ Done when: judge summary and CIs print for the dry run; a unit test in `hackatho
 1. Discover `evals/runs/hack_*.jsonl` plus `evals/baseline_frontier.jsonl` (label "frontier-persona-preexisting", no cost/latency columns).
 2. Join each output to `evals/eval_all.jsonl` by id (ai_draft, must_keep, forbidden, verbatim). Build `eval_all.jsonl` from dev + trick if missing.
 3. Per system: call `metrics.score_file` (import from `pipeline/metrics.py`) with `--source-field ai_draft` and `band_v0.json`; add: `must_keep` coverage (fraction of must_keep facts whose numbers/names appear; a crude check is fine, say so), `forbidden` hits, `verbatim` misses on trick items, length ratio, latency p50/p95, cost per 1k.
-4. Judge: HumanLM-FT vs frontier-live, HumanLM-FT vs base-untrained, both orders.
+4. Judge: FeatherLM-FT vs frontier-live, FeatherLM-FT vs base-untrained, both orders.
 5. Write `hackathon/report/results.json` (all numbers + CIs + n + model ids + prices) and render `hackathon/report/RESULTS.md` with the table below. Never hand-type a number into RESULTS.md.
 6. If `evals/heldout_pairs.jsonl` and `hack_*_heldout.jsonl` exist, add a second table (there the human original is a real reference: add a "closer to the human original" judge question).
 
@@ -82,11 +82,11 @@ Done when: RESULTS.md reads top to bottom without a placeholder.
 
 ## Step 5 (14:30–15:30): demo notebook, video, README
 
-`hackathon/demo/demo.ipynb` (runs top to bottom in < 1 min with keys in `.env`): load one eval item → call frontier and HumanLM-FT → show both outputs with the must_keep facts highlighted → load `results.json` → print the table → show the chart.
+`hackathon/demo/demo.ipynb` (runs top to bottom in < 1 min with keys in `.env`): load one eval item → call frontier and FeatherLM-FT → show both outputs with the must_keep facts highlighted → load `results.json` → print the table → show the chart.
 
 Video script (aim 50 s), `hackathon/demo/VIDEO_SCRIPT.md`:
 1. 0–8 s: "Frontier models make AI copy sound human, but they drop facts. Here is a draft with 3 facts." (show item)
-2. 8–22 s: frontier output with a dropped or changed number circled; HumanLM output with all 3 kept.
+2. 8–22 s: frontier output with a dropped or changed number circled; FeatherLM output with all 3 kept.
 3. 22–40 s: results chart. Say the three numbers: fact fails, cost per 1k, latency. Say the CI.
 4. 40–50 s: "Open model, fine-tuned and served on Fireworks. Repo link. Built today: everything in hackathon/."
 Record with QuickTime screen recording; one take is fine; no music. Export, upload (YouTube unlisted or the form's upload), link in README and the form.
