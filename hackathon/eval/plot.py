@@ -198,6 +198,7 @@ DISPLAY = {
     "O1_glm_base": "GLM-5.3 Flash base",
     "O2_glm_prompt": "GLM-5.3 + better prompt",
     "O2h_glm_humanizer": "GLM-5.3 + humanizer",
+    "O4m_glm_sft_modern": "GLM-5.3 fine-tuned (SFT B)",
     "X0_copy_draft (no rewrite: control)": "Unchanged draft (control)",
     "frontier-persona-preexisting": "Claude persona (pre-event)",
 }
