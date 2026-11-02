@@ -3,7 +3,7 @@
 Works with any OpenAI-compatible chat endpoint (Fireworks by default, OpenAI, Gemini) or Anthropic.
 Keys: ~/.config/humanlm/keys.env (or $HUMANLM_KEYS), then repo .env.
   python3 hackathon/harness/harness.py EVAL.jsonl OUT.jsonl --model MODEL --system-name NAME
-      [--provider fireworks|anthropic|openai|gemini] [--loops 3] [--prompt-file P] [--in-price USD_PER_M] [--out-price USD_PER_M]
+      [--provider fireworks|anthropic|openai|gemini|fwsampler] [--loops 3] [--prompt-file P] [--in-price USD_PER_M] [--out-price USD_PER_M]
       [--concurrency 4] [--limit N]
 --loops 0 is a single plain call (the non-harness row for the same model).
 Writes the shared run schema plus `loops_used` and `gates`, and a manifest in hackathon/runs/<system>.json.
@@ -62,6 +62,34 @@ def post(url, headers, body, tries=6):
             raise
 
 
+_FWS = {}
+_FWS_LOCK = __import__("threading").Lock()
+
+
+def _fw_sampler(model):
+    """Fireworks serverless-training sampler bound to a saved LoRA snapshot (no deployment).
+    Needs the fireworks-ai[training] SDK + fw-ai/cookbook renderers, so run the harness with that venv."""
+    with _FWS_LOCK:
+        if model not in _FWS:
+            from fireworks.training.sdk import FiretitanServiceClient
+            from training.renderer import get_renderer
+            from training.renderer.model_info import get_recommended_renderer_name
+            from training.renderer.tokenizer import get_tokenizer
+            tok_name = os.environ.get("HL_TOKENIZER", "zai-org/GLM-5.3-Flash")
+            tok = get_tokenizer(tok_name)
+            rname = os.environ.get("HL_RENDERER") or ("glm53_flash" if "GLM-5.3-Flash" in tok_name else get_recommended_renderer_name(tok_name))
+            renderer = get_renderer(rname, tok)   # same renderer the SFT recipe trained with
+            service = FiretitanServiceClient(api_key=os.environ["FIREWORKS_API_KEY"],
+                                             base_url="https://api.fireworks.ai/training/v1/serverless")
+            kw = {"base_model": model} if model.startswith("accounts/fireworks/models/") else {"model_path": model}
+            _FWS[model] = (service.create_sampling_client(tokenizer=tok, **kw), renderer)
+        return _FWS[model]
+
+
+def sampler_tokenizer_decode(renderer, toks):
+    return renderer.tokenizer.decode(toks)
+
+
 def decoding(provider, model, effort):
     """What each provider accepts. Recorded in every row and the manifest; differences are disclosed in the README."""
     if provider == "anthropic" and model.startswith("claude-opus-5"):
@@ -72,6 +100,8 @@ def decoding(provider, model, effort):
     if provider == "openai":
         # GPT-6.x reasoning models accept only the default temperature.
         return {"max_completion_tokens": 1500, "reasoning_effort": effort}
+    if provider == "fwsampler":
+        return {"max_tokens": 1500, "temperature": TEMP, "top_p": TOP_P}
     if provider == "gemini":
         return {"max_tokens": 4096, "temperature": TEMP, "top_p": TOP_P, "reasoning_effort": effort}
     d = {"max_tokens": 1500, "temperature": TEMP, "top_p": TOP_P}
@@ -88,6 +118,18 @@ def chat(provider, model, system, msgs, dec):
                  {"model": model, "system": system, "messages": msgs, **dec})
         text = "".join(b.get("text", "") for b in r["content"] if b.get("type") == "text")
         return text, r["usage"]["input_tokens"], r["usage"]["output_tokens"]
+    if provider == "fwsampler":
+        from fireworks.training.sdk import SamplingParams
+        from training.renderer import get_text_content
+        sampler, renderer = _fw_sampler(model)
+        # Prefill "</think>": GLM-5.3 non-thinking mode, the same "<think></think>{answer}" shape the SFT data trained on.
+        prompt = renderer.build_generation_prompt([{"role": "system", "content": system}] + msgs, prefill="</think>")
+        res = sampler.sample(prompt=prompt, num_samples=1, sampling_params=SamplingParams(
+            max_tokens=dec["max_tokens"], temperature=dec["temperature"], top_p=dec["top_p"],
+            stop=renderer.get_stop_sequences())).result()
+        toks = list(res.sequences[0].tokens)
+        text = __import__("re").sub(r"<\|[a-z_]+\|>", "", sampler_tokenizer_decode(renderer, toks))
+        return text.split("</think>")[-1].strip(), prompt.length, len(toks)
     url, key = {"fireworks": ("https://api.fireworks.ai/inference/v1/chat/completions", "FIREWORKS_API_KEY"),
                 "openai": ("https://api.openai.com/v1/chat/completions", "OPENAI_API_KEY"),
                 "gemini": ("https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "GEMINI_API_KEY")}[provider]
@@ -141,7 +183,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("eval"); ap.add_argument("out")
     ap.add_argument("--model", required=True); ap.add_argument("--system-name", required=True)
-    ap.add_argument("--provider", default="fireworks", choices=["fireworks", "anthropic", "openai", "gemini"])
+    ap.add_argument("--provider", default="fireworks", choices=["fireworks", "anthropic", "openai", "gemini", "fwsampler"])
     ap.add_argument("--loops", type=int, default=3); ap.add_argument("--prompt-file")
     ap.add_argument("--in-price", type=float, default=0.0); ap.add_argument("--out-price", type=float, default=0.0)
     ap.add_argument("--concurrency", type=int, default=4); ap.add_argument("--limit", type=int)
