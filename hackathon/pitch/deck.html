@@ -277,7 +277,9 @@ const AUDIT = {
 <!-- =========================================================== SLIDE 7: ASK / NEXT
   Speaker notes (1:52-2:00):
   "We are asking for Fireworks credits to finish the SFT and RL rows, and ten design partners who publish
-   copy every day. Thank you."
+   copy every day. We didn't make an open model smarter than Claude. We made it accountable, and made
+   accountability about [ratio on the slide] times cheaper. Thank you."
+  The multiplier is F1H $/1k divided by the main row's $/1k, computed from the DATA BLOCK (results.json).
 -->
 <section class="slide">
   <div class="kicker">Ask · next 30 days</div>
@@ -296,7 +298,8 @@ const AUDIT = {
       </ul>
     </div>
   </div>
-  <p class="muted" style="margin-top:2em;font-size:0.85em">Repo: github.com/AliNazaarov/humanlm · <code>make eval</code> rebuilds every number from the committed run files · <code>python3 hackathon/audit/audit.py</code> rebuilds the audit.</p>
+  <p class="serif" style="margin-top:1.6em;font-size:1.35em;max-width:34ch">We didn't make an open model smarter than Claude. We made it accountable, and made accountability about <span class="accent" id="ratio">[RESULT]</span>× cheaper.</p>
+  <p class="muted" style="margin-top:1.2em;font-size:0.85em">Repo: github.com/AliNazaarov/humanlm · <code>make eval</code> rebuilds every number from the committed run files · <code>python3 hackathon/audit/audit.py</code> rebuilds the audit.</p>
   <div class="foot"><span>Thank you</span><span>7 / 7</span></div>
 </section>
 
@@ -349,6 +352,8 @@ const ours = LEADERBOARD.find(r => r.kind === "ours" && /O3\)/.test(r.label)) ||
 const claude = LEADERBOARD.find(r => /strong/i.test(r.label));
 document.getElementById("cost_ours").textContent = ours && ours.cost != null ? "$" + ours.cost.toFixed(2) : "[RESULT]";
 document.getElementById("cost_claude").textContent = claude && claude.cost != null ? "$" + claude.cost.toFixed(2) : "[RESULT]";
+const fair = LEADERBOARD.find(r => r.kind === "fair");
+document.getElementById("ratio").textContent = ours && fair && ours.cost ? Math.round(fair.cost / ours.cost) : "[RESULT]";
 </script>
 </body>
 </html>
