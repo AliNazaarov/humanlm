@@ -24,7 +24,8 @@ STYLE_ASK = ("Now edit it the way a senior copywriter would: make it sound like 
 
 def load_env():
     """Keys from HUMANLM_KEYS (default ~/.config/humanlm/keys.env, outside the repo), then repo .env. Empty values are skipped."""
-    for p in (os.environ.get("HUMANLM_KEYS", os.path.expanduser("~/.config/humanlm/keys.env")), os.path.join(ROOT, ".env")):
+    for p in (os.environ.get("HUMANLM_KEYS", os.path.expanduser("~/.config/humanlm/keys.env")),
+              os.path.expanduser("~/.config/humanlm/gemini.env"), os.path.join(ROOT, ".env")):
         if os.path.exists(p):
             for line in open(p):
                 if "=" in line and not line.lstrip().startswith("#"):
@@ -91,6 +92,8 @@ def chat(provider, model, system, msgs, dec):
                 "openai": ("https://api.openai.com/v1/chat/completions", "OPENAI_API_KEY"),
                 "gemini": ("https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "GEMINI_API_KEY")}[provider]
     body = {"model": model, "messages": [{"role": "system", "content": system}] + msgs, **dec}
+    if provider == "gemini" and os.environ.get("GEMINI_PAID_API_KEY"):
+        key = "GEMINI_PAID_API_KEY"   # billing-enabled key for Gemini 4 Argon; the free key has no quota for it
     r = post(url, {"Authorization": f"Bearer {os.environ[key]}"}, body)
     text = r["choices"][0]["message"].get("content") or ""
     u = r.get("usage", {})
