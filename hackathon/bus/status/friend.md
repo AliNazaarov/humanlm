@@ -33,3 +33,4 @@
 2026-11-02T20:26:29Z README has no TODOs left (MIT licence, data licences, humanizer credit, Gemini dropped). O3f calm: 96%/98% strict/lenient. Judging O3f (Kimi + Qwen) and O3c (Qwen) vs Claude now.
 2026-11-02T20:35:05Z O3f calm lost on both judges; O3c best on Kimi + Qwen (Qwen style 44/27 ours). Judges agree 83%. Second A/B set = O3c vs Claude. O3g judge running.
 2026-11-02T20:37:42Z A/B set 2 live (O3c vs Claude, 8 fresh pairs). O3g judged: style 18/64, worse than O3c. O3c stays main row.
+2026-11-02T20:39:39Z O3k scored; judging O3k vs Claude with Kimi + Qwen now (~5 min). O3l next when it lands.
