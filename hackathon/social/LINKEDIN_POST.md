@@ -39,3 +39,17 @@ Built with Ruslan. @Fireworks AI @NVIDIA @Microsoft #FireworksDeploy
 - Real tags (type @ and pick the company page): Fireworks AI, NVIDIA, Microsoft.
 - Post 1's only number ("about half" dropped a sentence) comes from hackathon/audit/AUDIT.md (Claude 50-51% of items vs our harness 17%). Re-check before posting.
 - Both of us post (entries are counted per post). After 20 likes and 10 reshares, email a screenshot and the link to fireworks@hackersquad.io.
+
+---
+
+## Post 1 (short version), ready to paste
+
+Ask an AI to make your copy "sound more human" and it will. It will also cut lines you needed and sometimes change a number.
+
+We measured it today. On 250 marketing rewrites, a top frontier model dropped at least one sentence of the draft in about half of them.
+
+So at Fireworks Deploy in SF, Ruslan and I are building FeatherLM: an open model on Fireworks that rewrites AI copy so it reads like a person wrote it, and keeps every fact exactly as it was. A checker catches anything invented or lost, and the model fixes it before you ever see it.
+
+Results at 4:30.
+
+@Fireworks AI @NVIDIA @Microsoft #FireworksDeploy

@@ -1,0 +1,27 @@
+{
+ "system": "O3d_glm_harness_anticopy",
+ "provider": "fireworks",
+ "model": "accounts/fireworks/models/glm-5p3-flash",
+ "loops": 3,
+ "prompt_sha256": "99e063324fd0d9b7",
+ "prompt_file": "hackathon/train/prompt_v2.txt",
+ "decoding": {
+  "max_tokens": 1500,
+  "temperature": 0.7,
+  "top_p": 0.9,
+  "reasoning_effort": "low"
+ },
+ "style_round": true,
+ "anti_copy": true,
+ "best_of": 1,
+ "select_judge_model": null,
+ "prices_usd_per_m": [
+  0.15,
+  0.5
+ ],
+ "eval": "evals/eval_all.jsonl",
+ "rows": 130,
+ "pass_rate": 0.9384615384615385,
+ "commit": "c6a87699dc66d962b5c1c1aa4a69e399da1f1ec7",
+ "finished": "2026-11-02T11:51:55-0800"
+}

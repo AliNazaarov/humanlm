@@ -20,6 +20,11 @@ TEMP, TOP_P, MAX_TOK = 0.7, 0.9, 400
 STYLE_ASK = ("Now edit it the way a senior copywriter would: make it sound like one specific person talking to "
              "one reader. Vary sentence length, cut filler and generic words, prefer concrete verbs. Keep every fact, "
              "name and number exactly, add nothing, keep about the same length. Reply with the full text only.")
+STYLE_ASK_CLICHE = ("Now edit it the way a senior copywriter would. Remove every marketing cliche and hype phrase, even if "
+                    "it was in the draft (for example: unlock, seamless, elevate, empower, game-changer, take it to the next "
+                    "level, we can't wait, mission is simple, say goodbye to, ditch the). Say the plain thing instead. Make it "
+                    "sound like one specific person talking to one reader. Keep every fact, name and number exactly, add "
+                    "nothing, keep about the same length. Reply with the full text only.")
 
 
 def load_env():
@@ -193,7 +198,7 @@ def one_pass(draft, a):
     if a.style_round and g["pass"]:
         # One style pass: a skilled copywriter's edit for voice and rhythm. Kept only if every gate still passes.
         msgs2 = [{"role": "user", "content": draft}, {"role": "assistant", "content": out},
-                 {"role": "user", "content": STYLE_ASK}]
+                 {"role": "user", "content": STYLE_ASK_CLICHE if a.style_round == "cliche" else STYLE_ASK}]
         text, p, c = chat(a.provider, a.model, a.system_prompt, msgs2, a.dec)
         pt += p; ct += c
         out2 = clean(text); g2 = gates.check(draft, out2); cp2 = copy_overlap(draft, out2)
@@ -267,7 +272,8 @@ def main():
     ap.add_argument("--best-of", type=int, default=1, help="run the whole pipeline N times, pick by --select-judge-model")
     ap.add_argument("--select-judge-model", default="accounts/fireworks/models/glm-5p3")
     ap.add_argument("--judge-in-price", type=float, default=0.0); ap.add_argument("--judge-out-price", type=float, default=0.0)
-    ap.add_argument("--style-round", action="store_true", help="after the gates pass, one copywriter style edit, kept only if gates still pass")
+    ap.add_argument("--style-round", nargs="?", const="basic", default=None, choices=["basic", "cliche"],
+                    help="after the gates pass, one copywriter style edit (basic or cliche), kept only if gates still pass")
     a = ap.parse_args()
     a.dec = decoding(a.provider, a.model, a.reasoning_effort)
     a.system_prompt = open(a.prompt_file).read().strip() if a.prompt_file else SYSTEM
