@@ -17,7 +17,7 @@ Closing line: "We didn't make an open model smarter than Claude. We made it acco
 
 ## 2. Why not just prompt GPT or Claude?
 
-We did, with the same system prompt and items. GPT-6.1 keeps facts but leaves the AI tells in: it passes the tells gate on 46% of items (audit, G3 column). Claude Opus 5.5 removes the tells but cuts: it deletes at least one draft sentence on 51% of items and drops or changes numbers (audit, section C and E). Neither gives you both at once. Our loop does, on a model that costs [RESULT: $/1k, O3] per thousand rewrites against [RESULT: $/1k, Claude strong] for Claude. And the fairness row shows the loop is the product: Claude plus our harness reaches [RESULT: F1H rate], at [RESULT: F1H $/1k].
+We did, with the same system prompt and items. GPT-6.1 keeps facts but leaves the AI tells in: it passes the tells gate on 46% of items (audit, G3 column). Claude Opus 5.5 removes the tells but cuts: it deletes at least one draft sentence on 51% of items and drops or changes numbers (audit, section C and E). Neither gives you both at once. Our loop does, on a model that costs $0.28 (O3; our entry O3c: $0.81) per thousand rewrites against $9.11 for Claude Opus 5.5 strong. And the fairness row shows the loop is the product: Claude plus our harness reaches [RESULT: F1H rate], at [RESULT: F1H $/1k].
 
 ## 3. Isn't the harness just gaming the metric it is scored on?
 
@@ -37,11 +37,11 @@ Human text only from Common Pile filtered subsets (openly licensed or public dom
 
 ## 5. How do you measure "human"?
 
-Not with a detector. `pipeline/metrics.py` scores 16 separate tells (stock phrases, em dashes, not-X-but-Y, emoji, exclamations, hedges, tricolons, burstiness, lexical variety...) and asks whether each sits inside the 10th-90th percentile band of 909 real human texts. The headline gate uses five of them; the audit checks six more the harness never sees. Humanness proper is the pairwise judge and the blind human test in `hackathon/report/` [RESULT: judge win rate, both orders, if run]. We treat the metrics as a screen, not as the truth.
+Not with a detector. `pipeline/metrics.py` scores 16 separate tells (stock phrases, em dashes, not-X-but-Y, emoji, exclamations, hedges, tricolons, burstiness, lexical variety...) and asks whether each sits inside the 10th-90th percentile band of 909 real human texts. The headline gate uses five of them; the audit checks six more the harness never sees. Humanness proper is the pairwise judge and the blind human test in `hackathon/report/` (O3c vs Claude Opus 5.5 strong, both orders: Kimi K3 style 33 ours / 46 Claude, Qwen 3.8 Max style 44 / 27, neither significant; humans prefer Claude's prose, see human_votes.json). We treat the metrics as a screen, not as the truth.
 
 ## 6. Cost and latency?
 
-From `results.json`: harness on GLM-5.3 Flash [RESULT: $/1k and p50]; Claude Opus 5.5 strong [RESULT]; GPT-6.1 Terra [RESULT]. The harness makes up to four model calls per item (median loops used: 1; distribution 57/105/61/27 across 0/1/2/3 loops, audit section C), which is why it is not the cheapest row, only the cheapest row that passes.
+From `results.json`: harness on GLM-5.3 Flash (O3c) $0.81 per 1k rewrites, p50 3.4 s; Claude Opus 5.5 strong $9.11 per 1k rewrites, p50 3.7 s; GPT-6.1 Terra $0.85 per 1k rewrites, p50 2.6 s. The harness makes up to four model calls per item (median loops used: 1; distribution 57/105/61/27 across 0/1/2/3 loops, audit section C), which is why it is not the cheapest row, only the cheapest row that passes.
 
 ## 7. What was built today?
 
@@ -49,7 +49,7 @@ Everything under `hackathon/`: the held-out split and leakage check, Fireworks r
 
 ## 8. Why GLM-5.3 Flash?
 
-It is on Fireworks serverless, cheap ([RESULT: price from PRICES.md]), fast (p50 around a second for a single call, [RESULT]), and good enough that a verifier loop lifts it from 23% first-draft pass to 93% (audit, section C). We also tried Nemotron on serverless; latency ran to minutes per item and the runs did not finish, which is in the logs.
+It is on Fireworks serverless, cheap (O3c costs $0.81 per 1k rewrites including up to four calls per item), fast (O3c p50 3.4 s end to end), and good enough that a verifier loop lifts it from 23% first-draft pass to 93% (audit, section C). We also tried Nemotron on serverless; latency ran to minutes per item and the runs did not finish, which is in the logs.
 
 ## 9. Business model?
 
@@ -61,7 +61,7 @@ Three things they do not have: licence-clean reverse-distillation data at scale 
 
 ## 11. Where are the SFT and RL rows?
 
-[RESULT: state from hackathon/train/TRAIN_LOG.md]. If SFT did not complete: dataset upload on our Fireworks account was blocked and escalated to staff during the event; the training file (5,000 pairs, Fireworks chat format) and the split are committed, and the harness rows are the system we submit. RL is designed: `gates.py` is the reward. We say which rows are fine-tuned in the table; none today unless the log says otherwise.
+SFT A (5,000 pairs) trained on the Fireworks Serverless Training API and was promoted, but could not be served on Ali's account (serverless LoRA disabled, deployment needs a payment method). SFT B (modern web, 2,924 rows) and SFT C (gate-clean, 1,283 rows) trained on Ruslan's account and were evaluated through a brief live-merge deployment (deleted after): alone, without the harness, they score 32.8% and 37.7% fact-safe vs 26.7% for the base model, so training helps but the harness does most of the work. A local Mac DPO run (Qwen3-4B, 70 steps) is a partial pipeline demo (18 rows). Details: hackathon/train/TRAIN_LOG.md.
 
 ## 12. Failure cases?
 

@@ -48,7 +48,7 @@ Built today (2026-11-02): everything under `hackathon/`: held-out split and leak
 
 ## Team
 
-Ali Nazarov (data, model, harness, pitch) and Ruslan (eval, frontier baselines, report, training, demo). Two people, two Claude Code agents talking through `hackathon/bus/`.
+Muhammadali Nazarov (Ali: data, model, harness, pitch) and Ruslan Kan (eval, frontier baselines, report, training, demo). Two people, two Claude Code agents talking through `hackathon/bus/`.
 
 ## Links
 
