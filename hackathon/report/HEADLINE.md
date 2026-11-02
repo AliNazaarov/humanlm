@@ -35,6 +35,7 @@ Pairwise judge (both orders; A wins / B wins / ties, two-sided sign test):
 - `hack_O3c_glm_prompt_harness_style.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (qwen3p8-max): overall 39/43/25 (p=0.741), style 44/27/37 (p=0.057)
 - `hack_O3f_glm_calm.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (qwen3p8-max): overall 19/53/31 (p=0.000), style 9/53/41 (p=0.000)
 - `hack_O3k_glm_calm_claimcheck_bo3.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (qwen3p8-max): overall 22/56/36 (p=0.000), style 15/55/42 (p=0.000)
+- `hack_O3l_glm_style_claimcheck_bo3.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (qwen3p8-max): overall 36/45/32 (p=0.374), style 33/43/37 (p=0.302)
 - `hack_O3_glm_harness_heldout.jsonl` vs `hack_F1H_opus_heldout.jsonl` (kimi-k3): overall 52/31/37 (p=0.028), style 41/17/62 (p=0.002)
 - `hack_O3_glm_harness_heldout.jsonl` vs `hack_strong_claude-opus-5-5_heldout.jsonl` (kimi-k3): overall 42/35/41 (p=0.494), style 28/30/60 (p=0.896)
 - `hack_O3_glm_harness.jsonl` vs `hack_F1H_opus.jsonl` (kimi-k3): overall 40/47/43 (p=0.520), style 32/46/52 (p=0.141)
@@ -48,3 +49,4 @@ Pairwise judge (both orders; A wins / B wins / ties, two-sided sign test):
 - `hack_O3g_glm_calm_retrieval_claimcheck.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 25/68/37 (p=0.000), style 18/64/48 (p=0.000)
 - `hack_O3j_glm_bestof3_judged.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 41/55/34 (p=0.184), style 44/37/49 (p=0.505)
 - `hack_O3k_glm_calm_claimcheck_bo3.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 19/72/39 (p=0.000), style 11/68/51 (p=0.000)
+- `hack_O3l_glm_style_claimcheck_bo3.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 36/57/36 (p=0.038), style 30/51/48 (p=0.026)
