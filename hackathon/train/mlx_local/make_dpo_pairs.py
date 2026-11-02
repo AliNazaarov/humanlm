@@ -1,6 +1,6 @@
 """Build local DPO pairs: chosen = real human original, rejected = our model's rewrite (O7 rows).
 Drops empty rejected outputs and any pair sharing an 8-gram with an eval item (eval_all, heldout_pairs, real_readmes).
-  python3 hackathon/train/mlx_local/make_dpo_pairs.py OUT_DIR [--max 400]
+  python3 hackathon/train/mlx_local/make_dpo_pairs.py OUT_DIR [--max 150]
 Writes OUT_DIR/train.jsonl + valid.jsonl ({"prompt","chosen","rejected","system"}) and prints counts as JSON.
 """
 import json, os, re, sys, random
@@ -24,7 +24,7 @@ def grams(t, n=8):
 
 def main():
     out_dir = sys.argv[1]
-    mx = int(sys.argv[sys.argv.index("--max") + 1]) if "--max" in sys.argv else 400
+    mx = int(sys.argv[sys.argv.index("--max") + 1]) if "--max" in sys.argv else 150
     eval_grams = set()
     for f in EVALS:
         for l in open(os.path.join(ROOT, f)):
@@ -46,8 +46,15 @@ def main():
             if any(grams(t) & eval_grams for t in (d["ai_draft"], d["human"], rej[i])):
                 n_overlap += 1; continue
             pairs.append({"id": i, "system": SYSTEM, "prompt": d["ai_draft"], "chosen": d["human"], "rejected": rej[i]})
-    random.Random(0).shuffle(pairs)
+    # Highest choppy-tell gap first: share of short sentences (<= 6 words) in the rejected rewrite minus the human original.
+    def choppy(t):
+        sents = [x for x in re.split(r"(?<=[.?!])\s+|\n+", t) if x.strip()]
+        return sum(len(words(x)) <= 6 for x in sents) / max(len(sents), 1)
+    for p in pairs:
+        p["choppy_gap"] = round(choppy(p["rejected"]) - choppy(p["chosen"]), 4)
+    pairs.sort(key=lambda p: -p["choppy_gap"])
     pairs = pairs[:mx]
+    random.Random(0).shuffle(pairs)
     os.makedirs(out_dir, exist_ok=True)
     n_val = max(4, len(pairs) // 20)
     with open(os.path.join(out_dir, "valid.jsonl"), "w") as f:

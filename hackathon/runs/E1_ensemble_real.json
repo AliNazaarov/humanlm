@@ -1,0 +1,23 @@
+{
+ "system": "E1_ensemble",
+ "provider": "ensemble",
+ "model": "accounts/fireworks/models/glm-5p3",
+ "runs": [
+  "evals/runs/hack_O3c_glm_prompt_harness_style_real.jsonl",
+  "evals/runs/hack_O3j_glm_bestof3_judged_real.jsonl",
+  "evals/runs/hack_O3l_glm_style_claimcheck_bo3_real.jsonl",
+  "evals/runs/hack_O3b_glm_prompt_harness_real.jsonl",
+  "evals/runs/hack_O3k_glm_calm_claimcheck_bo3_real.jsonl"
+ ],
+ "eval": "evals/real_readmes.jsonl",
+ "rows": 80,
+ "pass_rate": 0.9875,
+ "picked": {
+  "O3c_glm_prompt_harness_style_real": 39,
+  "O3j_glm_bestof3_judged_real": 18,
+  "O3l_glm_style_claimcheck_bo3_real": 20,
+  "O3k_glm_calm_claimcheck_bo3_real": 3
+ },
+ "commit": "0a467f23e1cc9f326d9ac42c542c592f56ce0465",
+ "finished": "2026-11-02T14:17:13-0800"
+}

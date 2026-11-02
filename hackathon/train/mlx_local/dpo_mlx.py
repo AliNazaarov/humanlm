@@ -11,7 +11,7 @@ import argparse, json, os, shutil, time
 import mlx.core as mx
 import mlx.nn as nn
 import mlx.optimizers as optim
-from mlx.utils import tree_flatten
+from mlx.utils import tree_flatten, tree_unflatten
 from mlx_lm.utils import load
 from mlx_lm.tuner.utils import load_adapters
 
@@ -65,17 +65,10 @@ def main():
             continue
         enc.append((c, npc, j, npj))
     print(f"pairs: {len(enc)} (of {len(rows)} rows)", flush=True)
-    # Reference log-probs under frozen L1 (same weights before any update).
-    ref = []
-    model.eval()
-    for i, (c, npc, j, npj) in enumerate(enc):
-        rc = seq_logp(model, c, npc); rj = seq_logp(model, j, npj)
-        mx.eval(rc, rj)
-        ref.append((rc.item(), rj.item()))
-        mx.clear_cache()
-        if (i + 1) % 20 == 0:
-            print(f"ref {i + 1}/{len(enc)} {time.time() - t0:.0f}s", flush=True)
-    print(f"reference pass done in {time.time() - t0:.0f}s", flush=True)
+    # Reference = frozen L1: a copy of the L1 LoRA weights is swapped in (no grad) for each pair's reference
+    # log-probs, then the current trained weights are restored. Interleaved so a time-boxed stop wastes nothing.
+    l1 = {k: mx.array(v) for k, v in tree_flatten(model.trainable_parameters())}
+    mx.eval(l1)
     model.train()
     opt = optim.Adam(learning_rate=a.lr)
     os.makedirs(a.out, exist_ok=True)
@@ -91,8 +84,13 @@ def main():
     vg = nn.value_and_grad(model, loss_fn)
     losses, margins, acc, t_train = [], [], 0, time.time()
     step = 0
-    for step, ((c, npc, j, npj), (rc, rj)) in enumerate(zip(enc, ref), 1):
-        (loss, margin), grads = vg(model, c, npc, j, npj, rc, rj)
+    for step, (c, npc, j, npj) in enumerate(enc, 1):
+        cur = {k: v for k, v in tree_flatten(model.trainable_parameters())}
+        model.update(tree_unflatten(list(l1.items())))
+        rc = seq_logp(model, c, npc); rj = seq_logp(model, j, npj)
+        mx.eval(rc, rj)
+        model.update(tree_unflatten(list(cur.items())))
+        (loss, margin), grads = vg(model, c, npc, j, npj, mx.stop_gradient(rc), mx.stop_gradient(rj))
         opt.update(model, grads)
         mx.eval(model.parameters(), opt.state, loss, margin)
         losses.append(loss.item()); margins.append(margin.item()); acc += int(margin.item() > 0)

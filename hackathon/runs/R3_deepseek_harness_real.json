@@ -1,0 +1,36 @@
+{
+ "system": "R3_deepseek_harness",
+ "provider": "fireworks",
+ "model": "accounts/fireworks/models/deepseek-v4p1-flash",
+ "loops": 3,
+ "prompt_sha256": "99e063324fd0d9b7",
+ "prompt_file": "hackathon/train/prompt_v2.txt",
+ "decoding": {
+  "max_tokens": 1500,
+  "temperature": 0.7,
+  "top_p": 0.9,
+  "reasoning_effort": "none"
+ },
+ "style_round": "basic",
+ "retrieve": 0,
+ "claim_check": null,
+ "anti_copy": false,
+ "best_of": 1,
+ "select_judge_model": null,
+ "select": null,
+ "strict_claims": false,
+ "judge_prices_usd_per_m": [
+  0.0,
+  0.0
+ ],
+ "prices_usd_per_m": [
+  0.0,
+  0.0
+ ],
+ "eval": "evals/real_readmes.jsonl",
+ "rows": 80,
+ "pass_rate": 0.95,
+ "empty_outputs": [],
+ "commit": "0a467f23e1cc9f326d9ac42c542c592f56ce0465",
+ "finished": "2026-11-02T14:17:50-0800"
+}

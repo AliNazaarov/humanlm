@@ -1,0 +1,27 @@
+{
+ "system": "E1_ensemble",
+ "provider": "ensemble",
+ "model": "accounts/fireworks/models/glm-5p3",
+ "runs": [
+  "evals/runs/hack_O3c_glm_prompt_harness_style_heldout.jsonl",
+  "evals/runs/hack_O3j_glm_bestof3_judged_heldout.jsonl",
+  "evals/runs/hack_O3l_glm_style_claimcheck_bo3_heldout.jsonl",
+  "evals/runs/hack_O3b_glm_prompt_harness_heldout.jsonl",
+  "evals/runs/hack_O3e_glm_harness_cliche_heldout.jsonl",
+  "evals/runs/hack_O3d_glm_harness_anticopy_heldout.jsonl",
+  "evals/runs/hack_O3k_glm_calm_claimcheck_bo3_heldout.jsonl"
+ ],
+ "eval": "evals/heldout_pairs.jsonl",
+ "rows": 120,
+ "pass_rate": 0.9916666666666667,
+ "picked": {
+  "O3c_glm_prompt_harness_style_heldout": 58,
+  "O3j_glm_bestof3_judged_heldout": 28,
+  "O3l_glm_style_claimcheck_bo3_heldout": 20,
+  "O3d_glm_harness_anticopy_heldout": 7,
+  "O3e_glm_harness_cliche_heldout": 4,
+  "O3k_glm_calm_claimcheck_bo3_heldout": 3
+ },
+ "commit": "1eb2ffd39f600988699b9c10728b596d676490a0",
+ "finished": "2026-11-02T14:18:14-0800"
+}
