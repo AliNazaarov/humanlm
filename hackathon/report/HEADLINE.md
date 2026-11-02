@@ -26,10 +26,10 @@ Fact-safe human rewrite rate on 247 items (eval 130 + held-out 117), 95% CI; Δ 
 
 Human preference, O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-5 (blind A/B; FeatherLM / Claude / tie):
 
-- page: 27 / 44 / 14 (17 voter(s), 85 votes, sign test p=0.057); includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors
+- page: 29 / 47 / 14 (18 voter(s), 90 votes, sign test p=0.050); includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors
 - Not counted: Ali reports 5 Minerva classmates gave the same answer (preferred the Claude side) in an informal, unlogged session; not counted as data.
 
-Judge vs human on style (item level, `O3c_glm_prompt_harness_style` vs Claude strong, 15 items with a human majority): kimi-k3: agrees 2, disagrees 7; qwen3p8-max: agrees 3, disagrees 6. Small n; the LLM judges' style verdicts are not validated against readers.
+Judge vs human on style (item level, `O3c_glm_prompt_harness_style` vs Claude strong, 15 items with a human majority): kimi-k3: agrees 2, disagrees 7; qwen3p8-max: agrees 3, disagrees 7. Small n; the LLM judges' style verdicts are not validated against readers.
 
 Spot the human (held-out real originals vs each rewrite, both orders; fooled = the rewrite picked as human in both orders; fooled-or-split adds order disagreements):
 

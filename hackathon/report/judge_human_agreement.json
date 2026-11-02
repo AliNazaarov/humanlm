@@ -12,8 +12,8 @@
     },
     "qwen3p8-max": {
      "agree": 3,
-     "disagree": 6,
-     "n_compared": 9
+     "disagree": 7,
+     "n_compared": 10
     }
    }
   }
