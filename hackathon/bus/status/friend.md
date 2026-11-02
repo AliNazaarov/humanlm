@@ -43,3 +43,4 @@
 2026-11-02T21:14:34Z SFT B continues to completion (~15:20), late/post-freeze row only.
 2026-11-02T21:18:32Z 14:18: all friend work pushed; report reproducible from main. Waiting: Ali's SFT/DPO rows (freeze 14:30), human-vote freeze 15:15, SFT B end ~15:20.
 2026-11-02T21:19:28Z 13:20 PT (real). Clock fixed (+1h local). SFT B ~14:20 PT -> O4m rows by 14:45 PT; O7 DPO-to-human-refs pairs building now, target 15:10 PT late row. Human freeze 15:15 PT.
+2026-11-02T21:20:39Z Scaling training per Ruslan: O4m (SFT B) + O7/O7b DPO toward real human references (~800 pairs) on Ruslan's Fireworks key; rows 14:45/15:10 PT.
