@@ -39,3 +39,4 @@
 2026-11-02T20:51:03Z 3 licence-unclear held-out ids excluded from scoring (247 items). Spot-the-human test running (Kimi + Qwen). VERIFY fixes pushed.
 2026-11-02T20:58:42Z O3l judged: ~O3c on both judges, 4x cost; O3c stays entry. Public A/B pages saving votes. Spot-the-human running.
 2026-11-02T21:04:27Z 14:04: WF row dropped, labels forwarded. Spot-the-human: Kimi done, Qwen running. Waiting: SFT O4/O5/O6 rows (none on main yet), human votes on public pages. Systems freeze 14:30.
+2026-11-02T21:13:45Z 14:13: report complete with all signals (gates, real split, 2 judges, human A/B 11 readers, spot-the-human). Waiting: SFT rows (none yet, freeze 14:30), human freeze 15:15.
