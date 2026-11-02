@@ -56,7 +56,7 @@ Sampling, not working on this account:
   - Ruslan approved a brief live-merge deployment (cap $45). The first create call at 13:38 PT returned "payment method is required".
   - After a payment method was added, the retry was blocked by the agent's permission system (spending money needs the user's own go-ahead in that session).
   - **No deployment was ever created**; the deployment list was empty at 13:44 PT.
-- So there are no O4m eval rows.
+- (Superseded at 13:57 PT: O4m WAS evaluated through a brief live-merge deployment on Ruslan's account; see "O4m evaluation deployment" below.)
 
 ## DPO toward human references (O7)
 Status: **stopped at step 1; no model.** The serverless DPO reference sampler hangs, the same problem as above.
