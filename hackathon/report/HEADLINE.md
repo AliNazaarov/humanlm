@@ -9,6 +9,7 @@ Fact-safe human rewrite rate on 250 items (eval 130 + held-out 120), 95% CI; Δ 
 | `frontier-strong:claude-opus-5-5` | 72% [66, 77] | reference | $8.93 | 3.9s |
 | `frontier-live:claude-opus-5-5` | 53% [47, 60] | -18 pp [-24, -13], significant (p=0.000) | $7.21 | 3.7s |
 | `F2_gpt61_terra` | 40% [34, 46] | -32 pp [-39, -24], significant (p=0.000) | $0.86 | 2.6s |
+| `X0_copy_draft (no rewrite: control)` | 32% [26, 38] | -40 pp [-47, -32], significant (p=0.000) | n/a | 0.0s |
 | `O1_glm_base` | 27% [22, 33] | -44 pp [-52, -37], significant (p=0.000) | $0.10 | 1.2s |
 | `frontier-persona-preexisting` (130 items) | 12% [7, 19] | -57 pp [-66, -48], significant (p=0.000) | n/a | n/a |
 

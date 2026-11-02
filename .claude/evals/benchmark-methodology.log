@@ -1,0 +1,26 @@
+EVAL CHECK: benchmark-methodology, run 1, 2026-11-02 12:35 PT (commit 6e045a5 + control row)
+
+C1 PASS  train 0/5000, valid 0/200 rows share 8+ words with any eval draft (re-checked on committed files)
+C2 PASS  all 9 live systems cover 250/250; persona shown as "130 items" (pre-existing, main split only)
+C3 PASS  Claude refusals ho-013/ho-054 counted as fails for F1 strong, F1 live, F1H (counted_as_fail=2 each)
+C4 PASS  F1 = strong prompt (FRONTIER_STRONG.md); Opus decoding (no sampling params, adaptive thinking low,
+         max_tokens 1500) recorded per row + manifest; exact-SYSTEM arm also reported
+C5 PARTIAL  judge Kimi K3 is from no family under test (GLM, Claude, GPT); blind human test not run yet.
+         Copy-rate probe: O3b leaves 25/130 outputs >0.9 similar to the draft (Claude 2/130), 22 pass all gates.
+         Added control row X0_copy_draft: dev 2%, trick 33%, held-out 57%, all 32%. Dev gates are not passable by
+         copying; held-out G3 is weak (drafts there have few tells), so held-out mostly tests facts.
+C6 PASS  pos-1 rate 0.50-0.57, 0 unparsed, 118-130 complete; flip rate 0.26-0.38 (style flips most): judge is
+         noisy on style, which is why both orders + ties are reported
+C7 PARTIAL  exact CIs on rates, paired bootstrap for deltas, sign tests for judge. No multiple-comparison
+         correction across 9 systems x 5 blocks and 6 judge pairs: headline deltas are p<0.001 and survive
+         Holm; judge p~0.02 results would not survive a strict family-wise correction -> disclose
+C8 PARTIAL  15 manifests with commit, prompt hash, decoding; F1H held-out manifest missing (harness.py asserts
+         on the 2 refusal rows; rows themselves are complete). make eval offline, 27 s
+C9 PASS  name-proxy false positives found on real outputs and fixed in metrics.py with 5 tests
+C10 PARTIAL  all prices from official pages in PRICES.md; harness latency includes revise loops and retries
+         (run_frontier times only the successful call) -> must be stated next to the latency column
+R1 PASS  metric tests 34/34
+R2 PASS  eval-harness tests 127/127
+R3 PASS  score_all twice -> identical results.json
+
+Capability: 6 PASS, 4 PARTIAL, 0 FAIL. Regression 3/3.

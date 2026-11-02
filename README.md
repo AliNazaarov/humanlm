@@ -20,6 +20,7 @@ Fact-safe human rewrite rate on 250 items (eval 130 + held-out 120), 95% CI; Δ 
 | `frontier-strong:claude-opus-5-5` | 72% [66, 77] | reference | $8.93 | 3.9s |
 | `frontier-live:claude-opus-5-5` | 53% [47, 60] | -18 pp [-24, -13], significant (p=0.000) | $7.21 | 3.7s |
 | `F2_gpt61_terra` | 40% [34, 46] | -32 pp [-39, -24], significant (p=0.000) | $0.86 | 2.6s |
+| `X0_copy_draft (no rewrite: control)` | 32% [26, 38] | -40 pp [-47, -32], significant (p=0.000) | n/a | 0.0s |
 | `O1_glm_base` | 27% [22, 33] | -44 pp [-52, -37], significant (p=0.000) | $0.10 | 1.2s |
 | `frontier-persona-preexisting` (130 items) | 12% [7, 19] | -57 pp [-66, -48], significant (p=0.000) | n/a | n/a |
 
@@ -69,6 +70,9 @@ Re-running a system calls its API: `hackathon/eval/run_frontier.py` for the fron
 - **The eval drafts come from one model family.** The dev and trick drafts were written by one model family about invented startups, so the style metrics reward undoing that family's tells. The held-out pairs are real human text, but their drafts are also machine-made: an open model "AI-polished" the human original (reverse distillation).
 - **The metrics are screens, not human preference.** The gates and tell metrics are rules, and passing them does not prove a reader prefers the text. The pairwise judge and the small blind human test are the only preference signals.
 - **The harness revises against the same gates we score.** Its high fact-safe rate is partly by construction. That is why we also report an independent judge (Kimi K3, a different model family from every system under test) and a blind human test. The judge prefers Claude Opus 5.5's prose on the synthetic marketing drafts, ties it on the held-out human text, and finds the fact edge in our favour.
+- **Copying the draft is a control row.** `X0_copy_draft` scores the unchanged AI draft. It passes almost nothing on the dev split, so the gates can't be passed without rewriting there. On the held-out pairs it passes over half, because those AI-polished drafts carry few of the tells G3 checks, so that split mostly tests fact safety, not style.
+- **Many comparisons.** We report 9 systems on 5 splits and 6 judge pairs without a family-wise correction. The headline differences are p < 0.001 and survive one; the judge results near p = 0.02 should be read as suggestive.
+- **Latency is not measured the same way for every row.** Harness rows include every revise loop and any retry wait; the frontier runner times only the successful call.
 - **The judge is an LLM.** It has its own biases, including length and position. We run both orders and report the flip rate, but we have not calibrated it against human labels.
 - **The fact checks are strict but crude.** Numbers and capitalised names are matched as strings, so a correct paraphrase of a name can count as a loss, and a fact that changes without any number or name changing is missed.
 - **The frontier APIs can't match every decoding setting.** The open-model runs also use repetition_penalty 1.05, which the frontier APIs don't offer, and a model that rejects top_p runs at temperature only. Both are recorded per row.
