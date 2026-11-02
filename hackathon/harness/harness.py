@@ -219,13 +219,17 @@ def claim_check(draft, out, a):
         return [], 0, 0
     dec = decoding("fireworks", a.claim_check, "low"); dec["temperature"] = 0.0
     msg = [{"role": "user", "content": f"{CLAIM_ASK}\n\nDRAFT:\n{draft}\n\nREWRITE:\n{out}"}]
-    try:
-        r, p, c = chat("fireworks", a.claim_check, "You are a strict fact checker.", msg, dec)
-        mt = re.search(r"\{.*\}", clean(r), re.S)
-        added = json.loads(mt.group(0)).get("added", []) if mt else []
-        return [x for x in added if isinstance(x, str) and x.strip()][:6], p, c
-    except Exception:
-        return [], 0, 0
+    for attempt in range(2):   # retry once; an unchecked rewrite must not count as clean
+        try:
+            r, p, c = chat("fireworks", a.claim_check, "You are a strict fact checker.", msg, dec)
+            mt = re.search(r"\{.*\}", clean(r), re.S)
+            if not mt:
+                continue
+            added = json.loads(mt.group(0)).get("added", [])
+            return [x for x in added if isinstance(x, str) and x.strip()][:6], p, c
+        except Exception:
+            continue
+    return ["(claim check unavailable: re-verify this rewrite against the draft and remove anything not in it)"], 0, 0
 
 
 def one_pass(draft, a):
