@@ -51,12 +51,21 @@ def split_of(item_id: str) -> str:
     return "heldout" if item_id.startswith("ho-") else "trick" if item_id.startswith("trick") else "dev"
 
 
+def excluded_ids() -> set[str]:
+    """Held-out ids whose licence could not be established: dropped from every split and every run file."""
+    p = os.path.join(ROOT, "hackathon/report/heldout_excluded.json")
+    return set(json.load(open(p, encoding="utf-8"))["ids"]) if os.path.exists(p) else set()
+
+
+EXCLUDED = excluded_ids()
+
+
 def all_items() -> dict[str, dict]:
     items = {}
     for f in ("evals/dev_set.jsonl", "evals/trick_set.jsonl", "evals/heldout_pairs.jsonl", "evals/real_readmes.jsonl"):
         p = os.path.join(ROOT, f)
         if os.path.exists(p):
-            items.update({r["id"]: r for r in read_jsonl(p)})
+            items.update({r["id"]: r for r in read_jsonl(p) if r["id"] not in EXCLUDED})
     return items
 
 
@@ -111,6 +120,8 @@ def load_systems(paths: list[str], items: dict) -> dict[str, dict]:
         sysd = systems.setdefault(label, {"label": label, "files": [], "rows": {}, "model": rows[0].get("model")})
         sysd["files"].append(rel(path))
         for r in rows:
+            if r["id"] in EXCLUDED:
+                continue
             if r["id"] in sysd["rows"]:
                 raise SystemExit(f"{label}: duplicate id {r['id']} ({rel(path)})")
             if r["id"] not in items:
@@ -364,7 +375,8 @@ def headline(res: dict) -> str:
     """Short table for the README: all-items leaderboard with cost and latency, plus the judge one-liners."""
     meta = {x["label"]: x for x in res["systems"]}
     b = res["blocks"]["all"]
-    out = [f"Fact-safe human rewrite rate on {b['n_items']} items (eval 130 + held-out 120), 95% CI; "
+    n_main, n_ho = res["blocks"]["main"]["n_items"], res["blocks"]["heldout"]["n_items"]
+    out = [f"Fact-safe human rewrite rate on {b['n_items']} items (eval {n_main} + held-out {n_ho}), 95% CI; "
            f"Δ vs `{res['reference']}` by paired bootstrap. Generated from `hackathon/report/results.json`.", "",
            "| System | Fact-safe rate (strict) | Δ strict | Fact-safe rate (lenient) | Δ lenient | $ / 1k rewrites | p50 latency |",
            "|---|---|---|---|---|---|---|"]
