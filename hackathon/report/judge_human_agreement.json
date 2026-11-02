@@ -3,17 +3,17 @@
   {
    "version": "fd809333d5320427",
    "ours": "O3c_glm_prompt_harness_style",
-   "human_decided_items": 15,
+   "human_decided_items": 17,
    "judges": {
     "kimi-k3": {
-     "agree": 3,
+     "agree": 4,
      "disagree": 6,
-     "n_compared": 9
+     "n_compared": 10
     },
     "qwen3p8-max": {
-     "agree": 1,
+     "agree": 3,
      "disagree": 7,
-     "n_compared": 8
+     "n_compared": 10
     }
    }
   }

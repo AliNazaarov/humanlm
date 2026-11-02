@@ -68,7 +68,9 @@ Status: **stopped at step 1; no model.** The serverless DPO reference sampler ha
 | Warm start | `init_from_checkpoint = ruslan-kan-1eth024hr/run-a2c41c59ec1b46629d4bcc6008c2f6fb/step-183` (SFT B weights + optimizer); frozen reference = SFT B sampler snapshot `.../step-183` |
 | Hyperparameters | beta 0.1, LR 1e-5, batch 4, 1 epoch = 200 steps, LoRA r16/α32, max_seq_len 4096 (script defaults, except epochs 1); output id `humanlm-glm-dpo-humanref` |
 | Attempts (PT) | 13:28: crashed (Windows `resource` stub did not reach spawned workers; fixed with a `resource.py` on PYTHONPATH) · 13:29: 409 capacity_exhausted · 13:31: trainer state restored, then reference logprobs through `trainingSamplers/checkpoints/.../step-183` got HTTP 504 and ReadTimeout after 600 s on every request. Stopped at 13:43 PT with 0 optimizer steps |
-| Sessions | all DPO sessions deleted (`ts-e09d964c…`, `ts-2873f12e…`, `ts-f264bbb5…`); SFT B session `ts-6280bbf3…` kept |
+| Retry (14:05 PT) | 300 pairs (the 115 with reader tells in the rejected side first, then file order), same settings. The trainer state was restored at 14:05:11 and there was no step 1 by 14:10 (5-minute stall rule), so it was stopped; session `ts-c1b9f85a…` deleted |
+| ORPO fallback | not run: `recipes/orpo_loop.py` has no serverless mode (it needs a dedicated RLOR trainer job, i.e. provisioned GPUs). It needs no reference sampler, but it can't run on the serverless pool |
+| Sessions | all DPO sessions deleted (`ts-e09d964c…`, `ts-2873f12e…`, `ts-f264bbb5…`, `ts-c1b9f85a…`); SFT B session `ts-6280bbf3…` kept |
 | Cost | no optimizer steps; only trainer-state restore and timed-out sampler calls (no token count logged) |
 
 **Status: trained and promoted; not evaluated.** Serving a trained LoRA on Fireworks requires an on-demand deployment, which needs a payment method on this account (deployment creation refused). Serverless LoRA serving is "not enabled for this account" (HTTP 404 for the promoted model on the chat endpoint). The serverless sampler on the snapshot hung in our tests. Ruslan's SFT B / O7 rows are the evaluated fine-tunes.
