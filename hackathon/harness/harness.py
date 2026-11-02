@@ -152,6 +152,33 @@ def chat(provider, model, system, msgs, dec):
     return text, u.get("prompt_tokens", 0), u.get("completion_tokens", 0)
 
 
+_RETR = None
+
+
+def retrieve(draft, k):
+    """k most similar TRAINING pairs (TF-IDF cosine on the AI draft) as few-shot examples. Never eval items."""
+    global _RETR
+    import math, collections
+    tok = lambda t: re.findall(r"[a-z']+", t.lower())
+    if _RETR is None:
+        rows = [json.loads(l)["messages"] for l in open(os.path.join(ROOT, "hackathon/data/train.jsonl"))]
+        docs = [(m[1]["content"], m[2]["content"]) for m in rows if 40 <= len(m[2]["content"].split()) <= 160]
+        df = collections.Counter(w for d, _ in docs for w in set(tok(d)))
+        n = len(docs)
+        idf = {w: math.log(n / c) for w, c in df.items()}
+        vecs = []
+        for d, _ in docs:
+            tf = collections.Counter(tok(d)); v = {w: c * idf[w] for w, c in tf.items()}
+            norm = math.sqrt(sum(x * x for x in v.values())) or 1.0
+            vecs.append({w: x / norm for w, x in v.items()})
+        _RETR = (docs, vecs, idf)
+    docs, vecs, idf = _RETR
+    tf = collections.Counter(tok(draft)); q = {w: c * idf.get(w, 0.0) for w, c in tf.items()}
+    qn = math.sqrt(sum(x * x for x in q.values())) or 1.0
+    scores = sorted(((sum(q[w] * v.get(w, 0.0) for w in q) / qn, i) for i, v in enumerate(vecs)), reverse=True)[:k]
+    return [docs[i] for _, i in scores]
+
+
 def clean(t):
     return re.sub(r"<think>.*?</think>", "", t, flags=re.S).strip()
 
@@ -273,6 +300,7 @@ def main():
     ap.add_argument("--in-price", type=float, default=0.0); ap.add_argument("--out-price", type=float, default=0.0)
     ap.add_argument("--concurrency", type=int, default=4); ap.add_argument("--limit", type=int)
     ap.add_argument("--reasoning-effort", default="low", help="low|medium|high, or omit (not sent)")
+    ap.add_argument("--retrieve", type=int, default=0, help="add k most similar training pairs (AI draft -> human original) as few-shot examples")
     ap.add_argument("--anti-copy", action="store_true", help="revise near-copies of the draft (word-bigram F1 > 0.9)")
     ap.add_argument("--best-of", type=int, default=1, help="run the whole pipeline N times, pick by --select-judge-model")
     ap.add_argument("--select-judge-model", default="accounts/fireworks/models/glm-5p3")
@@ -302,7 +330,7 @@ def main():
     commit = subprocess.run(["git", "-C", ROOT, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     manifest = {"system": a.system_name, "provider": a.provider, "model": a.model, "loops": a.loops,
                 "prompt_sha256": hashlib.sha256(a.system_prompt.encode()).hexdigest()[:16],
-                "prompt_file": a.prompt_file, "decoding": a.dec, "style_round": a.style_round, "anti_copy": a.anti_copy, "best_of": a.best_of,
+                "prompt_file": a.prompt_file, "decoding": a.dec, "style_round": a.style_round, "retrieve": a.retrieve, "anti_copy": a.anti_copy, "best_of": a.best_of,
                 "select_judge_model": a.select_judge_model if a.best_of > 1 else None,
                 "prices_usd_per_m": [a.in_price, a.out_price], "eval": a.eval, "rows": len(rows),
                 "pass_rate": sum(r["gates"]["pass"] for r in rows) / len(rows), "commit": commit,
