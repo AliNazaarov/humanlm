@@ -1,6 +1,8 @@
 {
  "why": "Experiments that were not kept are listed here instead of on the leaderboard (README Limitations names each one).",
  "runs": {
-  "WF": "workflow pairwise-selector experiment on 30 items, not kept: style got worse on the Kimi judge"
+  "WF": "workflow pairwise-selector experiment on 30 items, not kept: style got worse on the Kimi judge",
+  "O3h": "humanizer prompt + harness, started and stopped part-way (about 60 rows per split), no row",
+  "R3_": "R3 dev-only experiments, not run on the full splits"
  }
 }
