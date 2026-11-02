@@ -1,56 +1,55 @@
-# FeatherLM: 2-minute finals script
+# FeatherLM: 2-minute finals script (final numbers)
 
-Spoken by Ali. Ruslan drives the deck (`hackathon/pitch/deck.html`, arrow keys). About 290 words, 1:55 at a calm pace. Every number in brackets is read from `hackathon/report/results.json` or `hackathon/audit/AUDIT.md` on the day; do not say a number that is not in one of those files.
+Two speakers. **Ali**: problem and proof. **Ruslan**: solution and next step. Deck: `hackathon/pitch/deck.html` (8 slides, arrow keys). About 300 words. Every number below is listed with its source in `hackathon/pitch/FINAL_CHECK.md`; do not say a number that is not there.
 
 ---
 
-**[Slide 1, title, 0:00]**
+**[Slide 1, title, 0:00] ALI**
 
-Every founder here has done this: you write a launch email with an AI, it reads like an AI, so you paste it into a frontier model and say "make this sound human."
+Every founder here has done this: an AI writes your launch email, it reads like an AI, so you paste it into Claude and say "make this sound human."
 
-**[Slide 2, the problem, 0:12]**
+**[Slide 2, the problem, 0:10] ALI**
 
-Here is Claude Opus 5.5 with our strongest rewrite prompt, the reference row of our leaderboard, on a founder's launch post. Style got better. Three draft sentences are gone, including "Grab yours before they're gone." On a pricing page it dropped the line about monitoring being "accessible to everyone", and added a clause the founder never wrote: "start small and add monitors when you need them." Claude drops at least one draft sentence on about half of our items. For copy that goes out under a company's name, that is a claims problem, not a style problem.
+Here is Claude Opus 5.5 with our strongest rewrite prompt. The style got better. Three draft sentences are gone. On a pricing page it added a clause the founder never wrote. Claude drops at least one draft sentence on about half of our items. For copy that goes out under a company's name, that is a claims problem.
 
-**[Slide 3, approach, 0:40]**
+**[Slide 3, solution, 0:30] RUSLAN**
 
-FeatherLM is an open model on Fireworks, GLM-5.3 Flash, wrapped in a verifier loop. The model drafts; a checker compares the rewrite with the draft, number by number, name by name, quote by quote, plus five AI tells against a human band; the model fixes only what the checker lists; three loops max. The same checker is the leaderboard metric and the RL reward.
+FeatherLM is an open model on Fireworks, GLM-5.3 Flash, inside a verifier loop. The model drafts; a checker compares the rewrite with the draft, number by number, name by name, quote by quote, plus AI tells against a human band; the model fixes only what failed; three rounds max. The checker is also our leaderboard metric, so we audited it with signals the loop never sees.
 
-**[Slide 4, leaderboard, 1:00]**
+**[Slide 4, leaderboard, 0:55] ALI**
 
-Same 250 items, same prompt. Fact-safe human rewrite rate: Claude Opus 5.5 with a strong prompt, [RESULT]. GPT-6.1, [RESULT]. Our harness on a 30-cent-per-thousand open model, [RESULT], paired bootstrap, significant. The honest row: Claude plus our harness gets to [RESULT] too, at [RESULT] dollars per thousand. The loop is the product, the open model is the price.
+Same 247 items, same prompt. Fact-safe rewrite rate: Claude with a strong prompt, 71 percent. FeatherLM, 97 percent, at 81 cents per thousand rewrites against 9 dollars 11: about 11 times cheaper. On 80 real GitHub READMEs we never tuned on: 98 against 76. Claude inside our harness gets to 94, so the harness is the contribution and Fireworks makes it cheap. An ensemble reaches 99; the same harness on DeepSeek reaches 95, so it transfers across model families.
 
-**[Slide 5, audit, 1:25]**
+**[Slide 6, style, 1:25] ALI**
 
-You will ask whether we gamed our own metric. We audited it with signals the harness never sees: closeness to the real human originals, six tells not in the gates, copy rate, dropped sentences. With the metric's regex artefacts forgiven, the lead over Claude shrinks from [AUDIT] to [AUDIT] points and holds. Where we lose, the audit says so.
+On style it is not a win. In a blind test, 41 readers preferred Claude's prose, 87 votes to 58, p 0.02. One judge model leans Claude, another leans us. Readers flag choppy fragments in ours far more often.
 
-**[Slide 6, business, 1:40]**
+**[Slide 8, next step, 1:40] RUSLAN**
 
-Who pays: founders, marketers, agencies, and the agents now writing copy for them. The product is an API with a fact-safety guarantee at open-model prices. The moat is licence-clean reverse-distillation data, a verifier that is also the reward, and every pick a user makes.
+So the next step is training toward real human writing. We trained three SFT models on Fireworks today and a local DPO model where the real human original is the preferred answer. Serving fine-tunes needs a dedicated deployment, so only one is evaluated; that is what we are asking for.
 
-**[Slide 7, ask, 1:52]**
+**[1:55] ALI**
 
-We are asking for Fireworks credits to finish the SFT and RL rows, and ten design partners who publish copy every day. We didn't make an open model smarter than Claude. We made it accountable, and made accountability about [RESULT: F1H $/1k over main-row $/1k, rounded] times cheaper. Thank you.
+We didn't make an open model smarter than Claude. We made it accountable, and made accountability about 20 times cheaper.
 
 ---
 
 ## Timing marks
 
-| Slide | Start | Words |
+| Slide | Speaker | Start |
 |---|---|---|
-| 1 Title | 0:00 | 35 |
-| 2 Problem | 0:12 | 85 |
-| 3 Approach | 0:40 | 60 |
-| 4 Leaderboard | 1:00 | 65 |
-| 5 Audit | 1:25 | 45 |
-| 6 Business | 1:40 | 40 |
-| 7 Ask | 1:52 | 25 |
+| 1 Title | Ali | 0:00 |
+| 2 Problem | Ali | 0:10 |
+| 3 Solution | Ruslan | 0:30 |
+| 4 Leaderboard (skip 5 Audit unless asked) | Ali | 0:55 |
+| 6 Style | Ali | 1:25 |
+| 8 Next step + close | Ruslan, then Ali | 1:40 |
 
 ## Before you say it
 
-- The problem-slide quotes are exact strings from `evals/runs/hack_strong_claude-opus-5-5.jsonl` (`dev-070`, `dev-016`): the strong-prompt reference row, not the plain-prompt live run. Selection rule: strong-run items where `gates.check` fails G2 (a draft number missing) and the audit's deleted-sentence rule finds 2+ draft sentences (5+ words, under 40% of content words recalled) and the draft is 75 words or fewer (fits a slide): dev-016, dev-070, dev-073, dev-074. We show the one with the most dropped sentences (dev-070, three) and the gate demo (dev-016).
-- Say "drops three sentences", "drops two sentences, adds a clause". Do not say "our checker caught it" for the dropped sentences: the gates do not see dropped sentences, the audit does. The gate does flag dev-016 (G2: "1-minute checks" became "checks every minute", the 1 is gone; same meaning, literal check) and dev-070 only for "5" -> "Five" (an artefact the audit forgives).
-- Do not reuse the old dev-085 "71 characters" note (it came from the plain-prompt live run) or dev-060 (Claude's G1 flag there is a false positive from "recalled"). The earlier "38 customers" example is not in any run file; do not say it.
-- "About half of our items" = any-sentence-deleted 51% for Claude strong in `hackathon/audit/audit.json` (`systems["frontier-strong:claude-opus-5-5"].gaming.any_sent_deleted`). Note the main row O3c is at 42% on the same signal; O3 (no style round) is at 17%. Say the O3 number only when talking about O3.
-- If a judge asks for the lenient number, it is in `hackathon/audit/AUDIT.md` section E, computed by `hackathon/audit/audit.py`.
-- Never say "detector", "undetectable" or "bypass". The product is fact-safe human-sounding copy, not evasion.
+- "About 11 times cheaper" = Claude strong $9.11 / FeatherLM $0.81 per 1k (11.3). "About 20 times cheaper" (closing line) = Claude inside our harness $15.85 / FeatherLM $0.81 (19.7): the accountable version of Claude against ours. Both from `results.json: systems[].cost_per_1k_usd`.
+- Human A/B is 195 votes from 41 readers in `human_votes.json` (O3c vs Claude strong): ours 58, Claude 87, both fine 50, sign test p=0.020. Say "87 votes to 58"; do not say 164 or p=0.024 (not in the current file).
+- Judges on O3c: Kimi K3 style 33/46/51 (leans Claude, p=0.177 n.s.); Qwen 3.8 Max style 44/27/37 (leans ours, p=0.057 n.s.). Do not say either judge "prefers" significantly.
+- The problem-slide quotes are exact strings from `evals/runs/hack_strong_claude-opus-5-5.jsonl` (dev-070, dev-016). "About half" = audit `any_sent_deleted` 51% for Claude strong.
+- R3 (DeepSeek) has no cost row in results.json; do not quote a price for it.
+- Never say "detector", "undetectable" or "bypass".

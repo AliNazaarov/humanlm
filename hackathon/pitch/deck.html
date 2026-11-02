@@ -9,25 +9,37 @@
 <script>
 /* ============================================================================
    DATA BLOCK: edit here, nothing else.
-   Rates = fact-safe human rewrite rate on all 250 items (130 main + 120 held-out),
+   Rates = fact-safe human rewrite rate on all 247 items (130 main + 117 held-out; AUDIT block uses the audit's own 250-item run),
    computed from the gates in evals/runs/hack_*.jsonl by hackathon/audit/audit.py
    (Wilson 95% CI, missing rows counted as fails, same rule as score_all.py).
    cost = $ per 1k rewrites and p50 latency from hackathon/report/results.json.
    Mark "interim" until the freeze; then paste the final numbers from results.json.
    ========================================================================== */
-const STATUS = "interim, 2026-11-02 11:40 PT";
+const STATUS = "final, results.json at 2026-11-02 14:50 PT";
+// Rates: hackathon/report/results.json blocks.all (247 items), summary.pass rate/lo/hi.
+// cost/p50: results.json systems[].cost_per_1k_usd and latency_ms.p50. main: true = the headline row (FeatherLM).
 const LEADERBOARD = [
-  // label,                              rate, lo,   hi,   $/1k,   p50s, kind
-  { label: "GLM-5.3 Flash + prompt + harness (O3b)", rate: 94.4, lo: 90.8, hi: 96.6, cost: 0.55,  p50: 1.6, kind: "ours" },
-  { label: "GLM-5.3 Flash + harness (O3)",           rate: 92.8, lo: 88.9, hi: 95.4, cost: 0.28,  p50: 2.6, kind: "ours" },
-  { label: "Claude Opus 5.5 + our harness (F1H)",    rate: 93.6, lo: 89.9, hi: 96.0, cost: 16.44, p50: 4.9, kind: "fair" },
-  { label: "GLM-5.3 Flash + prompt (O2)",            rate: 73.2, lo: 67.4, hi: 78.3, cost: 0.31,  p50: 1.2, kind: "open" },
-  { label: "Claude Opus 5.5, strong prompt (F1)",    rate: 71.6, lo: 65.7, hi: 76.8, cost: 8.93,  p50: 3.9, kind: "frontier" },
-  { label: "Claude Opus 5.5, same prompt",           rate: 53.2, lo: 47.0, hi: 59.3, cost: 7.21,  p50: 3.7, kind: "frontier" },
-  { label: "GPT-6.1 Terra, same prompt (F2)",        rate: 40.0, lo: 34.1, hi: 46.2, cost: 0.86,  p50: 2.6, kind: "frontier" },
-  { label: "No rewrite (copy the draft, control)",   rate: 32.0, lo: 26.5, hi: 38.0, cost: null,  p50: null, kind: "control" },
-  { label: "GLM-5.3 Flash, same prompt (O1)",        rate: 27.2, lo: 22.1, hi: 33.0, cost: 0.10,  p50: 1.2, kind: "open" },
+  // label,                                         rate, lo,   hi,   $/1k,   p50s, kind
+  { label: "Ensemble of 7 harness variants (E1)",      rate: 99.2, lo: 97.1, hi: 99.9, cost: 15.12, p50: 9.9, kind: "ours" },
+  { label: "FeatherLM: GLM-5.3 Flash + harness (O3c)", rate: 96.8, lo: 93.7, hi: 98.6, cost: 0.81,  p50: 3.4, kind: "ours", main: true },
+  { label: "DeepSeek V4.1 Flash + same harness (R3)",  rate: 94.7, lo: 91.2, hi: 97.2, cost: null,  p50: 3.4, kind: "ours" },
+  { label: "Claude Opus 5.5 + our harness (F1H)",      rate: 93.5, lo: 89.7, hi: 96.3, cost: 15.85, p50: 4.8, kind: "fair" },
+  { label: "Claude Opus 5.5, strong prompt (F1)",      rate: 71.3, lo: 65.2, hi: 76.8, cost: 9.11,  p50: 3.7, kind: "frontier" },
+  { label: "Claude Opus 5.5, same prompt",             rate: 52.6, lo: 46.2, hi: 59.0, cost: 7.17,  p50: 3.7, kind: "frontier" },
+  { label: "GPT-6.1 Terra, same prompt (F2)",          rate: 39.7, lo: 33.5, hi: 46.1, cost: 0.85,  p50: 2.6, kind: "frontier" },
+  { label: "Our SFT B fine-tune, no harness (O4m)",    rate: 32.8, lo: 27.0, hi: 39.0, cost: null,  p50: 1.2, kind: "open" },
+  { label: "No rewrite (copy the draft, control)",     rate: 31.6, lo: 25.8, hi: 37.8, cost: null,  p50: null, kind: "control" },
+  { label: "GLM-5.3 Flash, same prompt (O1)",          rate: 26.7, lo: 21.3, hi: 32.7, cost: 0.10,  p50: 1.2, kind: "open" },
 ];
+// Style evidence (where we do NOT win). Sources in hackathon/pitch/FINAL_CHECK.md.
+const STYLE = {
+  human_ours: 58, human_claude: 87, human_both: 50, human_votes: 195, human_people: 41, human_p: "0.020",
+  kimi_style: "33 / 46 / 51", kimi_overall: "35 / 52 / 43 (p=0.086)",
+  qwen_style: "44 / 27 / 37", qwen_overall: "39 / 43 / 25 (p=0.741)",
+  tells_ours: 37.7, tells_claude: 10.0, frag_ours: 28.5, frag_claude: 4.6,
+};
+// Real README split (80 GitHub READMEs, never used for tuning): results.json blocks.real.
+const REAL = { ours: 97.5, claude: 76.2, delta: "+21 pp [+13, +31]" };
 // Audit numbers (hackathon/audit/AUDIT.md, same run). Edit when the audit is re-run.
 const AUDIT = {
   official_gap_pp: 21, lenient_gap_pp: 11, lenient_ours: 97, lenient_claude: 85,
@@ -126,7 +138,7 @@ const AUDIT = {
   <h1>Make it sound human. <span class="accent">Change nothing.</span></h1>
   <p class="lead" style="margin-top:1.4em">FeatherLM rewrites AI-sounding copy so it reads like a skilled human wrote it, and keeps every fact, number, name and quote. An open model on Fireworks, wrapped in a verifier loop.</p>
   <p class="muted" style="margin-top:2em;font-size:0.85em">Ali Nazarov &amp; Ruslan · github: AliNazaarov/humanlm</p>
-  <div class="foot"><span>FeatherLM</span><span>1 / 7</span></div>
+  <div class="foot"><span>FeatherLM</span><span>1 / 8</span></div>
 </section>
 
 <!-- =========================================================== SLIDE 2: THE PROBLEM
@@ -166,7 +178,7 @@ const AUDIT = {
       <p class="muted cap">Two draft sentences dropped and a clause added that the founder never wrote. The number gate flags this row: "1-minute checks" became "checks every minute", and the 1 is gone (G2). Same meaning here; the check is that literal on purpose.</p>
     </div>
   </div>
-  <div class="foot"><span>Exact quotes · evals/runs/hack_strong_claude-opus-5-5.jsonl · emoji kept as in the file</span><span>2 / 7</span></div>
+  <div class="foot"><span>Exact quotes · evals/runs/hack_strong_claude-opus-5-5.jsonl · emoji kept as in the file</span><span>2 / 8</span></div>
 </section>
 
 <!-- =========================================================== SLIDE 3: APPROACH
@@ -191,34 +203,34 @@ const AUDIT = {
     <div><h3 class="serif" style="font-size:1.2em">Training</h3>
       <ul class="muted" style="font-size:0.9em">
         <li>5,000 licence-clean pairs: Common Pile human text; an open model wrote the AI draft; we train draft → human (reverse distillation).</li>
-        <li>SFT on Fireworks: see TRAIN_LOG.md for the job state.</li>
+        <li>SFT A, B, C trained on Fireworks (Serverless Training API). Serving a LoRA needs an on-demand deployment; only SFT B was served and evaluated (33%, no harness). Local DPO (L2) toward real human writing on a Mac. See TRAIN_LOG.md.</li>
         <li>RL: the same four gates as reward, so the model learns to pass first time and the loop becomes a safety net.</li>
       </ul></div>
     <div><h3 class="serif" style="font-size:1.2em">What makes it honest</h3>
       <ul class="muted" style="font-size:0.9em">
-        <li>Same prompt, same 250 items, every run file scored, nothing dropped.</li>
+        <li>Same prompt, same 247 items, every run file scored, nothing dropped.</li>
         <li>A fairness row: Claude Opus 5.5 + the same harness.</li>
         <li>A no-rewrite control: copying the draft scores 32%.</li>
         <li>An independent audit with signals the loop never sees (next slide but one).</li>
       </ul></div>
   </div>
-  <div class="foot"><span>Open model + verifier loop, all on Fireworks</span><span>3 / 7</span></div>
+  <div class="foot"><span>Open model + verifier loop, all on Fireworks</span><span>3 / 8</span></div>
 </section>
 
 <!-- =========================================================== SLIDE 4: LEADERBOARD
   Speaker notes (1:00-1:25):
-  "Same 250 items, same prompt. Fact-safe human rewrite rate: Claude Opus 5.5 with a strong prompt, [rate].
+  "Same 247 items, same prompt. Claude Opus 5.5 strong prompt 71%; FeatherLM 97%; Claude in our harness 94%.
    GPT-6.1, [rate]. Our harness on a 30-cent-per-thousand open model, [rate], paired bootstrap, significant.
    The honest row: Claude plus our harness gets there too, at [cost] per thousand. The loop is the product,
    the open model is the price."
   Bars are drawn from the DATA BLOCK at the top of this file. Replace with results.json numbers at the freeze.
 -->
 <section class="slide">
-  <div class="kicker">Leaderboard · fact-safe human rewrite rate · all 250 items · <span id="status"></span></div>
-  <h2>Same items, same prompt. The open model with the loop beats the frontier.</h2>
+  <div class="kicker">Leaderboard · fact-safe human rewrite rate · all 247 items · <span id="status"></span></div>
+  <h2>Same items, same prompt. The open model with the loop beats Claude on fact-safety, at ~<span class="accent" id="ratio_claude"></span>× lower cost.</h2>
   <div class="bars" id="bars"></div>
-  <p class="muted" style="font-size:0.75em;margin-top:1em">Passing = all four gates at once. Bars: rate; thin line: 95% Wilson interval. Paired bootstrap deltas and p-values are in hackathon/report/RESULTS.md. Cost = $ per 1,000 rewrites from PRICES.md × logged tokens; p50 = median wall-clock per item.</p>
-  <div class="foot"><span>Source: evals/runs/hack_*.jsonl via hackathon/audit/audit.py; cost/latency from hackathon/report/results.json</span><span>4 / 7</span></div>
+  <p class="muted" style="font-size:0.75em;margin-top:1em">Passing = all four gates at once. Bars: rate; thin line: 95% Wilson interval. On 80 untouched real GitHub READMEs: FeatherLM <span id="real_ours"></span> vs Claude strong <span id="real_claude"></span>, paired Δ <span id="real_delta"></span>. Claude inside our harness (F1H) reaches about our level: the harness is the contribution. Paired bootstrap deltas and p-values are in hackathon/report/RESULTS.md. Cost = $ per 1,000 rewrites from PRICES.md × logged tokens; p50 = median wall-clock per item.</p>
+  <div class="foot"><span>Source: hackathon/report/results.json (score_all.py)</span><span>4 / 8</span></div>
 </section>
 
 <!-- =========================================================== SLIDE 5: THE AUDIT
@@ -236,10 +248,24 @@ const AUDIT = {
     <tr><th>Signal (never shown to the harness)</th><th>Harness (O3)</th><th>Claude Opus 5.5 strong</th><th>GPT-6.1</th><th>Verdict</th></tr>
   </table>
   <p class="muted" style="font-size:0.75em;margin-top:0.9em">"Lenient" forgives the gates' regex artefacts (a spelled-out numeral, <i>Kenyan</i> → <i>Kenya</i>, a capital after a bullet). Deleted sentence = a draft sentence whose content words are under 40% recalled in the output. Hold-out tells = six per-text tells vs the 10-90th percentile band of 909 human texts; the real human originals score <span id="tells_human"></span>.</p>
-  <div class="foot"><span>Verdicts and numbers are generated by hackathon/audit/audit.py; nothing here is hand-typed</span><span>5 / 7</span></div>
+  <div class="foot"><span>Verdicts and numbers are generated by hackathon/audit/audit.py; nothing here is hand-typed</span><span>5 / 8</span></div>
 </section>
 
-<!-- =========================================================== SLIDE 6: BUSINESS
+<!-- =========================================================== SLIDE 6: STYLE (where we lose)
+  Speaker notes: "On style it is not a win. People preferred Claude's prose, p 0.02. Kimi leans Claude, Qwen leans us,
+   neither significant. Readers flag choppy fragments in ours far more often. That is the next problem."
+-->
+<section class="slide">
+  <div class="kicker">Style · where we do not win · ours (O3c) vs Claude Opus 5.5 strong prompt</div>
+  <h2>Accountable, yes. Better prose, no: readers prefer Claude's.</h2>
+  <table id="style_box">
+    <tr><th>Signal</th><th>Ours</th><th>Claude</th><th>Read</th></tr>
+  </table>
+  <p class="lead" style="margin-top:1em;font-size:1em">Our loop's style round over-uses dramatic fragments and one-line closers; Claude writes calm complete sentences. Next step: train toward real human writing (SFT on draft → human pairs, DPO with the human original as "chosen"), then re-run this table.</p>
+  <div class="foot"><span>Sources: hackathon/report/human_votes.json, judge_*O3c*summary.json, reader_tells.json</span><span>6 / 8</span></div>
+</section>
+
+<!-- =========================================================== SLIDE 7: BUSINESS
   Speaker notes (1:40-1:52):
   "Who pays: founders, marketers, agencies, and the agents now writing copy for them. The product is an API
    with a fact-safety guarantee at open-model prices. The moat is licence-clean reverse-distillation data,
@@ -271,10 +297,10 @@ const AUDIT = {
       </ul>
     </div>
   </div>
-  <div class="foot"><span>Not a humanizer: no detector is ever used as a reward or sold as evasion</span><span>6 / 7</span></div>
+  <div class="foot"><span>Not a humanizer: no detector is ever used as a reward or sold as evasion</span><span>7 / 8</span></div>
 </section>
 
-<!-- =========================================================== SLIDE 7: ASK / NEXT
+<!-- =========================================================== SLIDE 8: ASK / NEXT
   Speaker notes (1:52-2:00):
   "We are asking for Fireworks credits to finish the SFT and RL rows, and ten design partners who publish
    copy every day. We didn't make an open model smarter than Claude. We made it accountable, and made
@@ -287,11 +313,11 @@ const AUDIT = {
   <div class="cols">
     <div>
       <div class="big">Credits + 10 partners</div>
-      <p class="lead" style="margin-top:0.8em">Fireworks credits to finish SFT and RL with the gates as reward, and ten design partners who publish copy daily and will blind-rate rewrites.</p>
+      <p class="lead" style="margin-top:0.8em">Fireworks credits and a deployment to serve our fine-tunes (SFT and DPO toward real human writing, gates as the guard), and ten design partners who publish copy daily and will blind-rate rewrites.</p>
     </div>
     <div>
       <ul style="font-size:0.95em">
-        <li>SFT on the 5,000 licence-clean pairs; RL with G1-G4 as reward; re-run the same 250 items.</li>
+        <li>Serve and evaluate SFT C and the DPO-to-human model; train toward real human writing until readers stop preferring Claude.</li>
         <li>Replace the regex fact gates with an entailment checker, then re-run the audit.</li>
         <li>Blind human test with paid copywriters as the humanness metric.</li>
         <li>Ship the API with the verifier report attached to every response.</li>
@@ -300,7 +326,7 @@ const AUDIT = {
   </div>
   <p class="serif" style="margin-top:1.6em;font-size:1.35em;max-width:34ch">We didn't make an open model smarter than Claude. We made it accountable, and made accountability about <span class="accent" id="ratio">[RESULT]</span>× cheaper.</p>
   <p class="muted" style="margin-top:1.2em;font-size:0.85em">Repo: github.com/AliNazaarov/humanlm · <code>make eval</code> rebuilds every number from the committed run files · <code>python3 hackathon/audit/audit.py</code> rebuilds the audit.</p>
-  <div class="foot"><span>Thank you</span><span>7 / 7</span></div>
+  <div class="foot"><span>Thank you</span><span>8 / 8</span></div>
 </section>
 
 </div>
@@ -348,12 +374,18 @@ const rows = [
 const t = document.getElementById("audit");
 for (const [sig, ours, cl, gpt, v, win] of rows) t.insertAdjacentHTML("beforeend", `<tr><td>${sig}</td><td class="v win">${ours}</td><td>${cl}</td><td>${gpt}</td><td class="v ${win ? "win" : ""}">${v}</td></tr>`);
 document.getElementById("tells_human").textContent = A.tells_human + "%";
-const ours = LEADERBOARD.find(r => r.kind === "ours" && /O3\)/.test(r.label)) || LEADERBOARD.find(r => r.kind === "ours");
-const claude = LEADERBOARD.find(r => /strong/i.test(r.label));
+const ours = LEADERBOARD.find(r => r.main) || LEADERBOARD.find(r => r.kind === "ours");
+const claude = LEADERBOARD.find(r => /strong prompt/i.test(r.label));
 document.getElementById("cost_ours").textContent = ours && ours.cost != null ? "$" + ours.cost.toFixed(2) : "[RESULT]";
 document.getElementById("cost_claude").textContent = claude && claude.cost != null ? "$" + claude.cost.toFixed(2) : "[RESULT]";
 const fair = LEADERBOARD.find(r => r.kind === "fair");
 document.getElementById("ratio").textContent = ours && fair && ours.cost ? Math.round(fair.cost / ours.cost) : "[RESULT]";
+document.getElementById("ratio_claude").textContent = ours && claude && ours.cost ? Math.round(claude.cost / ours.cost) : "[RESULT]";
+const S = STYLE;
+document.getElementById("style_box").insertAdjacentHTML("beforeend", `<tr><td>Blind human A/B, ${S.human_votes} votes from ${S.human_people} readers (human_votes.json)</td><td class="v">${S.human_ours}</td><td class="v win">${S.human_claude}</td><td>${S.human_both} both fine · sign test p=${S.human_p} · <b>Claude preferred</b></td></tr><tr><td>Kimi K3 judge, style, both orders (130 items)</td><td class="v">${S.kimi_style.split(" / ")[0]}</td><td class="v win">${S.kimi_style.split(" / ")[1]}</td><td>leans Claude, n.s. · overall ${S.kimi_overall}</td></tr><tr><td>Qwen 3.8 Max judge, style, both orders (108 parsed)</td><td class="v win">${S.qwen_style.split(" / ")[0]}</td><td class="v">${S.qwen_style.split(" / ")[1]}</td><td>leans ours, n.s. (p=0.057) · overall ${S.qwen_overall}</td></tr><tr><td>Outputs with a choppy reader tell (fragment runs, slogans, hooks)</td><td class="v">${S.tells_ours}%</td><td class="v win">${S.tells_claude}%</td><td>fragment runs ${S.frag_ours} vs ${S.frag_claude} per 100 outputs (reader_tells.json)</td></tr>`);
+document.getElementById("real_ours").textContent = REAL.ours + "%";
+document.getElementById("real_claude").textContent = REAL.claude + "%";
+document.getElementById("real_delta").textContent = REAL.delta;
 </script>
 </body>
 </html>
