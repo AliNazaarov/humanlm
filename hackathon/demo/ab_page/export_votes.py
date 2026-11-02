@@ -1,5 +1,6 @@
 """Merge every human A/B vote into hackathon/report/human_ab.jsonl.
-Usage: export_votes.py [--store DUMP.json] [--local LOCALSTORAGE.json ...] [--codes CODES.txt ...] [--telegram VOTES.json ...]
+Usage: export_votes.py [--store DUMP.json] [--public ROWS.json] [--local LOCALSTORAGE.json ...] [--codes CODES.txt ...]
+                       [--telegram VOTES.json ...]
                        [--rev GITREV ...] [--out OUT.jsonl]
 
 Pair sets: the current hackathon/demo/ab_pairs.json + ab_page/pairs.json, plus the same two files at each --rev
@@ -9,6 +10,8 @@ Sources:
   --store     the page's `votes` collection (ArtifactData list: [{id, data: {ballots: {bid: {version, picks}}}}])
   --local     the page's localStorage from one device (all ballots ever cast on it, e.g. a hand-around laptop):
               in that browser's console run  copy(localStorage.getItem("ab-read-v1"))  and paste into a .json file
+  --public    the public page's Supabase table `ab_votes` as a JSON list of rows (select * … order by id); one row
+              per pick event, the latest per (ballot, pid) counts
   --codes     any text holding codes from the page's done screen: FLM1:<version 8>:<ballot 6>:<a|b|t|- per pid>
   --telegram  Ali's hosted page: a JSON list (or {"votes": [...]}) of {pid, choice: X|Y|tie|both_bad, version,
               voter|voter_hash, ballot?}; X/Y are the opaque groups in that version's pairs.json
@@ -82,6 +85,21 @@ def from_store(dump, sets: dict, dropped: list) -> list[dict]:
     return out
 
 
+def from_public(rows: list[dict], sets: dict, dropped: list) -> list[dict]:
+    """The public table: later rows for the same (ballot, pid) replace earlier ones (a changed pick or reason)."""
+    latest = {}
+    for r in sorted(rows, key=lambda r: (r.get("id") or 0, str(r.get("at") or ""))):
+        latest[(r.get("ballot"), r.get("pid"))] = r
+    out = []
+    for (bid, pid), r in sorted(latest.items(), key=lambda kv: (str(kv[0][0]), kv[0][1] or 0)):
+        s = find(sets, r.get("version"))
+        if s is None or pid not in s["pairs"] or r.get("pick") not in PICK:
+            dropped.append(("public", bid, r.get("version"))); continue
+        out.append(row("public", s, f"pub:{bid}", None, pid, PICK[r["pick"]], r.get("first"), r.get("reason"),
+                       r.get("ui"), r.get("vw")))
+    return out
+
+
 def from_local(saved: dict, sets: dict, dropped: list, device: str) -> list[dict]:
     """One device's localStorage value {ballot, local: {ballots}}: every ballot on it, source 'local'."""
     doc = {"id": f"device:{device}", "data": (saved or {}).get("local") or {}}
@@ -136,16 +154,19 @@ def from_telegram(votes, sets: dict, dropped: list) -> list[dict]:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--store"); ap.add_argument("--local", action="append", default=[])
+    ap.add_argument("--store"); ap.add_argument("--public"); ap.add_argument("--local", action="append", default=[])
     ap.add_argument("--codes", action="append", default=[])
     ap.add_argument("--telegram", action="append", default=[]); ap.add_argument("--rev", action="append", default=[])
     ap.add_argument("--out", default=OUT)
     a = ap.parse_args(argv)
-    if not (a.store or a.local or a.codes or a.telegram):
+    if not (a.store or a.public or a.local or a.codes or a.telegram):
         ap.print_help(); return 1
     sets, dropped, rs = load_sets(a.rev), [], []
     if a.store:
         rs += from_store(json.load(open(a.store, encoding="utf-8")), sets, dropped)
+    if a.public:
+        raw = json.load(open(a.public, encoding="utf-8"))
+        rs += from_public(raw.get("rows", raw) if isinstance(raw, dict) else raw, sets, dropped)
     for f in a.local:
         raw = json.load(open(f, encoding="utf-8"))
         rs += from_local(json.loads(raw) if isinstance(raw, str) else raw, sets, dropped,

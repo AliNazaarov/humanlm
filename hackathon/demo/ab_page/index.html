@@ -43,7 +43,7 @@ h1, h2 { font-family: var(--f-read); font-weight: 600; line-height: 1.2; text-wr
 button { font: inherit; cursor: pointer; }
 :focus-visible { outline: 3px solid var(--pencil); outline-offset: 2px; }
 
-/* Top bar: progress across the 20 pairs. While reading, only the ticks and count stay, to leave room for the text. */
+/* Top bar: progress across the reader's pairs. While reading, only the ticks and count stay, to leave room for the text. */
 .top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); border-bottom: 1px solid var(--rule);
   padding-block: 10px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; }
 .top h1 { font-size: var(--step-1); }
@@ -126,11 +126,11 @@ details.draft .text { margin-top: 0.6rem; font-size: 0.9375rem; }
   <header class="top">
     <h1>Which reads human?</h1>
     <div class="ticks" id="ticks" aria-hidden="true"></div>
-    <span class="count" id="count">20 pairs</span>
+    <span class="count" id="count">5 pairs</span>
   </header>
 
   <section class="screen" id="intro">
-    <span class="label">Blind read · 20 pairs · about 15 minutes</span>
+    <span class="label">Blind read · 5 pairs · about 4 minutes</span>
     <h2>Two rewrites of the same AI draft. Pick the one that reads more like a person wrote it.</h2>
     <p>Each pair starts from a piece of AI-written marketing copy. Two systems rewrote it. You don't know which system is which, and the sides are shuffled for every reader.</p>
     <ol class="steps">
@@ -166,11 +166,11 @@ details.draft .text { margin-top: 0.6rem; font-size: 0.9375rem; }
 
   <section class="screen" id="done" hidden>
     <span class="label">Done</span>
-    <h2>Thanks. That's all 20.</h2>
+    <h2 id="doneTitle">Thanks. That's all 5.</h2>
     <p id="doneMsg">Your picks are saved.</p>
     <div class="panel" id="codeBox" hidden>
       <h3>Last step: send your code</h3>
-      <p class="small">Copy this code and paste it in the Telegram chat, or show it to the organiser. It holds your 20 picks and nothing else.</p>
+      <p class="small">Copy this code and paste it in the Telegram chat, or show it to the organiser. It holds your picks and nothing else.</p>
       <div class="coderow"><code id="voteCode"></code><button class="btn" id="copyCode" type="button">Copy code</button></div>
       <p class="small" id="copyNote" aria-live="polite"></p>
     </div>
@@ -202,10 +202,14 @@ details.draft .text { margin-top: 0.6rem; font-size: 0.9375rem; }
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
-  const UI = 2;  // page version, stored with each ballot so votes from before and after a design change can be split
+  const UI = 3;  // page version, stored with each ballot so votes from before and after a design change can be split
+  const PER_READER = 5;  // each reader gets 5 of the 20 pairs, drawn at random per ballot, so every pair still collects votes
   const S = { pairs: [], version: null, order: [], i: 0, db: null, uid: null, ref: null, doc: { ballots: {} }, ballot: null,
               canSave: false, exists: false, all: [], reveal: null, writing: false, pending: false, unsaved: false, tries: 0,
-              copied: false, confirmNext: false };
+              copied: false, confirmNext: false, remote: null, queue: [] };
+  // Public build (build_public.py) sets window.FLM_REMOTE = {url, key}: picks go to an insert-only Supabase table, one row
+  // per pick event; the latest row per (ballot, pid) counts. The anon key can insert and nothing else.
+  const REMOTE = window.FLM_REMOTE && window.FLM_REMOTE.url ? window.FLM_REMOTE : null;
   const LS = "ab-read-v1";
   const store = { get() { try { return JSON.parse(localStorage.getItem(LS) || "{}"); } catch { return {}; } },
                   set(v) { try { localStorage.setItem(LS, JSON.stringify(v)); } catch {} } };
@@ -216,6 +220,11 @@ details.draft .text { margin-top: 0.6rem; font-size: 0.9375rem; }
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
   function orderFor(bid) { const r = rng(hash(bid)); const o = S.pairs.map((p) => p.pid);
     for (let k = o.length - 1; k > 0; k--) { const j = Math.floor(r() * (k + 1)); [o[k], o[j]] = [o[j], o[k]]; } return o; }
+  // The ballot's own shuffle, cut to PER_READER; a ballot cast before the cut keeps its own length when resumed.
+  function readerOrder(bid) {
+    const all = orderFor(bid), done = Object.keys(S.doc.ballots[bid]?.picks || {}).length;
+    return all.slice(0, Math.max(PER_READER, S.doc.ballots[bid]?.ui >= 3 ? 0 : done));
+  }
   const firstSide = (bid, pid) => (rng(hash(bid + ":" + pid))() < 0.5 ? "a" : "b");
   const pairBy = (pid) => S.pairs.find((p) => p.pid === pid);
   const picks = () => S.doc.ballots[S.ballot]?.picks || {};
@@ -225,7 +234,7 @@ details.draft .text { margin-top: 0.6rem; font-size: 0.9375rem; }
   function newBallot() {
     S.ballot = "b" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
     S.doc.ballots[S.ballot] = { started: new Date().toISOString(), version: S.version, ui: UI, vw: window.innerWidth, picks: {} };
-    S.order = orderFor(S.ballot); S.i = 0; S.copied = false; S.confirmNext = false;
+    S.order = readerOrder(S.ballot); S.i = 0; S.copied = false; S.confirmNext = false;
     store.set({ ...store.get(), ballot: S.ballot, local: S.doc });
   }
 
@@ -248,9 +257,35 @@ details.draft .text { margin-top: 0.6rem; font-size: 0.9375rem; }
       : S.unsaved ? "Some picks haven't reached the shared tally yet. Keep this page open for a moment." : "Your picks are saved.";
   }
 
+  // Public build: queue one row per pick event (kept in localStorage until the insert succeeds), send one at a time.
+  function remoteQueue(pid) {
+    const b = S.doc.ballots[S.ballot], pk = b && b.picks[pid];
+    if (!pk || !pk.pick) return;
+    S.queue.push({ version: S.version, ballot: S.ballot, pid: Number(pid), pick: pk.pick, first: pk.first, reason: pk.reason || "",
+                   ui: b.ui || null, vw: b.vw || null, at: pk.at || new Date().toISOString() });
+    store.set({ ...store.get(), queue: S.queue });
+    remoteFlush();
+  }
+  function remoteFlush() {
+    if (S.writing || !S.queue.length) { S.unsaved = S.queue.length > 0; return; }
+    S.writing = true; S.unsaved = true;
+    const batch = S.queue.slice(0, 20);  // drop only these on success: picks made while the insert is in flight stay queued
+    fetch(REMOTE.url + "/rest/v1/" + (REMOTE.table || "ab_votes"), { method: "POST", body: JSON.stringify(batch),
+      headers: { apikey: REMOTE.key, Authorization: "Bearer " + REMOTE.key, "Content-Type": "application/json", Prefer: "return=minimal" } })
+      .then((r) => { if (!r.ok) throw new Error("HTTP " + r.status);
+        S.queue.splice(0, batch.length); S.tries = 0; store.set({ ...store.get(), queue: S.queue }); })
+      .catch(() => { S.tries++; })
+      .finally(() => {
+        S.writing = false; S.unsaved = S.queue.length > 0; saveNote();
+        if (!$("done").hidden) renderCode();
+        if (S.queue.length) setTimeout(remoteFlush, S.tries ? 800 * 2 ** Math.min(S.tries, 5) * (0.5 + Math.random()) : 0);
+      });
+  }
+
   // A local copy always; to the store, one write in flight, merging only this ballot so other tabs' ballots survive.
-  function save(all) {
+  function save(all, pid) {
     store.set({ ...store.get(), ballot: S.ballot, local: S.doc });
+    if (S.remote) { if (pid != null) remoteQueue(pid); saveNote(); return; }
     if (!S.canSave) { saveNote(); return; }
     if (S.writing) { S.pending = true; return; }
     S.writing = true; S.unsaved = true;
@@ -314,23 +349,27 @@ details.draft .text { margin-top: 0.6rem; font-size: 0.9375rem; }
     const b = S.doc.ballots[S.ballot];
     b.picks[pid] = { pick, first, reason: $("why").value.trim().slice(0, 200), at: new Date().toISOString() };
     if (Object.values(b.picks).filter((x) => x.pick).length === S.order.length) b.finished = b.finished || new Date().toISOString();
-    save(); renderPair(false);
+    save(false, pid); renderPair(false);
   }
 
   function saveReason() {
-    const pk = picks()[S.order[S.i]]; const r = $("why").value.trim().slice(0, 200);
-    if (pk && pk.reason !== r) { pk.reason = r; save(); }
+    const pid = S.order[S.i], pk = picks()[pid]; const r = $("why").value.trim().slice(0, 200);
+    if (pk && pk.reason !== r) { pk.reason = r; pk.at = new Date().toISOString(); save(false, pid); }
   }
 
   function go(d) {
     saveReason();
-    if (d > 0 && S.i === S.order.length - 1) { saveNote(); renderTally(); renderCode(); show("done"); window.scrollTo(0, 0); return; }
+    if (d > 0 && S.i === S.order.length - 1) {
+      $("doneTitle").textContent = `Thanks. That's all ${S.order.length}.`;
+      saveNote(); renderTally(); renderCode(); show("done"); window.scrollTo(0, 0); return;
+    }
     S.i = Math.max(0, Math.min(S.order.length - 1, S.i + d)); renderPair(true); window.scrollTo(0, 0);
   }
 
   // Tally by opaque group X/Y: every reader's ballots when the store is reachable, otherwise this device's.
   function renderTally() {
-    const docs = S.canSave ? S.all : [S.doc];
+    const shared = S.canSave && !S.remote;  // the public table is write-only, so a public reader sees their own picks
+    const docs = shared ? S.all : [S.doc];
     let x = 0, y = 0, t = 0; const ballots = new Set();
     for (const d of docs) for (const [bid, b] of Object.entries(d.ballots || {})) for (const [pid, pk] of Object.entries(b.picks || {})) {
       const p = pairBy(Number(pid)); if (!p || !["a", "b", "tie"].includes(pk.pick) || (b.version && b.version !== S.version)) continue;
@@ -343,13 +382,13 @@ details.draft .text { margin-top: 0.6rem; font-size: 0.9375rem; }
     $("split").replaceChildren(seg("x", x, `${pct(x)}%`), seg("t", t, `${pct(t)}%`), seg("y", y, `${pct(y)}%`));
     const item = (label, v) => { const e = document.createElement("span"); const b = document.createElement("b"); b.textContent = label; e.append(b, ` ${v} (${pct(v)}%)`); return e; };
     $("legend").replaceChildren(item(nameX, x), item("Same", t), item(nameY, y));
-    $("tallyLabel").textContent = S.canSave ? "All readers so far" : "Picks on this device";
-    $("tallyNote").textContent = (S.canSave ? `${n} picks from ${ballots.size} reader${ballots.size === 1 ? "" : "s"}. ` : "")
+    $("tallyLabel").textContent = shared ? "All readers so far" : "Picks on this device";
+    $("tallyNote").textContent = (shared ? `${n} picks from ${ballots.size} reader${ballots.size === 1 ? "" : "s"}. ` : "")
       + (S.reveal ? "Names revealed by the organiser." : "System names stay hidden until the test ends.");
   }
 
   function begin(resume) {
-    if (!resume || !S.doc.ballots[S.ballot]) newBallot(); else S.order = orderFor(S.ballot);
+    if (!resume || !S.doc.ballots[S.ballot]) newBallot(); else S.order = readerOrder(S.ballot);
     if (resume) { const p = picks(); const k = S.order.findIndex((pid) => !p[pid]?.pick); S.i = k < 0 ? S.order.length - 1 : k; }
     show("pairView"); renderPair(true); window.scrollTo(0, 0);
   }
@@ -395,7 +434,7 @@ details.draft .text { margin-top: 0.6rem; font-size: 0.9375rem; }
     $("draftBox").open = saved.draftOpen === true;
     try { const pj = await (await fetch("pairs.json")).json(); S.pairs = pj.pairs; S.version = pj.meta.version; }
     catch { status("The pairs file didn't load. Reload the page; if it keeps failing, tell the organiser.", true); $("start").disabled = true; return; }
-    S.order = S.pairs.map((p) => p.pid); renderTicks();
+    S.order = S.pairs.slice(0, PER_READER).map((p) => p.pid); renderTicks();
     if (saved.local?.ballots) S.doc = JSON.parse(JSON.stringify(saved.local));
     status("Connecting…");
 
@@ -419,6 +458,10 @@ details.draft .text { margin-top: 0.6rem; font-size: 0.9375rem; }
       db.collection("votes").onSnapshot((q) => { S.all = q.docs.map((d) => d.data() || {}); if (!$("done").hidden) renderTally(); }, () => {});
       db.doc("meta/reveal").onSnapshot((d) => { S.reveal = d.exists ? d.data() : null; if (!$("done").hidden) renderTally(); }, () => {});
       $("see").hidden = !(user && (await user.isOwner()));
+    } else if (REMOTE) {
+      S.remote = REMOTE; S.canSave = true; S.queue = Array.isArray(saved.queue) ? saved.queue : [];
+      remoteFlush();  // send anything a previous visit couldn't
+      status("Your picks are saved as you go. Nothing about you is recorded, only the picks.");
     } else {
       status("Your picks stay on this device. At the end you'll get a short code to send to the organiser.");
     }

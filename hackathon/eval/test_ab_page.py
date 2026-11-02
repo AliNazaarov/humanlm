@@ -78,6 +78,18 @@ class TestExportVotes(unittest.TestCase):
         self.assertEqual([(r["pid"], r["vote"], r["winner"]) for r in rs], [(1, "B", "sys-k"), (2, "tie", None)])
         self.assertEqual(len(dropped), 1)  # unknown version; the duplicate paste is ignored, not dropped
 
+    def test_public_rows_latest_wins(self):
+        rows = [{"id": 1, "ballot": "p1", "pid": 1, "pick": "a", "version": VER, "ui": 3, "vw": 390},
+                {"id": 2, "ballot": "p1", "pid": 2, "pick": "tie", "version": VER},
+                {"id": 3, "ballot": "p1", "pid": 1, "pick": "b", "reason": "changed my mind", "version": VER},
+                {"id": 4, "ballot": "p2", "pid": 1, "pick": "a", "version": "nope"}]
+        dropped = []
+        rs = ev.from_public(rows, self.SETS, dropped)
+        self.assertEqual([(r["ballot"], r["pid"], r["vote"], r["reason"]) for r in rs],
+                         [("pub:p1", 1, "B", "changed my mind"), ("pub:p1", 2, "tie", "")])
+        self.assertEqual({r["source"] for r in rs}, {"public"})
+        self.assertEqual(len(dropped), 1)
+
     def test_local_storage_dump(self):
         saved = {"ballot": "b2", "local": self.DUMP[0]["data"]}
         rs = ev.from_local(saved, self.SETS, [], "venue-mac")
