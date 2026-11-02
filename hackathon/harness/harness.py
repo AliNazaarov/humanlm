@@ -1,8 +1,9 @@
 """Agentic rewrite harness: draft -> verify with gates.py -> targeted revision (max N loops) -> keep the best.
 
-Works with any OpenAI-compatible chat endpoint (Fireworks by default) or Anthropic.
+Works with any OpenAI-compatible chat endpoint (Fireworks by default, OpenAI, Gemini) or Anthropic.
+Keys: ~/.config/humanlm/keys.env (or $HUMANLM_KEYS), then repo .env.
   python3 hackathon/harness/harness.py EVAL.jsonl OUT.jsonl --model MODEL --system-name NAME
-      [--provider fireworks|anthropic|openai] [--loops 3] [--prompt-file P] [--in-price USD_PER_M] [--out-price USD_PER_M]
+      [--provider fireworks|anthropic|openai|gemini] [--loops 3] [--prompt-file P] [--in-price USD_PER_M] [--out-price USD_PER_M]
       [--concurrency 4] [--limit N]
 --loops 0 is a single plain call (the non-harness row for the same model).
 Writes the shared run schema plus `loops_used` and `gates`, and a manifest in hackathon/runs/<system>.json.
@@ -19,12 +20,14 @@ TEMP, TOP_P, MAX_TOK = 0.7, 0.9, 400
 
 
 def load_env():
-    p = os.path.join(ROOT, ".env")
-    if os.path.exists(p):
-        for line in open(p):
-            if "=" in line and not line.lstrip().startswith("#"):
-                k, v = line.strip().split("=", 1)
-                os.environ.setdefault(k, v)
+    """Keys from HUMANLM_KEYS (default ~/.config/humanlm/keys.env, outside the repo), then repo .env. Empty values are skipped."""
+    for p in (os.environ.get("HUMANLM_KEYS", os.path.expanduser("~/.config/humanlm/keys.env")), os.path.join(ROOT, ".env")):
+        if os.path.exists(p):
+            for line in open(p):
+                if "=" in line and not line.lstrip().startswith("#"):
+                    k, v = line.strip().split("=", 1)
+                    if v:
+                        os.environ.setdefault(k, v)
 
 
 def post(url, headers, body, tries=6):
@@ -52,7 +55,8 @@ def chat(provider, model, system, msgs):
         text = "".join(b.get("text", "") for b in r["content"])
         return text, r["usage"]["input_tokens"], r["usage"]["output_tokens"]
     url, key = {"fireworks": ("https://api.fireworks.ai/inference/v1/chat/completions", "FIREWORKS_API_KEY"),
-                "openai": ("https://api.openai.com/v1/chat/completions", "OPENAI_API_KEY")}[provider]
+                "openai": ("https://api.openai.com/v1/chat/completions", "OPENAI_API_KEY"),
+                "gemini": ("https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "GEMINI_API_KEY")}[provider]
     body = {"model": model, "messages": [{"role": "system", "content": system}] + msgs,
             "temperature": TEMP, "top_p": TOP_P, "max_tokens": MAX_TOK}
     if provider == "openai":
@@ -95,7 +99,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("eval"); ap.add_argument("out")
     ap.add_argument("--model", required=True); ap.add_argument("--system-name", required=True)
-    ap.add_argument("--provider", default="fireworks", choices=["fireworks", "anthropic", "openai"])
+    ap.add_argument("--provider", default="fireworks", choices=["fireworks", "anthropic", "openai", "gemini"])
     ap.add_argument("--loops", type=int, default=3); ap.add_argument("--prompt-file")
     ap.add_argument("--in-price", type=float, default=0.0); ap.add_argument("--out-price", type=float, default=0.0)
     ap.add_argument("--concurrency", type=int, default=4); ap.add_argument("--limit", type=int)
