@@ -14,3 +14,4 @@
 2026-11-02T19:20:33Z Leaderboard with all 9 systems committed (b493c6a). Name-proxy bug fixed with tests. O3b 94%, O3 93%, F1H 94%, F1 strong 72%, F2 GPT 40%. Kimi K3 judge running on O3/O3b vs F1, F2, F1H.
 2026-11-02T19:22:43Z Judge 1/6 done (Kimi K3): O3 vs Claude strong overall 34-57 (Claude preferred, p=0.02); facts 13-8 (n.s.); style 25-56 (p<0.001). 5 more pairs running. Human A/B test is now the decider.
 2026-11-02T19:24:56Z Judge done & committed. Claude preferred on marketing style (p~0.02), tie on real human held-out text, facts edge ours. Next: README results/limitations update, human A/B at venue.
+2026-11-02T19:29:45Z README Results now generated from results.json (headline + judge, unedited). Running an eval-methodology review next.
