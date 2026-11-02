@@ -274,6 +274,126 @@ class TestRun(Fixture):
             self.run_judge(allow_partial=True)
 
 
+def fake_client(content="REASON: r\nFACTS: 1\nSTYLE: 1\nVERDICT: 1", finish="stop", reasoning=None, usage=None):
+    """OpenAI-shaped client; records every create() kwargs in .calls."""
+    calls = []
+
+    def create(**kw):
+        calls.append(kw)
+        msg = SimpleNamespace(content=content, reasoning_content=reasoning)
+        return SimpleNamespace(choices=[SimpleNamespace(finish_reason=finish, message=msg)], usage=usage)
+    client = SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=create)))
+    client.calls = calls
+    return client
+
+
+class TestReasoning(unittest.TestCase):
+    def test_stray_close_think_stripped(self):
+        v, r = judge.parse_verdict("weighing... VERDICT: 2 maybe\n</think>\nREASON: keeps facts\nVERDICT: 1")
+        self.assertEqual((v, r), ("1", "keeps facts"))
+
+    def test_fireworks_defaults(self):
+        c = fake_client()
+        judge.make_live_judge(MODEL, client=c)([{"role": "user", "content": "x"}])
+        kw = c.calls[0]
+        self.assertEqual(kw["extra_body"], {"reasoning_effort": "none"})
+        self.assertEqual((kw["max_tokens"], kw["temperature"], kw["model"]), (4096, 0, MODEL))
+        self.assertEqual(judge.MAX_TOKENS, 4096)
+
+    def test_effort_and_max_tokens_passed(self):
+        c = fake_client()
+        judge.make_live_judge(MODEL, client=c, reasoning_effort="low", max_tokens=2048)([])
+        self.assertEqual((c.calls[0]["extra_body"], c.calls[0]["max_tokens"]), ({"reasoning_effort": "low"}, 2048))
+
+    def test_default_effort_sends_nothing(self):
+        self.assertNotIn("extra_body", judge.request_params(MODEL, reasoning_effort="default"))
+
+    def test_gemini_default_effort_low(self):
+        self.assertEqual(judge.request_params("gemini-3-flash", "gemini")["extra_body"], {"reasoning_effort": "low"})
+
+    def test_reasoning_removed_and_usage_kept(self):
+        usage = SimpleNamespace(prompt_tokens=700, completion_tokens=120,
+                                completion_tokens_details=SimpleNamespace(reasoning_tokens=80))
+        c = fake_client(content="<think>VERDICT: 2</think>\nREASON: r\nVERDICT: 1",
+                        reasoning="VERDICT: 2 because...", usage=usage)
+        got = judge.make_live_judge(MODEL, client=c)([])
+        self.assertEqual(got["text"], "REASON: r\nVERDICT: 1")
+        self.assertEqual(got["usage"], {"prompt_tokens": 700, "completion_tokens": 120, "reasoning_tokens": 80})
+
+    def test_think_only_is_empty(self):
+        with self.assertRaises(judge.EmptyOutput):
+            judge.make_live_judge(MODEL, client=fake_client(content="<think>long thoughts"))([])
+
+    def test_cfg_hash_covers_new_options(self):
+        p = judge.load_prompts()
+        base = judge.cfg_hash(MODEL, False, False, p)
+        self.assertEqual(base, judge.cfg_hash(MODEL, False, False, p, "fireworks", "none", 4096))
+        for kw in ({"provider": "gemini"}, {"reasoning_effort": "low"}, {"max_tokens": 1024}):
+            self.assertNotEqual(base, judge.cfg_hash(MODEL, False, False, p, **kw), kw)
+
+
+class TestProvider(unittest.TestCase):
+    def setUp(self):
+        self._env, self._load = dict(os.environ), judge._load_env
+        judge._load_env = lambda: None  # never read the real key files in tests
+
+    def tearDown(self):
+        os.environ.clear()
+        os.environ.update(self._env)
+        judge._load_env = self._load
+
+    def client(self, provider):
+        seen = {}
+        judge.make_client(provider, openai_cls=lambda **kw: seen.update(kw) or "client")
+        return seen
+
+    def test_gemini_endpoint_and_key(self):
+        os.environ["GEMINI_API_KEY"] = "g-test"
+        seen = self.client("gemini")
+        self.assertEqual(seen["base_url"], "https://generativelanguage.googleapis.com/v1beta/openai/")
+        self.assertEqual(seen["api_key"], "g-test")
+
+    def test_fireworks_endpoint_and_key(self):
+        os.environ["FIREWORKS_API_KEY"] = "f-test"
+        seen = self.client("fireworks")
+        self.assertEqual((seen["base_url"], seen["api_key"]), ("https://api.fireworks.ai/inference/v1", "f-test"))
+
+    def test_missing_key_exits(self):
+        os.environ.pop("GEMINI_API_KEY", None)
+        with self.assertRaises(SystemExit):
+            self.client("gemini")
+
+    def test_gemini_family_allowed(self):
+        self.assertEqual(judge.judge_family("gemini-3-flash"), "gemini")
+        self.assertNotIn("gemini", judge.BANNED_FAMILIES)
+
+
+class TestRunOptions(Fixture):
+    def test_effort_change_needs_fresh(self):
+        self.run_judge()
+        with self.assertRaises(SystemExit):
+            self.run_judge(reasoning_effort="low")
+        with self.assertRaises(SystemExit):
+            self.run_judge(max_tokens=1024)
+        s = self.run_judge(reasoning_effort="low", fresh=True)
+        self.assertEqual((s["reasoning_effort"], s["provider"], s["max_tokens"]), ("low", "fireworks", 4096))
+
+    def test_gemini_run_and_usage_totals(self):
+        usage = SimpleNamespace(prompt_tokens=10, completion_tokens=5, completion_tokens_details=None)
+        c = fake_client(usage=usage)
+        s = self.run_judge(judge.make_live_judge("gemini-3-flash", client=c, provider="gemini"),
+                           model="gemini-3-flash", provider="gemini")
+        self.assertEqual((s["provider"], s["reasoning_effort"], s["judge_family"], s["n_complete"]),
+                         ("gemini", "low", "gemini", 4))
+        self.assertEqual((s["prompt_tokens_total"], s["completion_tokens_total"], s["reasoning_tokens_total"]),
+                         (80, 40, 0))
+        self.assertTrue(all(r["prompt_tokens"] == 10 for r in judge.read_jsonl(self.out)))
+
+    def test_unknown_provider_exits(self):
+        with self.assertRaises(SystemExit):
+            self.run_judge(provider="nope")
+
+
 class TestCli(Fixture):
     def main(self, *extra):
         argv = [self.a, self.b, "--eval", self.eval, "--model", MODEL, *extra]
@@ -295,6 +415,12 @@ class TestCli(Fixture):
         before = sorted((r["id"], r["order"], r["verdict"]) for r in judge.read_jsonl(mock_out))
         self.main("--mock", "--out", self.out, "--fresh")
         self.assertEqual(before, sorted((r["id"], r["order"], r["verdict"]) for r in judge.read_jsonl(mock_out)))
+
+    def test_provider_flags_in_summary(self):
+        rc, s = self.main("--mock", "--out", self.out, "--provider", "gemini", "--max-tokens", "2048")
+        self.assertEqual((rc, s["provider"], s["reasoning_effort"], s["max_tokens"]), (0, "gemini", "low", 2048))
+        rc, s = self.main("--mock", "--out", self.out, "--fresh", "--reasoning-effort", "default")
+        self.assertEqual((s["provider"], s["reasoning_effort"], s["max_tokens"]), ("fireworks", "default", 4096))
 
     def test_default_out_name(self):
         self.assertTrue(judge.default_out("x/A.jsonl", "B.jsonl", True, True).endswith("judge_A_vs_B_heldout_mock.jsonl"))

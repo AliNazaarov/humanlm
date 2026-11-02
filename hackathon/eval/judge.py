@@ -8,19 +8,31 @@ flip_rate = share of complete ids whose two orders disagree. Rubric text lives i
 
 Prompt:    load_prompts(path) -> {section: text}; build_messages(item, out1, out2, prompts, heldout).
 Data:      read_jsonl; load_outputs(path) -> ({id: output}, dup_ids); load_items(eval, fact_files).
-Family:    judge_family(model) -> 'qwen' | 'llama' | ...; a Claude judge is refused (frontier arm F1 is Claude).
-Hashes:    cfg_hash(model, mock, heldout, prompts) on every row (mismatch -> exit unless --fresh);
+Family:    judge_family(model) -> 'qwen' | 'gemini' | ...; a Claude judge is refused (frontier arm F1 is Claude).
+Hashes:    cfg_hash(model, mock, heldout, prompts, provider, reasoning_effort, max_tokens) on every row
+           (mismatch -> exit unless --fresh);
            io_hash(item, a_out, b_out) on every row (mismatch -> row is stale and re-judged).
 Parse:     parse_field(text, name) -> "1"|"2"|"tie"|None; parse_verdict(text) -> (verdict|None, reason).
-Judge:     a judge is callable(messages, id, order) -> raw text; mock_judge(heldout); make_live_judge(model).
-           Live calls raise Truncated on finish_reason "length" and EmptyOutput on empty content.
+Judge:     a judge is callable(messages, id, order) -> raw text, or {"text", "usage"}; mock_judge(heldout);
+           make_live_judge(model, provider, reasoning_effort, max_tokens). Live calls raise Truncated on
+           finish_reason "length" and EmptyOutput on empty content. Reasoning never reaches the parser:
+           `reasoning_content` is ignored and <think>...</think> (or a bare leading ...</think>) is stripped.
+Providers: fireworks (FIREWORKS_API_KEY) and gemini (GEMINI_API_KEY, Google's OpenAI-compatible endpoint).
+           reasoning_effort is sent as a body field; "default" omits it. Fireworks default "none" (thinking off
+           on Kimi K3, DeepSeek V4.x, Qwen3.8; reasoning tokens share max_tokens). GLM 5.3 is thinking-only and
+           rejects "none" with a 400: use --reasoning-effort low (live smoke: ~84 reasoning tokens/call). Gemini default "low"
+           (Gemini 3+ and 2.5 Pro cannot turn thinking off; "none" works only on 2.5 Flash models).
 Aggregate: winner(verdict, order) -> "A"|"B"|"tie"; aggregate(rows, field) -> (per_id, summary block).
 Run:       preflight(...) -> join report; run(...) -> summary dict (also <out>.summary.json,
            errors in <out>.errors.jsonl).
 CLI:       python judge.py A.jsonl B.jsonl --model ID [--eval PATH] [--out PATH] [--mock] [--heldout]
                   [--concurrency 4] [--limit N] [--seed 0] [--fresh] [--allow-partial]
+                  [--provider fireworks|gemini] [--reasoning-effort none|minimal|low|medium|high|default]
+                  [--max-tokens 4096]
+           Ali (Gemini primary judge; set --model to the Gemini id you use):
+             python hackathon/eval/judge.py evals/runs/hack_ft.jsonl evals/baseline_frontier.jsonl --provider gemini --model gemini-3-flash --out hackathon/report/judge_ft_vs_frontier_gemini.jsonl
            Exit 0 when every expected pair is complete, 2 when some are not, 1 on a refused start.
-Live calls use the OpenAI SDK against Fireworks (FIREWORKS_API_KEY from env, ~/.config/humanlm/keys.env or .env). Keys are never printed.
+Live calls use the OpenAI SDK (keys from env, ~/.config/humanlm/keys.env or .env). Keys are never printed.
 """
 from __future__ import annotations
 
@@ -44,14 +56,21 @@ FACT_FILES = (os.path.join(ROOT, "evals", "dev_set.jsonl"), os.path.join(ROOT, "
 DEFAULT_EVAL = os.path.join(ROOT, "evals", "eval_all.jsonl")
 HELDOUT_EVAL = os.path.join(ROOT, "evals", "heldout_pairs.jsonl")
 FIREWORKS_URL = "https://api.fireworks.ai/inference/v1"
+GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
+PROVIDERS = {  # docs.fireworks.ai/api-reference/post-chatcompletions, ai.google.dev/gemini-api/docs/openai
+    "fireworks": {"base_url": FIREWORKS_URL, "key_env": "FIREWORKS_API_KEY", "reasoning_effort": "none"},
+    "gemini": {"base_url": GEMINI_URL, "key_env": "GEMINI_API_KEY", "reasoning_effort": "low"},
+}
+EFFORTS = ("none", "minimal", "low", "medium", "high", "default")  # "default": do not send the field
 TEMPERATURE = 0
-MAX_TOKENS = 1024
+MAX_TOKENS = 4096  # reasoning tokens count against it; 1024 truncated most reasoning-judge calls
 ORDERS = ("AB", "BA")  # AB: A is Rewrite 1. BA: B is Rewrite 1.
 SECTIONS = ("system", "criteria", "user", "user_heldout", "no_facts")
 
 SECTION = re.compile(r"<!--\s*begin:(\w+)\s*-->\n?(.*?)\n?<!--\s*end:\1\s*-->", re.S)
 PLACEHOLDER = re.compile(r"\{\{(\w+)\}\}")
 THINK = re.compile(r"<think>.*?(?:</think>|$)", re.S | re.I)
+THINK_END = re.compile(r"^.*</think>", re.S | re.I)  # reasoning whose opening tag was in the template
 ANSWER = re.compile(r"^(?:rewrite\s*|option\s*|#)?(1|2|tie|neither|draw|equal)\b\s*[.!]?$", re.I)
 BARE = re.compile(r"^\s*(?:rewrite\s*)?([12])\s*$", re.I)
 
@@ -158,9 +177,15 @@ def _hash(obj) -> str:
     return hashlib.sha256(json.dumps(obj, sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:16]
 
 
-def cfg_hash(model: str, mock: bool, heldout: bool, prompts: dict[str, str]) -> str:
+def default_effort(provider: str) -> str:
+    return PROVIDERS[provider]["reasoning_effort"]
+
+
+def cfg_hash(model: str, mock: bool, heldout: bool, prompts: dict[str, str], provider: str = "fireworks",
+             reasoning_effort: str | None = None, max_tokens: int = MAX_TOKENS) -> str:
     return _hash({"model": model, "mock": mock, "heldout": heldout, "temperature": TEMPERATURE,
-                  "max_tokens": MAX_TOKENS, "prompts": prompts})
+                  "max_tokens": max_tokens, "prompts": prompts, "provider": provider,
+                  "reasoning_effort": reasoning_effort or default_effort(provider)})
 
 
 def io_hash(item: dict, a_out: str, b_out: str) -> str:
@@ -171,7 +196,8 @@ def io_hash(item: dict, a_out: str, b_out: str) -> str:
 # ---------- parse ----------
 
 def _strip(text: str) -> str:
-    return THINK.sub("", text or "").strip()
+    """Drop reasoning: <think>...</think> blocks, then anything before a stray closing </think>."""
+    return THINK_END.sub("", THINK.sub("", text or "")).strip()
 
 
 def _field_values(text: str, name: str) -> list[str]:
@@ -243,24 +269,54 @@ def _load_env() -> None:
         pass
 
 
-def make_live_judge(model: str, client=None) -> Judge:
-    if client is None:
-        _load_env()
-        if not os.environ.get("FIREWORKS_API_KEY"):
-            sys.exit("FIREWORKS_API_KEY is not set (env, ~/.config/humanlm/keys.env or .env). Use --mock for an offline run.")
-        from openai import OpenAI
-        client = OpenAI(base_url=FIREWORKS_URL, api_key=os.environ["FIREWORKS_API_KEY"], max_retries=5)
+def make_client(provider: str = "fireworks", openai_cls=None):
+    """OpenAI SDK client for the provider's base_url and key variable (keys are never printed)."""
+    cfg = PROVIDERS[provider]
+    _load_env()
+    if not os.environ.get(cfg["key_env"]):
+        sys.exit(f"{cfg['key_env']} is not set (env, ~/.config/humanlm/keys.env or .env). Use --mock for an offline run.")
+    if openai_cls is None:
+        from openai import OpenAI as openai_cls
+    return openai_cls(base_url=cfg["base_url"], api_key=os.environ[cfg["key_env"]], max_retries=5)
 
-    def call(messages: list[dict], _id: str = "", _order: str = "") -> str:
-        resp = client.chat.completions.create(model=model, messages=messages, temperature=TEMPERATURE,
-                                              max_tokens=MAX_TOKENS)
+
+def request_params(model: str, provider: str = "fireworks", reasoning_effort: str | None = None,
+                   max_tokens: int = MAX_TOKENS) -> dict:
+    """kwargs for chat.completions.create minus messages. reasoning_effort goes in extra_body so any
+    OpenAI SDK version passes it through unchanged; 'default' sends nothing."""
+    effort = reasoning_effort or default_effort(provider)
+    params = {"model": model, "temperature": TEMPERATURE, "max_tokens": max_tokens}
+    if effort != "default":
+        params["extra_body"] = {"reasoning_effort": effort}
+    return params
+
+
+def _usage(resp) -> dict:
+    u = getattr(resp, "usage", None)
+    if u is None:
+        return {}
+    details = getattr(u, "completion_tokens_details", None)
+    out = {"prompt_tokens": getattr(u, "prompt_tokens", None),
+           "completion_tokens": getattr(u, "completion_tokens", None),
+           "reasoning_tokens": getattr(details, "reasoning_tokens", None) if details is not None else None}
+    return {k: v for k, v in out.items() if isinstance(v, int)}
+
+
+def make_live_judge(model: str, client=None, provider: str = "fireworks", reasoning_effort: str | None = None,
+                    max_tokens: int = MAX_TOKENS) -> Judge:
+    if client is None:
+        client = make_client(provider)
+    params = request_params(model, provider, reasoning_effort, max_tokens)
+
+    def call(messages: list[dict], _id: str = "", _order: str = "") -> dict:
+        resp = client.chat.completions.create(messages=messages, **params)
         choice = resp.choices[0]
         if choice.finish_reason == "length":
             raise Truncated("finish_reason=length")
-        content = choice.message.content or ""
-        if not content.strip():
+        content = _strip(choice.message.content or "")  # reasoning_content is never read
+        if not content:
             raise EmptyOutput("empty content")
-        return content
+        return {"text": content, "usage": _usage(resp)}
     return call
 
 
@@ -303,7 +359,7 @@ def pos1_rate(rows: Iterable[dict]) -> float:
 # ---------- judge family ----------
 
 FAMILIES = ("claude", "anthropic", "gpt-oss", "gpt", "llama", "qwen", "deepseek", "mixtral", "mistral",
-            "gemma", "kimi", "glm", "nemotron", "dbrx")
+            "gemma", "gemini", "kimi", "glm", "nemotron", "dbrx", "minimax")
 BANNED_FAMILIES = {"claude", "anthropic"}  # PLAN_V2_JUDGES: frontier arm F1 is Claude, so no Claude judge
 
 
@@ -350,10 +406,12 @@ def _base(out_path: str) -> str:
 def judge_one(item: dict, a_out: str, b_out: str, order: str, prompts: dict[str, str], call: Judge,
               heldout: bool, cfg: str, io: str, mock: bool) -> dict:
     out1, out2 = (a_out, b_out) if order == "AB" else (b_out, a_out)
-    raw = call(build_messages(item, out1, out2, prompts, heldout), item["id"], order)
+    got = call(build_messages(item, out1, out2, prompts, heldout), item["id"], order)
+    raw, usage = (got.get("text", ""), got.get("usage") or {}) if isinstance(got, dict) else (got, {})
     verdict, reason = parse_verdict(raw)
     row = {"id": item["id"], "order": order, "verdict": verdict, "facts": parse_field(raw, "facts"),
-           "style": parse_field(raw, "style"), "reason": reason, "raw": raw, "cfg": cfg, "io": io, "mock": mock}
+           "style": parse_field(raw, "style"), "reason": reason, "raw": raw, "cfg": cfg, "io": io, "mock": mock,
+           **usage}
     if heldout:
         row["closer"] = parse_closer(raw)
     return row
@@ -362,7 +420,11 @@ def judge_one(item: dict, a_out: str, b_out: str, order: str, prompts: dict[str,
 def run(a_path: str, b_path: str, eval_path: str, out_path: str, call: Judge, *, model: str,
         mock: bool = False, heldout: bool = False, concurrency: int = 4, limit: int | None = None,
         seed: int = 0, fresh: bool = False, allow_partial: bool = False, prompt_path: str = PROMPT_PATH,
-        fact_files: Iterable[str] = FACT_FILES) -> dict:
+        fact_files: Iterable[str] = FACT_FILES, provider: str = "fireworks", reasoning_effort: str | None = None,
+        max_tokens: int = MAX_TOKENS) -> dict:
+    if provider not in PROVIDERS:
+        sys.exit(f"unknown provider '{provider}' (one of {sorted(PROVIDERS)})")
+    reasoning_effort = reasoning_effort or default_effort(provider)
     prompts = load_prompts(prompt_path)
     items, eval_dups = load_items(eval_path, fact_files)
     (a, a_dups), (b, b_dups) = load_outputs(a_path), load_outputs(b_path)
@@ -375,14 +437,15 @@ def run(a_path: str, b_path: str, eval_path: str, out_path: str, call: Judge, *,
 
     if not mock and judge_family(model) in BANNED_FAMILIES:
         sys.exit(f"judge model family '{judge_family(model)}' is the frontier arm's family; use an open model.")
-    cfg = cfg_hash(model, mock, heldout, prompts)
+    cfg = cfg_hash(model, mock, heldout, prompts, provider, reasoning_effort, max_tokens)
     if fresh and os.path.exists(out_path):
         os.remove(out_path)
     old = read_jsonl(out_path) if os.path.exists(out_path) else []
     foreign = [r for r in old if r.get("cfg") != cfg]
     if foreign:
         sys.exit(f"{out_path}: {len(foreign)} rows were made with a different judge config "
-                 f"(model, mock, heldout, decoding or prompt). Use --fresh or a new --out.")
+                 f"(provider, model, mock, heldout, decoding, reasoning effort or prompt). "
+                 f"Use --fresh or a new --out.")
     io = {i: io_hash(items[i], a[i], b[i]) for i in ids}
     done = {(r["id"], r["order"]) for r in old if io.get(r["id"]) == r.get("io")}
     todo = [(i, o) for i in ids for o in ORDERS if (i, o) not in done]
@@ -409,7 +472,8 @@ def run(a_path: str, b_path: str, eval_path: str, out_path: str, call: Judge, *,
     incomplete = [i for i in expected if i not in per_id]
     summary = {"a": os.path.basename(a_path), "b": os.path.basename(b_path),
                "model": f"mock:{model}" if mock else model, "judge_family": judge_family(model),
-               "mock": mock, "heldout": heldout,
+               "mock": mock, "heldout": heldout, "provider": provider, "reasoning_effort": reasoning_effort,
+               "max_tokens": max_tokens,
                "eval": os.path.relpath(eval_path, ROOT).replace(os.sep, "/"), "cfg": cfg,
                **overall, "pos1_rate": pos1_rate(rows),
                "facts": aggregate(rows, "facts")[1], "style": aggregate(rows, "style")[1],
@@ -418,7 +482,9 @@ def run(a_path: str, b_path: str, eval_path: str, out_path: str, call: Judge, *,
                "unparsed": sum(1 for r in rows if r.get("verdict") is None),
                "finish_length": sum(1 for e in errors if e["error"] == "Truncated"),
                "errors": len(errors), "skipped_resume": len(ids) * len(ORDERS) - len(todo),
-               "limit": limit, "seed": seed}
+               "limit": limit, "seed": seed,
+               **{f"{k}_total": sum(r.get(k, 0) for r in rows)
+                  for k in ("prompt_tokens", "completion_tokens", "reasoning_tokens")}}
     if heldout:
         summary["closer"] = aggregate(rows, "closer")[1]
     with open(summary_path(out_path), "w", encoding="utf-8") as f:
@@ -456,15 +522,22 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--heldout", action="store_true", help="add the human original and the CLOSER question")
     ap.add_argument("--fresh", action="store_true", help="delete existing rows in --out first")
     ap.add_argument("--allow-partial", action="store_true", help="judge the overlap when ids are missing")
+    ap.add_argument("--provider", choices=sorted(PROVIDERS), default="fireworks")
+    ap.add_argument("--reasoning-effort", choices=EFFORTS, default=None,
+                    help="default: none on fireworks, low on gemini; 'default' leaves it to the model")
+    ap.add_argument("--max-tokens", type=int, default=MAX_TOKENS, help="includes reasoning tokens")
     args = ap.parse_args(argv)
+    effort = args.reasoning_effort or default_effort(args.provider)
     eval_path = args.eval or (HELDOUT_EVAL if args.heldout else DEFAULT_EVAL)
     out = args.out or default_out(args.a, args.b, args.heldout, args.mock)
     if args.mock:
         out = force_mock_name(out)
-    call = mock_judge(args.heldout) if args.mock else make_live_judge(args.model)
+    call = mock_judge(args.heldout) if args.mock else make_live_judge(
+        args.model, provider=args.provider, reasoning_effort=effort, max_tokens=args.max_tokens)
     summary = run(args.a, args.b, eval_path, out, call, model=args.model, mock=args.mock, heldout=args.heldout,
                   concurrency=args.concurrency, limit=args.limit, seed=args.seed, fresh=args.fresh,
-                  allow_partial=args.allow_partial)
+                  allow_partial=args.allow_partial, provider=args.provider, reasoning_effort=effort,
+                  max_tokens=args.max_tokens)
     print(json.dumps(summary, indent=2))
     print(f"rows: {out}\nsummary: {summary_path(out)}", file=sys.stderr)
     return 0 if summary["n_complete"] == summary["n_expected"] else 2
