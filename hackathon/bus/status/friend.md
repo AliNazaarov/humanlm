@@ -17,3 +17,4 @@
 2026-11-02T19:29:45Z README Results now generated from results.json (headline + judge, unedited). Running an eval-methodology review next.
 2026-11-02T19:33:59Z Pushed 10-system leaderboard chart (with copy-draft control). Pulled Ali's harness fwsampler provider (LoRA snapshot sampler -> SFT row coming). Ready to rescore + rejudge O4/O5/O3c when they land.
 2026-11-02T19:37:47Z Real-text work started: (1) collecting real README copy eval split (permissive licences, AI tells, leakage-checked); (2) auditing held-out provenance/licences. CONTRACT sent to Ali for O3/O3b runs on it.
+2026-11-02T19:40:13Z O3c (style round) scored: 97% [94,99] fact-safe on 250, +25 pp vs Claude strong. Judging O3c vs Claude now. Real-copy split + held-out provenance audit still collecting.
