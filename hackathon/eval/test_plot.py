@@ -71,10 +71,19 @@ class TestNotes(unittest.TestCase):
         self.assertAlmostEqual(r, 98.0)
         self.assertEqual((head, delta), (" · lenient 98.0%", " · lenient +13.2 pp sig"))
 
+    def test_display_names(self):
+        self.assertEqual(pl.display("O3c_glm_prompt_harness_style"), "FeatherLM (O3c)")
+        self.assertEqual(pl.display("frontier-strong:claude-opus-5-5"), "Claude Opus 5.5 (strong prompt) · F1 strong")
+        self.assertEqual(pl.display("F2_gpt61_terra"), "GPT-6.1 Terra · F2")
+        self.assertEqual(pl.display("O3k_glm_calm_claimcheck_bo3"), "GLM harness ablation (O3k)")
+        self.assertEqual(pl.display("O4_glm_sft"), "O4_glm_sft")  # unknown non-ablation ids stay as they are
+        for lab in pl.DISPLAY:
+            self.assertLessEqual(len(pl.display(lab)), 44)
+
     def test_clip_long_labels(self):
         self.assertEqual(pl.clip("O3c_glm_prompt_harness_style"), "O3c_glm_prompt_harness_style")
         long = "WF_Pairwise_both_orders_knockout_selector_with_fact_aware_eligibility"
-        self.assertTrue(len(pl.clip(long)) <= 36 and pl.clip(long).endswith("…"))
+        self.assertTrue(len(pl.clip(long)) <= 44 and pl.clip(long).endswith("…"))
 
     def test_short_labels(self):
         self.assertEqual([pl.short(x) for x in ("O3c_glm_prompt_harness_style", "F1H_opus_harness", "F1h_opus_humanizer",

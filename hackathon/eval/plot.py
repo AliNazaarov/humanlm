@@ -155,7 +155,7 @@ def _leaderboard(ax, rows: list[tuple], name: str, n_items, notes: dict[str, str
         lr = (lenient.get(lab) or (None,))[0]
         if lr is not None:  # lenient rate as a tall tick across the bar
             ax.plot([lr], [yi], marker="|", markersize=22, markeredgewidth=2.6, color=LEN, zorder=4)
-    ax.set_yticks(y, [clip(r[0]) for r in rows])
+    ax.set_yticks(y, [clip(display(r[0])) for r in rows])
     for t, row in zip(ax.get_yticklabels(), rows):
         t.set_fontweight("bold" if row[5] else "normal")
     ax.set_xlim(0, 100)
@@ -185,7 +185,34 @@ _RINGS = [(round(d * math.cos(t)), round(d * math.sin(t)) - 8, "left" if math.co
 _SPOTS = _SNUG + _RINGS
 
 
-def clip(label: str, n: int = 36) -> str:
+# Readable row names for the deck (raw ids stay in results.json). Each name carries the system code so a reader can
+# match the row to RESULTS.md; harness variants not listed read "GLM harness ablation (O3x)".
+DISPLAY = {
+    "O3c_glm_prompt_harness_style": "FeatherLM (O3c)",
+    "frontier-strong:claude-opus-5-5": "Claude Opus 5.5 (strong prompt)",
+    "frontier-live:claude-opus-5-5": "Claude Opus 5.5 (shared prompt)",
+    "F1H_opus_harness": "Claude Opus 5.5 + our harness",
+    "F1h_opus_humanizer": "Claude + humanizer prompt",
+    "F2_gpt61_terra": "GPT-6.1 Terra",
+    "F2h_gpt61_humanizer": "GPT-6.1 + humanizer",
+    "O1_glm_base": "GLM-5.3 Flash base",
+    "O2_glm_prompt": "GLM-5.3 + better prompt",
+    "O2h_glm_humanizer": "GLM-5.3 + humanizer",
+    "X0_copy_draft (no rewrite: control)": "Unchanged draft (control)",
+    "frontier-persona-preexisting": "Claude persona (pre-event)",
+}
+
+
+def display(label: str) -> str:
+    """Human name plus the system code, e.g. 'GPT-6.1 Terra · F2'; unknown O3x rows become 'GLM harness ablation (O3x)'."""
+    code = short(label)
+    name = DISPLAY.get(label)
+    if name is None:
+        return f"GLM harness ablation ({code})" if code.startswith("O3") else label
+    return name if code in name else f"{name} · {code}"
+
+
+def clip(label: str, n: int = 44) -> str:
     """Row label for the chart: long system names end in an ellipsis (the full name stays in results.json)."""
     return label if len(label) <= n else label[: n - 1].rstrip("_ ") + "…"
 
@@ -212,7 +239,9 @@ def _place_labels(ax, points: list[tuple]) -> None:
     pts = [Bbox.from_bounds(x - 7, y - 7, 14, 14) for x, y in ax.transData.transform([(p[1], p[2]) for p in points])]
     boxes = []
     for lab, cost, rate, p50, is_ref in sorted(points, key=lambda p: (-p[2], p[1])):
-        txt = short(lab) + (f" · {p50:.1f} s" if p50 is not None else "")
+        code = short(lab)
+        ablation = code.startswith("O3") and code != "O3c"  # the crowded harness cluster: code only, to stay legible
+        txt = code + (f" · {p50:.1f} s" if p50 is not None and not ablation else "")
         best = None
         for i, (dx, dy, ha) in enumerate(_SPOTS):
             a = ax.annotate(txt, (cost, rate), xytext=(dx, dy), textcoords="offset points", ha=ha, fontsize=8.5,
@@ -231,7 +260,7 @@ def _place_labels(ax, points: list[tuple]) -> None:
 
 
 def _pareto(ax, points: list[tuple], no_cost: list[str], name: str) -> None:
-    ax.set_title(f"Pass rate vs cost (block '{name}'; label = system code · p50 latency)", loc="left", fontsize=12,
+    ax.set_title(f"Pass rate vs cost (block '{name}'; code · p50 latency, ablations code only)", loc="left", fontsize=12,
                  color=INK)
     ax.set_ylabel("Fact-safe human rate (%)")
     ax.set_xlabel("$ per 1k rewrites (log scale, whole run)")
@@ -259,7 +288,7 @@ def _pareto(ax, points: list[tuple], no_cost: list[str], name: str) -> None:
     ax.grid(color=GRID, zorder=0)
     ax.set_axisbelow(True)
     if no_cost:
-        ax.text(0, 0, "not on the log axis (cost unknown or $0): " + ", ".join(no_cost), fontsize=8.5,
+        ax.text(0, 0, "not on the log axis (cost unknown or $0): " + ", ".join(display(x) for x in no_cost), fontsize=8.5,
                 transform=offset_copy(ax.transAxes, fig=ax.figure, y=-58, units="points"),
                 color=INK2, va="top", wrap=True)
 
@@ -272,7 +301,7 @@ def _gates(ax, labels: list[str], mat: list[list[float]]) -> None:
             txt, dark = ("n/a", False) if math.isnan(v) else (f"{v:.0f}%", v >= 60)
             ax.text(j, i, txt, ha="center", va="center", fontsize=9, color="white" if dark else INK)
     ax.set_xticks(range(len(GATES)), [GATE_NAMES[g] for g in GATES], fontsize=8.5)
-    ax.set_yticks(range(len(labels)), [clip(lab) for lab in labels], fontsize=8.5)
+    ax.set_yticks(range(len(labels)), [clip(display(lab)) for lab in labels], fontsize=8.5)
     ax.tick_params(length=0)
     for s in ax.spines.values():
         s.set_visible(False)
@@ -281,7 +310,8 @@ def _gates(ax, labels: list[str], mat: list[list[float]]) -> None:
 def render(res: dict, name: str, out: str) -> str:
     name, b = pick_block(res, name)
     ref = res.get("reference") or ""
-    rows = bar_rows(b, ref)
+    rows = [(lab, r, lo, hi, note.replace(f"vs {ref}", f"vs {short(ref)}"), is_ref)  # "vs F1 strong", not the raw id
+            for lab, r, lo, hi, note, is_ref in bar_rows(b, ref)]
     points, no_cost = pareto_points(b, res.get("systems") or [], ref)
     plt.rcParams.update({"font.family": "DejaVu Sans", "axes.edgecolor": INK2, "axes.labelcolor": INK2,
                          "xtick.color": INK2, "ytick.color": INK, "axes.spines.top": False,
@@ -296,14 +326,14 @@ def render(res: dict, name: str, out: str) -> str:
     notes = {e.get("label"): coverage_note(e, b.get("n_items", "?")) + " · " + cost_note(meta.get(e.get("label")) or {})
              for e in b["systems"]}
     lenient = {e.get("label"): lenient_bits(e) for e in b["systems"] if lenient_bits(e)[0] is not None}
-    _leaderboard(fig.add_axes((0.22, (margin + bottom + gap) / H, 0.40, board / H)), rows, name,
+    _leaderboard(fig.add_axes((0.265, (margin + bottom + gap) / H, 0.37, board / H)), rows, name,
                  b.get("n_items", "?"), notes, lenient)
     _pareto(fig.add_axes((0.06, margin / H, 0.34, bottom / H)), points, no_cost, name)
     _gates(fig.add_axes((0.62, (margin - 0.4) / H, 0.35, (bottom + 0.45) / H)), *gate_rows(b))
     fig.suptitle("FeatherLM: fact-safe human rewrite rate vs the frontier reference", x=0.015, y=1 - 0.3 / H,
                  ha="left", fontsize=16, fontweight="bold", color=INK)
-    ref_line = (f"Reference (hatched orange): {ref}." if any(r[5] for r in rows)
-                else f"Reference {ref} is not in this block, so no Δ is shown.")
+    ref_line = (f"Reference (hatched orange): {display(ref)}." if any(r[5] for r in rows)
+                else f"Reference {display(ref)} is not in this block, so no Δ is shown.")
     fig.text(0.015, 1 - 0.75 / H, ref_line + " Δ = paired bootstrap on shared items; significant when p < 0.05. "
              "Each rate is over that system's n. Failed rows stay in.", fontsize=10, color=INK2)
     os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
