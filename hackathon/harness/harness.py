@@ -8,7 +8,7 @@ Keys: ~/.config/humanlm/keys.env (or $HUMANLM_KEYS), then repo .env.
 --loops 0 is a single plain call (the non-harness row for the same model).
 Writes the shared run schema plus `loops_used` and `gates`, and a manifest in hackathon/runs/<system>.json.
 """
-import argparse, concurrent.futures as cf, hashlib, json, os, re, ssl, subprocess, sys, time, urllib.request
+import argparse, concurrent.futures as cf, hashlib, json, os, random, re, ssl, subprocess, sys, time, urllib.request
 
 sys.path.insert(0, os.path.dirname(__file__))
 import gates  # noqa: E402
@@ -46,7 +46,7 @@ def _ssl_ctx():
 CTX = _ssl_ctx()
 
 
-def post(url, headers, body, tries=6):
+def post(url, headers, body, tries=10):
     for i in range(tries):
         try:
             req = urllib.request.Request(url, json.dumps(body).encode(), {**headers, "Content-Type": "application/json"})
@@ -54,7 +54,7 @@ def post(url, headers, body, tries=6):
                 return json.loads(r.read())
         except urllib.error.HTTPError as e:
             if e.code in (429, 500, 502, 503, 504, 529) and i < tries - 1:
-                time.sleep(2 ** i); continue
+                time.sleep(min(60, 2 ** i) + random.random() * 3); continue
             raise RuntimeError(f"HTTP {e.code}: {e.read()[:300]!r}")
         except (urllib.error.URLError, TimeoutError):
             if i < tries - 1:
@@ -276,7 +276,11 @@ def main():
     todo = [it for it in items if it["id"] not in done]
     with open(a.out, "a") as o, cf.ThreadPoolExecutor(a.concurrency) as ex:
         for fut in cf.as_completed([ex.submit(rewrite, it, a) for it in todo]):
-            row = fut.result()
+            try:
+                row = fut.result()
+            except Exception as e:   # one item failing (e.g. rate limit) must not kill the run; re-run to resume it
+                print(f"ITEM_FAILED {str(e)[:200]}", flush=True)
+                continue
             o.write(json.dumps(row) + "\n"); o.flush()
             print(f"{row['id']} pass={row['gates']['pass']} loops={row['loops_used']} {row['latency_ms']}ms", flush=True)
     rows = [json.loads(l) for l in open(a.out)]
