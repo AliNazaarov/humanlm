@@ -50,3 +50,4 @@
 2026-11-02T21:37:24Z 13:38 PT: deploying SFT B on 4x B300 (Ruslan, cap $45); O4m rows by 14:45, O7 by 15:10; deleted after.
 2026-11-02T21:47:35Z 13:47 PT: SFT B deployment creating (cap $45, auto-delete); O4m rows next. R2 + R3 dropped by stop rules. DPO pairs committed.
 2026-11-02T21:49:40Z O3m scored: 97% strict / 99% lenient (+26/+15 pp vs Claude strong), 15% reader tells vs O3c 38%. Judging O3m (Kimi+Qwen) + spot-the-human now. O4m deployment creating.
+2026-11-02T21:52:46Z 13:53 PT: O4m deployment still CREATING; O7 blocked by Fireworks sampler (reference logprobs). Judging O3m now, O3n next.
