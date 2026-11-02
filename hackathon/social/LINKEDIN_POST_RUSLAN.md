@@ -1,6 +1,6 @@
 # LinkedIn post (Ruslan), live blind test call. Image: hackathon/report/leaderboard.png or a phone showing the test page
 
-Numbers: hackathon/report/results.json, block "all", 247 items (O3c 96.8% strict fact-safe, Claude Opus 5.5 strong prompt 71.3%; cost per 1k rewrites $0.81 vs $9.11). Human test lean: hackathon/report/human_ab.jsonl (11 readers at 14:10 PT). Re-check both before posting.
+Numbers: hackathon/report/results.json, block "all", 247 items (O3c 96.8% strict fact-safe, Claude Opus 5.5 strong prompt 71.3%; cost per 1k rewrites $0.81 vs $9.11). Human test lean: hackathon/report/human_ab.jsonl (11 readers at 13:10 PT; the laptop clock is UTC-7 and showed 14:10). Re-check both before posting.
 
 ---
 
