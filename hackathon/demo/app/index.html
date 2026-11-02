@@ -25,18 +25,7 @@
   --ease:cubic-bezier(.16,1,.3,1);
   color-scheme:light;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --sky:#62BDF0; --sky-deep:#7CC8F2; --sky-ink:#A9DBF7; --sky-wash:#122433; --sky-line:#1E3A50;
-    --bg:#0E141A; --surface:#141C24; --surface-2:#18222C; --line:#24313D; --line-strong:#33424F;
-    --ink:#E6EDF3; --ink-2:#B3C0CB; --ink-3:#8494A2;
-    --amber:#E3B062; --amber-bg:#2B2416; --rose:#EE8399; --rose-bg:#2E1A20;
-    --teal:#5CC6B5; --teal-bg:#132A27; --orange:#F09A63; --orange-bg:#2E1E14;
-    --blue:#8FAEF0; --blue-bg:#18223A; --ok:#5DC795; --ok-bg:#13291F; --bad:#EE8399;
-    --shadow:0 1px 2px rgba(0,0,0,.3), 0 16px 40px -16px rgba(0,0,0,.6);
-    color-scheme:dark;
-  }
-}
+/* light is the default; dark only when the reader picks it with the moon button */
 :root[data-theme="dark"]{
   --sky:#62BDF0; --sky-deep:#7CC8F2; --sky-ink:#A9DBF7; --sky-wash:#122433; --sky-line:#1E3A50;
   --bg:#0E141A; --surface:#141C24; --surface-2:#18222C; --line:#24313D; --line-strong:#33424F;
@@ -85,7 +74,6 @@ h1 em{font-style:normal;color:var(--sky-deep)}
 .btn-primary:hover{transform:translateY(-1px)}
 .btn-sky{background:var(--sky-deep);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 8px 20px -10px var(--sky-deep)}
 :root[data-theme="dark"] .btn-sky{color:#0B1A26}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn-sky{color:#0B1A26}}
 .btn-sky:hover{transform:translateY(-1px)}
 .btn-ghost{background:transparent;color:var(--ink-2);padding:13px 6px}
 .btn-ghost:hover{color:var(--ink)}
@@ -225,6 +213,45 @@ h2{font-size:clamp(28px,3.4vw,40px);letter-spacing:-.03em;line-height:1.08;font-
 .hidden{display:none !important}
 .note{font-size:13px;color:var(--ink-2);background:var(--sky-wash);border:1px solid var(--sky-line);border-radius:12px;padding:10px 12px;margin:0;line-height:1.5}
 
+/* guide steps */
+.steps{display:flex;align-items:center;gap:6px;margin:0 0 18px;flex-wrap:wrap;list-style:none;padding:0}
+.step{display:flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:14px;color:var(--ink-3);transition:all .4s var(--ease)}
+.step .n{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);font:500 12px "Geist Mono",monospace;transition:all .4s var(--ease)}
+.step .n svg{width:12px;height:12px}
+.step.on{color:var(--ink);border-color:var(--sky-line);background:var(--sky-wash)}
+.step.on .n{background:var(--sky-deep);color:#fff}
+.step.done{color:var(--ink-2)}
+.step.done .n{background:var(--ok-bg);color:var(--ok)}
+.step-line{width:18px;height:1px;background:var(--line-strong)}
+.step .sm{display:none}
+
+/* tab badges */
+.tab .badge{font:500 11px "Geist Mono",monospace;min-width:20px;height:20px;padding:0 6px;border-radius:999px;display:inline-grid;place-items:center;background:var(--rose-bg);color:var(--rose);transition:all .4s var(--ease)}
+.tab[aria-selected="true"] .badge{background:color-mix(in srgb,var(--bg) 18%,transparent);color:var(--bg)}
+.tab.fixed .badge{background:var(--ok-bg);color:var(--ok)}
+.tab.fixed[aria-selected="true"] .badge{background:color-mix(in srgb,var(--ok) 30%,transparent);color:var(--bg)}
+.tab .badge svg{width:11px;height:11px}
+
+/* tell popover */
+.tell{outline-offset:1px}
+.pop{position:fixed;z-index:30;width:min(300px,calc(100vw - 32px));background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:0 18px 40px -16px rgba(20,60,90,.35),0 2px 6px rgba(20,60,90,.06);opacity:0;transform:translateY(4px) scale(.98);transform-origin:top left;pointer-events:none;transition:opacity .18s var(--ease),transform .25s var(--ease)}
+.pop.show{opacity:1;transform:none}
+.pop-head{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--ink-3);letter-spacing:.01em}
+.pop-head .sw{width:9px;height:9px;border-radius:3px}
+.pop-q{margin:6px 0 4px;font-size:15px;color:var(--ink);font-weight:500;word-break:break-word}
+.pop p{margin:0;font-size:13px;color:var(--ink-2);line-height:1.45}
+.pop .pop-foot{margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-3);display:flex;align-items:center;gap:6px}
+.pop .pop-foot svg{width:12px;height:12px;color:var(--ok)}
+
+/* score delta, shortcut hint, sample loader */
+.from{font:500 22px "Geist Mono",monospace;color:var(--ink-3);text-decoration:line-through;text-decoration-thickness:1.5px;display:none}
+.from.show{display:inline}
+.arrow{color:var(--ink-3);display:none}
+.arrow.show{display:inline}
+.kbd-hint{margin:8px 0 0;text-align:center;font-size:12px;color:var(--ink-3)}
+kbd{font:500 11px "Geist Mono",monospace;padding:2px 6px;border-radius:6px;border:1px solid var(--line-strong);border-bottom-width:2px;background:var(--surface)}
+.linkish{border:0;background:none;color:var(--sky-ink);font-weight:500;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
 /* gates explainer */
 #how{padding:88px 0;border-top:1px solid var(--line)}
 .how{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px;align-items:start}
@@ -275,7 +302,19 @@ footer code{font-family:"Geist Mono",monospace;font-size:12px}
   .bar-row .lbl{grid-column:1/-1}
   .fine{grid-template-columns:1fr}
   .how-list li{grid-template-columns:44px 1fr;gap:12px}
-  .mobile-go{position:sticky;bottom:12px;z-index:5}
+  .mobile-go{position:fixed;left:16px;right:16px;bottom:16px;z-index:15;transform:translateY(160%);transition:transform .45s var(--ease)}
+  .mobile-go.show{transform:none}
+  .mobile-go .go{box-shadow:0 14px 30px -10px rgba(20,90,140,.55)}
+  #try{padding-bottom:120px}
+  .kbd-hint{display:none}
+  .steps{flex-wrap:nowrap}
+  .step{padding-right:12px;font-size:13px;gap:8px}
+  .step .lg{display:none}
+  .step .sm{display:inline}
+  .step-line{flex:1;min-width:6px}
+  .feather-big{width:30%;top:7%}
+  .swap{padding:14px 16px}
+  .swap-text{font-size:15px;min-height:0}
 }
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
@@ -355,6 +394,14 @@ footer code{font-family:"Geist Mono",monospace;font-size:12px}
         </div>
       </div>
 
+      <ol class="steps" id="steps" aria-label="How to use the editor">
+        <li class="step done" data-s="1"><span class="n">1</span><span class="lg">Pick a draft</span><span class="sm">Pick</span></li>
+        <li class="step-line" aria-hidden="true"></li>
+        <li class="step on" data-s="2"><span class="n">2</span><span class="lg">Hover the underlined tells</span><span class="sm">Tap a tell</span></li>
+        <li class="step-line" aria-hidden="true"></li>
+        <li class="step" data-s="3"><span class="n">3</span><span class="lg">Rewrite and check the facts</span><span class="sm">Rewrite</span></li>
+      </ol>
+
       <div class="tabs" role="tablist" id="tabs" aria-label="Example drafts"></div>
 
       <div class="desk">
@@ -381,7 +428,7 @@ footer code{font-family:"Geist Mono",monospace;font-size:12px}
         <aside class="panel" aria-label="Review">
           <div class="card">
             <h3><span id="scoreLabel">AI tells in the draft</span><span class="mono" id="wc"></span></h3>
-            <div class="score"><b id="score">0</b><span id="scoreSub">tells found</span></div>
+            <div class="score"><span class="from" id="scoreFrom"></span><span class="arrow" id="scoreArrow">→</span><b id="score">0</b><span id="scoreSub">tells found</span></div>
             <div class="meter"><i id="meter" style="transform:scaleX(0)"></i></div>
             <ul class="tlist" id="tlist"></ul>
           </div>
@@ -398,7 +445,8 @@ footer code{font-family:"Geist Mono",monospace;font-size:12px}
               <span id="goLabel">Rewrite with Feather</span>
             </button>
           </div>
-          <p class="note hidden" id="ownNote">Live rewriting is off on this page, so your own text gets the tell scan only. The eight examples show committed rewrites from the real run.</p>
+          <p class="kbd-hint" id="kbdHint">or press <kbd id="modKey">Ctrl</kbd> <kbd>Enter</kbd></p>
+          <p class="note hidden" id="ownNote">Live rewriting is off on this page, so your own text gets the tell scan only. The eight examples show committed rewrites from the real run. <button class="linkish" id="sample">Load a sample draft</button></p>
 
           <div class="card hidden" id="gateCard">
             <h3><span id="gateTitle">Checks on the rewrite</span><button class="copy" id="copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg><span>Copy</span></button></h3>
@@ -451,6 +499,8 @@ footer code{font-family:"Geist Mono",monospace;font-size:12px}
   </div>
 </footer>
 
+<div class="pop" id="pop" role="tooltip"></div>
+
 <script src="data.js"></script>
 <script>
 (() => {
@@ -463,10 +513,18 @@ const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const root = document.documentElement;
 try { const t = localStorage.getItem("feather-theme"); if (t) root.dataset.theme = t; } catch (e) {}
 $("#theme").addEventListener("click", () => {
-  const dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
-  root.dataset.theme = dark ? "light" : "dark";
+  root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
   try { localStorage.setItem("feather-theme", root.dataset.theme); } catch (e) {}
+  themeIcon();
 });
+function themeIcon() {
+  const dark = root.dataset.theme === "dark";
+  $("#theme").innerHTML = dark
+    ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>`
+    : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>`;
+  $("#theme").setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+}
+themeIcon();
 addEventListener("scroll", () => $("#nav").classList.toggle("scrolled", scrollY > 8), { passive: true });
 
 /* ---------- tell detection (mirrors pipeline/metrics.py) ---------- */
@@ -509,7 +567,7 @@ function markup(text, spans) {
     const inner = H(text.slice(sp.s, sp.e));
     html += sp.kind === "fact"
       ? `<span class="fact">${inner}</span>`
-      : `<span class="tell k-${sp.kind}" style="--i:${i++}" data-k="${sp.kind}" title="${KINDS[sp.kind].label}">${inner}</span>`;
+      : `<span class="tell k-${sp.kind}" style="--i:${i++}" data-k="${sp.kind}" tabindex="0" aria-label="${KINDS[sp.kind].label}: ${inner}">${inner}</span>`;
     at = sp.e;
   }
   return html + H(text.slice(at));
@@ -548,7 +606,8 @@ const ex = () => D.examples[S.idx];
 const tabs = $("#tabs");
 D.examples.forEach((e, i) => {
   const b = document.createElement("button");
-  b.className = "tab"; b.role = "tab"; b.textContent = e.kind;
+  b.className = "tab"; b.role = "tab";
+  b.innerHTML = `${H(e.kind)}<span class="badge" aria-label="tells">${findTells(e.draft).length}</span>`;
   b.setAttribute("aria-selected", i === 0); b.onclick = () => select(i);
   tabs.appendChild(b);
 });
@@ -568,8 +627,20 @@ function select(i) {
   $("#docId").textContent = S.own ? "your text" : ex().id;
   $("#docKind").textContent = S.own ? "Your draft" : ex().kind;
   $("#ownNote").classList.toggle("hidden", !S.own);
+  $("#kbdHint").classList.toggle("hidden", S.own);
   $("#go").disabled = S.own;
+  hidePop();
   setView("draft");
+}
+
+/* guide steps */
+function steps() {
+  const done = !S.own && S.done.has(S.idx);
+  const st = n => $(`#steps [data-s="${n}"]`);
+  const set = (n, cls) => { const el = st(n); el.className = "step " + cls; el.querySelector(".n").innerHTML = cls === "done" ? check : n; };
+  set(1, "done");
+  set(2, done || S.hovered ? "done" : "on");
+  set(3, done ? "done" : S.hovered && !S.own ? "on" : "");
 }
 
 /* view switch */
@@ -594,6 +665,8 @@ function setView(v, animate) {
 function render(animate) {
   page.contentEditable = S.own && S.view === "draft" ? "true" : "false";
   page.classList.remove("dim");
+  hidePop();
+  steps();
   const e = ex();
   let text, html, tells;
   if (S.own) {
@@ -667,7 +740,13 @@ function setScore(n, words_, after) {
   $("#meter").style.background = col; el.style.color = n === 0 ? "var(--ok)" : "";
   $("#wc").textContent = words_ ? `${per100.toFixed(1)} per 100 words` : "";
 }
+function scoreFrom(n) {
+  const show = n !== null;
+  $("#scoreFrom").textContent = show ? n : "";
+  $("#scoreFrom").classList.toggle("show", show); $("#scoreArrow").classList.toggle("show", show);
+}
 function panelDraft(text, tells, nums) {
+  scoreFrom(null);
   $("#scoreLabel").textContent = "AI tells in the draft";
   $("#scoreSub").textContent = tells.length === 1 ? "tell found" : "tells found";
   setScore(tells.length, words(text));
@@ -679,6 +758,7 @@ function panelDraft(text, tells, nums) {
 function panelAfter(text, tells, e) {
   const who = S.view === "claude" ? "Claude's rewrite" : "the rewrite";
   $("#scoreLabel").textContent = `AI tells left in ${who}`;
+  scoreFrom(findTells(e.draft).length);
   $("#scoreSub").textContent = tells.length === 0 ? "clean" : tells.length === 1 ? "tell left" : "tells left";
   setScore(tells.length, words(text));
   tellList(tells);
@@ -749,6 +829,9 @@ $("#go").addEventListener("click", () => {
   setTimeout(() => {
     doc.classList.remove("working");
     S.done.add(S.idx); $("#go").disabled = false;
+    const tab = tabs.children[S.idx];
+    tab.classList.add("fixed");
+    tab.querySelector(".badge").innerHTML = check;
     setView("rewrite", true);
   }, wait);
 });
@@ -777,6 +860,57 @@ $("#copy").addEventListener("click", async () => {
   catch (err) { lbl.textContent = "Copy failed"; }
   setTimeout(() => (lbl.textContent = "Copy"), 1400);
 });
+
+/* tell popover */
+const pop = $("#pop");
+let popFor = null;
+function showPop(el) {
+  const k = el.dataset.k, info = KINDS[k];
+  let foot = "";
+  if (!S.own) {
+    const e = ex();
+    if (S.view === "draft") {
+      const left = findTells(e.feather).filter(t => t.kind === k).length;
+      foot = left === 0
+        ? `<div class="pop-foot">${check}FeatherLM's rewrite has none of these</div>`
+        : `<div class="pop-foot">FeatherLM's rewrite still has ${left}</div>`;
+    } else foot = `<div class="pop-foot">Still in this rewrite</div>`;
+  }
+  pop.innerHTML = `<div class="pop-head"><span class="sw" style="background:${info.color}"></span>${info.label}</div>
+    <div class="pop-q">${H(el.textContent)}</div><p>${info.why}</p>${foot}`;
+  const r = el.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+  let x = Math.max(16, Math.min(r.left, innerWidth - w - 16));
+  let y = r.bottom + 10;
+  if (y + h > innerHeight - 12) y = r.top - h - 10;
+  pop.style.left = x + "px"; pop.style.top = y + "px";
+  pop.classList.add("show"); popFor = el;
+  if (!S.hovered) { S.hovered = true; steps(); }
+}
+function hidePop() { pop.classList.remove("show"); popFor = null; }
+page.addEventListener("mouseover", ev => { const t = ev.target.closest(".tell"); if (t && t !== popFor) showPop(t); });
+page.addEventListener("mouseout", ev => { const t = ev.target.closest(".tell"); if (t && !t.contains(ev.relatedTarget)) hidePop(); });
+page.addEventListener("focusin", ev => { const t = ev.target.closest(".tell"); if (t) showPop(t); });
+page.addEventListener("focusout", hidePop);
+page.addEventListener("click", ev => { const t = ev.target.closest(".tell"); if (t && !S.own) { t === popFor ? hidePop() : showPop(t); } });
+addEventListener("scroll", () => { if (popFor) popFor.isConnected ? showPop(popFor) : hidePop(); }, { passive: true });
+
+/* Ctrl/Cmd + Enter rewrites */
+const mac = /Mac|iPhone|iPad/.test(navigator.platform);
+$("#modKey").textContent = mac ? "⌘" : "Ctrl";
+addEventListener("keydown", ev => {
+  if (ev.key === "Enter" && (ev.ctrlKey || ev.metaKey) && !S.own && !$("#go").disabled) { ev.preventDefault(); $("#go").click(); }
+  if (ev.key === "Escape") hidePop();
+});
+
+/* sample loader for own text */
+$("#sample").addEventListener("click", () => {
+  const e = D.examples[Math.floor(Math.random() * D.examples.length)];
+  S.ownText = e.draft; render(false);
+});
+
+/* phone: floating rewrite bar while the editor is on screen */
+const goBar = document.querySelector(".mobile-go");
+new IntersectionObserver(([x]) => goBar.classList.toggle("show", x.isIntersecting), { threshold: .05 }).observe($("#doc"));
 
 /* keyboard: left/right through examples */
 tabs.addEventListener("keydown", ev => {
