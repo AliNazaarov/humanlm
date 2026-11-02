@@ -200,6 +200,8 @@ DISPLAY = {
     "O2h_glm_humanizer": "GLM-5.3 + humanizer",
     "O4m_glm_sft_modern": "GLM-5.3 fine-tuned (SFT B)",
     "E1_ensemble": "FeatherLM ensemble (per-item pick)",
+    "E2_ensemble_glm_deepseek": "FeatherLM ensemble + DeepSeek",
+    "R3_deepseek_harness": "DeepSeek V4.1 Flash + harness",
     "X0_copy_draft (no rewrite: control)": "Unchanged draft (control)",
     "frontier-persona-preexisting": "Claude persona (pre-event)",
 }
