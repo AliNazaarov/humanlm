@@ -122,33 +122,42 @@ const AUDIT = {
 
 <!-- =========================================================== SLIDE 2: THE PROBLEM
   Speaker notes (0:12-0:40):
-  Both quotes are exact strings from evals/runs/hack_live_claude-opus-5-5.jsonl (ids dev-085 and dev-060),
-  Claude Opus 5.5 with the same system prompt every system got. Read the appended note out loud.
-  "A number that was never in the draft, inside copy about to be published. On another item it cut
-   'Worth it? 100%' and 'Because trust is everything' out of a founder's post. Style got better.
-   The claims changed. For marketing copy that is an FTC problem, not a style problem."
-  Do NOT say "38 customers": no frontier row in the run files changes that number.
+  Both quotes are exact strings from evals/runs/hack_strong_claude-opus-5-5.jsonl (ids dev-070 and dev-016):
+  Claude Opus 5.5 with the STRONG rewrite prompt, the reference row of the leaderboard, not the plain-prompt live run.
+  Selection rule (stated so nobody thinks we cherry-picked the worst): strong-run items where gates.check fails
+  G2 (a draft number missing) AND the audit's deleted-sentence rule finds 2+ draft sentences (5+ words, under 40% of
+  content words recalled) AND the draft is 75 words or fewer so it fits a slide -> dev-016, dev-070, dev-073, dev-074.
+  We show the one with the most dropped sentences (dev-070, three) and the gate demo (dev-016).
+  "Here is Claude Opus 5.5 with our strongest rewrite prompt on a founder's launch post. Style got better. Three
+   draft sentences are gone, including 'Grab yours before they're gone'. On a pricing page it dropped the line about
+   monitoring being accessible to everyone, and added one the founder never wrote. Claude drops at least one draft
+   sentence on about half of our items. For copy that goes out under a company's name that is a claims problem,
+   not a style problem."
+  Honest asides if asked: on dev-070 the gate's own flag is '5' -> 'Five' (an artefact the audit forgives); the
+  dropped sentences are what the gates do NOT see, which is why the audit measures them. On dev-016 the gate flags
+  the dropped '1' from '1-minute checks' -> 'checks every minute' (G2); same meaning, strict check: that is the demo
+  of how literal the verifier is. Do NOT say "38 customers", and do NOT reuse dev-085 (that came from the live run).
 -->
 <section class="slide">
-  <div class="kicker">The problem · two real rows from our eval, same prompt for every system</div>
-  <h2>The frontier model cleans the style. Then it touches the facts.</h2>
+  <div class="kicker">The problem · two rows from our eval · Claude Opus 5.5, strong rewrite prompt (the leaderboard reference)</div>
+  <h2>The frontier model cleans the style. Then it trims the claims.</h2>
   <div class="cols">
     <div>
-      <div class="q"><div class="who">Draft · dev-085 · Google-ads copy</div>
-        <p>Description 3 (unused, over limit): Join the thousands of teams who sleep better at night knowing Stackhand has their back 24/7.</p></div>
-      <div class="q bad"><div class="who">Claude Opus 5.5 · appended to the copy</div>
-        <p>Description 3 (unused, over limit): Thousands of teams sleep better knowing Stackhand has their back 24/7.<br><br><mark>*Note: The rewritten Description 3 is 71 characters, so it may now fit within the limit.*</mark></p></div>
-      <p class="muted" style="font-size:0.8em">A number that is not in the draft, inside the deliverable. Our harness row on the same item: every fact kept, nothing added.</p>
+      <div class="q"><div class="who">Draft · dev-070 · founder's launch post</div>
+        <p>🍺 640 PRE-ORDERS. 🍺<br><br>Just 5 weeks ago, Brewlog was a dream. Today, 640 incredible home brewers have joined us on this journey! 🙌🎉<br><br><s>We're beyond grateful for this amazing community. You're not just customers — you're the heart and soul of Brewlog.</s> ❤️<br><br>Shipping March 17. Still just $79. <s>Grab yours before they're gone!</s> 👇<br>brewlog.co</p></div>
+      <div class="q bad"><div class="who">Claude Opus 5.5 · strong prompt · same item</div>
+        <p>640 pre-orders.<br><br>Five weeks ago, Brewlog was an idea. Today, 640 home brewers have pre-ordered one.<br><br>Thank you. This community is the reason Brewlog exists.<br><br>It ships March 17 and is still $79. Pre-order at brewlog.co</p></div>
+      <p class="muted" style="font-size:0.8em">Struck text is gone from the rewrite: three draft sentences, including the scarcity line. Numbers, names and length all pass; the gates do not see dropped sentences, so the audit counts them. Our main row on the same item keeps every sentence and passes all four gates.</p>
     </div>
     <div>
-      <div class="q"><div class="who">Draft · dev-060 · founder's LinkedIn post</div>
-        <p>We made the call to recall and replace every single one of those 400 labels — at our own cost. It set us back about $7,000. <s>Painful? Absolutely. Worth it? 100%.</s><br><br><s>Because trust is everything.</s></p></div>
-      <div class="q bad"><div class="who">Claude Opus 5.5 · same passage</div>
-        <p>We recalled every one of those 400 labels and replaced them at our own cost, which came to about $7,000. It hurt, and it was the right call, because customers who buy hardware are trusting that it will work.</p></div>
-      <p class="muted" style="font-size:0.8em">Struck text was dropped. Claude drops at least one draft sentence on about half of our items; GPT-6.1 keeps the facts but leaves the AI tells in.</p>
+      <div class="q"><div class="who">Draft · dev-016 · pricing page</div>
+        <p>Simple, Transparent Pricing That Grows With You<br><s>At Stackhand, we believe world-class monitoring should be accessible to everyone.</s> That's why we offer flexible plans designed to scale seamlessly alongside your business.<br>🆓 Free — Perfect for getting started. Monitor up to 3 endpoints with lightning-fast <mark>1-minute checks</mark>.<br>🚀 Team — Just $29/month for 50 monitors, with the same 1-minute checks.<br>No hidden fees. <s>No surprises. Just peace of mind.</s><br>Start free today!</p></div>
+      <div class="q bad"><div class="who">Claude Opus 5.5 · strong prompt · same item</div>
+        <p>Pricing That Grows With You<br><br>Stackhand plans scale as your business grows, <mark>so you can start small and add monitors when you need them</mark>.<br><br>Free: Monitor up to 3 endpoints with <mark>checks every minute</mark>.<br>Team: $29/month for 50 monitors, also checked every minute.<br><br>There are no hidden fees.<br><br>Start free today.</p></div>
+      <p class="muted" style="font-size:0.8em">Two draft sentences dropped and a clause added that the founder never wrote. The number gate flags this row: "1-minute checks" became "checks every minute", and the 1 is gone (G2). Same meaning here; the check is that literal on purpose.</p>
     </div>
   </div>
-  <div class="foot"><span>Exact quotes · evals/runs/hack_live_claude-opus-5-5.jsonl</span><span>2 / 7</span></div>
+  <div class="foot"><span>Exact quotes · evals/runs/hack_strong_claude-opus-5-5.jsonl · emoji kept as in the file</span><span>2 / 7</span></div>
 </section>
 
 <!-- =========================================================== SLIDE 3: APPROACH
