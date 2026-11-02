@@ -1,0 +1,5 @@
+{
+  "redirects": [{ "source": "/round2", "destination": "/round2/", "permanent": false }],
+  "rewrites": [{ "source": "/rest/v1/featherlm_ab_votes", "destination": "/api/vote" }],
+  "headers": [{ "source": "/(.*)", "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }] }]
+}

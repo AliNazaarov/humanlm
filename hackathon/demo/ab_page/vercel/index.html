@@ -1,0 +1,475 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style><script>window.FLM_REMOTE = {"url": "/", "key": "proxy", "table": "featherlm_ab_votes"};</script></head><body><title>Which Reads Human?</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column on phones (draft folded, A, B stacked, vote bar pinned to the bottom); A and B side by side
+   from 900px. Calm editorial: one serif family, ink on paper, a highlighter for the pick, proofreader's blue only for
+   progress and focus. Both sides get identical treatment: nothing in colour or layout favours A or B. */
+:root {
+  --paper: #f6f7f9;
+  --sheet: #ffffff;
+  --ink: #141b2d;
+  --ink-soft: #545e72;
+  --rule: #dfe3ea;
+  --pencil: #1d5fd1;          /* proofreader's blue: progress ticks and focus only */
+  --mark: #fff0a8;            /* highlighter on the chosen rewrite */
+  --mark-edge: #e3c94a;
+  --warn: #8f5300;
+  --f-read: "Literata", Georgia, "Times New Roman", serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --f-ui: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --step--1: 0.8125rem; --step-0: 1rem; --step-1: 1.125rem; --step-2: 1.4rem; --step-3: 2rem;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #0e1320; --sheet: #161d2e; --ink: #e7eaf2; --ink-soft: #a3adc0; --rule: #2a3347;
+  --pencil: #79a8ff; --mark: #3a3226; --mark-edge: #8c7647; --warn: #e3a54a;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #0e1320; --sheet: #161d2e; --ink: #e7eaf2; --ink-soft: #a3adc0; --rule: #2a3347;
+  --pencil: #79a8ff; --mark: #3a3226; --mark-edge: #8c7647; --warn: #e3a54a;
+  color-scheme: dark }
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--f-read); font-size: var(--step-0); line-height: 1.55; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 0 calc(var(--bar-h, 9rem) + 1.5rem);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2 { font-family: var(--f-read); font-weight: 600; line-height: 1.2; text-wrap: balance; margin: 0; }
+.label { font-style: italic; font-size: var(--step--1); color: var(--ink-soft); }
+button { font: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid var(--pencil); outline-offset: 2px; }
+
+/* Top bar: progress across the reader's pairs. While reading, only the ticks and count stay, to leave room for the text. */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); border-bottom: 1px solid var(--rule);
+  padding-block: 10px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; }
+.top h1 { font-size: var(--step-1); }
+body.reading .top h1 { display: none; }
+.ticks { display: grid; grid-template-columns: repeat(var(--n, 20), 1fr); gap: 3px; flex: 1 1 200px; max-width: 420px; }
+.ticks i { height: 6px; border-radius: 1px; background: var(--rule); }
+.ticks i.done { background: var(--pencil); }
+.ticks i.here { outline: 2px solid var(--ink); outline-offset: 1px; }
+.count { font-family: var(--f-mono); font-size: var(--step--1); font-variant-numeric: tabular-nums; color: var(--ink-soft); white-space: nowrap; }
+
+/* Intro and done screens */
+.screen { max-width: 640px; padding-block: 2.5rem 1rem; display: grid; gap: 1.25rem; }
+.screen h2 { font-size: var(--step-3); }
+.screen p { margin: 0; max-width: 62ch; }
+.steps { margin: 0; padding-left: 1.25rem; display: grid; gap: 0.4rem; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.btn { border: 1px solid var(--ink); background: var(--ink); color: var(--paper); padding: 0.75rem 1.25rem; border-radius: 3px;
+  font-family: var(--f-read); font-weight: 600; font-size: var(--step-0); min-height: 48px; }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.note { font-size: var(--step--1); color: var(--ink-soft); }
+.note.warn { color: var(--warn); }
+
+/* A pair */
+.pair { padding-block: 1.25rem 0; display: grid; gap: 1rem; }
+.q { font-size: var(--step-2); font-weight: 400; line-height: 1.3; }
+details.draft { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 0.6rem 0; color: var(--ink-soft); }
+details.draft summary { cursor: pointer; font-style: italic; font-size: var(--step--1); }
+details.draft .text { margin-top: 0.6rem; font-size: 0.9375rem; }
+.text { white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; }
+.sides { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+@media (min-width: 900px) { .sides { grid-template-columns: 1fr 1fr; } }
+.side { min-width: 0; background: var(--sheet); border: 1px solid var(--rule); border-radius: 3px; padding: 1rem 1.1rem 1.15rem;
+  display: grid; gap: 0.5rem; align-content: start; transition: background-color .15s ease-out, border-color .15s ease-out; }
+.pair.swap .side { transition: none; }   /* a new pair never inherits the previous pick's highlight */
+.side .tag { font-weight: 600; font-size: var(--step-1); color: var(--ink-soft); line-height: 1; }
+.side .text { font-size: var(--step-1); line-height: 1.6; max-width: 65ch; }
+.side.chosen { background: var(--mark); border-color: var(--mark-edge); }
+.side.chosen .tag::after { content: " · your pick"; font-style: italic; font-weight: 400; font-size: var(--step--1); }
+.reason { display: grid; gap: 4px; max-width: 640px; }
+.reason label { font-style: italic; font-size: var(--step--1); color: var(--ink-soft); }
+.reason input { font: inherit; font-size: var(--step-0); padding: 0.6rem 0.7rem; border: 1px solid var(--rule); border-radius: 3px; background: var(--sheet); color: var(--ink); width: 100%; min-height: 44px; }
+
+/* Vote bar pinned to the bottom */
+.bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; background: var(--sheet); border-top: 1px solid var(--rule);
+  padding-top: 10px; padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.bar-in { max-width: 1120px; margin: 0 auto; display: grid; gap: 8px; grid-template-columns: 1fr 1fr 1fr; }
+.bar-in .nav { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 8px; }
+@media (min-width: 900px) { .bar-in { grid-template-columns: 1fr 1fr 1fr auto auto; align-items: center; } .bar-in .nav { grid-column: auto / span 2; } }
+.vote { border: 1.5px solid var(--ink); background: transparent; color: var(--ink); border-radius: 3px; padding: 0.7rem 0.5rem;
+  font-family: var(--f-read); font-weight: 600; font-size: var(--step-1); min-height: 56px; }
+.vote small { display: block; font-family: var(--f-ui); font-weight: 400; font-size: 0.75rem; color: var(--ink-soft); }
+.vote[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.vote[aria-pressed="true"] small { color: var(--paper); opacity: 0.85; }
+.navbtn { border: 1px solid var(--rule); background: transparent; color: var(--ink); border-radius: 3px; padding: 0.6rem 1rem; min-height: 44px; }
+.navbtn.next { background: var(--ink); color: var(--paper); border-color: var(--ink); font-weight: 600; }
+.navbtn:disabled { opacity: 0.35; cursor: not-allowed; }
+.keys { display: none; }
+@media (min-width: 900px) and (hover: hover) { .keys { display: block; font-family: var(--f-mono); font-size: 0.75rem; color: var(--ink-soft); text-align: center; grid-column: 1 / -1; } }
+
+/* Done screen: the vote code first (it is the one action left for an offline reader), then the tally */
+.panel { display: grid; gap: 0.75rem; background: var(--sheet); border: 1px solid var(--rule); border-radius: 3px; padding: 1rem 1.1rem; }
+.panel h3 { margin: 0; font-size: var(--step-1); font-weight: 600; }
+.split { display: flex; height: 34px; border-radius: 2px; overflow: hidden; background: var(--rule); }
+.split span { display: flex; align-items: center; padding: 0 8px; font-family: var(--f-mono); font-size: var(--step--1); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; }
+.split .x { background: var(--pencil); color: var(--paper); }
+.split .t { background: var(--rule); color: var(--ink); }
+.split .y { background: var(--ink); color: var(--paper); justify-content: flex-end; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-family: var(--f-mono); font-size: var(--step--1); font-variant-numeric: tabular-nums; }
+.legend b { font-family: var(--f-read); }
+.small { font-size: var(--step--1); color: var(--ink-soft); }
+.coderow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.coderow code { font-family: var(--f-mono); font-size: var(--step-0); background: var(--paper); border: 1px dashed var(--ink-soft);
+  border-radius: 3px; padding: 0.55rem 0.7rem; overflow-wrap: anywhere; min-width: 0; flex: 1 1 260px; user-select: all; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Which reads human?</h1>
+    <div class="ticks" id="ticks" aria-hidden="true"></div>
+    <span class="count" id="count">5 pairs</span>
+  </header>
+
+  <section class="screen" id="intro">
+    <span class="label">Blind read · 5 pairs · about 4 minutes</span>
+    <h2>Two rewrites of the same AI draft. Pick the one that reads more like a person wrote it.</h2>
+    <p>Each pair starts from a piece of AI-written marketing copy. Two systems rewrote it. You don't know which system is which, and the sides are shuffled for every reader.</p>
+    <ol class="steps">
+      <li>Read rewrite A and rewrite B. The original draft is folded above them, if you want it.</li>
+      <li>Tap A or B, whichever reads more like a person wrote it, or "Same" if neither stands out.</li>
+      <li>Add a few words on why if something stood out. It's optional.</li>
+    </ol>
+    <div class="cta-row">
+      <button class="btn" id="start" type="button">Start reading</button>
+      <button class="btn ghost" id="see" type="button" hidden>See results so far</button>
+    </div>
+    <p class="note" id="status">Loading the pairs…</p>
+  </section>
+
+  <section id="pairView" hidden>
+    <article class="pair" aria-live="polite">
+      <span class="label" id="pairNo">Pair 1 of 20</span>
+      <p class="q">Which rewrite reads more like a person wrote it?</p>
+      <details class="draft" id="draftBox">
+        <summary>Original AI draft</summary>
+        <p class="text" id="draft"></p>
+      </details>
+      <div class="sides">
+        <section class="side" id="sideA" aria-labelledby="tagA"><span class="tag" id="tagA">A</span><p class="text" id="textA"></p></section>
+        <section class="side" id="sideB" aria-labelledby="tagB"><span class="tag" id="tagB">B</span><p class="text" id="textB"></p></section>
+      </div>
+      <div class="reason">
+        <label for="why">Why? Optional, a few words.</label>
+        <input id="why" maxlength="200" autocomplete="off" placeholder="e.g. sounds like a real founder">
+      </div>
+    </article>
+  </section>
+
+  <section class="screen" id="done" hidden>
+    <span class="label">Done</span>
+    <h2 id="doneTitle">Thanks. That's all 5.</h2>
+    <p id="doneMsg">Your picks are saved.</p>
+    <div class="panel" id="codeBox" hidden>
+      <h3>Last step: send your code</h3>
+      <p class="small">Copy this code and paste it in the Telegram chat, or show it to the organiser. It holds your picks and nothing else.</p>
+      <div class="coderow"><code id="voteCode"></code><button class="btn" id="copyCode" type="button">Copy code</button></div>
+      <p class="small" id="copyNote" aria-live="polite"></p>
+    </div>
+    <div class="panel" id="tally">
+      <span class="label" id="tallyLabel">All readers so far</span>
+      <div class="split" id="split"></div>
+      <div class="legend" id="legend"></div>
+      <p class="small" id="tallyNote">System names stay hidden until the test ends.</p>
+    </div>
+    <div class="cta-row">
+      <button class="btn ghost" id="nextPerson" type="button">Next reader</button>
+    </div>
+  </section>
+</div>
+
+<nav class="bar" id="bar" hidden aria-label="Vote">
+  <div class="bar-in">
+    <button class="vote" id="vA" type="button" aria-pressed="false">A<small>reads more human</small></button>
+    <button class="vote" id="vT" type="button" aria-pressed="false">Same<small>neither stands out</small></button>
+    <button class="vote" id="vB" type="button" aria-pressed="false">B<small>reads more human</small></button>
+    <div class="nav">
+      <button class="navbtn" id="prev" type="button">Back</button>
+      <button class="navbtn next" id="next" type="button" disabled>Next pair</button>
+    </div>
+    <span class="keys">Keys: 1 = A · 0 = same · 2 = B · Enter = next · ← back</span>
+  </div>
+</nav>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const UI = 3;  // page version, stored with each ballot so votes from before and after a design change can be split
+  const PER_READER = 5;  // each reader gets 5 of the 20 pairs, drawn at random per ballot, so every pair still collects votes
+  const S = { pairs: [], version: null, order: [], i: 0, db: null, uid: null, ref: null, doc: { ballots: {} }, ballot: null,
+              canSave: false, exists: false, all: [], reveal: null, writing: false, pending: false, unsaved: false, tries: 0,
+              copied: false, confirmNext: false, remote: null, queue: [] };
+  // Public build (build_public.py) sets window.FLM_REMOTE = {url, key}: picks go to an insert-only Supabase table, one row
+  // per pick event; the latest row per (ballot, pid) counts. The anon key can insert and nothing else.
+  const REMOTE = window.FLM_REMOTE && window.FLM_REMOTE.url ? window.FLM_REMOTE : null;
+  const LS = "ab-read-v1";
+  const store = { get() { try { return JSON.parse(localStorage.getItem(LS) || "{}"); } catch { return {}; } },
+                  set(v) { try { localStorage.setItem(LS, JSON.stringify(v)); } catch {} } };
+
+  // Seeded order per ballot, so a reload shows the same sequence and sides.
+  function hash(s) { let h = 2166136261; for (const c of s) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+  function rng(seed) { let a = seed; return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function orderFor(bid) { const r = rng(hash(bid)); const o = S.pairs.map((p) => p.pid);
+    for (let k = o.length - 1; k > 0; k--) { const j = Math.floor(r() * (k + 1)); [o[k], o[j]] = [o[j], o[k]]; } return o; }
+  // The ballot's own shuffle, cut to PER_READER; a ballot cast before the cut keeps its own length when resumed.
+  function readerOrder(bid) {
+    const all = orderFor(bid), done = Object.keys(S.doc.ballots[bid]?.picks || {}).length;
+    return all.slice(0, Math.max(PER_READER, S.doc.ballots[bid]?.ui >= 3 ? 0 : done));
+  }
+  const firstSide = (bid, pid) => (rng(hash(bid + ":" + pid))() < 0.5 ? "a" : "b");
+  const pairBy = (pid) => S.pairs.find((p) => p.pid === pid);
+  const picks = () => S.doc.ballots[S.ballot]?.picks || {};
+
+  function status(msg, warn) { const el = $("status"); el.textContent = msg; el.className = "note" + (warn ? " warn" : ""); }
+
+  function newBallot() {
+    S.ballot = "b" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    S.doc.ballots[S.ballot] = { started: new Date().toISOString(), version: S.version, ui: UI, vw: window.innerWidth, picks: {} };
+    S.order = readerOrder(S.ballot); S.i = 0; S.copied = false; S.confirmNext = false;
+    store.set({ ...store.get(), ballot: S.ballot, local: S.doc });
+  }
+
+  // Readers who can't write to the store (outside the organisation, signed out) send this code instead.
+  // FLM1:<pairs version 8>:<ballot tail 6>:<one letter per pair in pid order: a, b, t (tie), - (no pick)>
+  function voteCode() {
+    const p = picks();
+    const seq = S.pairs.slice().sort((x, y) => x.pid - y.pid).map((q) => ({ a: "a", b: "b", tie: "t" })[p[q.pid]?.pick] || "-").join("");
+    return `FLM1:${(S.version || "").slice(0, 8)}:${(S.ballot || "").slice(-6)}:${seq}`;
+  }
+  function renderCode() {
+    $("codeBox").hidden = S.canSave && !S.unsaved;
+    $("voteCode").textContent = voteCode(); $("copyNote").textContent = "";
+    $("nextPerson").textContent = "Next reader";
+  }
+
+  function saveNote() {
+    $("doneMsg").textContent = !S.canSave
+      ? (S.db ? "This view can't save picks to the shared tally, so they're kept on this device. One last step below." : "Your picks are kept on this device. One last step below.")
+      : S.unsaved ? "Some picks haven't reached the shared tally yet. Keep this page open for a moment." : "Your picks are saved.";
+  }
+
+  // Public build: queue one row per pick event (kept in localStorage until the insert succeeds), send one at a time.
+  function remoteQueue(pid) {
+    const b = S.doc.ballots[S.ballot], pk = b && b.picks[pid];
+    if (!pk || !pk.pick) return;
+    S.queue.push({ version: S.version, ballot: S.ballot, pid: Number(pid), pick: pk.pick, first: pk.first, reason: pk.reason || "",
+                   ui: b.ui || null, vw: b.vw || null, at: pk.at || new Date().toISOString() });
+    store.set({ ...store.get(), queue: S.queue });
+    remoteFlush();
+  }
+  function remoteFlush() {
+    if (S.writing || !S.queue.length) { S.unsaved = S.queue.length > 0; return; }
+    S.writing = true; S.unsaved = true;
+    const batch = S.queue.slice(0, 20);  // drop only these on success: picks made while the insert is in flight stay queued
+    fetch(REMOTE.url.replace(/\/$/, "") + "/rest/v1/" + (REMOTE.table || "ab_votes"), { method: "POST", body: JSON.stringify(batch),
+      headers: { apikey: REMOTE.key, Authorization: "Bearer " + REMOTE.key, "Content-Type": "application/json", Prefer: "return=minimal" } })
+      .then((r) => { if (!r.ok) throw new Error("HTTP " + r.status);
+        S.queue.splice(0, batch.length); S.tries = 0; store.set({ ...store.get(), queue: S.queue }); })
+      .catch(() => { S.tries++; })
+      .finally(() => {
+        S.writing = false; S.unsaved = S.queue.length > 0; saveNote();
+        if (!$("done").hidden) renderCode();
+        if (S.queue.length) setTimeout(remoteFlush, S.tries ? 800 * 2 ** Math.min(S.tries, 5) * (0.5 + Math.random()) : 0);
+      });
+  }
+
+  // A local copy always; to the store, one write in flight, merging only this ballot so other tabs' ballots survive.
+  function save(all, pid) {
+    store.set({ ...store.get(), ballot: S.ballot, local: S.doc });
+    if (S.remote) { if (pid != null) remoteQueue(pid); saveNote(); return; }
+    if (!S.canSave) { saveNote(); return; }
+    if (S.writing) { S.pending = true; return; }
+    S.writing = true; S.unsaved = true;
+    const part = all || !S.ballot ? { ballots: S.doc.ballots } : { ballots: { [S.ballot]: S.doc.ballots[S.ballot] } };
+    const w = S.exists ? S.ref.update(JSON.parse(JSON.stringify(part))) : S.ref.set(JSON.parse(JSON.stringify(S.doc)));
+    w.then(() => { S.exists = true; S.tries = 0; S.unsaved = false; })
+      .catch((e) => {
+        const c = e && e.code;
+        if (c === "invalid_argument" && S.exists) { S.exists = false; S.pending = true; }  // doc vanished: recreate it
+        else if (c === "invalid_argument" || c === "revoked" || c === "not_granted") S.canSave = false;
+        else if (++S.tries <= 4) S.pending = true;  // transient or unknown: retry with backoff
+      })
+      .finally(() => {
+        S.writing = false; saveNote();
+        if (!$("done").hidden) renderCode();
+        if (S.pending) { S.pending = false; setTimeout(() => save(true), 500 * 2 ** Math.min(S.tries, 4) * (0.5 + Math.random())); }
+      });
+  }
+
+  function renderTicks() {
+    const n = S.order.length || S.pairs.length || 20, p = picks();
+    $("ticks").style.setProperty("--n", n);
+    $("ticks").replaceChildren(...Array.from({ length: n }, (_, k) => {
+      const i = document.createElement("i"); const pid = S.order[k];
+      i.classList.toggle("done", pid != null && !!p[pid]?.pick);
+      i.classList.toggle("here", !$("pairView").hidden && k === S.i);
+      return i; }));
+    const done = Object.values(p).filter((x) => x.pick).length;
+    $("count").textContent = S.ballot ? `${done} / ${n} picked` : `${n} pairs`;
+  }
+
+  function show(view) {
+    for (const v of ["intro", "pairView", "done"]) $(v).hidden = v !== view;
+    $("bar").hidden = view !== "pairView";
+    document.body.classList.toggle("reading", view === "pairView");
+    renderTicks();
+  }
+
+  function renderPair(fresh) {
+    const pid = S.order[S.i], p = pairBy(pid), first = firstSide(S.ballot, pid), pk = picks()[pid] || {};
+    const art = document.querySelector(".pair");
+    if (fresh) art.classList.add("swap");
+    const left = first === "a" ? p.a : p.b, right = first === "a" ? p.b : p.a;
+    $("pairNo").textContent = `Pair ${S.i + 1} of ${S.order.length}`;
+    $("draft").textContent = p.draft; $("textA").textContent = left; $("textB").textContent = right;
+    $("why").value = pk.reason || "";
+    // Shown side -> stored side: "A" on screen is the pair's `first`.
+    const shown = pk.pick === "tie" ? "T" : pk.pick ? (pk.pick === first ? "A" : "B") : null;
+    for (const [k, b] of [["A", $("vA")], ["T", $("vT")], ["B", $("vB")]]) b.setAttribute("aria-pressed", String(shown === k));
+    $("sideA").classList.toggle("chosen", shown === "A"); $("sideB").classList.toggle("chosen", shown === "B");
+    $("prev").disabled = S.i === 0;
+    $("next").disabled = !shown;
+    $("next").textContent = S.i === S.order.length - 1 ? "Finish" : "Next pair";
+    renderTicks();
+    if (fresh) requestAnimationFrame(() => requestAnimationFrame(() => art.classList.remove("swap")));
+  }
+
+  function vote(shown) {
+    const pid = S.order[S.i], first = firstSide(S.ballot, pid);
+    const pick = shown === "T" ? "tie" : shown === "A" ? first : (first === "a" ? "b" : "a");
+    const b = S.doc.ballots[S.ballot];
+    b.picks[pid] = { pick, first, reason: $("why").value.trim().slice(0, 200), at: new Date().toISOString() };
+    if (Object.values(b.picks).filter((x) => x.pick).length === S.order.length) b.finished = b.finished || new Date().toISOString();
+    save(false, pid); renderPair(false);
+  }
+
+  function saveReason() {
+    const pid = S.order[S.i], pk = picks()[pid]; const r = $("why").value.trim().slice(0, 200);
+    if (pk && pk.reason !== r) { pk.reason = r; pk.at = new Date().toISOString(); save(false, pid); }
+  }
+
+  function go(d) {
+    saveReason();
+    if (d > 0 && S.i === S.order.length - 1) {
+      $("doneTitle").textContent = `Thanks. That's all ${S.order.length}.`;
+      saveNote(); renderTally(); renderCode(); show("done"); window.scrollTo(0, 0); return;
+    }
+    S.i = Math.max(0, Math.min(S.order.length - 1, S.i + d)); renderPair(true); window.scrollTo(0, 0);
+  }
+
+  // Tally by opaque group X/Y: every reader's ballots when the store is reachable, otherwise this device's.
+  function renderTally() {
+    const shared = S.canSave && !S.remote;  // the public table is write-only, so a public reader sees their own picks
+    const docs = shared ? S.all : [S.doc];
+    let x = 0, y = 0, t = 0; const ballots = new Set();
+    for (const d of docs) for (const [bid, b] of Object.entries(d.ballots || {})) for (const [pid, pk] of Object.entries(b.picks || {})) {
+      const p = pairBy(Number(pid)); if (!p || !["a", "b", "tie"].includes(pk.pick) || (b.version && b.version !== S.version)) continue;
+      ballots.add(bid);
+      if (pk.pick === "tie") t++; else if (p[pk.pick + "_group"] === "X") x++; else if (p[pk.pick + "_group"] === "Y") y++;
+    }
+    const n = x + y + t, pct = (v) => (n ? Math.round((100 * v) / n) : 0);
+    const nameX = S.reveal?.X || "System X", nameY = S.reveal?.Y || "System Y";
+    const seg = (cls, v, txt) => { const s = document.createElement("span"); s.className = cls; s.style.width = (n ? (100 * v) / n : 33.3) + "%"; s.textContent = v ? txt : ""; return s; };
+    $("split").replaceChildren(seg("x", x, `${pct(x)}%`), seg("t", t, `${pct(t)}%`), seg("y", y, `${pct(y)}%`));
+    const item = (label, v) => { const e = document.createElement("span"); const b = document.createElement("b"); b.textContent = label; e.append(b, ` ${v} (${pct(v)}%)`); return e; };
+    $("legend").replaceChildren(item(nameX, x), item("Same", t), item(nameY, y));
+    $("tallyLabel").textContent = shared ? "All readers so far" : "Picks on this device";
+    $("tallyNote").textContent = (shared ? `${n} picks from ${ballots.size} reader${ballots.size === 1 ? "" : "s"}. ` : "")
+      + (S.reveal ? "Names revealed by the organiser." : "System names stay hidden until the test ends.");
+  }
+
+  function begin(resume) {
+    if (!resume || !S.doc.ballots[S.ballot]) newBallot(); else S.order = readerOrder(S.ballot);
+    if (resume) { const p = picks(); const k = S.order.findIndex((pid) => !p[pid]?.pick); S.i = k < 0 ? S.order.length - 1 : k; }
+    show("pairView"); renderPair(true); window.scrollTo(0, 0);
+  }
+
+  // Wiring
+  $("start").onclick = () => begin(!!(S.ballot && S.doc.ballots[S.ballot] && !S.doc.ballots[S.ballot].finished));
+  $("see").onclick = () => { renderTally(); show("done"); $("doneMsg").textContent = "Results so far."; };
+  $("vA").onclick = () => vote("A"); $("vB").onclick = () => vote("B"); $("vT").onclick = () => vote("T");
+  $("next").onclick = () => go(1); $("prev").onclick = () => go(-1);
+  $("why").addEventListener("change", saveReason);
+  // An offline reader who hasn't copied their code gets one confirming tap before the screen moves on.
+  $("nextPerson").onclick = () => {
+    if (!$("codeBox").hidden && !S.copied && !S.confirmNext) {
+      S.confirmNext = true; $("nextPerson").textContent = "Code sent? Tap again for the next reader"; return;
+    }
+    newBallot(); show("intro"); $("start").textContent = "Start reading"; window.scrollTo(0, 0);
+  };
+  $("copyCode").onclick = () => {
+    const code = $("voteCode").textContent;
+    const done = (msg) => { S.copied = true; $("copyNote").textContent = msg; $("nextPerson").textContent = "Next reader"; };
+    const selectIt = () => { const r = document.createRange(); r.selectNodeContents($("voteCode"));
+      const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); done("Selected. Copy it with your device's copy command."); };
+    try { navigator.clipboard.writeText(code).then(() => done("Copied. Paste it in the chat."), selectIt); } catch { selectIt(); }
+  };
+  // Remember the draft fold only when the reader toggles it, not when the page sets it.
+  $("draftBox").querySelector("summary").addEventListener("click", () =>
+    setTimeout(() => store.set({ ...store.get(), draftOpen: $("draftBox").open }), 0));
+  document.addEventListener("keydown", (e) => {
+    if ($("pairView").hidden || e.target === $("why") || e.metaKey || e.ctrlKey || e.altKey) return;
+    // preventDefault so Enter on a focused vote button doesn't also click it on the next pair.
+    const act = { "1": () => vote("A"), "2": () => vote("B"), "0": () => vote("T"),
+                  Enter: () => { if (!$("next").disabled) go(1); }, ArrowLeft: () => { if (S.i > 0) go(-1); } }[e.key];
+    if (act) { e.preventDefault(); act(); }
+  });
+  // Keep the reading column clear of the fixed vote bar, whatever height it wraps to.
+  if (window.ResizeObserver) new ResizeObserver(() => {
+    if (!$("bar").hidden) document.documentElement.style.setProperty("--bar-h", $("bar").offsetHeight + "px");
+  }).observe($("bar"));
+
+  async function boot() {
+    const saved = store.get();
+    // The draft starts folded on every device, so readers judge the rewrites under the same conditions.
+    $("draftBox").open = saved.draftOpen === true;
+    try { const pj = await (await fetch("pairs.json")).json(); S.pairs = pj.pairs; S.version = pj.meta.version; }
+    catch { status("The pairs file didn't load. Reload the page; if it keeps failing, tell the organiser.", true); $("start").disabled = true; return; }
+    S.order = S.pairs.slice(0, PER_READER).map((p) => p.pid); renderTicks();
+    if (saved.local?.ballots) S.doc = JSON.parse(JSON.stringify(saved.local));
+    status("Connecting…");
+
+    const [db, user] = await Promise.all([window.claude?.use?.("db") ?? null, window.claude?.use?.("user") ?? null]);
+    S.uid = user ? await user.id() : null;
+    if (db && S.uid) {
+      S.db = db; S.ref = db.doc("votes/" + S.uid);
+      const timer = setTimeout(() => status("The vote store isn't answering yet. You can start; picks save when it connects.", true), 10000);
+      try {
+        const snap = await S.ref.get(); clearTimeout(timer);
+        // Snapshots are frozen: deep-copy, and keep any ballot started before the store answered.
+        const stored = snap.exists ? JSON.parse(JSON.stringify(snap.data())) : {};
+        const localOnly = Object.keys(S.doc.ballots).some((b) => !(stored.ballots || {})[b]);
+        S.doc = { ...stored, ballots: { ...(stored.ballots || {}), ...S.doc.ballots } };
+        S.exists = snap.exists;
+        const can = await user.can("data.write");
+        S.canSave = can !== false;
+        if (S.canSave && localOnly) save(true);  // upload picks made on this device before the store answered
+        status(S.canSave ? "Your picks save to the shared tally as you go." : "Your picks stay on this device. At the end you'll get a short code to send to the organiser.");
+      } catch { clearTimeout(timer); status("The vote store didn't answer. Picks stay on this device for now.", true); }
+      db.collection("votes").onSnapshot((q) => { S.all = q.docs.map((d) => d.data() || {}); if (!$("done").hidden) renderTally(); }, () => {});
+      db.doc("meta/reveal").onSnapshot((d) => { S.reveal = d.exists ? d.data() : null; if (!$("done").hidden) renderTally(); }, () => {});
+      $("see").hidden = !(user && (await user.isOwner()));
+    } else if (REMOTE) {
+      S.remote = REMOTE; S.canSave = true; S.queue = Array.isArray(saved.queue) ? saved.queue : [];
+      remoteFlush();  // send anything a previous visit couldn't
+      status("Your picks are saved as you go. Nothing about you is recorded, only the picks.");
+    } else {
+      status("Your picks stay on this device. At the end you'll get a short code to send to the organiser.");
+    }
+    // Resume only a ballot cast on these pairs; one from an older pairs version keeps its picks but isn't reopened.
+    if (saved.ballot && S.doc.ballots[saved.ballot] && S.doc.ballots[saved.ballot].version === S.version) {
+      S.ballot = saved.ballot;
+      if (!S.doc.ballots[S.ballot].finished) $("start").textContent = "Continue where you left off";
+    }
+    renderTicks();
+  }
+  boot();
+})();
+</script></body></html>

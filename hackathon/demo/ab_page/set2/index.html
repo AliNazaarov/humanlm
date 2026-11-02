@@ -270,7 +270,7 @@ details.draft .text { margin-top: 0.6rem; font-size: 0.9375rem; }
     if (S.writing || !S.queue.length) { S.unsaved = S.queue.length > 0; return; }
     S.writing = true; S.unsaved = true;
     const batch = S.queue.slice(0, 20);  // drop only these on success: picks made while the insert is in flight stay queued
-    fetch(REMOTE.url + "/rest/v1/" + (REMOTE.table || "ab_votes"), { method: "POST", body: JSON.stringify(batch),
+    fetch(REMOTE.url.replace(/\/$/, "") + "/rest/v1/" + (REMOTE.table || "ab_votes"), { method: "POST", body: JSON.stringify(batch),
       headers: { apikey: REMOTE.key, Authorization: "Bearer " + REMOTE.key, "Content-Type": "application/json", Prefer: "return=minimal" } })
       .then((r) => { if (!r.ok) throw new Error("HTTP " + r.status);
         S.queue.splice(0, batch.length); S.tries = 0; store.set({ ...store.get(), queue: S.queue }); })
