@@ -26,7 +26,7 @@ Results, all 247 items, 95% CI, paired bootstrap vs Claude Opus 5.5 with a stron
 - Claude inside our harness (F1H): 93.5% at $15.85 per 1k. The harness is the contribution; Fireworks makes it cheap.
 - Variants: ensemble E1 99.2% ($15.12/1k); same harness on DeepSeek V4.1 Flash (R3) 94.7%, so it transfers across model families.
 
-Where we do not win: style. Blind human A/B (195 votes, 41 readers): Claude 87, ours 58, both fine 50, p=0.020. Judges are split and n.s. (Kimi K3 leans Claude, Qwen 3.8 Max leans ours). Readers flag choppy fragments in 37.7% of our outputs vs 10.0% of Claude's (`reader_tells.json`).
+Where we do not win: style. Blind human A/B (209 votes, 45 readers, frozen 15:15 PT): Claude 89, ours 64, both fine 56, p=0.052 (not significant at 0.05; p=0.029 after the stated reading-time rule). Judges are split and n.s. (Kimi K3 leans Claude, Qwen 3.8 Max leans ours). Readers flag choppy fragments in 37.7% of our outputs vs 10.0% of Claude's (`reader_tells.json`).
 
 Training (toward real human writing): SFT A, B and C trained on Fireworks (Serverless Training API, LoRA on GLM-5.3 Flash, 5,000 licence-clean draft-to-human pairs). Serving a LoRA needs an on-demand deployment; only SFT B was served and evaluated: 32.8% without harness (base 26.7%). Local DPO (L2, Qwen3-4B on a Mac, human original as "chosen") trained 70 steps, not evaluated in time. All in `hackathon/train/TRAIN_LOG.md`.
 

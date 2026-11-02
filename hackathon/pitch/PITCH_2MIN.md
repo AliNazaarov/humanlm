@@ -22,7 +22,7 @@ Same 247 items, same prompt. Fact-safe rewrite rate: Claude with a strong prompt
 
 **[Slide 6, style, 1:25] ALI**
 
-On style it is not a win. In a blind test, 41 readers preferred Claude's prose, 87 votes to 58, p 0.02. One judge model leans Claude, another leans us. Readers flag choppy fragments in ours far more often.
+On style it is not a win. In a blind test, 45 readers leaned to Claude's prose, 89 votes to 64. One judge model leans Claude, another leans us. Readers flag choppy fragments in ours far more often.
 
 **[Slide 8, next step, 1:40] RUSLAN**
 
@@ -48,7 +48,7 @@ We didn't make an open model smarter than Claude. We made it accountable, and ma
 ## Before you say it
 
 - "About 11 times cheaper" = Claude strong $9.11 / FeatherLM $0.81 per 1k (11.3). "About 20 times cheaper" (closing line) = Claude inside our harness $15.85 / FeatherLM $0.81 (19.7): the accountable version of Claude against ours. Both from `results.json: systems[].cost_per_1k_usd`.
-- Human A/B is 195 votes from 41 readers in `human_votes.json` (O3c vs Claude strong): ours 58, Claude 87, both fine 50, sign test p=0.020. Say "87 votes to 58"; do not say 164 or p=0.024 (not in the current file).
+- Human A/B, frozen at 15:15 PT, is 209 votes from 45 readers in `human_votes.json` (O3c vs Claude strong): ours 64, Claude 89, both fine 56, sign test p=0.052 (not significant at 0.05); after the stated reading-time rule (11 ballots under 6 s per pick dropped) 48 / 73 / 33, p=0.029. Say "89 votes to 64" and "leaned to Claude"; do not say "significantly", 195, p=0.020, 164 or p=0.024 (all pre-freeze).
 - Judges on O3c: Kimi K3 style 33/46/51 (leans Claude, p=0.177 n.s.); Qwen 3.8 Max style 44/27/37 (leans ours, p=0.057 n.s.). Do not say either judge "prefers" significantly.
 - The problem-slide quotes are exact strings from `evals/runs/hack_strong_claude-opus-5-5.jsonl` (dev-070, dev-016). "About half" = audit `any_sent_deleted` 51% for Claude strong.
 - R3 (DeepSeek) has no cost row in results.json; do not quote a price for it.

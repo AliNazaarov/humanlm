@@ -33,7 +33,7 @@ const LEADERBOARD = [
 ];
 // Style evidence (where we do NOT win). Sources in hackathon/pitch/FINAL_CHECK.md.
 const STYLE = {
-  human_ours: 58, human_claude: 87, human_both: 50, human_votes: 195, human_people: 41, human_p: "0.020",
+  human_ours: 64, human_claude: 89, human_both: 56, human_votes: 209, human_people: 45, human_p: "0.052",
   kimi_style: "33 / 46 / 51", kimi_overall: "35 / 52 / 43 (p=0.086)",
   qwen_style: "44 / 27 / 37", qwen_overall: "39 / 43 / 25 (p=0.741)",
   tells_ours: 37.7, tells_claude: 10.0, frag_ours: 28.5, frag_claude: 4.6,
@@ -252,12 +252,12 @@ const AUDIT = {
 </section>
 
 <!-- =========================================================== SLIDE 6: STYLE (where we lose)
-  Speaker notes: "On style it is not a win. People preferred Claude's prose, p 0.02. Kimi leans Claude, Qwen leans us,
+  Speaker notes: "On style it is not a win. Readers leaned to Claude's prose, 89 votes to 64, p 0.052; 0.029 after the stated reading-time rule. Kimi leans Claude, Qwen leans us,
    neither significant. Readers flag choppy fragments in ours far more often. That is the next problem."
 -->
 <section class="slide">
   <div class="kicker">Style · where we do not win · ours (O3c) vs Claude Opus 5.5 strong prompt</div>
-  <h2>Accountable, yes. Better prose, no: readers prefer Claude's.</h2>
+  <h2>Accountable, yes. Better prose, no: readers lean to Claude's.</h2>
   <table id="style_box">
     <tr><th>Signal</th><th>Ours</th><th>Claude</th><th>Read</th></tr>
   </table>
@@ -382,7 +382,7 @@ const fair = LEADERBOARD.find(r => r.kind === "fair");
 document.getElementById("ratio").textContent = ours && fair && ours.cost ? Math.round(fair.cost / ours.cost) : "[RESULT]";
 document.getElementById("ratio_claude").textContent = ours && claude && ours.cost ? Math.round(claude.cost / ours.cost) : "[RESULT]";
 const S = STYLE;
-document.getElementById("style_box").insertAdjacentHTML("beforeend", `<tr><td>Blind human A/B, ${S.human_votes} votes from ${S.human_people} readers (human_votes.json)</td><td class="v">${S.human_ours}</td><td class="v win">${S.human_claude}</td><td>${S.human_both} both fine · sign test p=${S.human_p} · <b>Claude preferred</b></td></tr><tr><td>Kimi K3 judge, style, both orders (130 items)</td><td class="v">${S.kimi_style.split(" / ")[0]}</td><td class="v win">${S.kimi_style.split(" / ")[1]}</td><td>leans Claude, n.s. · overall ${S.kimi_overall}</td></tr><tr><td>Qwen 3.8 Max judge, style, both orders (108 parsed)</td><td class="v win">${S.qwen_style.split(" / ")[0]}</td><td class="v">${S.qwen_style.split(" / ")[1]}</td><td>leans ours, n.s. (p=0.057) · overall ${S.qwen_overall}</td></tr><tr><td>Outputs with a choppy reader tell (fragment runs, slogans, hooks)</td><td class="v">${S.tells_ours}%</td><td class="v win">${S.tells_claude}%</td><td>fragment runs ${S.frag_ours} vs ${S.frag_claude} per 100 outputs (reader_tells.json)</td></tr>`);
+document.getElementById("style_box").insertAdjacentHTML("beforeend", `<tr><td>Blind human A/B, ${S.human_votes} votes from ${S.human_people} readers (human_votes.json)</td><td class="v">${S.human_ours}</td><td class="v win">${S.human_claude}</td><td>${S.human_both} both fine · sign test p=${S.human_p} (0.029 after the reading-time rule) · <b>leans Claude</b></td></tr><tr><td>Kimi K3 judge, style, both orders (130 items)</td><td class="v">${S.kimi_style.split(" / ")[0]}</td><td class="v win">${S.kimi_style.split(" / ")[1]}</td><td>leans Claude, n.s. · overall ${S.kimi_overall}</td></tr><tr><td>Qwen 3.8 Max judge, style, both orders (108 parsed)</td><td class="v win">${S.qwen_style.split(" / ")[0]}</td><td class="v">${S.qwen_style.split(" / ")[1]}</td><td>leans ours, n.s. (p=0.057) · overall ${S.qwen_overall}</td></tr><tr><td>Outputs with a choppy reader tell (fragment runs, slogans, hooks)</td><td class="v">${S.tells_ours}%</td><td class="v win">${S.tells_claude}%</td><td>fragment runs ${S.frag_ours} vs ${S.frag_claude} per 100 outputs (reader_tells.json)</td></tr>`);
 document.getElementById("real_ours").textContent = REAL.ours + "%";
 document.getElementById("real_claude").textContent = REAL.claude + "%";
 document.getElementById("real_delta").textContent = REAL.delta;

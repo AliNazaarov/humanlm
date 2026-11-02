@@ -33,10 +33,10 @@ Main row: `O3c_glm_prompt_harness_style` (FeatherLM). RESULTS.md marks no other 
 
 | Number | Value | Source |
 |---|---|---|
-| Human A/B votes | 195 votes, 41 readers | `hackathon/report/human_votes.json` `pooled` / `sources.page` |
-| Ours / Claude / both fine | 58 / 87 / 50; win rate 0.40 [0.32, 0.48] | same |
-| Sign test | p=0.020 (0.0197) | same, `sign_test_p` |
-| Without fast/position clickers | 42 / 71, p=0.008 | same, `sensitivity_no_position_clickers` |
+| Human A/B votes (frozen 15:15 PT) | 209 votes, 45 readers | `hackathon/report/human_votes.json` `pooled` / `sources.page` |
+| Ours / Claude / both fine | 64 / 89 / 56; win rate 0.42 [0.34, 0.50] | same |
+| Sign test | p=0.052 (0.0520), not significant at 0.05 | same, `sign_test_p` |
+| Without fast/position clickers | 48 / 73 (34 readers), p=0.029 | same, `sensitivity_no_position_clickers` |
 | Kimi K3, O3c vs Claude, overall | 35/52/43, p=0.086 | `judge_hack_O3c_..._vs_hack_strong_claude-opus-5-5.summary.json`; RESULTS.md pairwise table |
 | Kimi K3 style | 33/46/51, p=0.177 | same |
 | Qwen 3.8 Max overall | 39/43/25, p=0.741 (107 complete) | `judge2qwen_hack_O3c_...summary.json`; RESULTS.md |
@@ -72,5 +72,5 @@ Sign-test p values for E1 and O3t were computed from the win/loss counts in the 
 
 ## Discrepancies found
 
-- The brief said "164 votes, p=0.024"; the committed `human_votes.json` now says 195 votes, p=0.020. The pitch uses the file.
+- Earlier briefs said "164 votes, p=0.024" and "195 votes, p=0.020"; the frozen `human_votes.json` (15:15 PT) says 209 votes, p=0.052. The pitch uses the frozen file.
 - The audit (AUDIT.md) is on its own 250-item run; score_all.py uses 247 items. The deck labels the audit slide as the audit's run; headline rates come only from RJ.

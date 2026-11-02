@@ -152,8 +152,8 @@ O3e, O3f, O3g, O3h (stopped, no row), O3j, O3k, O3l, O3m, O3n with rows, plus O3
 - **Ruling 2 (facts-loss cause):** corrected above. `row_checks.py` now also writes `facts_loss_vs_hashtag_drop`.
 - **F11 disclosure and F6 human A/B:** both are `README.md` lines, which Ruslan owns. The exact replacement text went to
   him as a `CONTRACT:` on the bus (`hackathon/bus/msgs/*-ali-to-friend.md`, subject "CONTRACT: README pass-3 fails").
-  The human numbers in it come from `hackathon/report/human_votes.json` (O3c vs Claude strong 53/80/31, 164 votes,
-  sign test p=0.024) and `hackathon/report/human_ab.jsonl` (165 raw O3c-vs-Claude rows: 53/80/32).
+  The human numbers in it come from `hackathon/report/human_votes.json` (at that pass: O3c vs Claude strong 53/80/31, 164 votes,
+  sign test p=0.024; frozen at 15:15 PT: 64/89/56, 209 votes, p=0.052) and `hackathon/report/human_ab.jsonl`.
 - **O3n gate floor:** closed fail, already disclosed (README pass-2 note and the table above). Not pitched.
 - **Goal (style up vs Claude strong, gates >= 95%):** still not met by any O3 variant here. O3c stays the entry. The
   separate R2 (E1 ensemble) and R3 (DeepSeek) runs are handled in their own handoff

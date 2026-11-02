@@ -44,7 +44,7 @@ Fact-safe human rewrite rate on 247 items (130 eval + 117 held-out human passage
 - Compute is **11.4× cheaper** than Claude strong and **19.9× cheaper** than Claude in our harness (`fin_model.json`, from measured tokens: about 4,346 input and 290 output per rewrite).
 
 **What we don't claim (judges will check):**
-- Readers don't prefer our prose yet. In the blind human A/B against Claude strong, readers picked Claude more often: 54 FeatherLM, 82 Claude, 46 ties (39 voters, 182 votes, sign test p=0.020; mostly public-page visitors). The independent judge (Kimi K3) also leans to Claude on style.
+- Readers don't prefer our prose yet. In the blind human A/B against Claude strong, readers picked Claude more often: 64 FeatherLM, 89 Claude, 56 ties (45 voters, 209 votes, sign test p=0.052, not significant at 0.05; p=0.029 after the reading-time rule; mostly public-page visitors). The independent judge (Kimi K3) also leans to Claude on style.
 - No system passes as human. In the spot-the-human test, the judges picked the real human original over every system's rewrite almost every time, Claude's included.
 - **Our edge today is trust plus cost: same-or-better fact safety, no tells, about a tenth of the price. Style preference is the next milestone (section 9), not today's claim.**
 
@@ -192,7 +192,7 @@ Year-5 mix: 160,000 Solo, 20,000 Team, 1.5B API rewrites a month (about 50M a da
 
 1. **The benchmark and the gates.** We define and publish "fact-safe human rewrite" with a 247-item benchmark and a code-level verifier. Whoever owns the measurement shapes how the category is judged.
 2. **Data that's licence-clean.** Training pairs are reverse-distilled from Common Pile human text (no frontier-model text, no pirated books), so customers and platforms can adopt it without licence risk.
-3. **Style is the next milestone.** Readers prefer Claude's prose today (p=0.020). The plan is preference data from blind reader picks, then style fine-tunes as LoRA adapters on the same base, with the gates kept as hard constraints so style gains can't cost facts.
+3. **Style is the next milestone.** Readers lean to Claude's prose today (89 to 64, p=0.052). The plan is preference data from blind reader picks, then style fine-tunes as LoRA adapters on the same base, with the gates kept as hard constraints so style gains can't cost facts.
 4. **Distribution through the API.** Agents, CMSs and marketing tools embed the rewrite step, so we ride their distribution.
 
 ---
@@ -201,7 +201,7 @@ Year-5 mix: 160,000 Solo, 20,000 Team, 1.5B API rewrites a month (about 50M a da
 
 | Risk | Answer |
 |---|---|
-| Readers prefer Claude's prose | True today (54/82/46, p=0.020). We sell fact safety and cost now and treat style as the roadmap. We won't claim "more human than Claude." |
+| Readers lean to Claude's prose | True today (64/89/56, p=0.052; p=0.029 after the reading-time rule). We sell fact safety and cost now and treat style as the roadmap. We won't claim "more human than Claude." |
 | Frontier labs improve writing | YC calls the regression structural. Our harness wraps any model, so a better base raises our score too |
 | Incumbents bundle it for free (Grammarly, ChatGPT) | None of them measure or guarantee fact preservation; we sell the receipt and the API price |
 | Gates measure our own definition | That's why we also report an independent judge (Kimi K3, a different model family) and a blind human test, including the results that go against us |

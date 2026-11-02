@@ -98,7 +98,7 @@ Source of truth for the submission remains `hackathon/report/RESULTS.md` (Ruslan
 
 ## Human A/B
 
-See `hackathon/report/human_votes.json` (latest at writing: 164 votes O3c vs Claude strong, 53 ours / 80 Claude / 31 same, sign test p=0.024: humans prefer Claude's prose).
+See `hackathon/report/human_votes.json` (frozen 15:15 PT: 209 votes from 45 readers, O3c vs Claude strong, 64 ours / 89 Claude / 56 same, sign test p=0.052, not significant at 0.05; p=0.029 after the reading-time rule: humans lean to Claude's prose).
 
 ## Reading
 
