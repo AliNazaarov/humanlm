@@ -20,3 +20,4 @@
 2026-11-02T19:40:13Z O3c (style round) scored: 97% [94,99] fact-safe on 250, +25 pp vs Claude strong. Judging O3c vs Claude now. Real-copy split + held-out provenance audit still collecting.
 2026-11-02T19:43:55Z O3c judge: style gap vs Claude no longer significant (33/46, p=0.18). Held-out audit committed: 22 ids overlap train (heldout_clean block added), cccc licences need recovery. Real README split still collecting.
 2026-11-02T19:48:50Z Strict+lenient fact-safe in report: O3c 97%/98% vs Claude strong 72%/85% (both significant). F1h humanizer baseline + Claude on real README split running.
+2026-11-02T19:53:06Z F1h (Claude+humanizer) 60% strict: weaker than F1 strong (72%), stays extra row. Real README split: Claude 76% vs F1H 98%. Human vote scorer ready. SFT model B blocked on a permission decision.
