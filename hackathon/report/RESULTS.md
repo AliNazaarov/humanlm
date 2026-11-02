@@ -19,11 +19,14 @@ Reference (F1): `frontier-strong:claude-opus-5-5`. 95% CIs in brackets. Δ is a 
 |---|---|---|---|---|---|---|---|---|
 | `O3c_glm_prompt_harness_style` | 97% [94, 99] | +25 pp [+20, +31], significant (p=0.000) | 98% | 100% | 98% | 100% | $0.81 | 3.3s |
 | `O3b_glm_prompt_harness` | 94% [91, 97] | +23 pp [+18, +28], significant (p=0.000) | 97% | 100% | 97% | 100% | $0.55 | 1.6s |
-| `F1H_opus_harness` (2 refused/failed, counted as fails) | 94% [90, 96] | +22 pp [+17, +28], significant (p=0.000) | 97% | 99% | 98% | 99% | $16.44 | 4.9s |
+| `F1H_opus_harness` (2 refused/failed, counted as fails) | 94% [90, 96] | +22 pp [+17, +28], significant (p=0.000) | 97% | 99% | 98% | 99% | $15.83 | 4.8s |
 | `O3_glm_harness` | 93% [89, 96] | +21 pp [+16, +27], significant (p=0.000) | 96% | 100% | 97% | 100% | $0.28 | 2.6s |
 | `O2_glm_prompt` | 73% [67, 79] | +2 pp [-5, +8], n.s. (p=0.620) | 94% | 92% | 83% | 99% | $0.31 | 1.2s |
-| `frontier-strong:claude-opus-5-5` (2 refused/failed, counted as fails) | 72% [66, 77] | reference | 88% | 88% | 92% | 97% | $8.93 | 3.9s |
+| `frontier-strong:claude-opus-5-5` (2 refused/failed, counted as fails) | 72% [66, 77] | reference | 88% | 88% | 92% | 97% | $9.15 | 3.8s |
+| `F1h_opus_humanizer` (2 refused/failed, counted as fails) | 60% [54, 66] | -12 pp [-17, -6], significant (p=0.000) | 87% | 78% | 90% | 94% | $50.26 | 3.7s |
 | `frontier-live:claude-opus-5-5` (2 refused/failed, counted as fails) | 53% [47, 60] | -18 pp [-24, -13], significant (p=0.000) | 78% | 77% | 87% | 97% | $7.21 | 3.7s |
+| `O2h_glm_humanizer` | 53% [46, 59] | -19 pp [-26, -12], significant (p=0.000) | 90% | 80% | 83% | 83% | $1.15 | 1.4s |
+| `F2h_gpt61_humanizer` | 51% [45, 58] | -20 pp [-27, -14], significant (p=0.000) | 93% | 90% | 76% | 77% | $7.74 | 2.5s |
 | `F2_gpt61_terra` | 40% [34, 46] | -32 pp [-39, -24], significant (p=0.000) | 92% | 90% | 46% | 98% | $0.86 | 2.6s |
 | `X0_copy_draft (no rewrite: control)` | 32% [26, 38] | -40 pp [-47, -32], significant (p=0.000) | 100% | 100% | 32% | 100% | n/a | 0.0s |
 | `O1_glm_base` | 27% [22, 33] | -44 pp [-52, -37], significant (p=0.000) | 91% | 82% | 33% | 100% | $0.10 | 1.2s |
@@ -36,12 +39,15 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | System | Fact-safe human rate | Δ vs reference | G1 invented | G2 lost | G3 tells | G4 gutted | $ / 1k | p50 latency |
 |---|---|---|---|---|---|---|---|---|
 | `O3c_glm_prompt_harness_style` | 95% [90, 98] | +26 pp [+19, +34], significant (p=0.000) | 98% | 100% | 97% | 100% | $0.81 | 3.3s |
-| `F1H_opus_harness` | 92% [86, 96] | +23 pp [+15, +32], significant (p=0.000) | 96% | 100% | 96% | 100% | $16.44 | 4.9s |
+| `F1H_opus_harness` | 92% [86, 96] | +23 pp [+15, +32], significant (p=0.000) | 96% | 100% | 96% | 100% | $15.83 | 4.8s |
 | `O3b_glm_prompt_harness` | 92% [85, 96] | +22 pp [+15, +30], significant (p=0.000) | 96% | 100% | 94% | 100% | $0.55 | 1.6s |
 | `O3_glm_harness` | 91% [84, 95] | +22 pp [+13, +30], significant (p=0.000) | 97% | 100% | 94% | 100% | $0.28 | 2.6s |
 | `O2_glm_prompt` | 69% [61, 77] | +0 pp [-9, +8], n.s. (p=0.990) | 95% | 92% | 78% | 99% | $0.31 | 1.2s |
-| `frontier-strong:claude-opus-5-5` | 69% [61, 77] | reference | 90% | 85% | 91% | 96% | $8.93 | 3.9s |
+| `frontier-strong:claude-opus-5-5` | 69% [61, 77] | reference | 90% | 85% | 91% | 96% | $9.15 | 3.8s |
+| `F1h_opus_humanizer` | 54% [45, 63] | -15 pp [-24, -7], significant (p=0.000) | 91% | 72% | 88% | 92% | $50.26 | 3.7s |
+| `O2h_glm_humanizer` | 42% [33, 51] | -28 pp [-38, -18], significant (p=0.000) | 93% | 76% | 78% | 72% | $1.15 | 1.4s |
 | `frontier-live:claude-opus-5-5` | 41% [32, 50] | -28 pp [-37, -20], significant (p=0.000) | 76% | 68% | 83% | 95% | $7.21 | 3.7s |
+| `F2h_gpt61_humanizer` | 36% [28, 45] | -33 pp [-43, -23], significant (p=0.000) | 95% | 88% | 66% | 66% | $7.74 | 2.5s |
 | `F2_gpt61_terra` | 20% [14, 28] | -49 pp [-58, -40], significant (p=0.000) | 92% | 88% | 24% | 97% | $0.86 | 2.6s |
 | `O1_glm_base` | 15% [10, 23] | -54 pp [-63, -45], significant (p=0.000) | 94% | 75% | 19% | 100% | $0.10 | 1.2s |
 | `frontier-persona-preexisting` | 12% [7, 19] | -57 pp [-66, -48], significant (p=0.000) | 70% | 56% | 99% | 25% | n/a | n/a |
@@ -54,12 +60,15 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | System | Fact-safe human rate | Δ vs reference | G1 invented | G2 lost | G3 tells | G4 gutted | $ / 1k | p50 latency |
 |---|---|---|---|---|---|---|---|---|
 | `O3c_glm_prompt_harness_style` | 96% [90, 99] | +27 pp [+19, +36], significant (p=0.000) | 99% | 100% | 96% | 100% | $0.81 | 3.3s |
-| `F1H_opus_harness` | 93% [86, 97] | +24 pp [+15, +34], significant (p=0.000) | 97% | 100% | 96% | 100% | $16.44 | 4.9s |
+| `F1H_opus_harness` | 93% [86, 97] | +24 pp [+15, +34], significant (p=0.000) | 97% | 100% | 96% | 100% | $15.83 | 4.8s |
 | `O3b_glm_prompt_harness` | 93% [86, 97] | +24 pp [+15, +33], significant (p=0.000) | 98% | 100% | 94% | 100% | $0.55 | 1.6s |
 | `O3_glm_harness` | 91% [84, 96] | +22 pp [+12, +32], significant (p=0.000) | 99% | 100% | 92% | 100% | $0.28 | 2.6s |
 | `O2_glm_prompt` | 69% [59, 78] | +0 pp [-10, +11], n.s. (p=0.980) | 97% | 91% | 79% | 99% | $0.31 | 1.2s |
-| `frontier-strong:claude-opus-5-5` | 69% [59, 78] | reference | 91% | 85% | 91% | 96% | $8.93 | 3.9s |
+| `frontier-strong:claude-opus-5-5` | 69% [59, 78] | reference | 91% | 85% | 91% | 96% | $9.15 | 3.8s |
+| `F1h_opus_humanizer` | 51% [41, 61] | -18 pp [-28, -8], significant (p=0.001) | 93% | 69% | 87% | 90% | $50.26 | 3.7s |
 | `frontier-live:claude-opus-5-5` | 40% [30, 50] | -29 pp [-39, -19], significant (p=0.000) | 78% | 68% | 81% | 96% | $7.21 | 3.7s |
+| `O2h_glm_humanizer` | 37% [28, 47] | -32 pp [-43, -20], significant (p=0.000) | 95% | 76% | 75% | 70% | $1.15 | 1.4s |
+| `F2h_gpt61_humanizer` | 30% [21, 40] | -39 pp [-50, -28], significant (p=0.000) | 95% | 88% | 62% | 60% | $7.74 | 2.5s |
 | `F2_gpt61_terra` | 17% [10, 26] | -52 pp [-62, -42], significant (p=0.000) | 92% | 89% | 20% | 96% | $0.86 | 2.6s |
 | `O1_glm_base` | 15% [9, 24] | -54 pp [-64, -43], significant (p=0.000) | 97% | 75% | 17% | 100% | $0.10 | 1.2s |
 | `frontier-persona-preexisting` | 5% [2, 11] | -64 pp [-74, -53], significant (p=0.000) | 72% | 54% | 100% | 13% | n/a | n/a |
@@ -72,11 +81,14 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | System | Fact-safe human rate | Δ vs reference | G1 invented | G2 lost | G3 tells | G4 gutted | $ / 1k | p50 latency |
 |---|---|---|---|---|---|---|---|---|
 | `O3c_glm_prompt_harness_style` | 93% [78, 99] | +23 pp [+10, +40], significant (p=0.000) | 93% | 100% | 100% | 100% | $0.81 | 3.3s |
-| `F1H_opus_harness` | 90% [73, 98] | +20 pp [+7, +33], significant (p=0.001) | 93% | 100% | 97% | 100% | $16.44 | 4.9s |
+| `F1H_opus_harness` | 90% [73, 98] | +20 pp [+7, +33], significant (p=0.001) | 93% | 100% | 97% | 100% | $15.83 | 4.8s |
 | `O3_glm_harness` | 90% [73, 98] | +20 pp [+7, +37], significant (p=0.002) | 90% | 100% | 100% | 100% | $0.28 | 2.6s |
 | `O3b_glm_prompt_harness` | 87% [69, 96] | +17 pp [+3, +30], significant (p=0.004) | 90% | 100% | 93% | 100% | $0.55 | 1.6s |
 | `O2_glm_prompt` | 70% [51, 85] | +0 pp [-20, +17], n.s. (p=0.996) | 90% | 93% | 77% | 100% | $0.31 | 1.2s |
-| `frontier-strong:claude-opus-5-5` | 70% [51, 85] | reference | 87% | 87% | 90% | 97% | $8.93 | 3.9s |
+| `frontier-strong:claude-opus-5-5` | 70% [51, 85] | reference | 87% | 87% | 90% | 97% | $9.15 | 3.8s |
+| `F1h_opus_humanizer` | 63% [44, 80] | -7 pp [-20, +7], n.s. (p=0.315) | 83% | 80% | 90% | 100% | $50.26 | 3.7s |
+| `F2h_gpt61_humanizer` | 57% [37, 75] | -13 pp [-33, +7], n.s. (p=0.190) | 97% | 90% | 80% | 87% | $7.74 | 2.5s |
+| `O2h_glm_humanizer` | 57% [37, 75] | -13 pp [-33, +7], n.s. (p=0.196) | 87% | 77% | 90% | 80% | $1.15 | 1.4s |
 | `frontier-live:claude-opus-5-5` | 43% [25, 63] | -27 pp [-43, -13], significant (p=0.000) | 70% | 67% | 90% | 93% | $7.21 | 3.7s |
 | `frontier-persona-preexisting` | 37% [20, 56] | -33 pp [-50, -17], significant (p=0.000) | 63% | 63% | 97% | 63% | n/a | n/a |
 | `X0_copy_draft (no rewrite: control)` | 33% [17, 53] | -37 pp [-57, -17], significant (p=0.000) | 100% | 100% | 33% | 100% | n/a | 0.0s |
@@ -91,11 +103,14 @@ Gate columns show the share of items that pass each gate. An item a system refus
 |---|---|---|---|---|---|---|---|---|
 | `O3c_glm_prompt_harness_style` | 98% [94, 100] | +24 pp [+17, +32], significant (p=0.000) | 98% | 100% | 100% | 100% | $0.81 | 3.3s |
 | `O3b_glm_prompt_harness` | 98% [93, 99] | +23 pp [+16, +32], significant (p=0.000) | 98% | 99% | 100% | 100% | $0.55 | 1.6s |
-| `F1H_opus_harness` (2 refused/failed, counted as fails) | 95% [89, 98] | +21 pp [+14, +28], significant (p=0.000) | 98% | 98% | 100% | 98% | $16.44 | 4.9s |
+| `F1H_opus_harness` (2 refused/failed, counted as fails) | 95% [89, 98] | +21 pp [+14, +28], significant (p=0.000) | 98% | 98% | 100% | 98% | $15.83 | 4.8s |
 | `O3_glm_harness` | 95% [89, 98] | +21 pp [+13, +28], significant (p=0.000) | 96% | 99% | 100% | 100% | $0.28 | 2.6s |
 | `O2_glm_prompt` | 78% [69, 85] | +3 pp [-5, +12], n.s. (p=0.455) | 93% | 92% | 88% | 99% | $0.31 | 1.2s |
-| `frontier-strong:claude-opus-5-5` (2 refused/failed, counted as fails) | 74% [65, 82] | reference | 87% | 92% | 92% | 98% | $8.93 | 3.9s |
+| `frontier-strong:claude-opus-5-5` (2 refused/failed, counted as fails) | 74% [65, 82] | reference | 87% | 92% | 92% | 98% | $9.15 | 3.8s |
+| `F2h_gpt61_humanizer` | 68% [58, 76] | -7 pp [-16, +2], n.s. (p=0.142) | 90% | 92% | 86% | 89% | $7.74 | 2.5s |
+| `F1h_opus_humanizer` (2 refused/failed, counted as fails) | 67% [57, 75] | -8 pp [-15, +0], significant (p=0.050) | 82% | 84% | 92% | 97% | $50.26 | 3.7s |
 | `frontier-live:claude-opus-5-5` (2 refused/failed, counted as fails) | 67% [57, 75] | -8 pp [-14, -1], significant (p=0.027) | 79% | 87% | 92% | 98% | $7.21 | 3.7s |
+| `O2h_glm_humanizer` | 65% [56, 73] | -9 pp [-18, +1], n.s. (p=0.069) | 88% | 85% | 88% | 94% | $1.15 | 1.4s |
 | `F2_gpt61_terra` | 62% [52, 70] | -12 pp [-23, -2], significant (p=0.019) | 93% | 93% | 71% | 100% | $0.86 | 2.6s |
 | `X0_copy_draft (no rewrite: control)` | 57% [47, 66] | -18 pp [-29, -6], significant (p=0.005) | 100% | 100% | 57% | 100% | n/a | 0.0s |
 | `O1_glm_base` | 40% [31, 49] | -34 pp [-45, -23], significant (p=0.000) | 88% | 89% | 48% | 100% | $0.10 | 1.2s |
@@ -108,14 +123,26 @@ Gate columns show the share of items that pass each gate. An item a system refus
 |---|---|---|---|---|---|---|---|---|
 | `O3b_glm_prompt_harness` | 99% [94, 100] | +27 pp [+18, +36], significant (p=0.000) | 99% | 100% | 100% | 100% | $0.55 | 1.6s |
 | `O3c_glm_prompt_harness_style` | 99% [94, 100] | +27 pp [+18, +36], significant (p=0.000) | 99% | 100% | 100% | 100% | $0.81 | 3.3s |
-| `F1H_opus_harness` (2 refused/failed, counted as fails) | 96% [90, 99] | +23 pp [+15, +32], significant (p=0.000) | 98% | 98% | 100% | 98% | $16.44 | 4.9s |
+| `F1H_opus_harness` (2 refused/failed, counted as fails) | 96% [90, 99] | +23 pp [+15, +32], significant (p=0.000) | 98% | 98% | 100% | 98% | $15.83 | 4.8s |
 | `O3_glm_harness` | 96% [90, 99] | +23 pp [+15, +33], significant (p=0.000) | 96% | 100% | 100% | 100% | $0.28 | 2.6s |
 | `O2_glm_prompt` | 77% [67, 85] | +4 pp [-6, +14], n.s. (p=0.428) | 93% | 91% | 88% | 99% | $0.31 | 1.2s |
-| `frontier-strong:claude-opus-5-5` (2 refused/failed, counted as fails) | 72% [63, 81] | reference | 85% | 92% | 92% | 98% | $8.93 | 3.9s |
+| `frontier-strong:claude-opus-5-5` (2 refused/failed, counted as fails) | 72% [63, 81] | reference | 85% | 92% | 92% | 98% | $9.15 | 3.8s |
+| `F2h_gpt61_humanizer` | 66% [56, 76] | -6 pp [-16, +4], n.s. (p=0.216) | 90% | 92% | 86% | 90% | $7.74 | 2.5s |
 | `frontier-live:claude-opus-5-5` (2 refused/failed, counted as fails) | 65% [55, 75] | -7 pp [-15, +0], n.s. (p=0.060) | 78% | 86% | 92% | 98% | $7.21 | 3.7s |
+| `F1h_opus_humanizer` (2 refused/failed, counted as fails) | 62% [52, 72] | -10 pp [-18, -2], significant (p=0.016) | 81% | 82% | 91% | 96% | $50.26 | 3.7s |
+| `O2h_glm_humanizer` | 61% [51, 71] | -11 pp [-21, -1], significant (p=0.042) | 86% | 84% | 87% | 94% | $1.15 | 1.4s |
 | `F2_gpt61_terra` | 60% [50, 70] | -12 pp [-23, +0], significant (p=0.045) | 93% | 93% | 69% | 100% | $0.86 | 2.6s |
 | `X0_copy_draft (no rewrite: control)` | 54% [44, 64] | -18 pp [-32, -5], significant (p=0.006) | 100% | 100% | 54% | 100% | n/a | 0.0s |
 | `O1_glm_base` | 35% [25, 45] | -38 pp [-50, -26], significant (p=0.000) | 86% | 88% | 44% | 100% | $0.10 | 1.2s |
+
+Gate columns show the share of items that pass each gate. An item a system refused or failed is scored as an empty rewrite (G1 and G3 pass, G2 and G4 fail), so it counts against that system.
+
+## Real README copy (GitHub, permissive licences; no reference) (80 items)
+
+| System | Fact-safe human rate | Δ vs reference | G1 invented | G2 lost | G3 tells | G4 gutted | $ / 1k | p50 latency |
+|---|---|---|---|---|---|---|---|---|
+| `F1H_opus_harness` | 98% [91, 100] | +21 pp [+12, +31], significant (p=0.000) | 100% | 100% | 98% | 100% | $15.83 | 4.8s |
+| `frontier-strong:claude-opus-5-5` | 76% [65, 85] | reference | 96% | 99% | 82% | 99% | $9.15 | 3.8s |
 
 Gate columns show the share of items that pass each gate. An item a system refused or failed is scored as an empty rewrite (G1 and G3 pass, G2 and G4 fail), so it counts against that system.
 
@@ -129,7 +156,10 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | `O3_glm_harness` | 4/130 (3% [1, 8]) | 71% [70, 72] | 0.10 [0.03, 0.19] | 0.98 [0.96, 0.99] | 91% [89, 94] |
 | `O2_glm_prompt` | 6/130 (5% [2, 10]) | 69% [68, 71] | 0.19 [0.11, 0.28] | 0.93 [0.92, 0.95] | 92% [89, 94] |
 | `frontier-strong:claude-opus-5-5` | 13/130 (10% [5, 16]) | 73% [72, 75] | 0.06 [0.01, 0.14] | 0.91 [0.89, 0.93] | 89% [86, 92] |
+| `F1h_opus_humanizer` | 12/130 (9% [5, 16]) | 72% [71, 73] | 0.06 [0.00, 0.15] | 0.87 [0.85, 0.90] | 86% [83, 89] |
+| `O2h_glm_humanizer` | 9/130 (7% [3, 13]) | 70% [69, 72] | 0.10 [0.04, 0.17] | 0.78 [0.75, 0.80] | 91% [88, 94] |
 | `frontier-live:claude-opus-5-5` | 31/130 (24% [17, 32]) | 72% [70, 73] | 0.08 [0.03, 0.14] | 0.96 [0.94, 0.99] | 86% [82, 89] |
+| `F2h_gpt61_humanizer` | 6/130 (5% [2, 10]) | 68% [67, 70] | 0.13 [0.05, 0.24] | 0.77 [0.74, 0.79] | 91% [89, 94] |
 | `F2_gpt61_terra` | 11/130 (8% [4, 15]) | 62% [60, 64] | 0.40 [0.26, 0.57] | 0.90 [0.88, 0.91] | 90% [87, 93] |
 | `O1_glm_base` | 8/130 (6% [3, 12]) | 62% [61, 64] | 0.55 [0.39, 0.73] | 0.98 [0.97, 0.99] | 88% [84, 90] |
 | `frontier-persona-preexisting` | 39/130 (30% [22, 39]) | 70% [69, 72] | 0.02 [0.00, 0.05] | 0.61 [0.59, 0.65] | 91% [89, 94] |

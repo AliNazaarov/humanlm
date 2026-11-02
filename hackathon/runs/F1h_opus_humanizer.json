@@ -1,0 +1,27 @@
+{
+ "system": "F1h_opus_humanizer",
+ "provider": "anthropic",
+ "model": "claude-opus-5-5",
+ "loops": 0,
+ "prompt_sha256": "eb268c83a6ebc18f",
+ "prompt_file": "hackathon/train/prompt_humanizer.txt",
+ "decoding": {
+  "max_tokens": 1500,
+  "thinking": {
+   "type": "adaptive"
+  },
+  "output_config": {
+   "effort": "low"
+  }
+ },
+ "style_round": false,
+ "prices_usd_per_m": [
+  4.0,
+  20.0
+ ],
+ "eval": "evals/eval_all.jsonl",
+ "rows": 130,
+ "pass_rate": 0.5384615384615384,
+ "commit": "5e4fa21f9b13aab2c49df7a6c824fa5c33ffcff2",
+ "finished": "2026-11-02T12:48:27-0700"
+}
