@@ -1,7 +1,7 @@
 """Held-out split + Fireworks SFT data. Built during the hackathon (2026-11-02).
 
 Reads every pair in data/pairs/, applies the same filter as data/build_mix.py (dedup, gen_pairs.keep()
-with the attribution check, news <= 25%), removes anything that overlaps the eval sets by 9+ consecutive
+with the attribution check, news <= 25%), removes anything that overlaps the eval sets by 8+ consecutive
 words, holds out 120 pairs by a stable hash of pid, and writes:
   evals/heldout_pairs.jsonl          120 pairs with real human references, never trained on
   hackathon/data/train.jsonl         Fireworks chat JSONL (system, user = AI draft, assistant = human)
@@ -13,7 +13,7 @@ import collections, glob, hashlib, json, os, random, re, sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 MAX_TRAIN = int(sys.argv[1]) if len(sys.argv) > 1 else 5000
-NEWS_CAP, N_HELDOUT, N_VALID, NGRAM = 0.25, 120, 200, 9
+NEWS_CAP, N_HELDOUT, N_VALID, NGRAM = 0.25, 120, 200, 8
 SYSTEM = ("Rewrite the user's text so it reads like a skilled human wrote it: plain, specific, varied rhythm, "
           "correct grammar. Keep every fact, name and number. Add nothing.")
 
@@ -24,7 +24,7 @@ sys.argv = argv
 keep = g["keep"]
 
 def grams(text):
-    w = re.findall(r"[a-z0-9']+", text.lower())
+    w = re.findall(r"\w+", text.lower())
     return {" ".join(w[i:i + NGRAM]) for i in range(len(w) - NGRAM + 1)}
 
 eval_grams = set()
@@ -81,6 +81,8 @@ for name, part in (("train", train), ("valid", valid)):
 
 held_pids = {d["pid"] for d in heldout} | {d["pid"] for d in valid}
 assert not held_pids & {d["pid"] for d in train}, "held-out pid leaked into train"
+left = sum(1 for d in train + valid if (grams(d["ai_draft"]) | grams(d["human"])) & eval_grams)
+assert left == 0, f"{left} train/valid rows still overlap the eval sets"
 
 mix = collections.Counter(d["source"] for d in train)
 lines = ["# Split (built 2026-11-02 during the hackathon)", "",
@@ -90,6 +92,7 @@ lines = ["# Split (built 2026-11-02 during the hackathon)", "",
          f"- Held out: {len(heldout)} (`evals/heldout_pairs.jsonl`), the first {N_HELDOUT} pairs by md5(pid)",
          f"- Valid: {len(valid)}; Train: {len(train)} (news capped at {NEWS_CAP:.0%}, max {MAX_TRAIN})",
          "- Train source mix: " + ", ".join(f"{k} {v} ({v/len(train):.0%})" for k, v in mix.most_common()),
+         f"- Remaining eval overlap in train/valid: {left}",
          "- Licence: Common Pile filtered subsets (openly licensed / public domain). No frontier-model text in training.",
          f"- System prompt (same as pipeline/infer.py and every eval run): {SYSTEM}"]
 open(os.path.join(ROOT, "hackathon/data/SPLIT.md"), "w").write("\n".join(lines) + "\n")
