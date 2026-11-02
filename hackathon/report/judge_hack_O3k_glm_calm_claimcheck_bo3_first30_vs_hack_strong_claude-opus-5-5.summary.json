@@ -1,0 +1,73 @@
+{
+  "a": "hack_O3k_glm_calm_claimcheck_bo3_first30.jsonl",
+  "b": "hack_strong_claude-opus-5-5.jsonl",
+  "model": "accounts/fireworks/models/kimi-k3",
+  "judge_family": "kimi",
+  "mock": false,
+  "heldout": false,
+  "provider": "fireworks",
+  "reasoning_effort": "none",
+  "max_tokens": 4096,
+  "eval": "evals/eval_all.jsonl",
+  "cfg": "e7dec4baee9f9573",
+  "win": 8,
+  "loss": 13,
+  "tie": 9,
+  "n": 30,
+  "flip_rate": 0.3,
+  "pos1_rate": 0.5593,
+  "facts": {
+    "win": 2,
+    "loss": 2,
+    "tie": 26,
+    "n": 30,
+    "flip_rate": 0.2
+  },
+  "style": {
+    "win": 4,
+    "loss": 11,
+    "tie": 15,
+    "n": 30,
+    "flip_rate": 0.5
+  },
+  "n_expected": 130,
+  "missing_in_a": {
+    "count": 100,
+    "first": [
+      "dev-031",
+      "dev-032",
+      "dev-033"
+    ]
+  },
+  "missing_in_b": {
+    "count": 0,
+    "first": []
+  },
+  "not_in_eval": {
+    "count": 0,
+    "first": []
+  },
+  "dup_ids": {
+    "count": 0,
+    "first": []
+  },
+  "n_complete": 30,
+  "incomplete_ids": {
+    "count": 100,
+    "first": [
+      "dev-031",
+      "dev-032",
+      "dev-033"
+    ]
+  },
+  "empty_facts": 0,
+  "unparsed": 0,
+  "finish_length": 0,
+  "errors": 0,
+  "skipped_resume": 0,
+  "limit": null,
+  "seed": 0,
+  "prompt_tokens_total": 40716,
+  "completion_tokens_total": 5189,
+  "reasoning_tokens_total": 0
+}
