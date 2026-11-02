@@ -31,3 +31,4 @@ Pairwise judge (both orders; A wins / B wins / ties, two-sided sign test):
 - `hack_O3c_glm_prompt_harness_style.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 35/52/43 (p=0.086), style 33/46/51 (p=0.177)
 - `hack_O3d_glm_harness_anticopy.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 34/56/40 (p=0.026), style 35/44/51 (p=0.368)
 - `hack_O3e_glm_harness_cliche.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 25/65/40 (p=0.000), style 20/54/56 (p=0.000)
+- `hack_O3j_glm_bestof3_judged.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 41/55/34 (p=0.184), style 44/37/49 (p=0.505)
