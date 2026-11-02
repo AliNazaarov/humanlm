@@ -1,0 +1,69 @@
+{
+  "a": "hack_O3t_glm_ali_taste.jsonl",
+  "b": "hack_strong_claude-opus-5-5.jsonl",
+  "model": "accounts/fireworks/models/qwen3p8-max",
+  "judge_family": "qwen",
+  "mock": false,
+  "heldout": false,
+  "provider": "fireworks",
+  "reasoning_effort": "none",
+  "max_tokens": 4096,
+  "eval": "evals/eval_all.jsonl",
+  "cfg": "aaaccc6de67c9592",
+  "win": 35,
+  "loss": 40,
+  "tie": 30,
+  "n": 105,
+  "flip_rate": 0.2857,
+  "pos1_rate": 0.527,
+  "facts": {
+    "win": 14,
+    "loss": 19,
+    "tie": 72,
+    "n": 105,
+    "flip_rate": 0.2
+  },
+  "style": {
+    "win": 37,
+    "loss": 28,
+    "tie": 40,
+    "n": 105,
+    "flip_rate": 0.3524
+  },
+  "n_expected": 130,
+  "missing_in_a": {
+    "count": 0,
+    "first": []
+  },
+  "missing_in_b": {
+    "count": 0,
+    "first": []
+  },
+  "not_in_eval": {
+    "count": 0,
+    "first": []
+  },
+  "dup_ids": {
+    "count": 0,
+    "first": []
+  },
+  "n_complete": 105,
+  "incomplete_ids": {
+    "count": 25,
+    "first": [
+      "dev-002",
+      "dev-003",
+      "dev-004"
+    ]
+  },
+  "empty_facts": 0,
+  "unparsed": 28,
+  "finish_length": 0,
+  "errors": 0,
+  "skipped_resume": 0,
+  "limit": null,
+  "seed": 0,
+  "prompt_tokens_total": 200054,
+  "completion_tokens_total": 131113,
+  "reasoning_tokens_total": 2773
+}
