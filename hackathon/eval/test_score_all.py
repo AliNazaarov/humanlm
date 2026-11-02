@@ -83,7 +83,8 @@ class TestScoreSystem(unittest.TestCase):
         good = self._run([{"id": "dev-001", "system": "frontier-strong:x",
                            "output": "Ledgerline took close from 9 days to 4 days for 38 customers."}])
         bad = self._run([{"id": "dev-001", "system": "o1", "output": "Ledgerline: 9 to 4 days."}])
-        res = sa.build([good, bad], items, BAND, None, tempfile.gettempdir())
+        with tempfile.TemporaryDirectory() as report_dir:  # empty: no stray judge summaries
+            res = sa.build([good, bad], items, BAND, None, report_dir)
         self.assertEqual(res["reference"], "frontier-strong:x")
         o1 = next(e for e in res["blocks"]["all"]["systems"] if e["label"] == "o1")
         self.assertEqual(o1["vs_reference"]["pass"]["diff"], -1.0)

@@ -131,6 +131,11 @@ def cost_usd(prompt_tokens: int, completion_tokens: int, price_in: float, price_
 
 def make_client(provider: str):
     from dotenv import load_dotenv
+    try:  # use the OS certificate store (HTTPS-inspecting proxies); verification stays on
+        import truststore
+        truststore.inject_into_ssl()
+    except ImportError:
+        pass
     # keys.env outside the repo first (CONTRACT with Ali), then repo .env; first value wins
     load_dotenv(os.environ.get("HUMANLM_KEYS", os.path.expanduser("~/.config/humanlm/keys.env")))
     load_dotenv(os.path.join(ROOT, ".env"))

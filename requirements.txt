@@ -4,3 +4,4 @@ matplotlib
 anthropic
 openai
 python-dotenv
+truststore

@@ -231,6 +231,11 @@ def mock_judge(heldout: bool = False) -> Judge:
 def _load_env() -> None:
     try:
         from dotenv import load_dotenv
+        try:  # use the OS certificate store (HTTPS-inspecting proxies); verification stays on
+            import truststore
+            truststore.inject_into_ssl()
+        except ImportError:
+            pass
         # keys.env outside the repo first (CONTRACT with Ali), then repo .env; first value wins
         load_dotenv(os.environ.get("HUMANLM_KEYS", os.path.expanduser("~/.config/humanlm/keys.env")))
         load_dotenv(os.path.join(ROOT, ".env"))
