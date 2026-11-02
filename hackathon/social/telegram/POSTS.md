@@ -1,4 +1,4 @@
-Now I'm also thinking with Ruslan that we need to do one human-like sk one human-like writing and then one is for copywriting. He's gonna be scraping down human data from 80s, 90s, 2000s books and literature. So AI is also trained on that. And then I wanted to do the copywriting one so like it's because it's a very important skill for outreach, for writing everything and everything. So scrape data, create an edge to scrape data and train our models on, or what do you think of this idea# Telegram blind test (10 posts). Post each as text, then attach a poll: "Which would you send to a customer?"  Options: A / B / Both fine / Neither
+ Telegram blind test (10 posts). Post each as text, then attach a poll: "Which would you send to a customer?"  Options: A / B / Both fine / Neither
 
 ---------- POST 1 of 10 ----------
 Quick blind test (1/10): two rewrites of the same marketing copy. Which one would you actually send to a customer? Vote in the poll below.
