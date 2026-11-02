@@ -199,6 +199,7 @@ DISPLAY = {
     "O2_glm_prompt": "GLM-5.3 + better prompt",
     "O2h_glm_humanizer": "GLM-5.3 + humanizer",
     "O4m_glm_sft_modern": "GLM-5.3 fine-tuned (SFT B)",
+    "E1_ensemble": "FeatherLM ensemble (per-item pick)",
     "X0_copy_draft (no rewrite: control)": "Unchanged draft (control)",
     "frontier-persona-preexisting": "Claude persona (pre-event)",
 }
