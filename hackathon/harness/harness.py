@@ -248,8 +248,8 @@ LINT_VALUES = r"\b(believ\w*|priorit\w*|mission\w*|passion\w*|excit\w*|humbl\w*|
 LINT_VAGUE = r"\b(helps? you|handles? the rest|stands? out|takes? care of|more than ever)\b"
 LINT_LABEL = r"^\s*([A-Z][A-Za-z0-9&/'-]*(?: [A-Za-z0-9&/'-]+){0,2}):\s"
 LINT_STOP = set("a an the and or but of to in on for with at by from is are was were be been it its it's this that "
-                "these those we our you your they their i my he she his her as so if then than not no do does did "
-                "have has had will would can could just very".split())
+                "these those as so if then than not no do does did have has had will would can could just very".split())
+# pronouns are content for safe_trim: "We were frustrated." after "Clients were frustrated." is not a repeat
 
 
 def _lint_norm(t):

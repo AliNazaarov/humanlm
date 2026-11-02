@@ -230,5 +230,11 @@ class TestAcceptRule(unittest.TestCase):
         self.assertEqual(log, {})
 
 
+class TestSafeTrimPronouns(unittest.TestCase):
+    def test_new_subject_is_not_a_repeat(self):
+        t = "Clients were upset. We were upset."
+        self.assertEqual(harness.safe_trim(t), t)
+
+
 if __name__ == "__main__":
     unittest.main()
