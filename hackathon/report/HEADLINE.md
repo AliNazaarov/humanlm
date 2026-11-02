@@ -2,7 +2,7 @@ Fact-safe human rewrite rate on 250 items (eval 130 + held-out 120), 95% CI; Δ 
 
 | System | Fact-safe rate (strict) | Δ strict | Fact-safe rate (lenient) | Δ lenient | $ / 1k rewrites | p50 latency |
 |---|---|---|---|---|---|---|
-| `O3j_glm_bestof3_judged` (120 items) | 98% [93, 99] | +23 pp [+16, +32], significant (p=0.000) | 99% [95, 100] | +12 pp [+7, +18], significant (p=0.000) | $2.55 | 12.6s |
+| `O3j_glm_bestof3_judged` | 98% [95, 99] | +26 pp [+21, +32], significant (p=0.000) | 99% [97, 100] | +14 pp [+10, +19], significant (p=0.000) | $2.56 | 11.7s |
 | `O3c_glm_prompt_harness_style` | 97% [94, 99] | +25 pp [+20, +31], significant (p=0.000) | 98% [95, 99] | +13 pp [+9, +18], significant (p=0.000) | $0.81 | 3.3s |
 | `O3e_glm_harness_cliche` | 96% [93, 98] | +25 pp [+19, +30], significant (p=0.000) | 99% [97, 100] | +14 pp [+10, +19], significant (p=0.000) | $0.81 | 3.0s |
 | `O3d_glm_harness_anticopy` | 95% [92, 97] | +24 pp [+18, +30], significant (p=0.000) | 98% [95, 99] | +13 pp [+8, +18], significant (p=0.000) | $0.85 | 2.9s |
@@ -29,3 +29,5 @@ Pairwise judge (both orders; A wins / B wins / ties, two-sided sign test):
 - `hack_O3_glm_harness.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 34/57/39 (p=0.021), style 25/56/49 (p=0.001)
 - `hack_O3b_glm_prompt_harness.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 35/60/35 (p=0.013), style 26/60/44 (p=0.000)
 - `hack_O3c_glm_prompt_harness_style.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 35/52/43 (p=0.086), style 33/46/51 (p=0.177)
+- `hack_O3d_glm_harness_anticopy.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 34/56/40 (p=0.026), style 35/44/51 (p=0.368)
+- `hack_O3e_glm_harness_cliche.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 25/65/40 (p=0.000), style 20/54/56 (p=0.000)
