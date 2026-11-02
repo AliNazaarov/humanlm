@@ -1,0 +1,6 @@
+requests
+numpy
+matplotlib
+anthropic
+openai
+python-dotenv
