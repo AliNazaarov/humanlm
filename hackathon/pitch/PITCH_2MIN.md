@@ -6,7 +6,7 @@ Two speakers. **Ali**: problem and proof. **Ruslan**: solution and next step. De
 
 **[Slide 1, title, 0:00] ALI**
 
-Every founder here has done this: an AI writes your launch email, it reads like an AI, so you paste it into Claude and say "make this sound human."
+Anyone can ship an app overnight now. Features are cheap. What's hard is distribution: getting real people to read what you send. And people have stopped trusting AI-written text. When AI "polishes" your copy, it quietly drops lines and changes facts. Most businesses and nonprofits can't afford that risk, or frontier prices on every email. FeatherLM makes outreach copy read like a person wrote it, keeps every fact, at about a tenth of the cost.
 
 **[Slide 2, the problem, 0:10] ALI**
 
