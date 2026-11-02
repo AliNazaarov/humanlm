@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FeatherLM Demo Deck</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2358B4E8'/%3E%3Cpath d='M46 12c-13 2-24 12-27 28l-3 12 3 1 4-10c9-1 18-7 22-17-4 2-8 2-11 2 5-3 9-8 12-16z' fill='white'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* design tokens copied from hackathon/demo/app/index.html (FeatherLM editor) */
+:root{--sky:#58B4E8;--sky-deep:#2F8FC9;--sky-ink:#14618F;--sky-wash:#EAF5FC;--sky-line:#CFE7F6;--bg:#F7FAFC;--surface:#FFFFFF;--line:#E3EAF0;--ink:#16212B;--ink2:#44525F;--ink3:#6B7884;--accent:var(--sky-deep);--wash:var(--sky-wash);--bad:#C2415B;--shadow:0 1px 2px rgba(20,60,90,.05), 0 12px 32px -12px rgba(20,60,90,.12);--radius:20px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--ink);font-family:Geist,system-ui,sans-serif}
+.slide{position:absolute;inset:0;padding:6vh 7vw;display:none;flex-direction:column;justify-content:center}
+.slide.on{display:flex}
+.kick{font:500 1.05vw 'Geist Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:2.2vh}
+h1{font-size:4.4vw;line-height:1.02;letter-spacing:-.035em;font-weight:600;max-width:22ch;text-wrap:balance}h1 em{font-style:normal;color:var(--sky-deep)}
+h2{font-size:2.8vw;line-height:1.08;letter-spacing:-.03em;font-weight:600;margin-bottom:3vh;max-width:30ch;text-wrap:balance}
+p,li{font-size:1.45vw;line-height:1.45;color:var(--ink2)}
+.sub{font-size:1.9vw;color:var(--ink2);margin-top:3vh;max-width:40ch}
+em{font-style:normal;color:var(--accent)}
+.mono{font-family:'Geist Mono',monospace}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:3vw;align-items:start}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:2.2vh 1.6vw}
+.card h3{font:500 1vw 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);margin-bottom:1.2vh}
+.card pre{white-space:pre-wrap;font:1.15vw/1.5 Geist,sans-serif;color:var(--ink)}
+.lost{background:#F8E3E6;color:var(--bad);border-radius:4px;padding:0 .2em}
+.kept{background:var(--wash);color:var(--accent);border-radius:4px;padding:0 .2em}
+table{border-collapse:collapse;width:100%;font-size:1.3vw}
+th,td{text-align:left;padding:1.1vh .8vw;border-bottom:1px solid var(--line)}
+th{font:500 .95vw 'Geist Mono',monospace;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3)}
+td.n{font-family:'Geist Mono',monospace;text-align:right}th.n{text-align:right}
+tr.us td{color:var(--accent);font-weight:600}
+.bar{height:2.2vh;background:linear-gradient(90deg,var(--sky),var(--sky-deep));border-radius:3px}
+.bar.g{background:#CBD6DF}
+.flow{display:flex;gap:1.2vw;align-items:stretch;margin:2vh 0}
+.step{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:2vh 1.2vw}
+.step b{display:block;font:500 .95vw 'Geist Mono',monospace;color:var(--accent);margin-bottom:1vh}
+.step p{font-size:1.2vw}
+.arrow{align-self:center;color:var(--ink3);font-size:2vw}
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4vw}
+.shots figure img{width:100%;border-radius:10px;border:1px solid var(--line);display:block}
+.shots figcaption{font-size:1.1vw;color:var(--ink2);margin-top:1vh}
+.shots figcaption b{color:var(--accent);font-family:'Geist Mono',monospace;margin-right:.4em}
+.big{font:500 5.6vw/1 'Geist Mono',monospace;letter-spacing:-.03em;color:var(--accent)}
+.foot{position:absolute;bottom:3vh;left:7vw;right:7vw;font-size:.9vw;color:var(--ink3);line-height:1.4}
+.num{position:absolute;bottom:3vh;right:3vw;font:.9vw 'Geist Mono',monospace;color:var(--ink3)}
+/* wordmark: same .brand/.logo as the editor */
+.brand{position:absolute;top:3.5vh;left:7vw;display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:-.01em;font-size:1.2vw}
+.logo{width:2.2vw;height:2.2vw;border-radius:.6vw;background:linear-gradient(160deg,#7CCBF4,var(--sky) 55%,#3C9FD8);display:grid;place-items:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 4px 10px -4px rgba(47,143,201,.6)}
+.logo svg{width:60%;height:60%}
+ul{padding-left:1.2em}li{margin:.6vh 0}
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: TITLE. Notes: "FeatherLM. You paste AI-sounding copy, it gives back copy that reads like a person wrote it, keeps every fact, and costs about a tenth of Claude." Numbers: $0.81 vs $9.11 per 1k (results.json cost_per_1k_usd). -->
+<section class="slide on">
+  <div class="kick">FeatherLM · Fireworks Deploy hackathon</div>
+  <h1>Copy that reads like a person wrote it, keeps every fact, at a tenth of the cost.</h1>
+  <p class="sub">An open model (GLM-5.3 Flash on Fireworks) inside a harness that checks its own work. <span class="mono">$0.81</span> per 1,000 rewrites against <span class="mono">$9.11</span> for Claude Opus 5.5.</p>
+</section>
+
+<!-- SLIDE 2: PROBLEM. Notes: "Ask a frontier model to make copy sound human and it quietly edits the facts. Here Claude rewrote the founder's tagline; the strict gate counts that as a lost fact. Claude fails a fact gate on 71 of 247 items (176/247 pass strict)." Example quoted exactly from hackathon/report/EXAMPLES.md (dev-092) and evals/runs/hack_O3c_glm_prompt_harness_style.jsonl. -->
+<section class="slide">
+  <div class="kick">The problem</div>
+  <h2>Ask a frontier model to "make it sound human" and it edits your facts.</h2>
+  <div class="cols">
+    <div class="card"><h3>Draft (dev-092)</h3><pre>Tagline: <span class="kept">Break Language Barriers</span> &amp; Unlock Nordic Markets 🌍</pre>
+      <h3 style="margin-top:2vh">Claude Opus 5.5</h3><pre>Tagline: <span class="lost">Localize Your SaaS for the Baltic and Nordic Markets</span></pre>
+      <p style="font-size:1.05vw;margin-top:1vh;color:var(--bad)">Gate G2: "You dropped these names: barriers, break, hey, language, unlock."</p></div>
+    <div class="card"><h3>FeatherLM (O3c)</h3><pre>Tagline: <span class="kept">Break Language Barriers</span> &amp; Reach Nordic Markets
+
+First comment: Hi, I'm Kristjan, founder of Linguo Labs. There are 14 of us, working across 4 countries. …</pre>
+      <p style="font-size:1.05vw;margin-top:1vh;color:var(--accent)">Gates G1–G4: pass, 0 failed.</p></div>
+  </div>
+  <p style="margin-top:3vh">Across 247 test items, Claude Opus 5.5 keeps every fact in <b>71%</b> (176/247). The other 29% ship with something changed.</p>
+</section>
+
+<!-- SLIDE 3: HOW IT WORKS. Notes: "The model isn't smarter. The loop is. Draft, then code checks: nothing invented, nothing lost, no AI tells, not gutted (length 0.7-1.3x). If a check fails, the model gets a targeted fix instruction, up to 3 rounds." Gate definitions from the editor page / results.json gates_rule. -->
+<section class="slide">
+  <div class="kick">How it works</div>
+  <h2>A cheap open model, held to account by code.</h2>
+  <div class="flow">
+    <div class="step"><b>1 · Draft</b><p>GLM-5.3 Flash on Fireworks rewrites the AI draft in plain prose.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><b>2 · Check</b><p>G1 nothing invented · G2 nothing lost (numbers, names, quotes) · G3 no AI tells · G4 not gutted (0.7–1.3× length).</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><b>3 · Targeted fix</b><p>Failed check → exact instruction ("You dropped these names… put them back"). Up to 3 rounds.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><b>4 · Ship</b><p>Only a rewrite that passes all four counts as fact-safe.</p></div>
+  </div>
+  <p>Same checker scores FeatherLM and every baseline. Median rewrite time <span class="mono">3.4 s</span> (Claude: <span class="mono">3.7 s</span>).</p>
+</section>
+
+<!-- SLIDE 4: PRODUCT DEMO. Notes: "Here's the editor. Pick a draft or paste your own. It underlines the AI tells and tints the facts it must keep. Hit rewrite: tells go from 4 to 0, facts 3 of 3 kept, passed 4 of 4 checks. Readers can judge us blind on featherlm-ab.vercel.app." Screenshots: local hackathon/demo/app/index.html (served on localhost) and https://featherlm-ab.vercel.app/round2/. -->
+<section class="slide">
+  <div class="kick">The product · how you use it</div>
+  <h2>Paste a draft. See the tells. Get a rewrite that proves it kept the facts.</h2>
+  <div class="shots">
+    <figure><img src="img/02_draft_tells.jpg" alt="Editor with AI tells underlined"><figcaption><b>1</b>Pick or paste a draft. AI tells are underlined (4 here); facts to keep are tinted blue.</figcaption></figure>
+    <figure><img src="img/03_rewrite_checks.jpg" alt="Rewrite with checks"><figcaption><b>2</b>Rewrite. Tells 4 → 0, facts 3/3 kept (12, 3, 6).</figcaption></figure>
+    <figure><img src="img/04_passed_4_of_4.jpg" alt="Passed 4 of 4"><figcaption><b>3</b>"FeatherLM passed 4 of 4." Copy it out.</figcaption></figure>
+  </div>
+  <p style="margin-top:2vh;font-size:1.1vw">Blind reader test live at <span class="mono">featherlm-ab.vercel.app/round2/</span></p>
+</section>
+
+<!-- SLIDE 5: LEADERBOARD. Notes: "Fact-safe rate on 247 items, strict. FeatherLM 97%. Claude 71%. Claude with our harness 94% — the harness works on any model, ours is just cheaper. Humanizer prompts make it worse. Out of sample, 80 real READMEs we never tuned on: 98% vs 76%." From results.json blocks.all / blocks.real and HEADLINE.md. -->
+<section class="slide">
+  <div class="kick">Benchmark · fact-safe rewrite rate (strict)</div>
+  <h2>FeatherLM keeps the facts 97% of the time. Claude: 71%.</h2>
+  <table>
+    <tr><th>System · 247 items</th><th class="n">Fact-safe</th><th style="width:40%"></th><th class="n">$ / 1k</th></tr>
+    <tr class="us"><td>FeatherLM (O3c, GLM-5.3 Flash + harness)</td><td class="n">97% <span style="font-size:.8em">239/247</span></td><td><div class="bar" style="width:96.8%"></div></td><td class="n">$0.81</td></tr>
+    <tr><td>Claude Opus 5.5 + our harness</td><td class="n">94% <span style="font-size:.8em">231/247</span></td><td><div class="bar g" style="width:93.5%"></div></td><td class="n">$15.85</td></tr>
+    <tr><td>Claude Opus 5.5 (strong prompt)</td><td class="n">71% <span style="font-size:.8em">176/247</span></td><td><div class="bar g" style="width:71.3%"></div></td><td class="n">$9.11</td></tr>
+    <tr><td>Claude Opus 5.5 + humanizer prompt</td><td class="n">60% <span style="font-size:.8em">147/247</span></td><td><div class="bar g" style="width:59.5%"></div></td><td class="n">$50.22</td></tr>
+    <tr><td>GPT-6.1 Terra</td><td class="n">40% <span style="font-size:.8em">98/247</span></td><td><div class="bar g" style="width:39.7%"></div></td><td class="n">$0.85</td></tr>
+    <tr><td>GLM-5.3 Flash, no harness</td><td class="n">27% <span style="font-size:.8em">66/247</span></td><td><div class="bar g" style="width:26.7%"></div></td><td class="n">$0.10</td></tr>
+  </table>
+  <p style="margin-top:2.5vh">Out of sample, <b>80 real READMEs</b>: FeatherLM <b>98%</b> (78/80) vs Claude <b>76%</b> (61/80). Δ vs Claude on 247: +26 pp [+20, +31], p&lt;0.001 (paired bootstrap).</p>
+</section>
+
+<!-- SLIDE 6: BUSINESS MONEY. Notes: "Per 1,000 rewrites: $0.81 us, $9.11 Claude, $15.85 Claude with our harness, $0.85 GPT-6.1. At a million rewrites a month that's $806 vs $9,111 vs $15,850. At 10 million it's $8k vs $91k vs $158k. And at 100k rewrites, Claude ships about 25,500 more rewrites with a broken fact than we do." Cost = cost_per_1k_usd × volume/1000 from results.json. Avoided = (Claude strict fail 71/247 − ours 8/247) × 100k = 63/247 × 100k. -->
+<section class="slide">
+  <div class="kick">Business · what it costs at volume</div>
+  <h2>Same job, about 11× cheaper than Claude. 20× cheaper than Claude doing it our way.</h2>
+  <div class="cols" style="grid-template-columns:1.25fr 1fr">
+    <div>
+      <table>
+        <tr><th>Rewrites / month</th><th class="n">FeatherLM</th><th class="n">Claude Opus</th><th class="n">Claude + harness</th><th class="n">GPT-6.1</th></tr>
+        <tr><td>10k</td><td class="n" style="color:var(--accent)">$8</td><td class="n">$91</td><td class="n">$159</td><td class="n">$9</td></tr>
+        <tr><td>100k</td><td class="n" style="color:var(--accent)">$81</td><td class="n">$911</td><td class="n">$1,585</td><td class="n">$85</td></tr>
+        <tr><td>1M</td><td class="n" style="color:var(--accent)">$806</td><td class="n">$9,111</td><td class="n">$15,850</td><td class="n">$853</td></tr>
+        <tr><td>10M</td><td class="n" style="color:var(--accent)">$8,061</td><td class="n">$91,107</td><td class="n">$158,502</td><td class="n">$8,534</td></tr>
+      </table>
+      <p style="font-size:1.05vw;margin-top:1.2vh">GPT-6.1 costs the same as us but is fact-safe only 40% of the time.</p>
+    </div>
+    <div>
+      <p class="mono" style="font-size:.95vw;color:var(--ink3);margin-bottom:1vh">MONTHLY COST AT 1M REWRITES</p>
+      <div style="display:grid;grid-template-columns:8vw 1fr;gap:1vh .8vw;align-items:center;font-size:1.1vw">
+        <span>FeatherLM</span><div class="bar" style="width:5.1%"></div>
+        <span>GPT-6.1</span><div class="bar g" style="width:5.4%"></div>
+        <span>Claude</span><div class="bar g" style="width:57.5%"></div>
+        <span>Claude+harness</span><div class="bar g" style="width:100%"></div>
+      </div>
+      <div style="margin-top:4vh"><div class="big">25,506</div>
+      <p>broken-fact rewrites avoided per 100k vs Claude Opus 5.5 (strict: 28.7% fail vs 3.2%).</p></div>
+    </div>
+  </div>
+  <div class="foot">$/1k from results.json cost_per_1k_usd: O3c $0.806, Claude strong $9.111, F1H Claude+harness $15.850, GPT-6.1 Terra $0.853. Avoided = (71/247 − 8/247) × 100,000. Lenient gate: 13,360 per 100k (15.4% vs 2.0% fail).</div>
+</section>
+
+<!-- SLIDE 7: HONEST STYLE. Notes: "Now the honest part. Facts we win clearly. Style we don't, yet. In our blind A/B, frozen at 15:15, 209 votes from 45 readers: 64 picked ours, 89 picked Claude, 56 said both fine. That leans to Claude, p=0.052, not significant. The LLM judges split and disagree with humans. Readers said we overuse punchy fragments; that's the next fix." From hackathon/report/human_votes.json and HEADLINE.md. -->
+<section class="slide">
+  <div class="kick">Style · the honest part</div>
+  <h2>On style, readers leaned to Claude. Not significant, and we know why.</h2>
+  <div class="cols">
+    <div class="card"><h3>Blind human A/B · frozen 15:15</h3>
+      <table>
+        <tr><td>FeatherLM preferred</td><td class="n" style="color:var(--accent)">64</td></tr>
+        <tr><td>Claude preferred</td><td class="n">89</td></tr>
+        <tr><td>Both fine</td><td class="n">56</td></tr>
+      </table>
+      <p style="margin-top:1.5vh;font-size:1.15vw">209 votes · 45 readers · sign test p = 0.052. Leaned to Claude, not significant.</p></div>
+    <div class="card"><h3>LLM judges split</h3>
+      <p style="font-size:1.15vw">qwen3p8-max, style: 44 ours / 27 Claude / 37 tie (p = 0.057)<br>kimi-k3, style: 33 ours / 46 Claude / 51 tie (p = 0.177)</p>
+      <p style="font-size:1.15vw;margin-top:1.2vh">Judges agree with human majorities on only 4/10 (kimi) and 3/10 (qwen) items.</p>
+      <p style="font-size:1.15vw;margin-top:1.2vh">Readers' note: ours over-uses dramatic fragments and punchy one-line closers. Claude writes calm complete sentences.</p></div>
+  </div>
+</section>
+
+<!-- SLIDE 8: BUILT TODAY. Notes: "What's built: the harness, the editor, the blind A/B page, a 247-item benchmark plus 80 real READMEs. We also fine-tuned: SFT on GLM got 38% and 33% fact-safe, a 4B DPO model 8%. Fine-tuning alone didn't keep facts; the harness did. Next: fix the punchy-fragment style tell and fine-tune with the harness in the loop." Fine-tune numbers from HEADLINE.md (O4c, O4m, L2h on 100 items). -->
+<section class="slide">
+  <div class="kick">Built today</div>
+  <h2>What exists, what we tried, what's next.</h2>
+  <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+    <div class="card"><h3>Shipped</h3><ul><li>Harness: 4 code gates + ≤3 targeted fix rounds</li><li>Editor: tells, fact tints, diff, Claude compare</li><li>Blind A/B page on Vercel</li><li>Benchmark: 247 items + 80 real READMEs</li></ul></div>
+    <div class="card"><h3>Fine-tunes</h3><ul><li>GLM SFT clean: 38%</li><li>GLM SFT modern: 33%</li><li>Qwen3 4B DPO + harness: 8% (100 items)</li></ul><p style="font-size:1.05vw;margin-top:1vh">Training alone didn't keep facts. The checks did.</p></div>
+    <div class="card"><h3>Next</h3><ul><li>Fix the style tell readers named (punchy fragments)</li><li>Fine-tune with the harness in the loop</li><li>API for teams shipping copy at volume</li></ul></div>
+  </div>
+</section>
+
+<!-- SLIDE 9: CLOSE. Notes: read the line slowly. 20x = F1H Claude+harness $15.85 / O3c $0.81 = 19.7x (results.json). -->
+<section class="slide">
+  <div class="kick">FeatherLM</div>
+  <h1 style="max-width:26ch">We didn't make an open model smarter than Claude. We made it accountable, and made accountability about <em>20× cheaper</em>.</h1>
+  <p class="sub" style="font-size:1.3vw">$15.85 (Claude + our harness) ÷ $0.81 (FeatherLM) per 1,000 rewrites = 19.7×.</p>
+  <div class="foot">Sources: hackathon/report/results.json (systems[].cost_per_1k_usd; blocks.all and blocks.real pass/pass_lenient) · hackathon/report/HEADLINE.md (247-item table, fine-tunes, judges) · hackathon/report/human_votes.json (frozen 15:15) · hackathon/report/EXAMPLES.md + evals/runs/hack_O3c_glm_prompt_harness_style.jsonl (dev-092) · Screens: hackathon/demo/app/index.html, featherlm-ab.vercel.app/round2/</div>
+</section>
+
+<div class="brand"><span class="logo"><svg viewBox="0 0 64 64"><path d="M46 12c-13 2-24 12-27 28l-3 12 3 1 4-10c9-1 18-7 22-17-4 2-8 2-11 2 5-3 9-8 12-16z" fill="white"/></svg></span>FeatherLM</div>
+<div class="num" id="num"></div>
+<script>
+const s=[...document.querySelectorAll('.slide')];let i=0;
+function go(n){i=Math.max(0,Math.min(s.length-1,n));s.forEach((e,k)=>e.classList.toggle('on',k===i));document.getElementById('num').textContent=(i+1)+' / '+s.length;try{location.hash=i+1}catch(e){}}
+document.addEventListener('keydown',e=>{if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key))go(i+1);if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key))go(i-1)});
+document.addEventListener('click',e=>go(e.clientX>innerWidth/2?i+1:i-1));
+go((parseInt(location.hash.slice(1))||1)-1);
+</script>
+</body>
+</html>
