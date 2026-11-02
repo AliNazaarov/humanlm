@@ -1,0 +1,37 @@
+{
+ "system": "L2h_qwen3_4b_dpo_harness",
+ "provider": "local",
+ "model": "mlx-community/Qwen3-4B-Instruct-2507-4bit",
+ "loops": 3,
+ "prompt_sha256": "99e063324fd0d9b7",
+ "prompt_file": "hackathon/train/prompt_v2.txt",
+ "decoding": {
+  "max_tokens": 600,
+  "temperature": 0.7,
+  "top_p": 0.9
+ },
+ "style_round": "basic",
+ "retrieve": 0,
+ "claim_check": null,
+ "anti_copy": false,
+ "best_of": 1,
+ "select_judge_model": null,
+ "select": null,
+ "strict_claims": false,
+ "judge_prices_usd_per_m": [
+  0.0,
+  0.0
+ ],
+ "prices_usd_per_m": [
+  0.0,
+  0.0
+ ],
+ "eval": "evals/eval_all.jsonl",
+ "rows": 18,
+ "pass_rate": 0.4444444444444444,
+ "empty_outputs": [],
+ "commit": "9346d8278b64b0364e47f3e5be0d357a1629dfcb",
+ "finished": "2026-11-02T15:02:09-0800",
+ "notes": "LOCAL ROW, not Fireworks: Qwen3-4B-Instruct-2507-4bit + LoRA L1 (SFT, 100 iters) + L2 (DPO) trained and served with mlx-lm on Ali's Mac (M4, 16 GB). PARTIAL: 18 of 130 eval_all items (first 18 in file order), time-boxed before the 15:10 PT push; the rest were not generated. O3c recipe (prompt_v2, --loops 3, --style-round), decoding temperature 0.7 / top_p 0.9 / max_tokens 600. Training facts: hackathon/train/TRAIN_LOG.md, 'Local L1/L2 (Mac, MLX)'.",
+ "items_total": 130
+}
