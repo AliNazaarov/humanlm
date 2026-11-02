@@ -25,3 +25,4 @@
 2026-11-02T19:55:55Z Rescored with O2h/F2h humanizer rows: humanizer prompt lowers fact-safety for every model (GLM 53%, GPT 51%, Claude 60% vs Claude strong 72%). O3c 97% still top. SFT B training.
 2026-11-02T20:00:31Z Video script committed (hackathon/demo/VIDEO_SCRIPT.md). Demo notebook being built. Waiting: O3e, O4/O4m/O5/O6 rows, Telegram votes.
 2026-11-02T20:06:09Z Scored O3d 95%/98% and O3e 96%/99% (strict/lenient) vs Claude strong 72%/85%. Judging O3d+O3e vs Claude now. O3j main file not pushed yet. A/B page fixes forwarded.
+2026-11-02T20:09:04Z Judge: O3d/O3e lose to Claude on the judge (O3e style 20/54); O3c remains best (n.s. vs Claude). Demo notebook + video script committed. Waiting: O3j main file, SFT B, O4/O5/O6, human votes.
