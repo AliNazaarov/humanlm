@@ -81,3 +81,22 @@ Status: **stopped at step 1; no model.** The serverless DPO reference sampler ha
 
 ## O4/O5 rows
 Not produced (see status above). The harness supports `--provider fwsampler` for serverless sampler snapshots, but sampling the SFT snapshot did not return within 10 minutes.
+
+## Prompt/harness variants O3m to O3q (2026-11-02, after O3l)
+All four are built on O3c (glm-5p3-flash, harness `--loops 3`). Dev selection used the GLM-5.3 judge only, on dev-031..070 (n=40) against Claude strong. The dev files are in `hackathon/runs/dev/` (see its README for file hashes, token counts and disclosures).
+
+| Variant | Dev style W/L/T | Full run | Status |
+|---|---|---|---|
+| O3c (reference, same 40 ids) | 16/18/6 | yes | main row |
+| O3m_glm_plainclaim | 12/14/14 | gates 125/130, 118/120, 79/80 | kept as a row. No style gain shown, waiting for the eval judges. Not the BOARD.md:87 "O3m idea" (shots plus style card) |
+| O3n_glm_frame | 7/25/8 | gates 122/130 = 93.8% (below the 95% floor), 116/120, 78/80 | **FAILED: below the gate floor on eval_all. The row stays (no cherry-picking), but it is not pitched and is not a candidate.** |
+| O3p_glm_positive | 8/21/11 | none | dropped at dev |
+| O3q_glm_lint | 10/18/12 | none | dropped at dev |
+
+Disclosures (details in `hackathon/runs/dev/README.md`):
+- O3n's label list (Subhead:, Primary text:, CTA:) occurs only in eval_all items outside the dev slice (dev-001..014, dev-080..088, trick-08/09/12/17). Three more eval items outside the slice (dev-023, trick-06, trick-07) were used for O3n quick checks (`hackathon/runs/dev/qcheck/`). So eval items outside the dev slice shaped the O3n prompt, and its eval_all number is in-sample. Heldout and real contain none of these labels.
+- The O3q lint patterns were written after reading eval-judge reasons (comment at harness.py:241). No judge score was used. O3m's slogan and filler rules overlap with those patterns, and no file records where they came from.
+- The dev-check spend was estimated from logged tokens at about $0.17 for generation plus about $0.83 for the GLM-5.3 judge. These are estimates, not billed amounts.
+
+Proposed README:139 wording, for the README owner (friend) to apply. README is not Ali's file:
+> Fifteen harness variants (O3, O3b to O3h, O3j to O3n, O3p, O3q) were developed against these items, and the best-judged one was chosen afterwards, so the eval numbers for those rows are optimistic. Our entry is O3c, fixed before the later variants. The 80-item real README split was never used for tuning and is the out-of-sample check. O3h (humanizer prompt + harness) was started and stopped and has no row. O3p and O3q were dropped after a 40-item GLM-5.3 dev check and have no rows (files in hackathon/runs/dev/). O3n is below the 95% gate floor on eval_all and is a failed row. Its frame-label rule was shaped by eval items outside the dev slice. The O3q lint patterns came from reading eval-judge reasons. O3m_glm_plainclaim is the prompt-rules variant, not the BOARD "O3m idea".
