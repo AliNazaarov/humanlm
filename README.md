@@ -40,6 +40,17 @@ Human preference, O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-
 - page: 0 / 4 / 1 (1 voter(s), 5 votes, sign test p=0.125); Ali (founder; knows the project, so treat as a check, not a gold rater)
 - Not counted: Ali reports 5 Minerva classmates gave the same answer (preferred the Claude side) in an informal, unlogged session; not counted as data.
 
+Spot the human (held-out real originals vs each rewrite, both orders; fooled = the rewrite picked as human in both orders; fooled-or-split adds order disagreements):
+
+| System | kimi: fooled / fooled-or-split | qwen: fooled / fooled-or-split | chrF vs human |
+|---|---|---|---|
+| `F1H_opus` | 0/117 / 21% [14, 29] | 0/117 / 37% [28, 46] | 0.596 |
+| `O1_glm_base` | 0/117 / 23% [16, 32] | 0/117 / 27% [20, 36] | 0.629 |
+| `O3c_glm_prompt_harness_style` | 0/117 / 27% [20, 36] | 1/117 / 42% [33, 51] | 0.605 |
+| `O3l_glm_style_claimcheck_bo3` | 0/117 / 27% [20, 36] | 1/117 / 38% [29, 47] | 0.586 |
+| `X0_copy_draft` | 0/117 / 14% [8, 21] | 0/117 / 13% [7, 20] | 0.711 |
+| `strong_claude-opus-5-5` | 0/117 / 24% [17, 33] | 0/117 / 34% [26, 44] | 0.593 |
+
 Pairwise judge (both orders; A wins / B wins / ties, two-sided sign test):
 
 - `hack_O3c_glm_prompt_harness_style.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (qwen3p8-max): overall 39/43/25 (p=0.741), style 44/27/37 (p=0.057)
@@ -126,6 +137,7 @@ Re-running a system calls its API: `hackathon/eval/run_frontier.py` for the fron
 - **Ablations were tuned on the same eval items.** About a dozen harness variants (O3 to O3k) were developed against these items and the best-judged one was chosen afterwards, so the eval numbers for those rows are optimistic. Our entry is O3c, fixed before the later variants; the 80-item real README split was never used for tuning and is the out-of-sample check. O3h (humanizer prompt + harness) was started and stopped and has no row.
 - **Claude refusals.** Claude Opus 5.5 refused held-out items ho-013 (a gene-synthesis part description) and ho-054 (a codeine-extraction passage) in every attempt (first run plus two resumes per arm); they are counted as Claude failures, as any system's missing item is.
 - **Experiments not kept.** A workflow pairwise-selector experiment (30 items) was not kept: style got worse on the Kimi judge. It is listed in `hackathon/report/excluded_runs.json`, not on the leaderboard.
+- **No system passes as human.** In the spot-the-human test (real held-out originals vs each rewrite, both orders, two judges), the judges picked the real human text over every system's rewrite almost every time, Claude's included; O3c is confused for human slightly more often than Claude only when order disagreements count. Read "human" in our headline as "no AI tells by our gates", not "indistinguishable from a person".
 - **The judge is an LLM.** It has its own biases, including length and position. We run both orders and report the flip rate, but we have not calibrated it against human labels.
 - **The fact checks are strict but crude.** Numbers and capitalised names are matched as strings, so a correct paraphrase of a name can count as a loss, and a fact that changes without any number or name changing is missed.
 - **The frontier APIs can't match every decoding setting.** The open-model runs also use repetition_penalty 1.05, which the frontier APIs don't offer, and a model that rejects top_p runs at temperature only. Both are recorded per row.

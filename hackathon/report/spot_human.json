@@ -1,0 +1,640 @@
+{
+  "_meta": {
+    "task": "spot_human",
+    "contract": "hackathon/bus/msgs/20261102T204421Z-ali-to-friend.md",
+    "eval": "evals/heldout_pairs.jsonl",
+    "excluded_ids": [
+      "ho-007",
+      "ho-027",
+      "ho-071"
+    ],
+    "excluded_from": "hackathon/report/heldout_excluded.json",
+    "prompt": "hackathon/eval/SPOT_HUMAN_PROMPT.md",
+    "temperature": 0,
+    "max_tokens": 4096,
+    "reasoning_effort": "none",
+    "orders": "HS = human is Text 1, SH = system is Text 1",
+    "fooled_strict": "judge picks the system output as human in both orders",
+    "caught": "judge picks the human original in both orders; empty/missing output counts as caught",
+    "split": "orders disagree",
+    "ci": "exact Clopper-Pearson 95% (stats.rate_ci)",
+    "vs_reference": "paired_bootstrap_diff on fooled_strict (system - reference, shared ids, 10000 reps, seed 0) + exact sign test on ids where exactly one fooled",
+    "chrf_vs_human": "audit.chrf(output, human), 0-1 scale, empty output = 0, mean over all ids",
+    "prices_usd_per_1m": {
+      "accounts/fireworks/models/kimi-k3": [
+        3.0,
+        15.0
+      ],
+      "accounts/fireworks/models/qwen3p8-max": [
+        2.0,
+        6.0
+      ]
+    }
+  },
+  "kimi": {
+    "F1H_opus": {
+      "system_file": "evals/runs/hack_F1H_opus_heldout.jsonl",
+      "model": "accounts/fireworks/models/kimi-k3",
+      "cfg": "3fde5be6404ea3ba",
+      "mock": false,
+      "n": 117,
+      "n_expected": 117,
+      "fooled_strict": {
+        "k": 0,
+        "n": 117,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.031
+      },
+      "fool_or_split": {
+        "k": 24,
+        "n": 117,
+        "rate": 0.2051,
+        "lo": 0.1361,
+        "hi": 0.2897
+      },
+      "caught": {
+        "k": 93,
+        "n": 117,
+        "rate": 0.7949,
+        "lo": 0.7103,
+        "hi": 0.8639
+      },
+      "split": 24,
+      "empty_ids": [
+        "ho-013",
+        "ho-054"
+      ],
+      "unparsed_ids": [],
+      "incomplete_ids": [],
+      "pos1_rate": 0.6043,
+      "chrf_vs_human": 0.5959,
+      "prompt_tokens_total": 84291,
+      "completion_tokens_total": 2760,
+      "reasoning_tokens_total": 0,
+      "cost_usd_total": 0.2943,
+      "vs_reference": {
+        "reference": "strong_claude-opus-5-5",
+        "n_shared": 117,
+        "fooled_strict_diff": 0.0,
+        "diff_lo": 0.0,
+        "diff_hi": 0.0,
+        "bootstrap_p": 1.0,
+        "only_system_fooled": 0,
+        "only_reference_fooled": 0,
+        "both_fooled": 0,
+        "sign_test_p": 1.0
+      }
+    },
+    "O1_glm_base": {
+      "system_file": "evals/runs/hack_O1_glm_base_heldout.jsonl",
+      "model": "accounts/fireworks/models/kimi-k3",
+      "cfg": "3fde5be6404ea3ba",
+      "mock": false,
+      "n": 117,
+      "n_expected": 117,
+      "fooled_strict": {
+        "k": 0,
+        "n": 117,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.031
+      },
+      "fool_or_split": {
+        "k": 27,
+        "n": 117,
+        "rate": 0.2308,
+        "lo": 0.1579,
+        "hi": 0.3177
+      },
+      "caught": {
+        "k": 90,
+        "n": 117,
+        "rate": 0.7692,
+        "lo": 0.6823,
+        "hi": 0.8421
+      },
+      "split": 27,
+      "empty_ids": [],
+      "unparsed_ids": [],
+      "incomplete_ids": [],
+      "pos1_rate": 0.6154,
+      "chrf_vs_human": 0.6291,
+      "prompt_tokens_total": 86493,
+      "completion_tokens_total": 2808,
+      "reasoning_tokens_total": 0,
+      "cost_usd_total": 0.3016,
+      "vs_reference": {
+        "reference": "strong_claude-opus-5-5",
+        "n_shared": 117,
+        "fooled_strict_diff": 0.0,
+        "diff_lo": 0.0,
+        "diff_hi": 0.0,
+        "bootstrap_p": 1.0,
+        "only_system_fooled": 0,
+        "only_reference_fooled": 0,
+        "both_fooled": 0,
+        "sign_test_p": 1.0
+      }
+    },
+    "O3c_glm_prompt_harness_style": {
+      "system_file": "evals/runs/hack_O3c_glm_prompt_harness_style_heldout.jsonl",
+      "model": "accounts/fireworks/models/kimi-k3",
+      "cfg": "3fde5be6404ea3ba",
+      "mock": false,
+      "n": 117,
+      "n_expected": 117,
+      "fooled_strict": {
+        "k": 0,
+        "n": 117,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.031
+      },
+      "fool_or_split": {
+        "k": 32,
+        "n": 117,
+        "rate": 0.2735,
+        "lo": 0.1952,
+        "hi": 0.3636
+      },
+      "caught": {
+        "k": 85,
+        "n": 117,
+        "rate": 0.7265,
+        "lo": 0.6364,
+        "hi": 0.8048
+      },
+      "split": 32,
+      "empty_ids": [],
+      "unparsed_ids": [],
+      "incomplete_ids": [],
+      "pos1_rate": 0.6368,
+      "chrf_vs_human": 0.6051,
+      "prompt_tokens_total": 84418,
+      "completion_tokens_total": 2808,
+      "reasoning_tokens_total": 0,
+      "cost_usd_total": 0.2954,
+      "vs_reference": {
+        "reference": "strong_claude-opus-5-5",
+        "n_shared": 117,
+        "fooled_strict_diff": 0.0,
+        "diff_lo": 0.0,
+        "diff_hi": 0.0,
+        "bootstrap_p": 1.0,
+        "only_system_fooled": 0,
+        "only_reference_fooled": 0,
+        "both_fooled": 0,
+        "sign_test_p": 1.0
+      }
+    },
+    "O3l_glm_style_claimcheck_bo3": {
+      "system_file": "evals/runs/hack_O3l_glm_style_claimcheck_bo3_heldout.jsonl",
+      "model": "accounts/fireworks/models/kimi-k3",
+      "cfg": "3fde5be6404ea3ba",
+      "mock": false,
+      "n": 117,
+      "n_expected": 117,
+      "fooled_strict": {
+        "k": 0,
+        "n": 117,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.031
+      },
+      "fool_or_split": {
+        "k": 32,
+        "n": 117,
+        "rate": 0.2735,
+        "lo": 0.1952,
+        "hi": 0.3636
+      },
+      "caught": {
+        "k": 85,
+        "n": 117,
+        "rate": 0.7265,
+        "lo": 0.6364,
+        "hi": 0.8048
+      },
+      "split": 32,
+      "empty_ids": [],
+      "unparsed_ids": [],
+      "incomplete_ids": [],
+      "pos1_rate": 0.6368,
+      "chrf_vs_human": 0.5862,
+      "prompt_tokens_total": 84235,
+      "completion_tokens_total": 2808,
+      "reasoning_tokens_total": 0,
+      "cost_usd_total": 0.2948,
+      "vs_reference": {
+        "reference": "strong_claude-opus-5-5",
+        "n_shared": 117,
+        "fooled_strict_diff": 0.0,
+        "diff_lo": 0.0,
+        "diff_hi": 0.0,
+        "bootstrap_p": 1.0,
+        "only_system_fooled": 0,
+        "only_reference_fooled": 0,
+        "both_fooled": 0,
+        "sign_test_p": 1.0
+      }
+    },
+    "X0_copy_draft": {
+      "system_file": "evals/runs/hack_X0_copy_draft_heldout.jsonl",
+      "model": "accounts/fireworks/models/kimi-k3",
+      "cfg": "3fde5be6404ea3ba",
+      "mock": false,
+      "n": 117,
+      "n_expected": 117,
+      "fooled_strict": {
+        "k": 0,
+        "n": 117,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.031
+      },
+      "fool_or_split": {
+        "k": 16,
+        "n": 117,
+        "rate": 0.1368,
+        "lo": 0.0802,
+        "hi": 0.2126
+      },
+      "caught": {
+        "k": 101,
+        "n": 117,
+        "rate": 0.8632,
+        "lo": 0.7874,
+        "hi": 0.9198
+      },
+      "split": 16,
+      "empty_ids": [],
+      "unparsed_ids": [],
+      "incomplete_ids": [],
+      "pos1_rate": 0.5684,
+      "chrf_vs_human": 0.7112,
+      "prompt_tokens_total": 88378,
+      "completion_tokens_total": 2808,
+      "reasoning_tokens_total": 0,
+      "cost_usd_total": 0.3073,
+      "vs_reference": {
+        "reference": "strong_claude-opus-5-5",
+        "n_shared": 117,
+        "fooled_strict_diff": 0.0,
+        "diff_lo": 0.0,
+        "diff_hi": 0.0,
+        "bootstrap_p": 1.0,
+        "only_system_fooled": 0,
+        "only_reference_fooled": 0,
+        "both_fooled": 0,
+        "sign_test_p": 1.0
+      }
+    },
+    "strong_claude-opus-5-5": {
+      "system_file": "evals/runs/hack_strong_claude-opus-5-5_heldout.jsonl",
+      "model": "accounts/fireworks/models/kimi-k3",
+      "cfg": "3fde5be6404ea3ba",
+      "mock": false,
+      "n": 117,
+      "n_expected": 117,
+      "fooled_strict": {
+        "k": 0,
+        "n": 117,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.031
+      },
+      "fool_or_split": {
+        "k": 28,
+        "n": 117,
+        "rate": 0.2393,
+        "lo": 0.1653,
+        "hi": 0.327
+      },
+      "caught": {
+        "k": 89,
+        "n": 117,
+        "rate": 0.7607,
+        "lo": 0.673,
+        "hi": 0.8347
+      },
+      "split": 28,
+      "empty_ids": [
+        "ho-013",
+        "ho-054"
+      ],
+      "unparsed_ids": [],
+      "incomplete_ids": [],
+      "pos1_rate": 0.6217,
+      "chrf_vs_human": 0.5931,
+      "prompt_tokens_total": 84354,
+      "completion_tokens_total": 2760,
+      "reasoning_tokens_total": 0,
+      "cost_usd_total": 0.2945,
+      "vs_reference": null
+    }
+  },
+  "qwen": {
+    "F1H_opus": {
+      "system_file": "evals/runs/hack_F1H_opus_heldout.jsonl",
+      "model": "accounts/fireworks/models/qwen3p8-max",
+      "cfg": "faf9933f443efe48",
+      "mock": false,
+      "n": 117,
+      "n_expected": 117,
+      "fooled_strict": {
+        "k": 0,
+        "n": 117,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.031
+      },
+      "fool_or_split": {
+        "k": 43,
+        "n": 117,
+        "rate": 0.3675,
+        "lo": 0.2803,
+        "hi": 0.4616
+      },
+      "caught": {
+        "k": 74,
+        "n": 117,
+        "rate": 0.6325,
+        "lo": 0.5384,
+        "hi": 0.7197
+      },
+      "split": 43,
+      "empty_ids": [
+        "ho-013",
+        "ho-054"
+      ],
+      "unparsed_ids": [],
+      "incomplete_ids": [],
+      "pos1_rate": 0.687,
+      "chrf_vs_human": 0.5959,
+      "prompt_tokens_total": 83452,
+      "completion_tokens_total": 77494,
+      "reasoning_tokens_total": 0,
+      "cost_usd_total": 0.6319,
+      "vs_reference": {
+        "reference": "strong_claude-opus-5-5",
+        "n_shared": 117,
+        "fooled_strict_diff": 0.0,
+        "diff_lo": 0.0,
+        "diff_hi": 0.0,
+        "bootstrap_p": 1.0,
+        "only_system_fooled": 0,
+        "only_reference_fooled": 0,
+        "both_fooled": 0,
+        "sign_test_p": 1.0
+      }
+    },
+    "O1_glm_base": {
+      "system_file": "evals/runs/hack_O1_glm_base_heldout.jsonl",
+      "model": "accounts/fireworks/models/qwen3p8-max",
+      "cfg": "faf9933f443efe48",
+      "mock": false,
+      "n": 117,
+      "n_expected": 117,
+      "fooled_strict": {
+        "k": 0,
+        "n": 117,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.031
+      },
+      "fool_or_split": {
+        "k": 32,
+        "n": 117,
+        "rate": 0.2735,
+        "lo": 0.1952,
+        "hi": 0.3636
+      },
+      "caught": {
+        "k": 85,
+        "n": 117,
+        "rate": 0.7265,
+        "lo": 0.6364,
+        "hi": 0.8048
+      },
+      "split": 32,
+      "empty_ids": [],
+      "unparsed_ids": [],
+      "incomplete_ids": [],
+      "pos1_rate": 0.6368,
+      "chrf_vs_human": 0.6291,
+      "prompt_tokens_total": 85762,
+      "completion_tokens_total": 81124,
+      "reasoning_tokens_total": 0,
+      "cost_usd_total": 0.6583,
+      "vs_reference": {
+        "reference": "strong_claude-opus-5-5",
+        "n_shared": 117,
+        "fooled_strict_diff": 0.0,
+        "diff_lo": 0.0,
+        "diff_hi": 0.0,
+        "bootstrap_p": 1.0,
+        "only_system_fooled": 0,
+        "only_reference_fooled": 0,
+        "both_fooled": 0,
+        "sign_test_p": 1.0
+      }
+    },
+    "O3c_glm_prompt_harness_style": {
+      "system_file": "evals/runs/hack_O3c_glm_prompt_harness_style_heldout.jsonl",
+      "model": "accounts/fireworks/models/qwen3p8-max",
+      "cfg": "faf9933f443efe48",
+      "mock": false,
+      "n": 117,
+      "n_expected": 117,
+      "fooled_strict": {
+        "k": 1,
+        "n": 117,
+        "rate": 0.0085,
+        "lo": 0.0002,
+        "hi": 0.0467
+      },
+      "fool_or_split": {
+        "k": 49,
+        "n": 117,
+        "rate": 0.4188,
+        "lo": 0.3282,
+        "hi": 0.5136
+      },
+      "caught": {
+        "k": 68,
+        "n": 117,
+        "rate": 0.5812,
+        "lo": 0.4864,
+        "hi": 0.6718
+      },
+      "split": 48,
+      "empty_ids": [],
+      "unparsed_ids": [],
+      "incomplete_ids": [],
+      "pos1_rate": 0.7051,
+      "chrf_vs_human": 0.6051,
+      "prompt_tokens_total": 83652,
+      "completion_tokens_total": 79106,
+      "reasoning_tokens_total": 0,
+      "cost_usd_total": 0.6419,
+      "vs_reference": {
+        "reference": "strong_claude-opus-5-5",
+        "n_shared": 117,
+        "fooled_strict_diff": 0.0085,
+        "diff_lo": 0.0,
+        "diff_hi": 0.0256,
+        "bootstrap_p": 0.3692,
+        "only_system_fooled": 1,
+        "only_reference_fooled": 0,
+        "both_fooled": 0,
+        "sign_test_p": 1.0
+      }
+    },
+    "O3l_glm_style_claimcheck_bo3": {
+      "system_file": "evals/runs/hack_O3l_glm_style_claimcheck_bo3_heldout.jsonl",
+      "model": "accounts/fireworks/models/qwen3p8-max",
+      "cfg": "faf9933f443efe48",
+      "mock": false,
+      "n": 117,
+      "n_expected": 117,
+      "fooled_strict": {
+        "k": 1,
+        "n": 117,
+        "rate": 0.0085,
+        "lo": 0.0002,
+        "hi": 0.0467
+      },
+      "fool_or_split": {
+        "k": 44,
+        "n": 117,
+        "rate": 0.3761,
+        "lo": 0.2882,
+        "hi": 0.4704
+      },
+      "caught": {
+        "k": 73,
+        "n": 117,
+        "rate": 0.6239,
+        "lo": 0.5296,
+        "hi": 0.7118
+      },
+      "split": 43,
+      "empty_ids": [],
+      "unparsed_ids": [],
+      "incomplete_ids": [],
+      "pos1_rate": 0.6838,
+      "chrf_vs_human": 0.5862,
+      "prompt_tokens_total": 83528,
+      "completion_tokens_total": 78633,
+      "reasoning_tokens_total": 0,
+      "cost_usd_total": 0.6389,
+      "vs_reference": {
+        "reference": "strong_claude-opus-5-5",
+        "n_shared": 117,
+        "fooled_strict_diff": 0.0085,
+        "diff_lo": 0.0,
+        "diff_hi": 0.0256,
+        "bootstrap_p": 0.3615,
+        "only_system_fooled": 1,
+        "only_reference_fooled": 0,
+        "both_fooled": 0,
+        "sign_test_p": 1.0
+      }
+    },
+    "X0_copy_draft": {
+      "system_file": "evals/runs/hack_X0_copy_draft_heldout.jsonl",
+      "model": "accounts/fireworks/models/qwen3p8-max",
+      "cfg": "faf9933f443efe48",
+      "mock": false,
+      "n": 117,
+      "n_expected": 117,
+      "fooled_strict": {
+        "k": 0,
+        "n": 117,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.031
+      },
+      "fool_or_split": {
+        "k": 15,
+        "n": 117,
+        "rate": 0.1282,
+        "lo": 0.0736,
+        "hi": 0.2026
+      },
+      "caught": {
+        "k": 102,
+        "n": 117,
+        "rate": 0.8718,
+        "lo": 0.7974,
+        "hi": 0.9264
+      },
+      "split": 15,
+      "empty_ids": [],
+      "unparsed_ids": [],
+      "incomplete_ids": [],
+      "pos1_rate": 0.5641,
+      "chrf_vs_human": 0.7112,
+      "prompt_tokens_total": 87504,
+      "completion_tokens_total": 80309,
+      "reasoning_tokens_total": 0,
+      "cost_usd_total": 0.6569,
+      "vs_reference": {
+        "reference": "strong_claude-opus-5-5",
+        "n_shared": 117,
+        "fooled_strict_diff": 0.0,
+        "diff_lo": 0.0,
+        "diff_hi": 0.0,
+        "bootstrap_p": 1.0,
+        "only_system_fooled": 0,
+        "only_reference_fooled": 0,
+        "both_fooled": 0,
+        "sign_test_p": 1.0
+      }
+    },
+    "strong_claude-opus-5-5": {
+      "system_file": "evals/runs/hack_strong_claude-opus-5-5_heldout.jsonl",
+      "model": "accounts/fireworks/models/qwen3p8-max",
+      "cfg": "faf9933f443efe48",
+      "mock": false,
+      "n": 117,
+      "n_expected": 117,
+      "fooled_strict": {
+        "k": 0,
+        "n": 117,
+        "rate": 0.0,
+        "lo": 0.0,
+        "hi": 0.031
+      },
+      "fool_or_split": {
+        "k": 40,
+        "n": 117,
+        "rate": 0.3419,
+        "lo": 0.2567,
+        "hi": 0.4353
+      },
+      "caught": {
+        "k": 77,
+        "n": 117,
+        "rate": 0.6581,
+        "lo": 0.5647,
+        "hi": 0.7433
+      },
+      "split": 40,
+      "empty_ids": [
+        "ho-013",
+        "ho-054"
+      ],
+      "unparsed_ids": [],
+      "incomplete_ids": [],
+      "pos1_rate": 0.6739,
+      "chrf_vs_human": 0.5931,
+      "prompt_tokens_total": 83504,
+      "completion_tokens_total": 78200,
+      "reasoning_tokens_total": 0,
+      "cost_usd_total": 0.6362,
+      "vs_reference": null
+    }
+  }
+}

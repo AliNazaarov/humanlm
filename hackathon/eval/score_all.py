@@ -402,6 +402,24 @@ def headline(res: dict) -> str:
             note = next((s_["note"] for s_ in h["sources"].values() if s_.get("note")), None)
             if note:
                 out.append(f"- Not counted: {note}")
+    sh = os.path.join(ROOT, "hackathon/report/spot_human.json")
+    if os.path.exists(sh):  # hackathon/eval/spot_human.py: real human original vs the system's rewrite
+        d = json.load(open(sh, encoding="utf-8"))
+        judges_ = [j for j in d if not j.startswith("_")]
+        if judges_:
+            out += ["", "Spot the human (held-out real originals vs each rewrite, both orders; fooled = the rewrite "
+                    "picked as human in both orders; fooled-or-split adds order disagreements):", "",
+                    "| System | " + " | ".join(f"{j}: fooled / fooled-or-split" for j in judges_) + " | chrF vs human |",
+                    "|---|" + "---|" * len(judges_) + "---|"]
+            systems = sorted({s_ for j in judges_ for s_ in d[j]})
+            for s_ in systems:
+                cells = []
+                for j in judges_:
+                    v = d[j].get(s_)
+                    cells.append(f"{v['fooled_strict']['k']}/{v['n']} / {100*v['fool_or_split']['rate']:.0f}% "
+                                 f"[{100*v['fool_or_split']['lo']:.0f}, {100*v['fool_or_split']['hi']:.0f}]" if v else "n/a")
+                chrf = next((d[j][s_]["chrf_vs_human"] for j in judges_ if s_ in d[j]), None)
+                out.append(f"| `{s_}` | " + " | ".join(cells) + f" | {chrf:.3f} |")
     if res["judges"]:
         out += ["", "Pairwise judge (both orders; A wins / B wins / ties, two-sided sign test):", ""]
         for j in res["judges"]:

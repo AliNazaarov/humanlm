@@ -29,6 +29,17 @@ Human preference, O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-
 - page: 0 / 4 / 1 (1 voter(s), 5 votes, sign test p=0.125); Ali (founder; knows the project, so treat as a check, not a gold rater)
 - Not counted: Ali reports 5 Minerva classmates gave the same answer (preferred the Claude side) in an informal, unlogged session; not counted as data.
 
+Spot the human (held-out real originals vs each rewrite, both orders; fooled = the rewrite picked as human in both orders; fooled-or-split adds order disagreements):
+
+| System | kimi: fooled / fooled-or-split | qwen: fooled / fooled-or-split | chrF vs human |
+|---|---|---|---|
+| `F1H_opus` | 0/117 / 21% [14, 29] | 0/117 / 37% [28, 46] | 0.596 |
+| `O1_glm_base` | 0/117 / 23% [16, 32] | 0/117 / 27% [20, 36] | 0.629 |
+| `O3c_glm_prompt_harness_style` | 0/117 / 27% [20, 36] | 1/117 / 42% [33, 51] | 0.605 |
+| `O3l_glm_style_claimcheck_bo3` | 0/117 / 27% [20, 36] | 1/117 / 38% [29, 47] | 0.586 |
+| `X0_copy_draft` | 0/117 / 14% [8, 21] | 0/117 / 13% [7, 20] | 0.711 |
+| `strong_claude-opus-5-5` | 0/117 / 24% [17, 33] | 0/117 / 34% [26, 44] | 0.593 |
+
 Pairwise judge (both orders; A wins / B wins / ties, two-sided sign test):
 
 - `hack_O3c_glm_prompt_harness_style.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (qwen3p8-max): overall 39/43/25 (p=0.741), style 44/27/37 (p=0.057)
