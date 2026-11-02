@@ -2,27 +2,27 @@
  "pairs": "O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-5",
  "sources": {
   "page": {
-   "ours": 53,
-   "theirs": 80,
-   "both_fine": 32,
+   "ours": 54,
+   "theirs": 82,
+   "both_fine": 46,
    "neither": 0,
-   "people": 35,
-   "votes": 165,
-   "win_rate": 0.39849624060150374,
-   "lo": 0.31465961166754414,
-   "hi": 0.4869570393770219,
-   "sign_test_p": 0.023801099334890996,
+   "people": 39,
+   "votes": 182,
+   "win_rate": 0.39705882352941174,
+   "lo": 0.3142301488780452,
+   "hi": 0.4844722616629943,
+   "sign_test_p": 0.0202600112542461,
    "sensitivity_no_position_clickers": {
     "ours": 38,
-    "theirs": 64,
+    "theirs": 66,
     "both_fine": 23,
     "neither": 0,
-    "people": 27,
-    "votes": 125,
-    "win_rate": 0.37254901960784315,
-    "lo": 0.2788248443764934,
-    "hi": 0.47388094097849526,
-    "sign_test_p": 0.012920451911126197,
+    "people": 28,
+    "votes": 127,
+    "win_rate": 0.36538461538461536,
+    "lo": 0.2731268715673284,
+    "hi": 0.46552272041018994,
+    "sign_test_p": 0.0077996161848893665,
     "dropped_ballots": [
      "pub:bmvzqw3hdj8y7",
      "pub:bmvzqwssd3fxe",
@@ -31,7 +31,10 @@
      "pub:bmvzraxffnh1j",
      "pub:bmvzscycvfet6",
      "pub:bmvzsondqwy74",
-     "pub:bmvzss1q7q50s"
+     "pub:bmvzss1q7q50s",
+     "pub:bmvztjlugqzn2",
+     "pub:bmvztjt76vrnj",
+     "pub:bmvztjw9atx8d"
     ],
     "position_only": [
      "pub:bmvzscycvfet6"
@@ -44,7 +47,10 @@
      "pub:bmvzraxffnh1j",
      "pub:bmvzscycvfet6",
      "pub:bmvzsondqwy74",
-     "pub:bmvzss1q7q50s"
+     "pub:bmvzss1q7q50s",
+     "pub:bmvztjlugqzn2",
+     "pub:bmvztjt76vrnj",
+     "pub:bmvztjw9atx8d"
     ]
    },
    "voter": "includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors",
@@ -53,13 +59,13 @@
   }
  },
  "pooled": {
-  "ours": 53,
-  "theirs": 80,
-  "both_fine": 32,
+  "ours": 54,
+  "theirs": 82,
+  "both_fine": 46,
   "neither": 0,
-  "win_rate": 0.39849624060150374,
-  "lo": 0.31465961166754414,
-  "hi": 0.4869570393770219,
-  "sign_test_p": 0.023801099334890996
+  "win_rate": 0.39705882352941174,
+  "lo": 0.3142301488780452,
+  "hi": 0.4844722616629943,
+  "sign_test_p": 0.0202600112542461
  }
 }
