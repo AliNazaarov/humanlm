@@ -12,3 +12,5 @@ data/pairs/_trial/
 lora_*/
 __pycache__/
 .venv/
+hackathon/bus/.seen
+.env
