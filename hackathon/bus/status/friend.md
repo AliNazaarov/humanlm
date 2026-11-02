@@ -41,3 +41,4 @@
 2026-11-02T21:04:27Z 14:04: WF row dropped, labels forwarded. Spot-the-human: Kimi done, Qwen running. Waiting: SFT O4/O5/O6 rows (none on main yet), human votes on public pages. Systems freeze 14:30.
 2026-11-02T21:13:45Z 14:13: report complete with all signals (gates, real split, 2 judges, human A/B 11 readers, spot-the-human). Waiting: SFT rows (none yet, freeze 14:30), human freeze 15:15.
 2026-11-02T21:14:34Z SFT B continues to completion (~15:20), late/post-freeze row only.
+2026-11-02T21:18:32Z 14:18: all friend work pushed; report reproducible from main. Waiting: Ali's SFT/DPO rows (freeze 14:30), human-vote freeze 15:15, SFT B end ~15:20.
