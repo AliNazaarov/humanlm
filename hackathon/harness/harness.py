@@ -357,7 +357,9 @@ def main():
     rows = [json.loads(l) for l in open(a.out)]
     ids = [r["id"] for r in rows]
     assert len(ids) == len(set(ids)) == len(items), f"rows {len(ids)}, unique {len(set(ids))}, expected {len(items)}"
-    assert all(r["output"] for r in rows), "empty output"
+    empty = [r["id"] for r in rows if not r["output"]]
+    if empty:   # refusals/failures stay in the file and count as fails in scoring; the manifest records them
+        print(f"WARNING: {len(empty)} empty outputs: {empty[:10]}", flush=True)
     os.makedirs(os.path.join(ROOT, "hackathon/runs"), exist_ok=True)
     commit = subprocess.run(["git", "-C", ROOT, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     manifest = {"system": a.system_name, "provider": a.provider, "model": a.model, "loops": a.loops,
@@ -365,9 +367,10 @@ def main():
                 "prompt_file": a.prompt_file, "decoding": a.dec, "style_round": a.style_round, "retrieve": a.retrieve, "claim_check": a.claim_check, "anti_copy": a.anti_copy, "best_of": a.best_of,
                 "select_judge_model": a.select_judge_model if a.best_of > 1 else None,
                 "prices_usd_per_m": [a.in_price, a.out_price], "eval": a.eval, "rows": len(rows),
-                "pass_rate": sum(r["gates"]["pass"] for r in rows) / len(rows), "commit": commit,
+                "pass_rate": sum(r["gates"]["pass"] for r in rows) / len(rows), "empty_outputs": [r["id"] for r in rows if not r["output"]], "commit": commit,
                 "finished": time.strftime("%Y-%m-%dT%H:%M:%S%z")}
-    suffix = "_heldout" if "heldout" in os.path.basename(a.eval) else ""
+    base = os.path.basename(a.eval)
+    suffix = "_heldout" if "heldout" in base else "_real" if "real" in base else ""
     json.dump(manifest, open(os.path.join(ROOT, f"hackathon/runs/{re.sub(r'[^A-Za-z0-9_.-]', '_', a.system_name)}{suffix}.json"), "w"), indent=1)
     print("DONE", json.dumps(manifest))
 
