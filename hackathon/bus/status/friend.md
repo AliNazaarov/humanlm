@@ -10,3 +10,4 @@
 2026-11-02T19:02:10Z F1 Opus 5.5 runs in progress: strong 52/130 + 45/120 heldout, live 52/130 + 50/120. Judge committed (Gemini provider + GLM-5.3 second opinion); HANDOFF sent to Ali. Waiting on harness.py CONTRACT for F1+H.
 2026-11-02T19:07:19Z F1 done ($4.00). First leaderboard committed: F1 strong 57% [51,63] fact-safe on 250 items, weakest split dev 37%. Refusals count as fails for every system.
 2026-11-02T19:10:39Z All work pushed (F1 runs, first leaderboard + charts, judge, examples, names_probe). BLOCKED on Ali's ACK for the name-proxy fix in metrics.py: it moves F1 strong main pass 55->90/130.
+2026-11-02T19:14:04Z Pulled Ali's 059222e (harness decoding fix). All friend work pushed (F1 runs + leaderboard + charts + judge + FeatherLM rename). F1+H running. Waiting: Ali's O*/F2 run files (not on main yet) + ACK on name-proxy fix.
