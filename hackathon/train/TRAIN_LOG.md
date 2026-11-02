@@ -112,3 +112,24 @@ Proposed README:139 wording, for the README owner (friend) to apply. README is n
 | Runs | smoke 3 rows; `evals/runs/hack_O4m_glm_sft_modern.jsonl` (130, done 13:57:00); `..._heldout.jsonl` (120, done 13:57:36); harness `--loops 0`, default SYSTEM |
 | Cost | **estimate** ~16 min x $60/h ≈ $16 (spin-up ~11.5 min of it); per-row `cost_usd` is 0 because billing is per GPU-hour, not per token |
 | Note | The scripted DELETE at 13:57:40 returned HTTP 400 ("received inference requests in the last hour, pass ignore_checks"); it was retried with `ignoreChecks=true` (200). Use `?ignoreChecks=true` when deleting right after an eval. |
+
+## Local L1/L2 (Mac, MLX) — 2026-11-02 afternoon, after Fireworks credits ran out
+Not Fireworks rows. Trained and served on Ali's MacBook (Apple M4, 16 GB unified memory) with `mlx 0.32.4`, `mlx-lm 0.32.2` (venv `~/models/hl/mlxenv`). One MLX job at a time (Metal OOMs otherwise). Base: `mlx-community/Qwen3-4B-Instruct-2507-4bit` (Qwen3-4B-Instruct-2507, 4-bit MLX quant). Scripts: `hackathon/train/mlx_local/`.
+
+### L1 = LoRA SFT (`L1_qwen3_4b_sft`)
+| Field | Value |
+|---|---|
+| Data | `~/models/hl/mlx_small` = first 1,000 chat rows of `hackathon/data/train.jsonl` (system / user = AI draft / assistant = human original) + 150 valid; 0 eval overlap (same split as `hackathon/data/SPLIT.md`) |
+| Command | `python -m mlx_lm lora --model mlx-community/Qwen3-4B-Instruct-2507-4bit --train --data mlx_small --fine-tune-type lora --num-layers 8 --batch-size 1 --iters 600 --learning-rate 1e-4 --mask-prompt --grad-checkpoint --max-seq-length 768 --save-every 100` |
+| LoRA | rank 8, scale 20, 8 layers, 3.670M trainable params (0.091%) |
+| Speed | ~16 s/iter (~20 tok/s), started 14:01 PT |
+| Stopped | at the iter-100 checkpoint (`0000100_adapters.safetensors`, 14:18 PT), 100 of the planned 600 iters (16.2k train tokens), because the full run would not finish before the 15:10 push. |
+| Loss | val at iter 1: 2.815 · train iter 10: 1.893 · 20: 1.247 · 30: 1.161 · 40: 1.443 · 50: 1.212 · 60: 1.246 · 70: 1.257 · 80: 1.202 · 90: 1.200 · 100: 1.449 (batch 1, so each report is a 10-row mean; noisy) |
+| Adapter | `~/models/hl/lora_L1_100/` (local only, 14.7 MB) |
+| Eval row | none (skipped for time; see L2h below) |
+
+### L2 = DPO toward real human writing, on top of L1 (`L2_qwen3_4b_dpo`)
+- Pairs: chosen = real human original, rejected = our own model's O7 rewrite of the same AI draft (`hackathon/train/ruslan/o7_drafts_ali.jsonl` + `o7_rejected_ali.jsonl` (tm-*), `o7_drafts_ali2.jsonl` + `o7_rejected_ali2.jsonl` (tr2-*, 349 of 1,500 rejected rows existed at build time; 1,152 drafts had no rejected row yet and were skipped)). Builder: `hackathon/train/mlx_local/make_dpo_pairs.py`.
+- Filters: 0 empty rejected outputs dropped; **33 pairs dropped for an 8-gram overlap** with `evals/eval_all.jsonl`, `evals/heldout_pairs.jsonl` or `evals/real_readmes.jsonl` (drafts, human refs and rejected texts all checked). Of the 915 clean pairs, the 150 with the highest choppy-tell gap (share of sentences <= 6 words in the rejected rewrite minus in the human original; gap 0.31 to 0.78) were kept: 143 train + 7 valid (`~/models/hl/dpo_pairs/`).
+- Method: `hackathon/train/mlx_local/dpo_mlx.py`, a minimal sigmoid DPO loss in mlx (the `mlx-lm-lora` 5.10.2 package installed cleanly but its `PreferenceDataset` encodes chosen/rejected as raw text without the chat template or prompt masking, so it was not used). Reference = the frozen L1 policy (the L1 LoRA weights are swapped back in, no grad, for each pair's reference log-probs). beta 0.1, Adam LR 1e-5, batch 1, max-seq 512, chat-templated with the prompt masked, 1 pass over the pairs, time-boxed.
+- Steps/loss/time: see the table below (filled from `~/models/hl/lora_L2/dpo_log.jsonl`).

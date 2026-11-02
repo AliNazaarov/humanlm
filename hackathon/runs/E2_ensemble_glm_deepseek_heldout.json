@@ -1,0 +1,30 @@
+{
+ "system": "E2_ensemble_glm_deepseek",
+ "provider": "ensemble",
+ "model": "accounts/fireworks/models/glm-5p3",
+ "runs": [
+  "evals/runs/hack_O3c_glm_prompt_harness_style_heldout.jsonl",
+  "evals/runs/hack_O3j_glm_bestof3_judged_heldout.jsonl",
+  "evals/runs/hack_O3l_glm_style_claimcheck_bo3_heldout.jsonl",
+  "evals/runs/hack_O3b_glm_prompt_harness_heldout.jsonl",
+  "evals/runs/hack_O3e_glm_harness_cliche_heldout.jsonl",
+  "evals/runs/hack_O3d_glm_harness_anticopy_heldout.jsonl",
+  "evals/runs/hack_O3k_glm_calm_claimcheck_bo3_heldout.jsonl",
+  "evals/runs/hack_R3_deepseek_harness_heldout.jsonl"
+ ],
+ "eval": "evals/heldout_pairs.jsonl",
+ "rows": 120,
+ "pass_rate": 0.9916666666666667,
+ "picked": {
+  "O3j_glm_bestof3_judged_heldout": 21,
+  "O3c_glm_prompt_harness_style_heldout": 57,
+  "O3b_glm_prompt_harness_heldout": 3,
+  "O3l_glm_style_claimcheck_bo3_heldout": 18,
+  "O3d_glm_harness_anticopy_heldout": 6,
+  "O3e_glm_harness_cliche_heldout": 5,
+  "R3_deepseek_harness_heldout": 8,
+  "O3k_glm_calm_claimcheck_bo3_heldout": 2
+ },
+ "commit": "f51de08ca8b1743521c491b05fb6baa424a3889d",
+ "finished": "2026-11-02T14:20:27-0800"
+}

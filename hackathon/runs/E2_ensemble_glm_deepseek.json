@@ -1,0 +1,30 @@
+{
+ "system": "E2_ensemble_glm_deepseek",
+ "provider": "ensemble",
+ "model": "accounts/fireworks/models/glm-5p3",
+ "runs": [
+  "evals/runs/hack_O3c_glm_prompt_harness_style.jsonl",
+  "evals/runs/hack_O3j_glm_bestof3_judged.jsonl",
+  "evals/runs/hack_O3l_glm_style_claimcheck_bo3.jsonl",
+  "evals/runs/hack_O3b_glm_prompt_harness.jsonl",
+  "evals/runs/hack_O3e_glm_harness_cliche.jsonl",
+  "evals/runs/hack_O3d_glm_harness_anticopy.jsonl",
+  "evals/runs/hack_O3k_glm_calm_claimcheck_bo3.jsonl",
+  "evals/runs/hack_R3_deepseek_harness.jsonl"
+ ],
+ "eval": "evals/eval_all.jsonl",
+ "rows": 130,
+ "pass_rate": 1.0,
+ "picked": {
+  "O3l_glm_style_claimcheck_bo3": 31,
+  "O3k_glm_calm_claimcheck_bo3": 8,
+  "O3j_glm_bestof3_judged": 32,
+  "O3c_glm_prompt_harness_style": 36,
+  "R3_deepseek_harness": 6,
+  "O3b_glm_prompt_harness": 7,
+  "O3d_glm_harness_anticopy": 6,
+  "O3e_glm_harness_cliche": 4
+ },
+ "commit": "f51de08ca8b1743521c491b05fb6baa424a3889d",
+ "finished": "2026-11-02T14:20:29-0800"
+}
