@@ -30,7 +30,7 @@ import stats as st  # noqa: E402
 PREEXISTING = {"baseline_frontier.jsonl": "frontier-persona-preexisting"}
 GATES = ("G1", "G2", "G3", "G4")
 
-SPLITS = ("dev", "trick", "heldout")
+SPLITS = ("dev", "trick", "heldout", "real")
 NUM = re.compile(r"\d[\d,.]*")
 CAP = re.compile(r"\b[A-Z][A-Za-z0-9]+\b")
 
@@ -44,12 +44,14 @@ def read_jsonl(path: str) -> list[dict]:
 
 
 def split_of(item_id: str) -> str:
+    if item_id.startswith("rr-"):
+        return "real"
     return "heldout" if item_id.startswith("ho-") else "trick" if item_id.startswith("trick") else "dev"
 
 
 def all_items() -> dict[str, dict]:
     items = {}
-    for f in ("evals/dev_set.jsonl", "evals/trick_set.jsonl", "evals/heldout_pairs.jsonl"):
+    for f in ("evals/dev_set.jsonl", "evals/trick_set.jsonl", "evals/heldout_pairs.jsonl", "evals/real_readmes.jsonl"):
         p = os.path.join(ROOT, f)
         if os.path.exists(p):
             items.update({r["id"]: r for r in read_jsonl(p)})
@@ -263,7 +265,7 @@ def build(paths: list[str], items: dict, band: dict, reference: str | None, repo
     res = {"reference": ref_label, "gates_rule": rule,
            "systems": [{"label": s["label"], "files": s["files"], "model": s["model"], "n": len(s["per_item"]),
                         **{k: s[k] for k in ("cost_per_1k_usd", "latency_ms") if k in s}} for s in systems],
-           "blocks": {"all": block(systems, sorted(items), ref),
+           "blocks": {"all": block(systems, sorted(i for i in items if split_of(i) != "real"), ref),
                       "main": block(systems, by_split["dev"] + by_split["trick"], ref),
                       **{sp: block(systems, ids, ref) for sp, ids in by_split.items()}},
            "judges": judges(report_dir)}
@@ -324,7 +326,8 @@ def render(res: dict) -> str:
            "**Fact-safe human rewrite rate** = items passing all four gates:", "", "```", res["gates_rule"], "```", ""]
     out += leaderboard(res, "all", "Leaderboard, all items")
     for key, title in (("main", "Main eval: dev + trick"), ("dev", "Dev split"), ("trick", "Trick split"),
-                       ("heldout", "Held-out pairs (real human references)")):
+                       ("heldout", "Held-out pairs (real human references)"),
+                       ("real", "Real README copy (GitHub, permissive licences; no reference)")):
         if res["blocks"][key]["systems"]:
             out += leaderboard(res, key, title)
     out += secondary(res)
