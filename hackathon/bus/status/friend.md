@@ -56,3 +56,4 @@
 2026-11-02T22:33:00Z pass-3 README done; R3/E1/E2 scored with ensemble costs (a986244); SFT C training (81 steps); waiting on Ali's E1 judges + R3 price
 2026-11-02T22:37:22Z SFT C trained (1283 gate-clean rows, valid loss 0.752); brief eval deployment humanlm-sftc created 14:36 PT, auto-deletes after eval_all+heldout
 2026-11-02T22:53:12Z O4c SFT C scored 37.7% (vs SFT B 32.8%, n.s.), deployment deleted, pushed 73f4c5b; next: 15:00 make eval, 15:15 vote freeze
+2026-11-02T23:02:37Z 15:00 final eval done: tests OK, score_all 31 systems on 247 (7359164); waiting for 15:15 vote freeze
