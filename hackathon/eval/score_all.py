@@ -1,14 +1,19 @@
-"""Score every system on the same items and render the report. Offline: reads committed outputs and judge files.
-Usage: score_all.py [--runs A.jsonl B.jsonl ...] [--reference SYSTEM_LABEL] [--out-dir hackathon/report]
+"""Score every system on the same items and render the leaderboard. Offline: reads committed run files and judge summaries.
+Usage: score_all.py [--runs A.jsonl ...] [--reference LABEL] [--out-dir hackathon/report]
 
-Systems: evals/runs/hack_*.jsonl (held-out runs: hack_*_heldout.jsonl) + evals/baseline_frontier.jsonl
-("frontier-persona-preexisting"). --runs replaces discovery (dry runs before the real files land).
-Per item: fact hard fail (pipeline/metrics.faithfulness), in-range share (share of the 16 tell metrics inside the
-human 10-90th band, the definition used in MORNING_REPORT), stock phrases /100 words, length ratio vs draft,
-must-keep coverage (crude: numbers/names, else 60% of content words), forbidden-phrase hit, trick verbatim misses.
-Rates get exact CIs, means get bootstrap CIs, differences vs the reference get a paired bootstrap on shared ids.
-Judge results are read from hackathon/report/judge_*.summary.json (made by judge.py; never re-run here).
-Writes results.json, then RESULTS.md from results.json only.
+Items: evals/eval_all.jsonl ids (dev 100 + trick 30, extra fields from dev_set/trick_set) + evals/heldout_pairs.jsonl
+(120) = 250. Systems: every evals/runs/hack_*.jsonl (main and *_heldout files of one system share its `system` label)
++ evals/baseline_frontier.jsonl ("frontier-persona-preexisting", main split only). --runs replaces discovery.
+
+Headline (hackathon/PLAN_V2_JUDGES.md): fact-safe human rewrite rate = share of items passing all gates.
+  G1 nothing invented  faithfulness hard_fail is False
+  G2 nothing lost      numbers_kept == 1 and names_kept >= 0.9
+  G3 no AI tells       stock, em-dash, not-x-but-y, emoji, exclaim each <= the human band's upper bound
+  G4 not gutted        0.7 <= output words / draft words <= 1.3
+Secondary: in-range share (16 tells inside the 10-90th human band), stock phrases /100w, length ratio,
+must-keep coverage (crude), forbidden hits, trick verbatim misses. Rates: exact CIs. Means: bootstrap CIs.
+Differences vs the reference (F1): paired bootstrap on shared ids, "significant" when p < 0.05.
+Judge results come from hackathon/report/judge_*.summary.json (mock summaries are skipped).
 """
 from __future__ import annotations
 
@@ -21,6 +26,9 @@ import metrics as m  # noqa: E402
 import stats as st  # noqa: E402
 
 PREEXISTING = {"baseline_frontier.jsonl": "frontier-persona-preexisting"}
+GATES = ("G1", "G2", "G3", "G4")
+G3_TELLS = ("stock_rate", "em_dash_rate", "not_x_but_y_rate", "emoji_rate", "exclaim_share")
+SPLITS = ("dev", "trick", "heldout")
 NUM = re.compile(r"\d[\d,.]*")
 CAP = re.compile(r"\b[A-Z][A-Za-z0-9]+\b")
 
@@ -33,25 +41,22 @@ def read_jsonl(path: str) -> list[dict]:
     return [json.loads(l) for l in open(path, encoding="utf-8") if l.strip()]
 
 
-def eval_items() -> dict[str, dict]:
+def split_of(item_id: str) -> str:
+    return "heldout" if item_id.startswith("ho-") else "trick" if item_id.startswith("trick") else "dev"
+
+
+def all_items() -> dict[str, dict]:
     items = {}
-    for f in ("evals/dev_set.jsonl", "evals/trick_set.jsonl"):
-        for r in read_jsonl(os.path.join(ROOT, f)):
-            items[r["id"]] = r
+    for f in ("evals/dev_set.jsonl", "evals/trick_set.jsonl", "evals/heldout_pairs.jsonl"):
+        p = os.path.join(ROOT, f)
+        if os.path.exists(p):
+            items.update({r["id"]: r for r in read_jsonl(p)})
     return items
 
 
-def heldout_items() -> dict[str, dict]:
-    p = os.path.join(ROOT, "evals/heldout_pairs.jsonl")
-    return {r["id"]: r for r in read_jsonl(p)} if os.path.exists(p) else {}
-
-
-def discover(heldout: bool) -> list[str]:
-    runs = sorted(glob.glob(os.path.join(ROOT, "evals/runs/hack_*.jsonl")))
-    runs = [r for r in runs if r.endswith("_heldout.jsonl") == heldout]
-    if not heldout:
-        runs.append(os.path.join(ROOT, "evals/baseline_frontier.jsonl"))
-    return runs
+def discover() -> list[str]:
+    return sorted(glob.glob(os.path.join(ROOT, "evals/runs/hack_*.jsonl"))) + \
+        [os.path.join(ROOT, "evals/baseline_frontier.jsonl")]
 
 
 def kept(fact: str, out: str) -> bool:
@@ -66,14 +71,20 @@ def kept(fact: str, out: str) -> bool:
 
 def item_scores(item: dict, out: str, band: dict) -> dict:
     draft = item["ai_draft"]
-    tm = m.text_metrics(out)
-    ib = m.in_band(tm, band)
+    tm, fa = m.text_metrics(out), m.faithfulness(draft, out)
+    hi = {k: band["metrics"][k][1] for k in G3_TELLS}
+    ratio = len(m.words(out)) / max(len(m.words(draft)), 1)
     s = {
-        "fact_fail": int(m.faithfulness(draft, out)["hard_fail"]),
-        "in_range": statistics.fmean(v["ok"] for v in ib.values()),
+        "G1": int(not fa["hard_fail"]),
+        "G2": int(fa["numbers_kept"] == 1.0 and fa["names_kept"] >= 0.9),
+        "G3": int(all(tm[k] <= hi[k] for k in G3_TELLS)),
+        "G4": int(0.7 <= ratio <= 1.3),
+        "fact_fail": int(fa["hard_fail"]),
+        "in_range": statistics.fmean(v["ok"] for v in m.in_band(tm, band).values()),
         "stock_per100": tm["stock_rate"],
-        "len_ratio": len(m.words(out)) / max(len(m.words(draft)), 1),
+        "len_ratio": ratio,
     }
+    s["pass"] = int(all(s[g] for g in GATES))
     if item.get("must_keep"):
         s["must_keep"] = statistics.fmean(kept(f, out) for f in item["must_keep"])
     if "forbidden" in item:
@@ -83,34 +94,47 @@ def item_scores(item: dict, out: str, band: dict) -> dict:
     return s
 
 
-def score_system(path: str, items: dict, band: dict) -> dict:
-    rows = read_jsonl(path)
-    ids = [r["id"] for r in rows]
-    if len(ids) != len(set(ids)):
-        raise SystemExit(f"{rel(path)}: duplicate ids")
-    unknown = set(ids) - set(items)
-    if unknown:
-        raise SystemExit(f"{rel(path)}: {len(unknown)} ids not in the eval set, e.g. {sorted(unknown)[:3]}")
-    if any(not (r.get("output") or "").strip() for r in rows):
-        raise SystemExit(f"{rel(path)}: empty output rows")
-    label = PREEXISTING.get(os.path.basename(path)) or rows[0].get("system") or os.path.basename(path)
-    per = {r["id"]: item_scores(items[r["id"]], r["output"], band) for r in rows}
-    sysd = {"label": label, "file": rel(path), "n": len(rows), "missing_ids": len(set(items) - set(ids)),
-            "model": rows[0].get("model"), "per_item": per}
-    lat = [r["latency_ms"] for r in rows if isinstance(r.get("latency_ms"), (int, float))]
-    cost = [r["cost_usd"] for r in rows if isinstance(r.get("cost_usd"), (int, float))]
-    if len(lat) == len(rows):
+def load_systems(paths: list[str], items: dict) -> dict[str, dict]:
+    """Group run files by system label; reject duplicate ids, unknown ids and empty outputs."""
+    systems: dict[str, dict] = {}
+    for path in paths:
+        rows = read_jsonl(path)
+        if not rows:
+            continue
+        label = PREEXISTING.get(os.path.basename(path)) or rows[0].get("system") or os.path.basename(path)
+        sysd = systems.setdefault(label, {"label": label, "files": [], "rows": {}, "model": rows[0].get("model")})
+        sysd["files"].append(rel(path))
+        for r in rows:
+            if r["id"] in sysd["rows"]:
+                raise SystemExit(f"{label}: duplicate id {r['id']} ({rel(path)})")
+            if r["id"] not in items:
+                raise SystemExit(f"{label}: id {r['id']} not in the eval items ({rel(path)})")
+            if not (r.get("output") or "").strip():
+                raise SystemExit(f"{label}: empty output for {r['id']} ({rel(path)})")
+            sysd["rows"][r["id"]] = r
+    return systems
+
+
+def score_system(sysd: dict, items: dict, band: dict) -> dict:
+    rows = sysd["rows"]
+    sysd["per_item"] = {i: item_scores(items[i], r["output"], band) for i, r in rows.items()}
+    lat = [r["latency_ms"] for r in rows.values() if isinstance(r.get("latency_ms"), (int, float))]
+    cost = [r["cost_usd"] for r in rows.values() if isinstance(r.get("cost_usd"), (int, float))]
+    if lat and len(lat) == len(rows):
         sysd["latency_ms"] = st.percentiles(lat)
-    if len(cost) == len(rows):
+    if cost and len(cost) == len(rows):
         sysd["cost_per_1k_usd"] = st.cost_per_1k(cost)
     return sysd
 
 
-def summarise(sysd: dict) -> dict:
-    per = list(sysd["per_item"].values())
-    out = {}
-    k = sum(p["fact_fail"] for p in per)
-    out["fact_fail"] = dict(zip(("rate", "lo", "hi"), st.rate_ci(k, len(per))), count=k, n=len(per))
+def rate(vals: list[int]) -> dict:
+    r, lo, hi = st.rate_ci(sum(vals), len(vals))
+    return {"rate": r, "lo": lo, "hi": hi, "count": sum(vals), "n": len(vals)}
+
+
+def summarise(per: list[dict]) -> dict:
+    out = {"pass": rate([p["pass"] for p in per]), "gates": {g: rate([p[g] for p in per]) for g in GATES},
+           "fact_fail": rate([p["fact_fail"] for p in per])}
     for key in ("in_range", "stock_per100", "len_ratio", "must_keep"):
         vals = [p[key] for p in per if key in p]
         if vals:
@@ -118,25 +142,54 @@ def summarise(sysd: dict) -> dict:
     for key in ("forbidden_hit", "verbatim_miss"):
         vals = [p[key] for p in per if key in p]
         if vals:
-            out[key] = dict(zip(("rate", "lo", "hi"), st.rate_ci(sum(vals), len(vals))), count=sum(vals), n=len(vals))
+            out[key] = rate(vals)
     return out
 
 
-def paired(a: dict, b: dict) -> dict:
-    shared = sorted(set(a["per_item"]) & set(b["per_item"]))
+def paired(a: dict, b: dict, ids: list[str]) -> dict:
+    shared = [i for i in ids if i in a["per_item"] and i in b["per_item"]]
     res = {"n_shared": len(shared)}
-    for key in ("fact_fail", "in_range", "stock_per100", "len_ratio"):
-        x = [a["per_item"][i][key] for i in shared]
-        y = [b["per_item"][i][key] for i in shared]
-        res[key] = dict(zip(("diff", "lo", "hi", "p"), st.paired_bootstrap_diff(x, y)))
+    if not shared:
+        return res
+    for key in ("pass", *GATES, "in_range"):
+        d, lo, hi, p = st.paired_bootstrap_diff([a["per_item"][i][key] for i in shared],
+                                                [b["per_item"][i][key] for i in shared])
+        res[key] = {"diff": d, "lo": lo, "hi": hi, "p": p, "significant": p < 0.05}
     return res
+
+
+def pick_reference(labels: list[str], wanted: str | None) -> str:
+    if wanted:
+        if wanted not in labels:
+            raise SystemExit(f"reference {wanted!r} not among systems {labels}")
+        return wanted
+    for prefix in ("frontier-strong", "frontier-live", "frontier"):
+        hit = next((l for l in labels if l.startswith(prefix)), None)
+        if hit:
+            return hit
+    return labels[0]
+
+
+def block(systems: list[dict], ids: list[str], ref: dict) -> dict:
+    """One leaderboard over the given item ids. Systems missing every id in the block are left out."""
+    rows = []
+    for s in systems:
+        per = [s["per_item"][i] for i in ids if i in s["per_item"]]
+        if not per:
+            continue
+        entry = {"label": s["label"], "n": len(per), "missing": len(ids) - len(per), "summary": summarise(per)}
+        if s is not ref:
+            entry["vs_reference"] = paired(s, ref, ids)
+        rows.append(entry)
+    rows.sort(key=lambda e: -e["summary"]["pass"]["rate"])
+    return {"n_items": len(ids), "systems": rows}
 
 
 def judges(report_dir: str) -> list[dict]:
     out = []
     for f in sorted(glob.glob(os.path.join(report_dir, "judge_*.summary.json"))):
         j = json.load(open(f, encoding="utf-8"))
-        if str(j.get("model", "")).startswith("mock"):
+        if j.get("mock") or str(j.get("model", "")).startswith("mock"):
             continue  # mock verdicts are for pipeline tests only
         j["file"] = rel(f)
         j["sign_test_p"] = st.judge_sign_test(j["win"], j["loss"])
@@ -144,67 +197,85 @@ def judges(report_dir: str) -> list[dict]:
     return out
 
 
-def build(runs: list[str], items: dict, band: dict, reference: str | None, report_dir: str) -> dict:
-    systems = [score_system(p, items, band) for p in runs]
-    labels = [s["label"] for s in systems]
-    if len(set(labels)) != len(labels):
-        raise SystemExit(f"duplicate system labels: {labels}")
-    ref = reference or next((l for l in labels if l.startswith("frontier-live")), None) \
-        or next((l for l in labels if l.startswith("frontier")), labels[0])
-    ref_sys = next(s for s in systems if s["label"] == ref)
-    res = {"reference": ref, "n_items": len(items), "systems": []}
-    for s in systems:
-        entry = {k: v for k, v in s.items() if k != "per_item"}
-        entry["summary"] = summarise(s)
-        if s is not ref_sys:
-            entry["vs_reference"] = paired(s, ref_sys)
-        res["systems"].append(entry)
+def build(paths: list[str], items: dict, band: dict, reference: str | None, report_dir: str) -> dict:
+    systems = [score_system(s, items, band) for s in load_systems(paths, items).values()]
+    if not systems:
+        raise SystemExit("no run files found")
+    ref_label = pick_reference([s["label"] for s in systems], reference)
+    ref = next(s for s in systems if s["label"] == ref_label)
+    by_split = {sp: sorted(i for i in items if split_of(i) == sp) for sp in SPLITS}
+    rule = __doc__.split("Secondary")[0].split("all gates.")[1].strip("\n")
+    res = {"reference": ref_label, "gates_rule": rule,
+           "systems": [{"label": s["label"], "files": s["files"], "model": s["model"], "n": len(s["per_item"]),
+                        **{k: s[k] for k in ("cost_per_1k_usd", "latency_ms") if k in s}} for s in systems],
+           "blocks": {"all": block(systems, sorted(items), ref),
+                      "main": block(systems, by_split["dev"] + by_split["trick"], ref),
+                      **{sp: block(systems, ids, ref) for sp, ids in by_split.items()}},
+           "judges": judges(report_dir)}
     return res
 
 
-def fmt_rate(d: dict) -> str:
-    return f"{d['count']} ({100*d['rate']:.0f}% [{100*d['lo']:.0f}, {100*d['hi']:.0f}])"
+def pct(d: dict) -> str:
+    return f"{100*d['rate']:.0f}% [{100*d['lo']:.0f}, {100*d['hi']:.0f}]"
 
 
-def fmt_mean(d: dict, pct: bool = False, nd: int = 2) -> str:
-    if pct:
+def mean(d: dict, as_pct: bool = False) -> str:
+    if as_pct:
         return f"{100*d['mean']:.0f}% [{100*d['lo']:.0f}, {100*d['hi']:.0f}]"
-    return f"{d['mean']:.{nd}f} [{d['lo']:.{nd}f}, {d['hi']:.{nd}f}]"
+    return f"{d['mean']:.2f} [{d['lo']:.2f}, {d['hi']:.2f}]"
 
 
-def table(block: dict, title: str) -> list[str]:
-    n = block["n_items"]
-    lines = [f"## {title}", "", f"Reference for differences: `{block['reference']}`. 95% CIs in brackets.", "",
-             f"| System | Fact hard-fails /{n} | In human range | Stock phrases /100w | Length ratio | Must-keep (crude) "
-             "| Cost / 1k rewrites | p50 / p95 latency |",
-             "|---|---|---|---|---|---|---|---|"]
-    for s in block["systems"]:
-        sm = s["summary"]
+def delta(e: dict, key: str = "pass") -> str:
+    v = e.get("vs_reference", {}).get(key)
+    if not v:
+        return "reference"
+    return f"{100*v['diff']:+.0f} pp [{100*v['lo']:+.0f}, {100*v['hi']:+.0f}], " + \
+        ("significant" if v["significant"] else "n.s.") + f" (p={v['p']:.3f})"
+
+
+def leaderboard(res: dict, key: str, title: str) -> list[str]:
+    b = res["blocks"][key]
+    meta = {s["label"]: s for s in res["systems"]}
+    lines = [f"## {title} ({b['n_items']} items)", "",
+             "| System | Fact-safe human rate | Δ vs reference | G1 invented | G2 lost | G3 tells | G4 gutted "
+             "| $ / 1k | p50 latency |", "|---|---|---|---|---|---|---|---|---|"]
+    for e in b["systems"]:
+        g, s = e["summary"]["gates"], meta[e["label"]]
         cost = f"${s['cost_per_1k_usd']:.2f}" if "cost_per_1k_usd" in s else "n/a"
-        lat = f"{s['latency_ms']['p50']/1000:.1f}s / {s['latency_ms']['p95']/1000:.1f}s" if "latency_ms" in s else "n/a"
-        mk = fmt_mean(sm["must_keep"], pct=True) if "must_keep" in sm else "n/a"
-        lines.append(f"| `{s['label']}` | {fmt_rate(sm['fact_fail'])} | {fmt_mean(sm['in_range'], pct=True)} | "
-                     f"{fmt_mean(sm['stock_per100'])} | {fmt_mean(sm['len_ratio'])} | {mk} | {cost} | {lat} |")
-    diffs = [s for s in block["systems"] if "vs_reference" in s]
-    if diffs:
-        lines += ["", "Paired differences vs the reference (system minus reference, shared ids):", "",
-                  "| System | Δ fact-fail rate | p | Δ in range | p |", "|---|---|---|---|---|"]
-        for s in diffs:
-            f, r = s["vs_reference"]["fact_fail"], s["vs_reference"]["in_range"]
-            lines.append(f"| `{s['label']}` | {100*f['diff']:+.0f} pts [{100*f['lo']:+.0f}, {100*f['hi']:+.0f}] | "
-                         f"{f['p']:.4f} | {100*r['diff']:+.0f} pts [{100*r['lo']:+.0f}, {100*r['hi']:+.0f}] | {r['p']:.4f} |")
+        lat = f"{s['latency_ms']['p50']/1000:.1f}s" if "latency_ms" in s else "n/a"
+        miss = f" ({e['missing']} missing)" if e["missing"] else ""
+        lines.append(f"| `{e['label']}`{miss} | {pct(e['summary']['pass'])} | {delta(e)} | "
+                     + " | ".join(f"{100*g[x]['rate']:.0f}%" for x in GATES) + f" | {cost} | {lat} |")
+    return lines + ["", "Gate columns show the share of items that pass each gate.", ""]
+
+
+def secondary(res: dict) -> list[str]:
+    lines = ["## Secondary metrics (main split)", "",
+             "| System | Fact hard-fails | In human range | Stock /100w | Length ratio | Must-keep (crude) |",
+             "|---|---|---|---|---|---|"]
+    for e in res["blocks"]["main"]["systems"]:
+        sm = e["summary"]
+        ff = sm["fact_fail"]
+        mk = mean(sm["must_keep"], True) if "must_keep" in sm else "n/a"
+        lines.append(f"| `{e['label']}` | {ff['count']}/{ff['n']} ({pct(ff)}) | {mean(sm['in_range'], True)} | "
+                     f"{mean(sm['stock_per100'])} | {mean(sm['len_ratio'])} | {mk} |")
     return lines + [""]
 
 
-def render(results: dict) -> str:
-    out = ["# Results", "", "_Generated by `hackathon/eval/score_all.py` from `results.json`. Do not edit by hand._", ""]
-    out += table(results["main"], "Main eval (dev 100 + trick 30)")
-    if results.get("heldout"):
-        out += table(results["heldout"], "Held-out pairs with real human references")
-    if results["judges"]:
+def render(res: dict) -> str:
+    out = ["# Results", "", "_Generated by `hackathon/eval/score_all.py` from `results.json`. Do not edit by hand._", "",
+           f"Reference (F1): `{res['reference']}`. 95% CIs in brackets. Δ is a paired bootstrap on shared items.", "",
+           "**Fact-safe human rewrite rate** = items passing all four gates:", "", "```", res["gates_rule"], "```", ""]
+    out += leaderboard(res, "all", "Leaderboard, all items")
+    for key, title in (("main", "Main eval: dev + trick"), ("dev", "Dev split"), ("trick", "Trick split"),
+                       ("heldout", "Held-out pairs (real human references)")):
+        if res["blocks"][key]["systems"]:
+            out += leaderboard(res, key, title)
+    out += secondary(res)
+    if res["judges"]:
         out += ["## Pairwise judge (both orders; a win needs both orders to agree)", "",
                 "| A vs B | Judge | A wins | B wins | Ties | Flip rate | Sign test p |", "|---|---|---|---|---|---|---|"]
-        for j in results["judges"]:
+        for j in res["judges"]:
             out.append(f"| `{j['a']}` vs `{j['b']}` | `{j['model']}` | {j['win']} | {j['loss']} | {j['tie']} | "
                        f"{100*j['flip_rate']:.0f}% | {j['sign_test_p']:.4f} |")
         out.append("")
@@ -218,17 +289,14 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--out-dir", default=os.path.join(ROOT, "hackathon/report"))
     a = ap.parse_args(argv)
     band = json.load(open(os.path.join(ROOT, "evals/runs/band_v0.json"), encoding="utf-8"))
-    results = {"main": build(a.runs or discover(False), eval_items(), band, a.reference, a.out_dir)}
-    held = discover(True) if not a.runs else []
-    if held:
-        results["heldout"] = build(held, heldout_items(), band, None, a.out_dir)
-    results["judges"] = judges(a.out_dir)
+    res = build(a.runs or discover(), all_items(), band, a.reference, a.out_dir)
     os.makedirs(a.out_dir, exist_ok=True)
     with open(os.path.join(a.out_dir, "results.json"), "w", encoding="utf-8", newline="\n") as f:
-        json.dump(results, f, indent=1)
+        json.dump(res, f, indent=1)
     with open(os.path.join(a.out_dir, "RESULTS.md"), "w", encoding="utf-8", newline="\n") as f:
-        f.write(render(results))
-    print(f"scored {len(results['main']['systems'])} systems -> {rel(a.out_dir)}/results.json, RESULTS.md")
+        f.write(render(res))
+    print(f"scored {len(res['systems'])} systems on {res['blocks']['all']['n_items']} items -> "
+          f"{rel(a.out_dir)}/results.json, RESULTS.md")
     return 0
 
 

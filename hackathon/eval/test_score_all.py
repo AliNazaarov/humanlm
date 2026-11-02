@@ -33,6 +33,12 @@ class TestItemScores(unittest.TestCase):
         s = sa.item_scores(ITEM, "Ledgerline cuts close from 9 days to 4 days across 38 customers, saving 50%.", self.band)
         self.assertEqual(s["fact_fail"], 1)
 
+    def test_gates(self):
+        s = sa.item_scores(ITEM, "Ledgerline took close from 9 days to 4 days for 38 customers.", self.band)
+        self.assertEqual((s["G1"], s["G2"], s["G3"], s["G4"], s["pass"]), (1, 1, 1, 1, 1))
+        s = sa.item_scores(ITEM, "Ledgerline: 9 to 4 days.", self.band)  # gutted, lost 38
+        self.assertEqual((s["G2"], s["G4"], s["pass"]), (0, 0, 0))
+
     def test_clean_rewrite(self):
         s = sa.item_scores(ITEM, "Ledgerline took close from 9 days to 4 for 38 customers, seamlessly.", self.band)
         self.assertEqual(s["fact_fail"], 0)
@@ -51,20 +57,37 @@ class TestScoreSystem(unittest.TestCase):
         return f.name
 
     def test_rejects_duplicates_unknown_ids_and_empty(self):
-        band = BAND
         items = {"dev-001": ITEM}
-        for rows in ([{"id": "dev-001", "output": "x"}] * 2,
-                     [{"id": "nope", "output": "x"}],
-                     [{"id": "dev-001", "output": " "}]):
+        for rows in ([{"id": "dev-001", "system": "s", "output": "x"}] * 2,
+                     [{"id": "nope", "system": "s", "output": "x"}],
+                     [{"id": "dev-001", "system": "s", "output": " "}]):
             with self.assertRaises(SystemExit):
-                sa.score_system(self._run(rows), items, band)
+                sa.load_systems([self._run(rows)], items)
 
-    def test_cost_and_latency_only_when_complete(self):
-        p = self._run([{"id": "dev-001", "system": "s", "output": "Ledgerline: 9 to 4 days, 38 customers.",
+    def test_main_and_heldout_files_group_by_label(self):
+        held = {"id": "ho-001", "ai_draft": "Ledgerline closes books in 4 days."}
+        items = {"dev-001": ITEM, "ho-001": held}
+        a = self._run([{"id": "dev-001", "system": "s", "output": "Ledgerline: 9 to 4 days, 38 customers.",
                         "latency_ms": 800, "cost_usd": 0.0002}])
-        s = sa.score_system(p, {"dev-001": ITEM}, BAND)
+        b = self._run([{"id": "ho-001", "system": "s", "output": "Ledgerline closes the books in 4 days.",
+                        "latency_ms": 600, "cost_usd": 0.0002}])
+        systems = sa.load_systems([a, b], items)
+        self.assertEqual(list(systems), ["s"])
+        s = sa.score_system(systems["s"], items, BAND)
+        self.assertEqual(len(s["per_item"]), 2)
         self.assertAlmostEqual(s["cost_per_1k_usd"], 0.2)
-        self.assertEqual(s["latency_ms"]["p50"], 800.0)
+        self.assertEqual(s["latency_ms"]["p50"], 700.0)
+
+    def test_build_reference_and_paired_delta(self):
+        items = {"dev-001": ITEM}
+        good = self._run([{"id": "dev-001", "system": "frontier-strong:x",
+                           "output": "Ledgerline took close from 9 days to 4 days for 38 customers."}])
+        bad = self._run([{"id": "dev-001", "system": "o1", "output": "Ledgerline: 9 to 4 days."}])
+        res = sa.build([good, bad], items, BAND, None, tempfile.gettempdir())
+        self.assertEqual(res["reference"], "frontier-strong:x")
+        o1 = next(e for e in res["blocks"]["all"]["systems"] if e["label"] == "o1")
+        self.assertEqual(o1["vs_reference"]["pass"]["diff"], -1.0)
+        self.assertIn("Fact-safe human rewrite rate", sa.render(res))
 
 
 if __name__ == "__main__":
