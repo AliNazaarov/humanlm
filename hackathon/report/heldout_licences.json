@@ -1,0 +1,1673 @@
+{
+ "ho-001": {
+  "url": "www.eoearth.org/article/Helanshan_montane_conifer_forests",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/2.5/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130523164952",
+   "wayback_cc": [
+    "by-sa/2.5"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20120921064539",
+   "domain_homepage_cc": [
+    "by-sa/2.5"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "iok55fnffvef4g67qnnxard4msovmkv4"
+ },
+ "ho-002": {
+  "url": "www.panarmenian.net/eng/news/128286/",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "domain_sibling_pages+domain_homepage",
+  "confidence": "weak",
+  "permissive": true,
+  "note": "2 other held-out page(s) on www.panarmenian.net carry this licence; this page itself not verified",
+  "evidence": {
+   "wayback_status": "no_snapshot",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20130516150459",
+   "domain_homepage_cc": [
+    "by/3.0"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "3mgm6ctw7nk45hqgdhisvvmomvcecuyd"
+ },
+ "ho-004": {
+  "url": "wikitravel.org/en/Banana_Pancake_Trail",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130522230825",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "jwqgvl3ukzpubw3tvjuc3f6yubn6qniv"
+ },
+ "ho-005": {
+  "url": "www.crummy.com/2006/03/23",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/2.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "medium",
+  "permissive": true,
+  "note": "snapshot 20190712 is 6y from the 2013 crawl",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20190712173122",
+   "wayback_cc": [
+    "by-sa/2.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "spiqvipzwcelfqoc3ekelkfula7iuanv"
+ },
+ "ho-006": {
+  "url": "www.appropedia.org/Category:MOST",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_rel_license+text",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20131224024342",
+   "wayback_cc": [
+    "by-sa/2.0",
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [
+    "by-sa/3.0"
+   ],
+   "text_cc_links": [],
+   "text_cc_names": [
+    "by-sa/?"
+   ],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "5bpeciprglu7kn6nmc7f2xoetbxpleel"
+ },
+ "ho-007": {
+  "url": "www.antweb.org/description.do?genus=cyphoidris&name=spinosa&rank=species",
+  "licence": "see source",
+  "source_field": "unrecovered",
+  "confidence": null,
+  "permissive": null,
+  "note": "ambiguous: page links several CC licences by-nc-sa/1.0, by/4.0; www.antweb.org homepage links several CC licences: by-nc-sa/1.0, by-sa/3.0",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20160307163831",
+   "wayback_cc": [
+    "by-nc-sa/1.0",
+    "by/4.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20130513234313",
+   "domain_homepage_cc": [
+    "by-nc-sa/1.0",
+    "by-sa/3.0"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "mazimlkri3q2u452zb4cltoybkdzqpvo"
+ },
+ "ho-008": {
+  "url": "www.biomedcentral.com/1741-7007/6/52",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/2.0/",
+  "source_field": "wayback_html_cc_link+text",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20140718150438",
+   "wayback_cc": [
+    "by/2.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [
+    "by/2.0"
+   ],
+   "text_cc_names": [
+    "by/?"
+   ],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "5c2n7cdi2fzaxc54mlr4l7lx4enrnrjx"
+ },
+ "ho-009": {
+  "url": "wikitravel.org/en/Wikitravel:RDF_Expedition",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20121111055850",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "o7ras3mofeqkbba6igpenpeqaz7bdxpf"
+ },
+ "ho-010": {
+  "url": "rationalwiki.org/wiki/Torture",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130619081623",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "ibdbum5o72pkzhj2v2izoc7cx53i53an"
+ },
+ "ho-012": {
+  "url": "www.mariowiki.com/Eiffel_Tower",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130506234829",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "du364r5lxwsgurb4tikupumjsam4c3q3"
+ },
+ "ho-013": {
+  "url": "2010.igem.org/Team:UPO-Sevilla/Biobricks/Parts",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20121104154908",
+   "wayback_cc": [
+    "by/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "dewhquxzpk5j2qanlh4ffdervl2eokyj"
+ },
+ "ho-016": {
+  "url": "www.biomedcentral.com/1471-2164/12/31/",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/2.0/",
+  "source_field": "commonpile_text_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "no_snapshot",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [
+    "by/2.0"
+   ],
+   "text_cc_names": [
+    "by/?"
+   ],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "z7eu4bt6vcx3hn2mcufz42576jknnfay"
+ },
+ "ho-017": {
+  "url": "spring96.org/en/news/53729",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "wayback_html_rel_license",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130613173806",
+   "wayback_cc": [
+    "by/3.0"
+   ],
+   "wayback_rel_license": [
+    "by/3.0"
+   ],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "vx6ybqmhrbhh6o4nuvcouv6qqtbfvcqy"
+ },
+ "ho-018": {
+  "url": "wikitravel.org/en/Takamatsu",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130505103428",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "aczikwgnf4lp4hudmw25syv6yrye5p54"
+ },
+ "ho-020": {
+  "url": "www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A2006.05.0274%3Aarticle%3D5",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_rel_license+text",
+  "confidence": "medium",
+  "permissive": true,
+  "note": "snapshot 20221213 is 9y from the 2013 crawl",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20221213235312",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [
+    "by-sa/3.0"
+   ],
+   "text_cc_links": [],
+   "text_cc_names": [
+    "by-sa/3.0"
+   ],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "oguczofhczy7xloavkiadkzarlrwkp37"
+ },
+ "ho-022": {
+  "url": "strategywiki.org/wiki/NeoGeo_Battle_Coliseum/Legendary_Heroes",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130518120841",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "dl54hsnuzpmursurumkjajh3vhofkk6w"
+ },
+ "ho-023": {
+  "url": "www.fides.org/en/news/19089?idnews=19089&lan=eng",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "wayback_domain_homepage",
+  "confidence": "weak",
+  "permissive": true,
+  "note": "site-wide licence on www.fides.org homepage archived 20130517; this page itself not verified",
+  "evidence": {
+   "wayback_status": "no_snapshot",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20130517190818",
+   "domain_homepage_cc": [
+    "by/3.0"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "dsj7ym6q2chbfxrc5iwbpuxs6btow7l3"
+ },
+ "ho-025": {
+  "url": "www.eoearth.org/article/Kerala,_India",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/2.5/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "medium",
+  "permissive": true,
+  "note": "snapshot 20110406 is 2y from the 2013 crawl",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20110406114310",
+   "wayback_cc": [
+    "by-sa/2.5"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20120921064539",
+   "domain_homepage_cc": [
+    "by-sa/2.5"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "ukw7ny3nvrm25lfte2bzi5leyruimebr"
+ },
+ "ho-026": {
+  "url": "www.eoearth.org/article/Renewable_Energy_Credits_%28RECs%29?topic=49469",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/2.5/",
+  "source_field": "domain_sibling_pages+domain_homepage",
+  "confidence": "weak",
+  "permissive": true,
+  "note": "3 other held-out page(s) on www.eoearth.org carry this licence; this page itself not verified",
+  "evidence": {
+   "wayback_status": "no_snapshot",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20120921064539",
+   "domain_homepage_cc": [
+    "by-sa/2.5"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "e5pczkpyfmlpa3yxilwjfoowc7etnj7e"
+ },
+ "ho-027": {
+  "url": "journals.tdl.org/icce/index.php/icce/article/view/5278/0",
+  "licence": "see source",
+  "source_field": "unrecovered",
+  "confidence": null,
+  "permissive": null,
+  "note": "",
+  "evidence": {
+   "wayback_status": "no_snapshot",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [
+    "by/?"
+   ],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "cl4d6lpb4jikj4c53hisfqffdy6zvibw"
+ },
+ "ho-030": {
+  "url": "www.panarmenian.net/eng/news/147605/",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "wayback_html_rel_license",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130302051020",
+   "wayback_cc": [
+    "by/3.0"
+   ],
+   "wayback_rel_license": [
+    "by/3.0"
+   ],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20130516150459",
+   "domain_homepage_cc": [
+    "by/3.0"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "aw6gilxl25dkv2ttooetxyv7humyms4v"
+ },
+ "ho-034": {
+  "url": "strategywiki.org/wiki/Super_Smash_Bros._Melee/Stages",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130626043622",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "cl6xo2mbzkelnf42inzwlvuxjigrjacn"
+ },
+ "ho-037": {
+  "url": "www.ohloh.net/p/wmiirc-lua/factoids",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "wayback_domain_homepage",
+  "confidence": "weak",
+  "permissive": true,
+  "note": "site-wide licence on www.ohloh.net homepage archived 20130517; this page itself not verified",
+  "evidence": {
+   "wayback_status": "no_snapshot",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [
+    "by/?"
+   ],
+   "domain_homepage_snapshot": "20130517211153",
+   "domain_homepage_cc": [
+    "by/3.0"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "yczkfiuluqsy3rp23n3coox6o7fswpwg"
+ },
+ "ho-038": {
+  "url": "www.hindawi.com/journals/ahci/2011/684202/",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "wayback_html_rel_license+text",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20140409163200",
+   "wayback_cc": [
+    "by/3.0"
+   ],
+   "wayback_rel_license": [
+    "by/3.0"
+   ],
+   "text_cc_links": [],
+   "text_cc_names": [
+    "by/?"
+   ],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "5o6ftrc3e5fcfbwov3u3vzi6yxuu67hv"
+ },
+ "ho-039": {
+  "url": "rationalwiki.org/wiki/Jerusalem_syndrome",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130119153006",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "maveo2736e5cepgqhqhk3z7x5zeu3pal"
+ },
+ "ho-040": {
+  "url": "www.panarmenian.net/eng/news/123016/",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "domain_sibling_pages+domain_homepage",
+  "confidence": "weak",
+  "permissive": true,
+  "note": "2 other held-out page(s) on www.panarmenian.net carry this licence; this page itself not verified",
+  "evidence": {
+   "wayback_status": "no_snapshot",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20130516150459",
+   "domain_homepage_cc": [
+    "by/3.0"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "7dqo37yxaxb43cepdit6kro5vhk7fx2f"
+ },
+ "ho-047": {
+  "url": "strategywiki.org/wiki/Spider-Man",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130518090821",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "lv7mzfjxq2guoj4lcij6ipgnid7dkbf7"
+ },
+ "ho-048": {
+  "url": "globalvoicesonline.org/2012/02/12/panama-silvia-carrera-the-indigenous-leader-who-took-on-the-government/",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "wayback_html_rel_license",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130518065429",
+   "wayback_cc": [
+    "by/3.0"
+   ],
+   "wayback_rel_license": [
+    "by/3.0"
+   ],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "7rixozbpiwwkhxgltn27lw43fhobvcjm"
+ },
+ "ho-050": {
+  "url": "arthritis-research.com/content/14/2/R50",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/2.0/",
+  "source_field": "wayback_html_cc_link+text",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20121213155104",
+   "wayback_cc": [
+    "by/2.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [
+    "by/2.0"
+   ],
+   "text_cc_names": [
+    "by/?"
+   ],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "ojhydgx73tilzl6udrm53oc4vispxdjg"
+ },
+ "ho-051": {
+  "url": "www.libertariannews.org/2010/10/03/murray-n-rothbard-the-case-against-the-fed/",
+  "licence": "CC0 1.0 - https://creativecommons.org/publicdomain/zero/1.0/",
+  "source_field": "wayback_html_rel_license",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130721044556",
+   "wayback_cc": [
+    "cc0/1.0"
+   ],
+   "wayback_rel_license": [
+    "cc0/1.0"
+   ],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "tmdapzi5ge5avhi5p7ol2esuom6wjbwz"
+ },
+ "ho-052": {
+  "url": "www.werelate.org/wiki/Place:Loreto,_Peru",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "domain_sibling_pages",
+  "confidence": "weak",
+  "permissive": true,
+  "note": "1 other held-out page(s) on www.werelate.org carry this licence; this page itself not verified",
+  "evidence": {
+   "wayback_status": "no_snapshot",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [
+    "by/?"
+   ],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "va3qamtm3kz3g7pedbdr4aaul6ravo7v"
+ },
+ "ho-053": {
+  "url": "www.theworldsbestever.com/category/needs/page/2/",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_rel_license",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130828124358",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [
+    "by-sa/3.0"
+   ],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "uxkd5tturwzr3pvbcwuhkhfj2skm3m3u"
+ },
+ "ho-054": {
+  "url": "www.wikidoc.org/index.php/Cold_water_extraction",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "medium",
+  "permissive": true,
+  "note": "snapshot 20160915 is 3y from the 2013 crawl",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20160915181744",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "shgtxw6j3ttcfoxrja6m6qzbcm4q2uwy"
+ },
+ "ho-056": {
+  "url": "www.eoearth.org/article/Healthy_Solutions_for_the_Low_Carbon_Economy:_Technologies_Warranting_Further_Study",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/2.5/",
+  "source_field": "domain_sibling_pages+domain_homepage",
+  "confidence": "weak",
+  "permissive": true,
+  "note": "3 other held-out page(s) on www.eoearth.org carry this licence; this page itself not verified",
+  "evidence": {
+   "wayback_status": "no_snapshot",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20120921064539",
+   "domain_homepage_cc": [
+    "by-sa/2.5"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "f45wnkvmg5k6vohpnbutyydazqxxbyug"
+ },
+ "ho-057": {
+  "url": "www.biomedcentral.com/1471-2458/11/505/abstract",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/2.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "medium",
+  "permissive": true,
+  "note": "snapshot 20110728 is 2y from the 2013 crawl",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20110728013427",
+   "wayback_cc": [
+    "by/2.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "pwdlfnwemisvphctheu5rnpw5kitg7re"
+ },
+ "ho-058": {
+  "url": "ccforum.com/content/15/3/427",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/2.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130118125736",
+   "wayback_cc": [
+    "by/2.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20130519132145",
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "kgdatpt6hxzzzqqmspv7ttc24iqblauh"
+ },
+ "ho-060": {
+  "url": "strategywiki.org/wiki/MapleStory/Monsters",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20120830213320",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "hh3otdpbtoxgojr2uhs2inv224di6z26"
+ },
+ "ho-061": {
+  "url": "www.werelate.org/wiki/Place:Canary_Wharf%2C_Greater_London%2C_England",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "medium",
+  "permissive": true,
+  "note": "text statement differs: by/?",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20120219171103",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [
+    "by/?"
+   ],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "3xhifdudqqbgidhwlpyvwdr5c4ebhsud"
+ },
+ "ho-062": {
+  "url": "wikitravel.org/wiki/en/index.php?diff=prev&oldid=1875264&title=United_Kingdom",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "domain_sibling_pages",
+  "confidence": "weak",
+  "permissive": true,
+  "note": "5 other held-out page(s) on wikitravel.org carry this licence; this page itself not verified",
+  "evidence": {
+   "wayback_status": "error: Expecting value: line 1 column 1 (char 0)",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "o5eoeepanjpc3z43tu5x7eaozvwzwovr"
+ },
+ "ho-063": {
+  "url": "quotationsbook.com/quote/27790/",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/2.0/",
+  "source_field": "wayback_html_rel_license",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20120822025138",
+   "wayback_cc": [
+    "by/2.0"
+   ],
+   "wayback_rel_license": [
+    "by/2.0"
+   ],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "mcwygxcxaluph5yiow5ynp6l6hhssi72"
+ },
+ "ho-064": {
+  "url": "archive.mises.org/16740/that-bin-laden-killing/",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "wayback_domain_homepage",
+  "confidence": "weak",
+  "permissive": true,
+  "note": "site-wide licence on archive.mises.org homepage archived 20130523; this page itself not verified",
+  "evidence": {
+   "wayback_status": "error: Expecting value: line 1 column 1 (char 0)",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20130523071631",
+   "domain_homepage_cc": [
+    "by/3.0"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "gqcirqclepxh6c226hyyc53ki4mzgpqz"
+ },
+ "ho-067": {
+  "url": "www.panarmenian.net/eng/news/130463/",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "domain_sibling_pages+domain_homepage",
+  "confidence": "weak",
+  "permissive": true,
+  "note": "2 other held-out page(s) on www.panarmenian.net carry this licence; this page itself not verified",
+  "evidence": {
+   "wayback_status": "error: Expecting value: line 1 column 1 (char 0)",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20130516150459",
+   "domain_homepage_cc": [
+    "by/3.0"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "vjico536kkv5ot5csphmadqgtnscyyiq"
+ },
+ "ho-068": {
+  "url": "printwiki.org/Page_Makeup_Software",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130425094112",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "rfhzyz762azsewd67rkzgzoo5bivvvd2"
+ },
+ "ho-070": {
+  "url": "answers.onstartups.com/questions/16826/incentives-for-feedback-testimonials/16933",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_rel_license",
+  "confidence": "medium",
+  "permissive": true,
+  "note": "snapshot 20110811 is 2y from the 2013 crawl",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20110811010413",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [
+    "by-sa/3.0"
+   ],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "txw5zslcjm6qt5ni6jrvps2bwasry2ym"
+ },
+ "ho-071": {
+  "url": "www.openwetware.org/index.php?oldid=288954&title=Gertler",
+  "licence": "see source",
+  "source_field": "unrecovered",
+  "confidence": null,
+  "permissive": null,
+  "note": "",
+  "evidence": {
+   "wayback_status": "error: Expecting value: line 1 column 1 (char 0)",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "egcicux4huxokhc3tpr3ypcslslpl4no"
+ },
+ "ho-076": {
+  "url": "www.eoearth.org/article/North_Western_Ghats_moist_deciduous_forests",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/2.5/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130523174730",
+   "wayback_cc": [
+    "by-sa/2.5"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20120921064539",
+   "domain_homepage_cc": [
+    "by-sa/2.5"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "z2p6me7bcwzzgxmzvanpzmprmnvgzevd"
+ },
+ "ho-077": {
+  "url": "www.fides.org/en/news/7731?idnews=7731&lan=eng",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "wayback_domain_homepage",
+  "confidence": "weak",
+  "permissive": true,
+  "note": "site-wide licence on www.fides.org homepage archived 20130517; this page itself not verified",
+  "evidence": {
+   "wayback_status": "error: Expecting value: line 1 column 1 (char 0)",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20130517190818",
+   "domain_homepage_cc": [
+    "by/3.0"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "onnpc6cgpcntzxp7nvho2yy3mskjyajh"
+ },
+ "ho-078": {
+  "url": "www.pressreleasepoint.com/justin-ligeri-launches-new-web-site-bring-einsteins-quantum-theory-and-spirituality-together",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "domain_sibling_pages",
+  "confidence": "weak",
+  "permissive": true,
+  "note": "2 other held-out page(s) on www.pressreleasepoint.com carry this licence; this page itself not verified",
+  "evidence": {
+   "wayback_status": "error: Expecting value: line 1 column 1 (char 0)",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20130522201211",
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "ronmzwnosaaoetaupoq5m7gt4qj2rwxi"
+ },
+ "ho-079": {
+  "url": "developer.android.com/google/play/billing/v2/billing_reference.html",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/2.5/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130518053911",
+   "wayback_cc": [
+    "by/2.5"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "hd46fs6w7dqazzudp3wiiayulaq26q6w"
+ },
+ "ho-080": {
+  "url": "www.wikidoc.org/index.php/IUPAC_name",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "medium",
+  "permissive": true,
+  "note": "snapshot 20160816 is 3y from the 2013 crawl",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20160816045139",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "jtx2glhggvwixgjpzqub7uioqtls6vsh"
+ },
+ "ho-082": {
+  "url": "www.go4expert.com/community/life-mean-t17937/",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_rel_license",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130511101715",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [
+    "by-sa/3.0"
+   ],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "4xpl6ofyrspp5jjo57rwcyfy77fg2rfu"
+ },
+ "ho-084": {
+  "url": "wikitravel.org/wiki/en/index.php?diff=prev&oldid=1091752&title=Wales",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "domain_sibling_pages",
+  "confidence": "weak",
+  "permissive": true,
+  "note": "5 other held-out page(s) on wikitravel.org carry this licence; this page itself not verified",
+  "evidence": {
+   "wayback_status": "error: Expecting value: line 1 column 1 (char 0)",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "hpucraympqwrwtczsj26ebb4ng4grjg3"
+ },
+ "ho-085": {
+  "url": "wikitravel.org/en/Sevastopol",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130505105558",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "fztipma2imonizsqlhtzdncsrdd3lxp3"
+ },
+ "ho-086": {
+  "url": "www.wikidoc.org/index.php/Hearing_%28sense%29",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20121204084220",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "ba3xgl3f252sq3mhncjvxrqe25w7s7cb"
+ },
+ "ho-087": {
+  "url": "blog.mozilla.org/webdev/2010/05/19/socorro-mozilla-crash-reports/comment-page-1/",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20140606165854",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "qsosddmwdkd24xvl2imotnfoxnybfd76"
+ },
+ "ho-088": {
+  "url": "www.uofmhealth.org/news/527retail-clinics-drawing-in-more-kids-for-care",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "wayback_html_cc_link+text",
+  "confidence": "medium",
+  "permissive": true,
+  "note": "snapshot 20151106 is 2y from the 2013 crawl",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20151106222641",
+   "wayback_cc": [
+    "by/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [
+    "by/?"
+   ],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "5gu35eoa6riuymliywjfhkgaywvqroey"
+ },
+ "ho-089": {
+  "url": "rationalwiki.org/wiki/Park51",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20121102013518",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "wn7pvwsv4uh3zzsr4iqidimwgkv5ka2d"
+ },
+ "ho-091": {
+  "url": "www.panarmenian.net/eng/news/127303/",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "wayback_html_rel_license",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20121218171645",
+   "wayback_cc": [
+    "by/3.0"
+   ],
+   "wayback_rel_license": [
+    "by/3.0"
+   ],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20130516150459",
+   "domain_homepage_cc": [
+    "by/3.0"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "ahdof3eznk2q56nzhjq4bl6lg5sudq7o"
+ },
+ "ho-092": {
+  "url": "www.pressreleasepoint.com/greenville-utilities-commission-selects-oracle-applications-and-technology-revamp-it-infrastructure",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130915050506",
+   "wayback_cc": [
+    "by/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20130522201211",
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "ixh6lj6vmjsdpfyozehhxq6iszbjeef4"
+ },
+ "ho-093": {
+  "url": "www.perseus.tufts.edu/hopper/text?doc=urn%3Acts%3AgreekLit%3Atlg0032.tlg007.perseus-eng1%3A6.4.11",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_rel_license+text",
+  "confidence": "medium",
+  "permissive": true,
+  "note": "snapshot 20230127 is 10y from the 2013 crawl",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20230127073732",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [
+    "by-sa/3.0"
+   ],
+   "text_cc_links": [],
+   "text_cc_names": [
+    "by-sa/3.0"
+   ],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "qut5u2xme4ipdwwf2hqy6tpw577nud44"
+ },
+ "ho-095": {
+  "url": "opensource.org/node/358",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "wayback_html_rel_license",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20121114075955",
+   "wayback_cc": [
+    "by/3.0"
+   ],
+   "wayback_rel_license": [
+    "by/3.0"
+   ],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20120923140231",
+   "domain_homepage_cc": [
+    "by/2.5"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "ruwyidnrdzc7laucrkdna3qqkf4jmn7i"
+ },
+ "ho-100": {
+  "url": "blog.mrmeyer.com/?m=201208&paged=2",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130314171145",
+   "wayback_cc": [
+    "by/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20130512151937",
+   "domain_homepage_cc": [
+    "by/3.0"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "3gyz4jjo4yys3dcjz3xivx66qoqkdgtj"
+ },
+ "ho-101": {
+  "url": "www.pressreleasepoint.com/us-capital-partners-provides-5-million-imaging-solutions-company",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130523133208",
+   "wayback_cc": [
+    "by/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20130522201211",
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "wptfkdwf6tser57n7lofqpep5netj6nb"
+ },
+ "ho-102": {
+  "url": "wikitravel.org/wiki/en/index.php?diff=1156281&oldid=1155418&title=Fredonia_%28New_York%29",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "domain_sibling_pages",
+  "confidence": "weak",
+  "permissive": true,
+  "note": "5 other held-out page(s) on wikitravel.org carry this licence; this page itself not verified",
+  "evidence": {
+   "wayback_status": "error: Expecting value: line 1 column 1 (char 0)",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "j42pra4wrhpa6cufobt25g4hgomoqamt"
+ },
+ "ho-107": {
+  "url": "www.pressreleasepoint.com/delcam%E2%80%99s-latest-featurecam-includes-new-stock-model-options",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "domain_sibling_pages",
+  "confidence": "weak",
+  "permissive": true,
+  "note": "2 other held-out page(s) on www.pressreleasepoint.com carry this licence; this page itself not verified",
+  "evidence": {
+   "wayback_status": "error: Expecting value: line 1 column 1 (char 0)",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20130522201211",
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "jljflatytvy5cgx55fr4zhlnlylhdlfk"
+ },
+ "ho-108": {
+  "url": "archive.mises.org/15723/ftc-opposes-art-gallery-saving-money/",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "wayback_domain_homepage",
+  "confidence": "weak",
+  "permissive": true,
+  "note": "site-wide licence on archive.mises.org homepage archived 20130523; this page itself not verified",
+  "evidence": {
+   "wayback_status": "error: Expecting value: line 1 column 1 (char 0)",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20130523071631",
+   "domain_homepage_cc": [
+    "by/3.0"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "n5rdb3oezlcjqtaxexi5eg5vi74s3ti4"
+ },
+ "ho-110": {
+  "url": "www.wikidoc.org/index.php/Sensory_transduction",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "medium",
+  "permissive": true,
+  "note": "snapshot 20230922 is 10y from the 2013 crawl",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20230922152648",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "5qlpatxxfdltqakxj65ubsak7y3ex42p"
+ },
+ "ho-113": {
+  "url": "www.mdpi.com/1999-5903/4/1/142",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "medium",
+  "permissive": true,
+  "note": "snapshot 20150519 is 2y from the 2013 crawl",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20150519160055",
+   "wayback_cc": [
+    "by/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "mmltznqwftp34ifv3ot6eau6ll5ax53z"
+ },
+ "ho-115": {
+  "url": "wikitravel.org/en/Ushuaia",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130509095227",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "t7p2lfzv4xpzruqctnlk7pcggmpsbo5m"
+ },
+ "ho-116": {
+  "url": "hitchwiki.org/en/Ruhr_Area",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_html_cc_link",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20130322093526",
+   "wayback_cc": [
+    "by-sa/3.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "p362zaok4kw5545tox5n73xm5ss7vbgs"
+ },
+ "ho-117": {
+  "url": "crantastic.org/packages/marelac/versions/7727",
+  "licence": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+  "source_field": "wayback_domain_homepage",
+  "confidence": "weak",
+  "permissive": true,
+  "note": "site-wide licence on crantastic.org homepage archived 20130522; this page itself not verified",
+  "evidence": {
+   "wayback_status": "error: Expecting value: line 1 column 1 (char 0)",
+   "wayback_snapshot": null,
+   "wayback_cc": [],
+   "wayback_rel_license": [],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": "20130522090225",
+   "domain_homepage_cc": [
+    "by-sa/3.0"
+   ]
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "cxfh5hl276rrvfjzzw2h4ytk656lus3j"
+ },
+ "ho-118": {
+  "url": "ccforum.com/content/10/3/R95",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/2.0/",
+  "source_field": "wayback_html_cc_link+text",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20140707175151",
+   "wayback_cc": [
+    "by/2.0"
+   ],
+   "wayback_rel_license": [],
+   "text_cc_links": [
+    "by/2.0"
+   ],
+   "text_cc_names": [
+    "by/?"
+   ],
+   "domain_homepage_snapshot": "20130519132145",
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "aet6ktafiyog4xaroicl72tupbb4poej"
+ },
+ "ho-120": {
+  "url": "occamstypewriter.org/scurry/2010/01/02/i_have_discovered_jupiter/",
+  "licence": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+  "source_field": "wayback_html_rel_license",
+  "confidence": "strong",
+  "permissive": true,
+  "note": "",
+  "evidence": {
+   "wayback_status": "ok",
+   "wayback_snapshot": "20120729025243",
+   "wayback_cc": [
+    "by/3.0"
+   ],
+   "wayback_rel_license": [
+    "by/3.0"
+   ],
+   "text_cc_links": [],
+   "text_cc_names": [],
+   "domain_homepage_snapshot": null,
+   "domain_homepage_cc": []
+  },
+  "human_in_commonpile_doc": true,
+  "commonpile_doc_id": "jo3qujzf2ombeitfr5hqqgtv72gqubpr"
+ }
+}

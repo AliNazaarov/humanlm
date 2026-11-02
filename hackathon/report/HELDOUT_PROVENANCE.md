@@ -82,3 +82,55 @@ I read the opening of all 120 `human` texts. None reads as machine-generated. A 
 - "Created" is whatever the Common Pile metadata carried. For cccc it is almost certainly crawl time. A crawl date sets a latest possible writing date, not a writing date.
 - The 8-gram check uses `\w+` tokens, the same tokeniser as `make_split.py`. Overlap through paraphrase is not measured.
 - Not legal advice. The licence lines are quoted from the dataset cards as fetched on 2026-11-02.
+
+## Licence recovery (Ali side)
+
+Done 2026-11-02 after the audit above. Mapping: `hackathon/report/heldout_licences.json` (one entry per cccc row: `url`, `licence`, `source_field`, `confidence`, `permissive`, `note`, `evidence`). The `licence` value of the recovered rows was written into `evals/heldout_pairs.jsonl`; no other field of that file changed (ids, order, `ai_draft`, `human`, `url` are byte-identical).
+
+**Why the pipeline had nothing to keep.** The raw Common Pile shards on the data sandbox (`/data/raw/cccc_filtered`, HF revision `03a3de57`, the latest) have no `license` key in `metadata` at all: the keys are `content_type, provenance, uncompressed_offset, url, warc_date, warc_filename, warc_url`. The dataset card's sentence about a per-document `license` entry does not match the released files. Upstream (r-three/common-pile, `sources/cccc/README.md`) the per-page licence lived in Dolma `cc_re_fast` attribute spans, was used to drop NC and ND pages, and was discarded (`discard_fields: attributes`) before release. So `passages.py` could not have kept it; the fix is recovery from the pages themselves.
+
+**Method.** All 73 cccc rows were matched by `url` to their Common Pile document (every `human` text is a verbatim span of its document, see `human_in_commonpile_doc`). Per-document licence evidence, in priority order:
+1. `wayback_html_rel_license` / `wayback_html_cc_link`: the `creativecommons.org/licenses/...` link (preferably `rel="license"`) in the Wayback Machine capture of that exact page closest to the crawl date 2013-05-20 (`evidence.wayback_snapshot`). `+text` means the Common Pile text of the document carries the same CC statement.
+2. `commonpile_text_cc_link` / `commonpile_text_cc_statement`: the CC link or statement inside the Common Pile text itself (the linearised text kept it for only a few pages).
+3. `domain_sibling_pages` / `wayback_domain_homepage`: no capture of the page itself; the licence is the one carried by the other held-out pages of the same domain, or by the domain's archived 2013 homepage. These are domain-level, marked `confidence: weak`.
+Snapshots more than 2 years from 2013 give `confidence: medium`.
+
+**Counts** (70 of 73 recovered, 3 not):
+
+| Licence | Rows |
+|---|---|
+| Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/ | 32 |
+| Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/ | 23 |
+| Creative Commons - Attribution - https://creativecommons.org/licenses/by/2.0/ | 7 |
+| Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/2.5/ | 5 |
+| Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/2.0/ | 1 |
+| CC0 1.0 - https://creativecommons.org/publicdomain/zero/1.0/ | 1 |
+| Creative Commons - Attribution - https://creativecommons.org/licenses/by/2.5/ | 1 |
+| not recovered (still `see source`) | 3 |
+
+| Source | Rows |
+|---|---|
+| `wayback_html_cc_link` | 33 |
+| `wayback_html_rel_license` | 11 |
+| `wayback_domain_homepage` | 6 |
+| `domain_sibling_pages` | 6 |
+| `domain_sibling_pages+domain_homepage` | 5 |
+| `wayback_html_rel_license+text` | 4 |
+| `wayback_html_cc_link+text` | 4 |
+| `commonpile_text_cc_link` | 1 |
+
+| Confidence | Rows |
+|---|---|
+| strong | 41 |
+| weak | 17 |
+| medium | 12 |
+
+Non-permissive (NC or ND) among the recovered rows: 0. Common Pile also removed NC/ND pages upstream, so this is expected.
+
+**Rows to consider dropping from the published file** (licence not established for the page itself):
+- Not recovered (3): ho-007 (www.antweb.org; ambiguous: page links several CC licences by-nc-sa/1.0, by/4.0; www.antweb.org homepage links several CC licences: by-nc-sa/1.0, by-sa/3.0), ho-027 (journals.tdl.org; no archived capture of the page, no CC statement in the text, domain evidence missing), ho-071 (www.openwetware.org; no archived capture of the page, no CC statement in the text, domain evidence missing)
+- Domain-level only, `confidence: weak` (17): ho-002 (www.panarmenian.net), ho-023 (www.fides.org), ho-026 (www.eoearth.org), ho-037 (www.ohloh.net), ho-040 (www.panarmenian.net), ho-052 (www.werelate.org), ho-056 (www.eoearth.org), ho-062 (wikitravel.org), ho-064 (archive.mises.org), ho-067 (www.panarmenian.net), ho-077 (www.fides.org), ho-078 (www.pressreleasepoint.com), ho-084 (wikitravel.org), ho-102 (wikitravel.org), ho-107 (www.pressreleasepoint.com), ho-108 (archive.mises.org), ho-117 (crantastic.org). Keep if a domain-wide licence is acceptable for the report; otherwise drop with the group above.
+
+Recommendation: drop the not-recovered rows before the repo goes public; keep the weak rows but say in the data card that their licence is domain-level. I did not drop anything; Ruslan's agent owns scoring and must re-run on the final row set. The same gap exists in `data/pairs/*.jsonl` (5313 cccc rows with `see source`) and therefore in `hackathon/data/train.jsonl`; this pass covered the held-out file only.
+
+Not legal advice. Evidence files (archived HTML) are in the session scratchpad, not in the repo.
