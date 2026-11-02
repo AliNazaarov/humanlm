@@ -1,0 +1,1 @@
+- Can we commercially fine-tune on jialinyyzz/humanizer (Apache-2.0 weights, partly CC-BY-NC training data)? → research/SIMILAR_PROJECTS.md §6 step 2 (hl-researcher, 2026-11-01)

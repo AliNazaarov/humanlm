@@ -1,0 +1,180 @@
+# AI stock phrases and words. One per line, matched case-insensitive on whole words.
+# A trailing * means prefix match (delv* = delve, delves, delved, delving).
+# Templates like "it's not just X, it's Y" are counted by the not_x_but_y regex in metrics.py, not here.
+#
+# Sources (compiled 2026-11-01, not copied verbatim from any one list):
+# - evals/EVALS_AND_RL_PLAN.md §2.3 seed list (delve, tapestry, testament to, navigate the complexities, ...)
+# - research/USER_VOICE.md §2 buyer tell list (elevate, seamless, delve, testament, landscape, quietly)
+# - Commonly cited public slop lists: sam-paech/antislop-sampler and EQ-Bench creative-writing slop list
+#   (github.com/sam-paech), plus general "ChatGPT words" write-ups. Recalled, not verified line by line.
+# Next step (hl-judge): expand by frequency-ratio mining, AI side vs pre-2021 human side of data/pairs.
+# Every word here is also used by humans. Score this as a rate against the human band, never as a ban.
+delv*
+tapestry
+a rich tapestry
+testament to
+a testament to
+navigate the complexities
+navigating the complexities
+in today's fast-paced world
+in today's digital age
+in today's world
+in the ever-evolving
+ever-evolving
+ever-changing landscape
+the landscape of
+landscape
+it's important to note
+it is important to note
+it's worth noting
+it is worth noting
+worth noting that
+not only
+but also
+unlock
+unlocks
+unlock the power
+unlock your potential
+unleash
+unleashes
+unleash the power
+elevate
+elevates
+elevate your
+game-changer
+game-changing
+seamless
+seamlessly
+seamless integration
+harness
+harness the power
+leverage
+leveraging
+robust
+cutting-edge
+state-of-the-art
+revolutionize*
+transformative
+transform your
+empower*
+foster*
+holistic
+synergy
+synergies
+paradigm shift
+pivotal
+crucial role
+plays a crucial role
+plays a pivotal role
+vital role
+realm
+in the realm of
+embark*
+journey
+on a journey
+beacon
+symphony
+intricate
+intricacies
+multifaceted
+nuanced
+underscore*
+showcasing
+showcases
+a myriad of
+myriad
+plethora
+a plethora of
+vibrant
+bustling
+meticulous*
+commendable
+noteworthy
+paramount
+indelible
+enduring legacy
+resonate*
+whether you're
+whether you are
+look no further
+dive into
+dive deep
+deep dive
+let's dive in
+buckle up
+the world of
+in conclusion
+to sum up
+in summary
+ultimately
+at the end of the day
+when it comes to
+the power of
+the key to
+key takeaway*
+here's the thing
+here's why
+here's how
+let that sink in
+read that again
+the secret sauce
+moreover
+furthermore
+additionally
+notably
+in essence
+essentially
+navigate
+navigating
+streamline*
+optimize your
+supercharge*
+next-level
+take it to the next level
+best-in-class
+world-class
+mission-critical
+actionable insights
+valuable insights
+insights
+stakeholders
+ecosystem
+innovative
+innovation
+dynamic
+thrive
+thriving
+unparalleled
+unwavering
+boundless
+captivat*
+evolving landscape
+digital landscape
+quietly
+fundamentally
+truly
+genuinely
+remarkable
+profound
+profoundly
+ignite*
+spark joy
+stand out from the crowd
+redefin*
+reimagin*
+curated
+elevated experience
+a game changer
+not just a
+more than just
+feel free to
+I hope this email finds you well
+I hope this finds you well
+don't hesitate to reach out
+happy to help
+excited to announce
+thrilled to announce
+thrilled to share
+humbled
+grateful for the opportunity
+as an AI

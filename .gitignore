@@ -1,0 +1,14 @@
+.DS_Store
+# iCloud duplicates and temp files
+* 2.*
+*.tmp
+data/pairs/_trial/
+# rejected pairs are debug output; regenerate with gen_pairs.py
+*.rejected
+# model weights never go in git (use a private Hugging Face repo)
+*.gguf
+*.safetensors
+*.bin
+lora_*/
+__pycache__/
+.venv/
