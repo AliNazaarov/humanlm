@@ -105,3 +105,16 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | `F2_gpt61_terra` | 11/130 (8% [4, 15]) | 62% [60, 64] | 0.40 [0.26, 0.57] | 0.90 [0.88, 0.91] | 90% [87, 93] |
 | `O1_glm_base` | 8/130 (6% [3, 12]) | 62% [61, 64] | 0.55 [0.39, 0.73] | 0.98 [0.97, 0.99] | 88% [84, 90] |
 | `frontier-persona-preexisting` | 39/130 (30% [22, 39]) | 70% [69, 72] | 0.02 [0.00, 0.05] | 0.61 [0.59, 0.65] | 91% [89, 94] |
+
+## Pairwise judge (both orders; a win needs both orders to agree)
+
+A wins / B wins / ties, with a two-sided sign test on wins vs losses (ties dropped).
+
+| A vs B | Judge | n | Overall | Facts | Style | Closer to human (held-out) | Flip | Pos-1 |
+|---|---|---|---|---|---|---|---|---|
+| `hack_O3_glm_harness_heldout.jsonl` vs `hack_F1H_opus_heldout.jsonl` | `accounts/fireworks/models/kimi-k3` | 120 | 52/31/37 (p=0.028) | 16/15/89 (p=1.000) | 41/17/62 (p=0.002) | 54/31/35 (p=0.017) | 30% | 53% |
+| `hack_O3_glm_harness_heldout.jsonl` vs `hack_strong_claude-opus-5-5_heldout.jsonl` | `accounts/fireworks/models/kimi-k3` | 118 | 42/35/41 (p=0.494) | 13/12/93 (p=1.000) | 28/30/60 (p=0.896) | 45/28/45 (p=0.060) | 35% | 57% |
+| `hack_O3_glm_harness.jsonl` vs `hack_F1H_opus.jsonl` | `accounts/fireworks/models/kimi-k3` | 130 | 40/47/43 (p=0.520) | 12/6/112 (p=0.238) | 32/46/52 (p=0.141) | n/a | 33% | 50% |
+| `hack_O3_glm_harness.jsonl` vs `hack_F2_gpt61_terra.jsonl` | `accounts/fireworks/models/kimi-k3` | 130 | 35/46/49 (p=0.266) | 7/9/114 (p=0.804) | 32/38/60 (p=0.550) | n/a | 38% | 54% |
+| `hack_O3_glm_harness.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` | `accounts/fireworks/models/kimi-k3` | 130 | 34/57/39 (p=0.021) | 13/8/109 (p=0.383) | 25/56/49 (p=0.001) | n/a | 29% | 51% |
+| `hack_O3b_glm_prompt_harness.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` | `accounts/fireworks/models/kimi-k3` | 130 | 35/60/35 (p=0.013) | 15/5/110 (p=0.041) | 26/60/44 (p=0.000) | n/a | 26% | 50% |

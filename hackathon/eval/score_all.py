@@ -245,6 +245,9 @@ def judges(report_dir: str) -> list[dict]:
             continue  # mock verdicts are for pipeline tests only
         j["file"] = rel(f)
         j["sign_test_p"] = st.judge_sign_test(j["win"], j["loss"])
+        for sub in ("facts", "style", "closer"):
+            if isinstance(j.get(sub), dict) and "win" in j[sub]:
+                j[sub]["sign_test_p"] = st.judge_sign_test(j[sub]["win"], j[sub]["loss"])
         out.append(j)
     return out
 
@@ -326,11 +329,18 @@ def render(res: dict) -> str:
             out += leaderboard(res, key, title)
     out += secondary(res)
     if res["judges"]:
+        def wlt(d: dict | None) -> str:
+            if not d or "win" not in d:
+                return "n/a"
+            return f"{d['win']}/{d['loss']}/{d['tie']} (p={d['sign_test_p']:.3f})"
         out += ["## Pairwise judge (both orders; a win needs both orders to agree)", "",
-                "| A vs B | Judge | A wins | B wins | Ties | Flip rate | Sign test p |", "|---|---|---|---|---|---|---|"]
+                "A wins / B wins / ties, with a two-sided sign test on wins vs losses (ties dropped).", "",
+                "| A vs B | Judge | n | Overall | Facts | Style | Closer to human (held-out) | Flip | Pos-1 |",
+                "|---|---|---|---|---|---|---|---|---|"]
         for j in res["judges"]:
-            out.append(f"| `{j['a']}` vs `{j['b']}` | `{j['model']}` | {j['win']} | {j['loss']} | {j['tie']} | "
-                       f"{100*j['flip_rate']:.0f}% | {j['sign_test_p']:.4f} |")
+            out.append(f"| `{j['a']}` vs `{j['b']}` | `{j['model']}` | {j.get('n_complete', j['n'])} | {wlt(j)} | "
+                       f"{wlt(j.get('facts'))} | {wlt(j.get('style'))} | {wlt(j.get('closer'))} | "
+                       f"{100*j['flip_rate']:.0f}% | {100*j.get('pos1_rate', 0):.0f}% |")
         out.append("")
     return "\n".join(out)
 
