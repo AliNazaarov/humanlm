@@ -24,6 +24,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, "../.."))
 sys.path[:0] = [HERE, os.path.join(ROOT, "pipeline"), os.path.join(ROOT, "hackathon/harness")]
 import gates as gt  # noqa: E402  the one G1-G4 definition, shared with the harness
+sys.path.insert(0, os.path.join(ROOT, "hackathon/audit"))
+import audit as au  # noqa: E402  lenient G1/G2 (numerals, demonyms, formatting artefacts forgiven), Ali's audit
 import metrics as m  # noqa: E402
 import stats as st  # noqa: E402
 
@@ -83,6 +85,7 @@ def item_scores(item: dict, out: str, band: dict) -> dict:
         "G3": int(g["g3_no_ai_tells"]),
         "G4": int(g["g4_not_gutted"]),
         "pass": int(g["pass"]),
+        "pass_lenient": int(au.gate_check(draft, out)["pass_lenient"]),
         "fact_fail": int(not g["g1_nothing_invented"]),
         "in_range": statistics.fmean(v["ok"] for v in m.in_band(tm, band).values()),
         "stock_per100": tm["stock_rate"],
@@ -124,7 +127,7 @@ def missing_scores(item: dict) -> dict:
     empty rewrite: nothing invented, everything lost. It counts against the headline; secondary metrics skip it."""
     g = gt.check(item["ai_draft"], "")
     s = {"G1": int(g["g1_nothing_invented"]), "G2": int(g["g2_nothing_lost"]), "G3": int(g["g3_no_ai_tells"]),
-         "G4": int(g["g4_not_gutted"]), "pass": int(g["pass"]), "fact_fail": 0, "missing": 1}
+         "G4": int(g["g4_not_gutted"]), "pass": int(g["pass"]), "pass_lenient": 0, "fact_fail": 0, "missing": 1}
     return s
 
 
@@ -182,7 +185,8 @@ def rate(vals: list[int]) -> dict:
 
 
 def summarise(per: list[dict]) -> dict:
-    out = {"pass": rate([p["pass"] for p in per]), "gates": {g: rate([p[g] for p in per]) for g in GATES},
+    out = {"pass": rate([p["pass"] for p in per]), "pass_lenient": rate([p["pass_lenient"] for p in per]),
+           "gates": {g: rate([p[g] for p in per]) for g in GATES},
            "fact_fail": rate([p["fact_fail"] for p in per])}
     for key in ("in_range", "stock_per100", "len_ratio", "must_keep"):
         vals = [p[key] for p in per if key in p]
@@ -200,7 +204,7 @@ def paired(a: dict, b: dict, ids: list[str]) -> dict:
     res = {"n_shared": len(shared)}
     if not shared:
         return res
-    for key in ("pass", *GATES, "in_range"):
+    for key in ("pass", "pass_lenient", *GATES, "in_range"):
         ids_k = [i for i in shared if key in a["per_item"][i] and key in b["per_item"][i]]
         if not ids_k:
             continue
@@ -362,13 +366,15 @@ def headline(res: dict) -> str:
     b = res["blocks"]["all"]
     out = [f"Fact-safe human rewrite rate on {b['n_items']} items (eval 130 + held-out 120), 95% CI; "
            f"Δ vs `{res['reference']}` by paired bootstrap. Generated from `hackathon/report/results.json`.", "",
-           "| System | Fact-safe rate | Δ vs reference | $ / 1k rewrites | p50 latency |", "|---|---|---|---|---|"]
+           "| System | Fact-safe rate (strict) | Δ strict | Fact-safe rate (lenient) | Δ lenient | $ / 1k rewrites | p50 latency |",
+           "|---|---|---|---|---|---|---|"]
     for e in b["systems"]:
         s = meta[e["label"]]
         cost = f"${s['cost_per_1k_usd']:.2f}" if "cost_per_1k_usd" in s else "n/a"
         lat = f"{s['latency_ms']['p50']/1000:.1f}s" if "latency_ms" in s else "n/a"
         note = f" ({e['n']} items)" if e["missing"] else ""
-        out.append(f"| `{e['label']}`{note} | {pct(e['summary']['pass'])} | {delta(e)} | {cost} | {lat} |")
+        out.append(f"| `{e['label']}`{note} | {pct(e['summary']['pass'])} | {delta(e)} | "
+                   f"{pct(e['summary']['pass_lenient'])} | {delta(e, 'pass_lenient')} | {cost} | {lat} |")
     if res["judges"]:
         out += ["", "Pairwise judge (both orders; A wins / B wins / ties, two-sided sign test):", ""]
         for j in res["judges"]:
