@@ -48,3 +48,4 @@
 2026-11-02T21:27:12Z 13:27 PT: SFT B trained (loss 0.70); deploying briefly (Ruslan approved) to sample O4m; O7 DPO resumed. Deployments deleted after runs.
 2026-11-02T21:28:18Z Set 2 rescored as O3k vs Claude. O7 DPO now tell-targeted; O7f (facts-only harness) added. Deployment approved for SFT B / O7.
 2026-11-02T21:37:24Z 13:38 PT: deploying SFT B on 4x B300 (Ruslan, cap $45); O4m rows by 14:45, O7 by 15:10; deleted after.
+2026-11-02T21:47:35Z 13:47 PT: SFT B deployment creating (cap $45, auto-delete); O4m rows next. R2 + R3 dropped by stop rules. DPO pairs committed.
