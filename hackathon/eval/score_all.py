@@ -399,6 +399,12 @@ def headline(res: dict) -> str:
                 out.append(f"- {name}: {src['ours']} / {src['theirs']} / {src['both_fine']} "
                            f"({src.get('people', '?')} voter(s), {src['votes']} votes, sign test p={src['sign_test_p']:.3f})"
                            + (f"; {src['voter']}" if src.get("voter") else ""))
+            for name, src in h["sources"].items():
+                sv = src.get("sensitivity_no_position_clickers")
+                if sv:
+                    out.append(f"- {name}, without {len(sv['dropped_ballots'])} ballot(s) where every pick was the "
+                               f"first-shown side: {sv['ours']} / {sv['theirs']} / {sv['both_fine']} "
+                               f"(sign test p={sv['sign_test_p']:.3f})")
             note = next((s_["note"] for s_ in h["sources"].values() if s_.get("note")), None)
             if note:
                 out.append(f"- Not counted: {note}")

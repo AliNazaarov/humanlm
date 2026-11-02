@@ -261,3 +261,4 @@ A wins / B wins / ties, with a two-sided sign test on wins vs losses (ties dropp
 | `hack_O3j_glm_bestof3_judged.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` | `accounts/fireworks/models/kimi-k3` | 130 | 41/55/34 (p=0.184) | 4/25/101 (p=0.000) | 44/37/49 (p=0.505) | n/a | 26% | 57% |
 | `hack_O3k_glm_calm_claimcheck_bo3.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` | `accounts/fireworks/models/kimi-k3` | 130 | 19/72/39 (p=0.000) | 9/6/115 (p=0.607) | 11/68/51 (p=0.000) | n/a | 29% | 51% |
 | `hack_O3l_glm_style_claimcheck_bo3.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` | `accounts/fireworks/models/kimi-k3` | 129 | 36/57/36 (p=0.038) | 10/10/109 (p=1.000) | 30/51/48 (p=0.026) | n/a | 28% | 56% |
+| `hack_O3m_glm_plainclaim.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` | `accounts/fireworks/models/kimi-k3` | 130 | 18/64/48 (p=0.000) | 5/23/102 (p=0.001) | 15/54/61 (p=0.000) | n/a | 36% | 55% |

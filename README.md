@@ -39,7 +39,8 @@ Fact-safe human rewrite rate on 247 items (eval 130 + held-out 117), 95% CI; Δ 
 
 Human preference, O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-5 (blind A/B; FeatherLM / Claude / tie):
 
-- page: 38 / 56 / 17 (23 voter(s), 111 votes, sign test p=0.079); includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors
+- page: 41 / 62 / 17 (25 voter(s), 120 votes, sign test p=0.048); includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors
+- page, without 1 ballot(s) where every pick was the first-shown side: 39 / 59 / 17 (sign test p=0.054)
 - Not counted: Ali reports 5 Minerva classmates gave the same answer (preferred the Claude side) in an informal, unlogged session; not counted as data.
 
 Judge vs human on style (item level, `O3c_glm_prompt_harness_style` vs Claude strong, 15 items with a human majority): kimi-k3: agrees 3, disagrees 6; qwen3p8-max: agrees 1, disagrees 7. Small n; the LLM judges' style verdicts are not validated against readers.
@@ -75,6 +76,7 @@ Pairwise judge (both orders; A wins / B wins / ties, two-sided sign test):
 - `hack_O3j_glm_bestof3_judged.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 41/55/34 (p=0.184), style 44/37/49 (p=0.505)
 - `hack_O3k_glm_calm_claimcheck_bo3.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 19/72/39 (p=0.000), style 11/68/51 (p=0.000)
 - `hack_O3l_glm_style_claimcheck_bo3.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 36/57/36 (p=0.038), style 30/51/48 (p=0.026)
+- `hack_O3m_glm_plainclaim.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 18/64/48 (p=0.000), style 15/54/61 (p=0.000)
 <!-- HEADLINE:END -->
 
 Full tables (every split, every gate, secondary metrics, all judge columns): [hackathon/report/RESULTS.md](hackathon/report/RESULTS.md). Chart: [hackathon/report/leaderboard.png](hackathon/report/leaderboard.png).

@@ -74,6 +74,19 @@ def main() -> int:
         c = page_counts(rows)
         if c["votes"]:
             res["sources"]["page"] = summarise(c)
+        # Sensitivity (rule stated in advance of looking at the effect): drop ballots with 3+ picks where every pick
+        # is the first-shown side (a position-only clicker). Reported next to the main count, never instead of it.
+        by_ballot = {}
+        for r in rows:
+            if r.get("version") == PAIRS_VERSION:
+                by_ballot.setdefault(r["ballot"], []).append(r)
+        def first_shown_pick(r):
+            fs = r.get("first_shown")
+            return fs in ("a", "b") and r.get("vote", "").lower() == fs
+        clickers = sorted(b for b, rs in by_ballot.items() if len(rs) >= 3 and all(first_shown_pick(r) for r in rs))
+        if clickers:
+            cs = page_counts([r for r in rows if r.get("ballot") not in set(clickers)])
+            res["sources"]["page"]["sensitivity_no_position_clickers"] = {**summarise(cs), "dropped_ballots": clickers}
         c2 = page_counts(rows, SET2_VERSION)
         if c2["votes"]:
             res["sources"]["page_set2"] = {**summarise(c2), "pairs": "O3k_glm_calm_claimcheck_bo3 vs frontier-strong:claude-opus-5-5",
