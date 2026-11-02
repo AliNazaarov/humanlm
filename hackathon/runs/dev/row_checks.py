@@ -79,6 +79,10 @@ def main():
         fl["median_output_to_draft_word_ratio"] = round(statistics.median(ratios), 3)
         out["frame_loss_eval_all"][label] = fl
 
+    # Verify pass 3, ruling 2: are the eval-judge facts losses the hashtag-drop items?
+    # Uses only the per-item FACTS field of the committed judge files (no reason text, no score fed back).
+    out["facts_loss_vs_hashtag_drop"] = facts_loss_check(out["frame_loss_eval_all"])
+
     OUT.write_text(json.dumps(out, indent=1) + "\n", encoding="utf-8")
     for label, g in out["gates"].items():
         print(label, {s: f"{v['pass']}/{v['n']}{'' if v['meets_floor'] else ' BELOW FLOOR'}" for s, v in g.items()})
@@ -87,6 +91,49 @@ def main():
               "strict", fl["hashtag_strict"]["output_drops_all"], "/", fl["hashtag_strict"]["drafts_with"],
               "subject", fl["subject_line"]["output_drops"], "/", fl["subject_line"]["drafts_with"],
               "ratio", fl["median_output_to_draft_word_ratio"])
+    for key, v in out["facts_loss_vs_hashtag_drop"].items():
+        print(key, "facts", f"{v['facts']['win']}/{v['facts']['loss']}/{v['facts']['tie']}",
+              "matches summary" if v["matches_summary"] else "MISMATCH",
+              "losses on hashtag-drop items", f"{v['losses_on_hashtag_drop_items']}/{v['facts']['loss']}")
+
+
+JUDGE_FILES = {"kimi_k3": "judge_hack_{}_vs_hack_strong_claude-opus-5-5",
+               "qwen_3p8_max": "judge2qwen_hack_{}_vs_hack_strong_claude-opus-5-5"}
+
+
+def facts_loss_check(frame_loss):
+    """Per committed eval-judge file (A = our system, B = Claude strong): facts W/L/T recomputed with the judge's
+    own aggregate rule (hackathon/eval/judge.py), and how many facts losses are items where our output drops
+    every hashtag (loose definition, the verify pass 2 count). Reads FACTS verdicts only, never REASON text."""
+    import sys
+    sys.path.insert(0, str(ROOT))
+    from hackathon.eval.judge import aggregate
+
+    report = ROOT / "hackathon" / "report"
+    res = {}
+    for label in ("O3c_glm_prompt_harness_style", "O3m_glm_plainclaim"):
+        drop = set(frame_loss[label]["hashtag_loose"]["ids"])
+        for judge, pat in JUDGE_FILES.items():
+            stem = pat.format(label)
+            per_item, summary = report / f"{stem}.jsonl", report / f"{stem}.summary.json"
+            if not per_item.exists():
+                continue
+            rows = [json.loads(l) for l in per_item.read_text(encoding="utf-8").splitlines() if l.strip()]
+            per_id, block = aggregate(rows, "facts")
+            loss_ids = sorted(i for i, p in per_id.items() if p["final"] == "B")
+            summ = json.loads(summary.read_text(encoding="utf-8"))
+            sf = summ.get("facts") or summ.get("summary", {}).get("facts") or {}
+            res[f"{label}|{judge}"] = {
+                "file": str(per_item.relative_to(ROOT)),
+                "facts": {k: block[k] for k in ("win", "loss", "tie", "n")},
+                "summary_facts": {k: sf.get(k) for k in ("win", "loss", "tie")},
+                "matches_summary": all(sf.get(k) == block[k] for k in ("win", "loss", "tie")),
+                "facts_loss_ids": loss_ids,
+                "hashtag_drop_items": len(drop),
+                "losses_on_hashtag_drop_items": len(drop & set(loss_ids)),
+                "loss_ids_on_hashtag_drop_items": sorted(drop & set(loss_ids)),
+            }
+    return res
 
 
 if __name__ == "__main__":

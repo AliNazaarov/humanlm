@@ -123,9 +123,21 @@ exists to catch. **O3c stays the entry; the goal "raise style vs Claude strong" 
 
 Examples: dev-059 loses its closing question and all five hashtags; dev-039 (an email) loses its subject line. Both
 pass all four gates, because the gates check numbers, names, quotes and tells, not post furniture. The likely cause is
-O3m's "rebuild each paragraph around its facts" and "delete feeling sentences" rules, which shorten the output. That is a
-plausible reason for the facts loss on both judges (5/23 Kimi, 5/20 Qwen) even with G1 at 96%; it was not checked
-item by item against the judge reasons, and no judge reason was used to change anything.
+O3m's "rebuild each paragraph around its facts" and "delete feeling sentences" rules, which shorten the output.
+
+**Correction (verify pass 3, ruling 2): hashtag loss does NOT explain O3m's facts losses.** An earlier version of this
+section called it "a plausible reason". Checked item by item (`row_checks.json` → `facts_loss_vs_hashtag_drop`, which
+reads only the FACTS verdicts of the committed judge files and recomputes them with `judge.aggregate`; all four match
+their summaries): of O3m's 23 Kimi K3 facts losses, 4 are hashtag-drop items (dev-068, 070, 076, 085); of its 20 Qwen
+3.8 Max facts losses, 3 are (dev-052, 058, 085). That is the base rate: 20 of 130 eval items are O3m hashtag drops
+(15%). O3c's facts losses on hashtag-drop items: 0/15 Kimi, 0/19 Qwen. The verifier's reading of the judge reasons
+(`hackathon/VERIFY/WORKFLOW_PASS3.md`, "Failure examples") found the cause instead: O3m invents qualitative mechanism
+sentences that G1 cannot see, because G1 checks only numbers, names, quotes and attributions. Examples quoted there:
+dev-005 ("merges without reruns") and dev-001 ("produces fewer errors"). The source is O3m's own rule,
+`hackathon/train/prompt_O3m_glm_plainclaim.txt:7`: "Spend the freed words on how the product works, using only the
+draft's facts." When the draft has no mechanism, the model writes one. Any later prompt that says "say what happens" or
+"explain how it works" should be expected to fail the same way. O3c shows the same blind spot at a lower rate (Kimi
+facts 9/15 vs O3m 5/23). This finding was used only to explain a dropped variant; no prompt was changed because of it.
 
 **Variant count for the README limitations line.** Harness variants developed against eval items: O3, O3b, O3c, O3d,
 O3e, O3f, O3g, O3h (stopped, no row), O3j, O3k, O3l, O3m, O3n with rows, plus O3p and O3q dropped at dev with no row
@@ -134,3 +146,16 @@ O3e, O3f, O3g, O3h (stopped, no row), O3j, O3k, O3l, O3m, O3n with rows, plus O3
 **Not changed in this pass:** no new run, no prompt or harness change, no eval or judge file touched. Ruslan owns
 `README.md`, `hackathon/report/` and the generated headline, so the README text for these fixes went to him as a
 `CONTRACT:` on the bus.
+
+## Pass 4: verify pass 3 fails (2026-11-02 ~14:30 PT)
+
+- **Ruling 2 (facts-loss cause):** corrected above. `row_checks.py` now also writes `facts_loss_vs_hashtag_drop`.
+- **F11 disclosure and F6 human A/B:** both are `README.md` lines, which Ruslan owns. The exact replacement text went to
+  him as a `CONTRACT:` on the bus (`hackathon/bus/msgs/*-ali-to-friend.md`, subject "CONTRACT: README pass-3 fails").
+  The human numbers in it come from `hackathon/report/human_votes.json` (O3c vs Claude strong 53/80/31, 164 votes,
+  sign test p=0.024) and `hackathon/report/human_ab.jsonl` (165 raw O3c-vs-Claude rows: 53/80/32).
+- **O3n gate floor:** closed fail, already disclosed (README pass-2 note and the table above). Not pitched.
+- **Goal (style up vs Claude strong, gates >= 95%):** still not met by any O3 variant here. O3c stays the entry. The
+  separate R2 (E1 ensemble) and R3 (DeepSeek) runs are handled in their own handoff
+  (`hackathon/bus/msgs/20261102T221622Z-ali-to-friend.md`), not in this pass.
+- **Not changed:** no new run, no prompt or harness change, no eval, judge or report file touched.

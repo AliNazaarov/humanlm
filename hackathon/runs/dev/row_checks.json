@@ -258,5 +258,173 @@
    },
    "median_output_to_draft_word_ratio": 0.88
   }
+ },
+ "facts_loss_vs_hashtag_drop": {
+  "O3c_glm_prompt_harness_style|kimi_k3": {
+   "file": "hackathon/report/judge_hack_O3c_glm_prompt_harness_style_vs_hack_strong_claude-opus-5-5.jsonl",
+   "facts": {
+    "win": 9,
+    "loss": 15,
+    "tie": 106,
+    "n": 130
+   },
+   "summary_facts": {
+    "win": 9,
+    "loss": 15,
+    "tie": 106
+   },
+   "matches_summary": true,
+   "facts_loss_ids": [
+    "dev-004",
+    "dev-022",
+    "dev-023",
+    "dev-034",
+    "dev-050",
+    "dev-051",
+    "dev-057",
+    "dev-098",
+    "dev-099",
+    "trick-05",
+    "trick-06",
+    "trick-07",
+    "trick-18",
+    "trick-21",
+    "trick-28"
+   ],
+   "hashtag_drop_items": 5,
+   "losses_on_hashtag_drop_items": 0,
+   "loss_ids_on_hashtag_drop_items": []
+  },
+  "O3c_glm_prompt_harness_style|qwen_3p8_max": {
+   "file": "hackathon/report/judge2qwen_hack_O3c_glm_prompt_harness_style_vs_hack_strong_claude-opus-5-5.jsonl",
+   "facts": {
+    "win": 11,
+    "loss": 19,
+    "tie": 78,
+    "n": 108
+   },
+   "summary_facts": {
+    "win": 11,
+    "loss": 19,
+    "tie": 78
+   },
+   "matches_summary": true,
+   "facts_loss_ids": [
+    "dev-011",
+    "dev-020",
+    "dev-021",
+    "dev-022",
+    "dev-023",
+    "dev-034",
+    "dev-037",
+    "dev-050",
+    "dev-051",
+    "dev-057",
+    "dev-074",
+    "dev-097",
+    "dev-099",
+    "trick-05",
+    "trick-06",
+    "trick-07",
+    "trick-18",
+    "trick-27",
+    "trick-28"
+   ],
+   "hashtag_drop_items": 5,
+   "losses_on_hashtag_drop_items": 0,
+   "loss_ids_on_hashtag_drop_items": []
+  },
+  "O3m_glm_plainclaim|kimi_k3": {
+   "file": "hackathon/report/judge_hack_O3m_glm_plainclaim_vs_hack_strong_claude-opus-5-5.jsonl",
+   "facts": {
+    "win": 5,
+    "loss": 23,
+    "tie": 102,
+    "n": 130
+   },
+   "summary_facts": {
+    "win": 5,
+    "loss": 23,
+    "tie": 102
+   },
+   "matches_summary": true,
+   "facts_loss_ids": [
+    "dev-001",
+    "dev-005",
+    "dev-020",
+    "dev-023",
+    "dev-030",
+    "dev-034",
+    "dev-050",
+    "dev-051",
+    "dev-068",
+    "dev-070",
+    "dev-076",
+    "dev-081",
+    "dev-084",
+    "dev-085",
+    "dev-098",
+    "dev-100",
+    "trick-05",
+    "trick-06",
+    "trick-07",
+    "trick-08",
+    "trick-18",
+    "trick-24",
+    "trick-28"
+   ],
+   "hashtag_drop_items": 20,
+   "losses_on_hashtag_drop_items": 4,
+   "loss_ids_on_hashtag_drop_items": [
+    "dev-068",
+    "dev-070",
+    "dev-076",
+    "dev-085"
+   ]
+  },
+  "O3m_glm_plainclaim|qwen_3p8_max": {
+   "file": "hackathon/report/judge2qwen_hack_O3m_glm_plainclaim_vs_hack_strong_claude-opus-5-5.jsonl",
+   "facts": {
+    "win": 5,
+    "loss": 20,
+    "tie": 83,
+    "n": 108
+   },
+   "summary_facts": {
+    "win": 5,
+    "loss": 20,
+    "tie": 83
+   },
+   "matches_summary": true,
+   "facts_loss_ids": [
+    "dev-011",
+    "dev-020",
+    "dev-023",
+    "dev-030",
+    "dev-034",
+    "dev-051",
+    "dev-052",
+    "dev-058",
+    "dev-077",
+    "dev-081",
+    "dev-082",
+    "dev-085",
+    "dev-089",
+    "dev-095",
+    "dev-100",
+    "trick-05",
+    "trick-06",
+    "trick-07",
+    "trick-16",
+    "trick-18"
+   ],
+   "hashtag_drop_items": 20,
+   "losses_on_hashtag_drop_items": 3,
+   "loss_ids_on_hashtag_drop_items": [
+    "dev-052",
+    "dev-058",
+    "dev-085"
+   ]
+  }
  }
 }

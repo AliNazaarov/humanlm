@@ -20,3 +20,5 @@ hackathon/runs/logs/
 hackathon/social/telegram/KEY.json
 hackathon/train/human_rl/cand*.jsonl
 hackathon/train/human_rl/labels.jsonl
+hackathon/train/human_rl2/cand*.jsonl
+hackathon/train/human_rl2/labels.jsonl

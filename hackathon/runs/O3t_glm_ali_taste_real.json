@@ -1,0 +1,36 @@
+{
+ "system": "O3t_glm_ali_taste",
+ "provider": "fireworks",
+ "model": "accounts/fireworks/models/glm-5p3-flash",
+ "loops": 3,
+ "prompt_sha256": "9c863dad5a307313",
+ "prompt_file": "hackathon/train/prompt_v4_ali.txt",
+ "decoding": {
+  "max_tokens": 1500,
+  "temperature": 0.7,
+  "top_p": 0.9,
+  "reasoning_effort": "low"
+ },
+ "style_round": "basic",
+ "retrieve": 0,
+ "claim_check": null,
+ "anti_copy": false,
+ "best_of": 1,
+ "select_judge_model": null,
+ "select": null,
+ "strict_claims": false,
+ "judge_prices_usd_per_m": [
+  0.0,
+  0.0
+ ],
+ "prices_usd_per_m": [
+  0.0,
+  0.0
+ ],
+ "eval": "evals/real_readmes.jsonl",
+ "rows": 80,
+ "pass_rate": 0.9875,
+ "empty_outputs": [],
+ "commit": "b3bee86b3112ff04c8be5a6c56cdec946c386c51",
+ "finished": "2026-11-02T14:44:15-0800"
+}

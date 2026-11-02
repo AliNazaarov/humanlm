@@ -132,7 +132,17 @@ Not Fireworks rows. Trained and served on Ali's MacBook (Apple M4, 16 GB unified
 - Pairs: chosen = real human original, rejected = our own model's O7 rewrite of the same AI draft (`hackathon/train/ruslan/o7_drafts_ali.jsonl` + `o7_rejected_ali.jsonl` (tm-*), `o7_drafts_ali2.jsonl` + `o7_rejected_ali2.jsonl` (tr2-*, 349 of 1,500 rejected rows existed at build time; 1,152 drafts had no rejected row yet and were skipped)). Builder: `hackathon/train/mlx_local/make_dpo_pairs.py`.
 - Filters: 0 empty rejected outputs dropped; **33 pairs dropped for an 8-gram overlap** with `evals/eval_all.jsonl`, `evals/heldout_pairs.jsonl` or `evals/real_readmes.jsonl` (drafts, human refs and rejected texts all checked). Of the 915 clean pairs, the 150 with the highest choppy-tell gap (share of sentences <= 6 words in the rejected rewrite minus in the human original; gap 0.31 to 0.78) were kept: 143 train + 7 valid (`~/models/hl/dpo_pairs/`).
 - Method: `hackathon/train/mlx_local/dpo_mlx.py`, a minimal sigmoid DPO loss in mlx (the `mlx-lm-lora` 5.10.2 package installed cleanly but its `PreferenceDataset` encodes chosen/rejected as raw text without the chat template or prompt masking, so it was not used). Reference = the frozen L1 policy (the L1 LoRA weights are swapped back in, no grad, for each pair's reference log-probs). beta 0.1, Adam LR 1e-5, batch 1, max-seq 512, chat-templated with the prompt masked, 1 pass over the pairs, time-boxed.
-- Steps/loss/time: see the table below (filled from `~/models/hl/lora_L2/dpo_log.jsonl`).
+- Steps/loss/time (from `~/models/hl/lora_L2/dpo_log.jsonl`):
+
+| Field | Value |
+|---|---|
+| Steps | **70 of 143 pairs** (stopped at the step-70 save, 14:41 PT, to leave time for serving and eval; started 14:18 PT), batch 1 = 70 pairs seen, 0.49 epoch |
+| Speed | ~19.8 s/step (reference pass + policy forward/backward on both sequences) |
+| Loss (5-step means, -log sigmoid(beta*margin)) | 5: 0.4301 · 10: 0.2356 · 20: 0.0036 · 30: 0.002 · 40: 0.0004 · 50: 0.0 · 60: 0.0104 · 70: 0.0296 (mean over reports 0.0558) |
+| Pair accuracy (cumulative share with margin > 0) | 20: 0.85 · 40: 0.925 · 60: 0.95 · 70: 0.957 |
+| Note | The loss saturates within ~20 steps: the rejected texts are the model's own rewrites, so lowering their summed log-prob relative to the human originals is easy. A step-40 snapshot was kept (`~/models/hl/lora_L2_s40`) as a milder fallback; the row below uses step 70. |
+| Adapter | `~/models/hl/lora_L2/` (local only), served with `python -m mlx_lm.server --model mlx-community/Qwen3-4B-Instruct-2507-4bit --adapter-path lora_L2 --port 8090` |
+| Rows | `L2h_qwen3_4b_dpo_harness` (O3c recipe: `prompt_v2.txt`, `--loops 3 --style-round`, `--provider local`) on `evals/eval_all.jsonl`, partial; see its manifest `notes`. `L2_qwen3_4b_dpo` (--loops 0) and `L1_qwen3_4b_sft` rows were skipped for time (~20 tok/s local generation). |
 
 ## SFT C (gate-clean)
 Status: **trained and promoted (READY 14:35 PT); not deployed or evaluated yet.** Same recipe as SFT B, trained from the **base** model (not from SFT B); only the data changes.
