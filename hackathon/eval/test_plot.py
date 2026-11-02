@@ -55,11 +55,11 @@ class TestNotes(unittest.TestCase):
 
     def test_coverage_note(self):
         full = dict(_entry("F1", 0.5), counted_as_fail=2)
-        self.assertEqual(pl.coverage_note(full, 250), "n=100, 2 refusals/no-output counted as fail")
+        self.assertEqual(pl.coverage_note(full, 250), "n=100, 2 no-output = fail")
         part = dict(_entry("P", 0.1, _vs(-0.3, 0.001)), missing=120)
         part["vs_reference"]["n_shared"] = 130
         part["summary"]["pass"]["n"] = 130
-        self.assertEqual(pl.coverage_note(part, 250), "n=130 of 250 items only; Δ on 130 shared items")
+        self.assertEqual(pl.coverage_note(part, 250), "n=130 of 250 only; Δ on 130 shared")
         self.assertEqual(pl.coverage_note(_entry("Q", 0.2), 100), "n=100")
 
     def test_lenient_bits(self):
@@ -70,6 +70,11 @@ class TestNotes(unittest.TestCase):
         r, head, delta = pl.lenient_bits(e)
         self.assertAlmostEqual(r, 98.0)
         self.assertEqual((head, delta), (" · lenient 98.0%", " · lenient +13.2 pp sig"))
+
+    def test_clip_long_labels(self):
+        self.assertEqual(pl.clip("O3c_glm_prompt_harness_style"), "O3c_glm_prompt_harness_style")
+        long = "WF_Pairwise_both_orders_knockout_selector_with_fact_aware_eligibility"
+        self.assertTrue(len(pl.clip(long)) <= 36 and pl.clip(long).endswith("…"))
 
     def test_short_labels(self):
         self.assertEqual([pl.short(x) for x in ("O3c_glm_prompt_harness_style", "F1H_opus_harness", "F1h_opus_humanizer",

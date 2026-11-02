@@ -112,13 +112,12 @@ def gate_rows(block: dict) -> tuple[list[str], list[list[float]]]:
 def coverage_note(entry: dict, n_items) -> str:
     """'n=250', or 'n=130 of 250 items only' when the system never ran part of the block, plus counted refusals."""
     n = ((entry.get("summary") or {}).get("pass") or {}).get("n", entry.get("n", "?"))
-    note = f"n={n} of {n_items} items only" if entry.get("missing") else f"n={n}"
+    note = f"n={n} of {n_items} only" if entry.get("missing") else f"n={n}"
     shared = (entry.get("vs_reference") or {}).get("n_shared")
     if entry.get("missing") and shared:
-        note += f"; Δ on {shared} shared items"
+        note += f"; Δ on {shared} shared"
     if entry.get("counted_as_fail"):
-        k = entry["counted_as_fail"]
-        note += f", {k} refusal{'s' if k != 1 else ''}/no-output counted as fail"
+        note += f", {entry['counted_as_fail']} no-output = fail"  # refusals and empty outputs count as fails
     return note
 
 
@@ -156,7 +155,7 @@ def _leaderboard(ax, rows: list[tuple], name: str, n_items, notes: dict[str, str
         lr = (lenient.get(lab) or (None,))[0]
         if lr is not None:  # lenient rate as a tall tick across the bar
             ax.plot([lr], [yi], marker="|", markersize=22, markeredgewidth=2.6, color=LEN, zorder=4)
-    ax.set_yticks(y, [r[0] for r in rows])
+    ax.set_yticks(y, [clip(r[0]) for r in rows])
     for t, row in zip(ax.get_yticklabels(), rows):
         t.set_fontweight("bold" if row[5] else "normal")
     ax.set_xlim(0, 100)
@@ -184,6 +183,11 @@ _SNUG = [(7, 4, "left"), (-8, 4, "right"), (7, -24, "left"), (-8, -24, "right")]
 _RINGS = [(round(d * math.cos(t)), round(d * math.sin(t)) - 8, "left" if math.cos(t) >= 0 else "right")
           for d in (34, 56, 80) for t in [k * math.pi / 4 for k in (0, 4, 1, 3, 7, 5, 2, 6)]]
 _SPOTS = _SNUG + _RINGS
+
+
+def clip(label: str, n: int = 36) -> str:
+    """Row label for the chart: long system names end in an ellipsis (the full name stays in results.json)."""
+    return label if len(label) <= n else label[: n - 1].rstrip("_ ") + "…"
 
 
 def short(label: str) -> str:
@@ -268,7 +272,7 @@ def _gates(ax, labels: list[str], mat: list[list[float]]) -> None:
             txt, dark = ("n/a", False) if math.isnan(v) else (f"{v:.0f}%", v >= 60)
             ax.text(j, i, txt, ha="center", va="center", fontsize=9, color="white" if dark else INK)
     ax.set_xticks(range(len(GATES)), [GATE_NAMES[g] for g in GATES], fontsize=8.5)
-    ax.set_yticks(range(len(labels)), labels, fontsize=8.5)
+    ax.set_yticks(range(len(labels)), [clip(lab) for lab in labels], fontsize=8.5)
     ax.tick_params(length=0)
     for s in ax.spines.values():
         s.set_visible(False)
