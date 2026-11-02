@@ -213,8 +213,13 @@ CLAIM_ASK = ("You check rewrites for invented content. Compare the REWRITE with 
              " and an empty list if nothing was added.")
 
 
+CLAIM_UNAVAILABLE = "(claim check unavailable"
+
+
 def claim_check(draft, out, a):
-    """Open-model claim verifier (GLM-5.3). Returns (added_claims, pt, ct). Errors count as 'unchecked' (empty list)."""
+    """Open-model claim verifier (GLM-5.3). Returns (added_claims, pt, ct).
+    [] only when the check ran clean or --claim-check is off. If both attempts fail it returns a NON-empty
+    placeholder starting with CLAIM_UNAVAILABLE, so an unchecked rewrite never counts as clean."""
     if not a.claim_check:
         return [], 0, 0
     dec = decoding("fireworks", a.claim_check, "low"); dec["temperature"] = 0.0
@@ -229,11 +234,12 @@ def claim_check(draft, out, a):
             return [x for x in added if isinstance(x, str) and x.strip()][:6], p, c
         except Exception:
             continue
-    return ["(claim check unavailable: re-verify this rewrite against the draft and remove anything not in it)"], 0, 0
+    return [CLAIM_UNAVAILABLE + ": re-verify this rewrite against the draft and remove anything not in it)"], 0, 0
 
 
 def one_pass(draft, a):
-    """Draft -> verify -> targeted revise (max a.loops) -> optional style round. Returns (out, gates, loop, pt, ct, copy)."""
+    """Draft -> verify -> targeted revise (max a.loops) -> optional style round.
+    Returns (out, gates, loop, pt, ct, copy, added): `added` is the last claim-check result for the returned text."""
     shots = []
     for d, hm in (retrieve(draft, a.retrieve) if a.retrieve else []):
         shots += [{"role": "user", "content": d}, {"role": "assistant", "content": hm}]
@@ -249,7 +255,7 @@ def one_pass(draft, a):
         added = []
         if g["pass"] and not near:
             added, p, c = claim_check(draft, out, a); pt += p; ct += c
-        cand = (g["n_fail"] + int(near) + int(bool(added)), -loop, out, g, loop, cp)   # fewer failures wins; ties go to the later revision
+        cand = (g["n_fail"] + int(near) + int(bool(added)), -loop, out, g, loop, cp, added)   # fewer failures wins; ties go to the later revision
         best = cand if best is None or cand[:2] < best[:2] else best
         if (g["pass"] and not near and not added) or loop == a.loops:
             break
@@ -258,7 +264,7 @@ def one_pass(draft, a):
         msgs += [{"role": "assistant", "content": out},
                  {"role": "user", "content": "Revise your rewrite. Fix only these problems and change nothing else:\n- "
                   + "\n- ".join(problems) + "\nReply with the full revised text only."}]
-    _, _, out, g, loop, cp = best
+    _, _, out, g, loop, cp, added = best
     if a.style_round and g["pass"]:
         # One style pass: a skilled copywriter's edit for voice and rhythm. Kept only if every gate still passes.
         msgs2 = [{"role": "user", "content": draft}, {"role": "assistant", "content": out},
@@ -270,8 +276,8 @@ def one_pass(draft, a):
         if g2["pass"] and not (a.anti_copy and cp2 > COPY_MAX):
             added2, p, c = claim_check(draft, out2, a); pt += p; ct += c
         if g2["pass"] and not (a.anti_copy and cp2 > COPY_MAX) and not added2:
-            out, g, loop, cp = out2, g2, loop + 1, cp2
-    return out, g, loop, pt, ct, cp
+            out, g, loop, cp, added = out2, g2, loop + 1, cp2, []
+    return out, g, loop, pt, ct, cp, added
 
 
 def judge_score(text, a):
@@ -287,29 +293,132 @@ def judge_score(text, a):
     return (int(mt.group(1)) if mt else None), p, c
 
 
+PAIR_ASK = ("Which rewrite reads more like a calm, skilled human copywriter wrote it, while saying exactly what the "
+            "DRAFT says? Answer 1 or 2.")
+
+
+def check_select_judge(model):
+    """The selection judge must never be the eval judge (Kimi K3), or selection would tune to the scorer."""
+    if "kimi" in model.lower():
+        raise SystemExit(f"--select-judge-model {model} is the eval judge family (Kimi); use GLM-5.3")
+
+
+def parse_pair(text):
+    """Strict verdict: the cleaned answer must start with 1 or 2 (and not 12, 21, ...). Else None (no verdict)."""
+    mt = re.match(r"^\s*([12])(?![0-9])", clean(text))
+    return int(mt.group(1)) if mt else None
+
+
+def pair_pick(a_text, b_text, draft, a):
+    """One ordered pairwise call on the selection judge. Returns (1|2|None, pt, ct)."""
+    dec = decoding("fireworks", a.select_judge_model, "low")
+    dec["temperature"] = 0.0; dec["max_tokens"] = a.pair_max_tokens; dec.pop("top_p", None)
+    msg = [{"role": "user", "content": f"{PAIR_ASK}\n\nDRAFT:\n{draft}\n\nREWRITE 1:\n{a_text}\n\nREWRITE 2:\n{b_text}"
+            "\n\nAnswer with the single digit 1 or 2 and nothing else."}]
+    try:
+        r, p, c = chat("fireworks", a.select_judge_model, "You are a strict senior copy editor.", msg, dec)
+    except Exception:
+        return None, 0, 0
+    return parse_pair(r), p, c
+
+
+def _sent_len(t):
+    s = gates.m.sentences(t)
+    return len(gates.m.words(t)) / max(len(s), 1)
+
+
+def knockout(ok, cands, draft, a):
+    """Single-elimination over eligible candidates, both orders per match. Agreeing verdicts decide ('judge');
+    disagreement or a missing verdict is a tie broken by lower copy_overlap, then lower index ('copy').
+    rhythm() (idea 1) is not built, so copy_overlap is the only tie-break. Odd rounds: the bye goes to the
+    lowest copy_overlap candidate (a fixed rule, not judge quality), so the others meet on the judge's verdict
+    first; it would win any tie anyway. Bracket order is by candidate index. Returns (winner, log)."""
+    idx = lambda x: cands.index(x)
+    tb = lambda x: (x["copy"], idx(x))
+    log = {"matches": [], "bye": None, "no_verdict": 0, "pt": 0, "ct": 0}
+    alive = sorted(ok, key=idx)
+    stage = None
+    while len(alive) > 1:
+        nxt = []
+        if len(alive) % 2:
+            bye = min(alive, key=tb); alive = [x for x in alive if x is not bye]
+            log["bye"] = idx(bye) if log["bye"] is None else log["bye"]
+            nxt.append(bye)
+        for x, y in zip(alive[::2], alive[1::2]):
+            v1, p1, c1 = pair_pick(x["out"], y["out"], draft, a)
+            v2, p2, c2 = pair_pick(y["out"], x["out"], draft, a)
+            log["pt"] += p1 + p2; log["ct"] += c1 + c2
+            log["no_verdict"] += (v1 is None) + (v2 is None)
+            if v1 == 1 and v2 == 2:
+                w, stage = x, "judge"
+            elif v1 == 2 and v2 == 1:
+                w, stage = y, "judge"
+            else:
+                w, stage = min((x, y), key=tb), "copy"
+            log["matches"].append({"pair": [idx(x), idx(y)], "v_ab": v1, "v_ba": v2, "winner": idx(w),
+                                   "by": stage, "flip": stage != "judge"})
+            nxt.append(w)
+        alive = sorted(nxt, key=idx)
+    log["decided_by"] = stage
+    return alive[0], log
+
+
 def rewrite(item, a):
     draft = item["ai_draft"]
     t0 = time.time(); pt = ct = 0
     cands = []
     for _ in range(a.best_of):
-        out, g, loop, p, c, cp = one_pass(draft, a)
+        out, g, loop, p, c, cp, added = one_pass(draft, a)
         pt += p; ct += c
-        cands.append({"out": out, "g": g, "loop": loop, "copy": cp})
+        cands.append({"out": out, "g": g, "loop": loop, "copy": cp, "added": added})
     sel = {}
     if a.best_of > 1:
-        ok = [x for x in cands if x["g"]["pass"] and not (a.anti_copy and x["copy"] > COPY_MAX)]
+        strict = getattr(a, "strict_claims", False)
+        mode = getattr(a, "select", "absolute")
+        # --strict-claims (off by default so O3k rows reproduce): a candidate whose last claim check flagged
+        # added content, or could not run, is not eligible.
+        ok = [x for x in cands if x["g"]["pass"] and not (a.anti_copy and x["copy"] > COPY_MAX)
+              and not (strict and x["added"])]
         jpt = jct = 0
-        for x in ok:
-            x["score"], p, c = judge_score(x["out"], a)
-            jpt += p; jct += c
-        if ok:
-            pick = max(ok, key=lambda x: (x["score"] or 0, -x["copy"]))
+        sel = {}
+        if mode == "pairwise":
+            if len(ok) >= 2:
+                pick, kl = knockout(ok, cands, draft, a)
+                jpt, jct = kl["pt"], kl["ct"]
+                flips = sum(m["flip"] for m in kl["matches"])
+                sel = {"select": "pairwise", "matches": kl["matches"], "bye": kl["bye"], "flips": flips,
+                       "flip_rate": round(flips / len(kl["matches"]), 4), "no_verdict": kl["no_verdict"],
+                       "decided_by": kl["decided_by"], "tiebreak": "copy_overlap (rhythm() not built)"}
+            elif ok:
+                pick = ok[0]
+                sel = {"select": "pairwise", "matches": [], "bye": None, "flips": 0, "flip_rate": None,
+                       "no_verdict": 0, "decided_by": "only_eligible"}
+            else:
+                pick = None
+                sel = {"select": "pairwise", "matches": [], "bye": None, "flips": 0, "flip_rate": None,
+                       "no_verdict": 0, "decided_by": "fallback"}
         else:
-            pick = min(cands, key=lambda x: (x["g"]["n_fail"] + int(a.anti_copy and x["copy"] > COPY_MAX), x["copy"]))
-        sel = {"candidates": len(cands), "eligible": len(ok), "scores": [x.get("score") for x in cands],
+            for x in ok:
+                x["score"], p, c = judge_score(x["out"], a)
+                jpt += p; jct += c
+            pick = max(ok, key=lambda x: (x["score"] or 0, -x["copy"])) if ok else None
+            sel = {"scores": [x.get("score") for x in cands]}
+        if pick is None:
+            pick = min(cands, key=lambda x: (x["g"]["n_fail"] + int(a.anti_copy and x["copy"] > COPY_MAX)
+                                             + int(strict and bool(x["added"])), x["copy"]))
+        sel = {"candidates": len(cands), "eligible": len(ok), **sel,
                "picked": cands.index(pick), "judge_model": a.select_judge_model,
                "judge_prompt_tokens": jpt, "judge_completion_tokens": jct,
                "judge_cost_usd": round(jpt * a.judge_in_price / 1e6 + jct * a.judge_out_price / 1e6, 6)}
+        if strict or mode == "pairwise":
+            un = [x for x in cands if x is not pick]
+            mean = lambda xs, f: round(sum(f(x["out"]) for x in xs) / len(xs), 2) if xs else None
+            nw = lambda t: len(gates.m.words(t))
+            sel.update({"strict_claims": strict,
+                        "claim_flagged": sum(bool(x["added"]) and not x["added"][0].startswith(CLAIM_UNAVAILABLE) for x in cands),
+                        "claim_unavailable": sum(bool(x["added"]) and x["added"][0].startswith(CLAIM_UNAVAILABLE) for x in cands),
+                        "picked_words": nw(pick["out"]), "unpicked_mean_words": mean(un, nw),
+                        "picked_sent_len": round(_sent_len(pick["out"]), 2), "unpicked_mean_sent_len": mean(un, _sent_len)})
     else:
         pick = cands[0]
     out, g, loop, cp = pick["out"], pick["g"], pick["loop"], pick["copy"]
@@ -340,10 +449,16 @@ def main():
     ap.add_argument("--anti-copy", action="store_true", help="revise near-copies of the draft (word-bigram F1 > 0.9)")
     ap.add_argument("--best-of", type=int, default=1, help="run the whole pipeline N times, pick by --select-judge-model")
     ap.add_argument("--select-judge-model", default="accounts/fireworks/models/glm-5p3")
+    ap.add_argument("--select", default="absolute", choices=["absolute", "pairwise"],
+                    help="best-of-N picker: absolute 1-10 score (default, O3j/O3k) or pairwise knockout, both orders")
+    ap.add_argument("--pair-max-tokens", type=int, default=256, help="max tokens per pairwise call (reasoning included)")
+    ap.add_argument("--strict-claims", action="store_true",
+                    help="best-of-N: drop candidates whose last claim check flagged added content (off = O3k behaviour)")
     ap.add_argument("--judge-in-price", type=float, default=0.0); ap.add_argument("--judge-out-price", type=float, default=0.0)
     ap.add_argument("--style-round", nargs="?", const="basic", default=None, choices=["basic", "cliche", "calm"],
                     help="after the gates pass, one copywriter style edit (basic or cliche), kept only if gates still pass")
     a = ap.parse_args()
+    check_select_judge(a.select_judge_model)
     a.dec = decoding(a.provider, a.model, a.reasoning_effort)
     a.system_prompt = open(a.prompt_file).read().strip() if a.prompt_file else SYSTEM
     items = [json.loads(l) for l in open(a.eval)][: a.limit]
@@ -370,6 +485,8 @@ def main():
                 "prompt_sha256": hashlib.sha256(a.system_prompt.encode()).hexdigest()[:16],
                 "prompt_file": a.prompt_file, "decoding": a.dec, "style_round": a.style_round, "retrieve": a.retrieve, "claim_check": a.claim_check, "anti_copy": a.anti_copy, "best_of": a.best_of,
                 "select_judge_model": a.select_judge_model if a.best_of > 1 else None,
+                "select": a.select if a.best_of > 1 else None, "strict_claims": a.strict_claims,
+                "judge_prices_usd_per_m": [a.judge_in_price, a.judge_out_price],
                 "prices_usd_per_m": [a.in_price, a.out_price], "eval": a.eval, "rows": len(rows),
                 "pass_rate": sum(r["gates"]["pass"] for r in rows) / len(rows), "empty_outputs": [r["id"] for r in rows if not r["output"]], "commit": commit,
                 "finished": time.strftime("%Y-%m-%dT%H:%M:%S%z")}
