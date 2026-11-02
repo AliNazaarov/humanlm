@@ -17,7 +17,7 @@ Closing line: "We didn't make an open model smarter than Claude. We made it acco
 
 ## 2. Why not just prompt GPT or Claude?
 
-We did, with the same system prompt and items. GPT-6.1 keeps facts but leaves the AI tells in: it passes the tells gate on 46% of items (audit, G3 column). Claude Opus 5.5 removes the tells but cuts: it deletes at least one draft sentence on 51% of items and drops or changes numbers (audit, section C and E). Neither gives you both at once. Our loop does, on a model that costs $0.28 (O3; our entry O3c: $0.81) per thousand rewrites against $9.11 for Claude Opus 5.5 strong. And the fairness row shows the loop is the product: Claude plus our harness reaches [RESULT: F1H rate], at [RESULT: F1H $/1k].
+We did, with the same system prompt and items. GPT-6.1 keeps facts but leaves the AI tells in: it passes the tells gate on 46% of items (audit, G3 column). Claude Opus 5.5 removes the tells but cuts: it deletes at least one draft sentence on 51% of items and drops or changes numbers (audit, section C and E). Neither gives you both at once. Our loop does, on a model that costs $0.28 (O3; our entry O3c: $0.81) per thousand rewrites against $9.11 for Claude Opus 5.5 strong. And the fairness row shows the loop is the product: Claude plus our harness reaches 94% fact-safe (HEADLINE.md, all 247 items), at $15.85 per 1k rewrites.
 
 ## 3. Isn't the harness just gaming the metric it is scored on?
 
