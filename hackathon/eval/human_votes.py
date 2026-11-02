@@ -17,8 +17,8 @@ sys.path.insert(0, HERE)
 import stats as st  # noqa: E402
 
 PAIRS_VERSION = "fd809333d5320427"  # set 1: O3c vs frontier-strong:claude-opus-5-5 (hackathon/demo/ab_page/pairs.json)
-SET2_VERSION = "dc49e2a1e1a1c15f"   # set 2: O3k vs frontier-strong:claude-opus-5-5, 8 fresh items (hackathon/demo/ab_page/set2/pairs.json)
-OURS = re.compile(r"O3[ck]", re.I)  # FeatherLM side: O3c in set 1, O3k in set 2
+SET2_VERSION = "4ebaa1a50d043a80"   # set 2: O3m_glm_plainclaim vs frontier-strong:claude-opus-5-5, 8 fresh items (hackathon/demo/ab_page/set2/pairs.json)
+OURS = re.compile(r"O3[cm]", re.I)  # FeatherLM side: O3c in set 1, O3m in set 2
 
 
 def telegram_counts(votes_md: str, key: dict) -> list[dict]:
@@ -102,8 +102,8 @@ def main() -> int:
                 **summarise(cs), "dropped_ballots": dropped, "position_only": clickers, "too_fast": speeders}
         c2 = page_counts(rows, SET2_VERSION)
         if c2["votes"]:
-            res["sources"]["page_set2"] = {**summarise(c2), "pairs": "O3k_glm_calm_claimcheck_bo3 vs frontier-strong:claude-opus-5-5",
-                                           "note": "set 2 compares O3k, not O3c: 'ours' = O3k"}
+            res["sources"]["page_set2"] = {**summarise(c2), "pairs": "O3m_glm_plainclaim vs frontier-strong:claude-opus-5-5",
+                                           "note": "set 2 compares O3m, not O3c: 'ours' = O3m"}
     venue = os.path.join(ROOT, "hackathon/social/human_ab_venue.json")
     if os.path.exists(venue):  # hand-unblinded ballot from Ali's laptop (founder: a check, not a gold rater)
         v = json.load(open(venue, encoding="utf-8"))
