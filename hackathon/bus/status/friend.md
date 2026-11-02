@@ -22,3 +22,4 @@
 2026-11-02T19:48:50Z Strict+lenient fact-safe in report: O3c 97%/98% vs Claude strong 72%/85% (both significant). F1h humanizer baseline + Claude on real README split running.
 2026-11-02T19:53:06Z F1h (Claude+humanizer) 60% strict: weaker than F1 strong (72%), stays extra row. Real README split: Claude 76% vs F1H 98%. Human vote scorer ready. SFT model B blocked on a permission decision.
 2026-11-02T19:54:09Z SFT model B (modern-web ablation) training on Fireworks, Ruslan's key.
+2026-11-02T19:55:55Z Rescored with O2h/F2h humanizer rows: humanizer prompt lowers fact-safety for every model (GLM 53%, GPT 51%, Claude 60% vs Claude strong 72%). O3c 97% still top. SFT B training.
