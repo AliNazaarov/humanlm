@@ -41,8 +41,8 @@ class FakeAnthropic:
             status, times = self.fail[draft]
             if times is None or n <= times:
                 raise StatusError(status)
-        if self.reject_top_p and "top_p" in kw:
-            raise ValueError("`temperature` and `top_p` cannot both be specified for this model.")
+        if self.reject_top_p and ("top_p" in kw or "temperature" in kw):
+            raise ValueError("`temperature` is deprecated for this model.")  # Claude Opus 5.5 wording
         return NS(content=[NS(type="text", text=self.text)], stop_reason=self.stop_reason,
                   usage=NS(input_tokens=100, output_tokens=50))
 
@@ -215,16 +215,28 @@ class TestRun(Base):
         with self.assertRaisesRegex(ValueError, "duplicate"):
             self.go(FakeAnthropic(), rows=EVAL + EVAL[:1])
 
-    def test_top_p_rejected_retries_with_temperature_only(self):
+    def test_sampling_rejected_sends_none_and_learns_once(self):
+        rf.SAMPLING_REJECTED.clear()
+        self.addCleanup(rf.SAMPLING_REJECTED.clear)
         c = FakeAnthropic(reject_top_p=True)
         rows, _ = self.go(c, rows=EVAL[:1], model="claude-new")
         self.assertEqual(len(c.calls), 2)
+        self.assertNotIn("temperature", c.calls[1])
         self.assertNotIn("top_p", c.calls[1])
-        self.assertEqual(c.calls[1]["temperature"], 0.7)
         r = rows[0]
         self.assertTrue(r["top_p_dropped"])
+        self.assertIsNone(r["temperature"])
         self.assertIsNone(r["top_p"])
-        self.assertIn("top_p", r["decoding_note"])
+        self.assertIn("provider default", r["decoding_note"])
+        c2 = FakeAnthropic(reject_top_p=True)  # model now known: no rejected first call
+        rf.complete(c2, "anthropic", "claude-new", "sys", "draft")
+        self.assertEqual(len(c2.calls), 1)
+        self.assertNotIn("temperature", c2.calls[0])
+
+    def test_unrelated_400_not_swallowed(self):
+        rf.SAMPLING_REJECTED.clear()
+        self.assertFalse(rf._rejects_sampling(ValueError("max_tokens: must be at least 1")))
+        self.assertTrue(rf._rejects_sampling(ValueError("`top_p` is deprecated for this model.")))
 
     def test_mixed_decoding_warns(self):
         rows = [{"latency_ms": 1, "cost_usd": 0, "temperature": 0.7, "top_p": 0.9, "max_tokens": 400},
@@ -313,7 +325,8 @@ class TestManifest(Base):
         self.assertTrue(self.FIELDS <= set(m), self.FIELDS - set(m))
         self.assertEqual(m["system"], "frontier-strong:claude-opus-5-5")
         self.assertEqual((m["rows"], m["git_commit"]), (5, "abc123"))
-        self.assertEqual(m["decoding"], {"temperature": 0.7, "top_p": 0.9, "max_tokens": 400, "top_p_dropped": 0})
+        self.assertEqual(m["decoding"], {"temperature": 0.7, "top_p": 0.9, "max_tokens": 400, "top_p_dropped": 0, "thinking": ["off"],
+                                         "requested": {"temperature": 0.7, "top_p": 0.9}})
         self.assertAlmostEqual(m["cost_usd"], 5 * (100 * 3 + 50 * 15) / 1e6)
         self.assertIsNotNone(m["latency_ms_p95"])
 

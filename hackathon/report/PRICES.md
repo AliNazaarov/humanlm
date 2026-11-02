@@ -6,5 +6,5 @@ Fill each row from the provider's official pricing page on the day of the run. D
 
 | provider | model | $/1M input | $/1M output | source URL | date read |
 |---|---|---|---|---|---|
-| anthropic | TODO | TODO | TODO | TODO | TODO |
+| anthropic | claude-opus-5-5 | 4 | 20 | https://platform.claude.com/docs/en/about-claude/pricing (redirect from docs.anthropic.com/en/docs/about-claude/pricing); base input/output, no caching | 2026-11-02 |
 | openai | TODO | TODO | TODO | TODO | TODO |

@@ -19,7 +19,8 @@ CLI:       python run_frontier.py EVAL.jsonl [OUT.jsonl] --provider anthropic|op
 Rows add, beyond the shared schema: temperature, top_p, max_tokens, top_p_dropped, truncated, attempts,
 retry_wait_ms, price_in, price_out (USD per 1M), and decoding_note when top_p was dropped.
 Disclosure: infer.py also uses repetition_penalty=1.05 and enable_thinking=False on the open models; frontier APIs
-have no repetition penalty, and thinking is simply not requested here. Those settings cannot be replicated exactly.
+have no repetition penalty. Models that refuse sampling params (Claude Opus 5.5) run with provider-default sampling,
+adaptive thinking at effort low and max_tokens 1500 (see NO_SAMPLING); each row records what was sent.
 Keys come from the environment, ~/.config/humanlm/keys.env ($HUMANLM_KEYS), then the repo .env; they are never printed, and neither are raw error messages.
 """
 from __future__ import annotations
@@ -185,9 +186,17 @@ def _with_retries(fn) -> tuple[object, int, float, float]:
     raise AssertionError("unreachable")
 
 
-def _rejects_top_p(err: Exception) -> bool:
+SAMPLING_REJECTED: set[str] = set()  # models that refuse temperature/top_p; learned once per run
+# Those models (Claude Opus 5.5) also refuse thinking "disabled": lowest setting is adaptive at effort "low".
+# Thinking tokens count against max_tokens, so the cap is raised to leave room for the ~150-token rewrite.
+NO_SAMPLING = {"thinking": {"type": "adaptive"}, "extra_body": {"output_config": {"effort": "low"}}, "max_tokens": 1500}
+
+
+def _rejects_sampling(err: Exception) -> bool:
+    """Claude Opus 5.5 answers 400 '`temperature` is deprecated for this model' (same for top_p, top_k)."""
     msg = str(err).lower()  # inspected, never printed
-    return "top_p" in msg and "temperature" in msg
+    return ("temperature" in msg or "top_p" in msg) and ("deprecated" in msg or "not supported" in msg
+                                                          or "cannot both be specified" in msg)
 
 
 def complete(client, provider: str, model: str, system: str, user: str) -> dict:
@@ -203,15 +212,23 @@ def complete(client, provider: str, model: str, system: str, user: str) -> dict:
                 "attempts": att, "retry_wait_ms": wait, "latency_ms": ms}
     kw = dict(model=model, system=system, messages=[{"role": "user", "content": user}],
               max_tokens=MAX_TOKENS, temperature=TEMPERATURE, top_p=TOP_P)
+    no_sampling = {"temperature": None, "top_p": None, "top_p_dropped": True,
+                   "max_tokens": NO_SAMPLING["max_tokens"], "thinking": "adaptive, effort low"}
     extra = 0
+    if model in SAMPLING_REJECTED:
+        kw.pop("temperature"), kw.pop("top_p")
+        kw.update(NO_SAMPLING)
+        dec.update(no_sampling)
     try:
         r, att, wait, ms = _with_retries(lambda: client.messages.create(**kw))
     except Exception as e:
-        # Some newer Claude models refuse temperature and top_p together: retry once with temperature only.
-        if not _rejects_top_p(e):
+        # Newer Claude models refuse every sampling parameter: send none (provider default sampling), say so per row.
+        if "temperature" not in kw or not _rejects_sampling(e):
             raise
-        kw.pop("top_p")
-        dec.update(top_p=None, top_p_dropped=True)
+        SAMPLING_REJECTED.add(model)
+        kw.pop("temperature"), kw.pop("top_p")
+        kw.update(NO_SAMPLING)
+        dec.update(no_sampling)
         extra = getattr(e, "attempts", 1)
         r, att, wait, ms = _with_retries(lambda: client.messages.create(**kw))
     text = "".join(getattr(b, "text", "") for b in r.content if getattr(b, "type", "text") == "text")
@@ -233,7 +250,9 @@ def run_row(row: dict, client, provider: str, model: str, system: str, label: st
            "top_p_dropped": c["top_p_dropped"], "truncated": c["truncated"], "attempts": c["attempts"],
            "retry_wait_ms": round(c["retry_wait_ms"]), "price_in": price_in, "price_out": price_out}
     if c["top_p_dropped"]:
-        out["decoding_note"] = "top_p dropped: model rejects temperature+top_p together"
+        out["decoding_note"] = ("model rejects temperature/top_p and disabling thinking: sent no sampling params "
+                                "(provider default sampling), adaptive thinking at effort low, max_tokens 1500")
+        out["thinking"] = c.get("thinking")
     return out
 
 
@@ -412,6 +431,15 @@ def utc_now() -> str:
     return dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+def _sent_decoding(rows: list[dict]) -> dict:
+    """What was actually sent (from the rows); 'mixed' if rows differ, the requested values if there are no rows."""
+    out = {}
+    for k, default in (("temperature", TEMPERATURE), ("top_p", TOP_P), ("max_tokens", MAX_TOKENS)):
+        vals = {r.get(k) for r in rows}
+        out[k] = default if not rows else vals.pop() if len(vals) == 1 else "mixed"
+    return out
+
+
 def build_manifest(rows: list[dict], *, provider: str, model: str, arm: str, eval_path: str, out_path: str,
                    price_in: float, price_out: float, started: str, finished: str) -> dict:
     label = f"frontier-{arm}:{model}"
@@ -419,7 +447,8 @@ def build_manifest(rows: list[dict], *, provider: str, model: str, arm: str, eva
     return {
         "system": label, "provider": provider, "model": model, "arm": arm,
         "prompt_sha256": sha256_text(system_prompt(arm)),
-        "decoding": {"temperature": TEMPERATURE, "top_p": TOP_P, "max_tokens": MAX_TOKENS,
+        "decoding": {**_sent_decoding(rows), "thinking": sorted({r.get("thinking") or "off" for r in rows}),
+                     "requested": {"temperature": TEMPERATURE, "top_p": TOP_P},
                      "top_p_dropped": sum(1 for r in rows if r.get("top_p_dropped"))},
         "price_in": price_in, "price_out": price_out, "price_unit": "USD per 1M tokens",
         "git_commit": git_commit(),
