@@ -133,3 +133,23 @@ Not Fireworks rows. Trained and served on Ali's MacBook (Apple M4, 16 GB unified
 - Filters: 0 empty rejected outputs dropped; **33 pairs dropped for an 8-gram overlap** with `evals/eval_all.jsonl`, `evals/heldout_pairs.jsonl` or `evals/real_readmes.jsonl` (drafts, human refs and rejected texts all checked). Of the 915 clean pairs, the 150 with the highest choppy-tell gap (share of sentences <= 6 words in the rejected rewrite minus in the human original; gap 0.31 to 0.78) were kept: 143 train + 7 valid (`~/models/hl/dpo_pairs/`).
 - Method: `hackathon/train/mlx_local/dpo_mlx.py`, a minimal sigmoid DPO loss in mlx (the `mlx-lm-lora` 5.10.2 package installed cleanly but its `PreferenceDataset` encodes chosen/rejected as raw text without the chat template or prompt masking, so it was not used). Reference = the frozen L1 policy (the L1 LoRA weights are swapped back in, no grad, for each pair's reference log-probs). beta 0.1, Adam LR 1e-5, batch 1, max-seq 512, chat-templated with the prompt masked, 1 pass over the pairs, time-boxed.
 - Steps/loss/time: see the table below (filled from `~/models/hl/lora_L2/dpo_log.jsonl`).
+
+## SFT C (gate-clean)
+Status: **trained and promoted (READY 14:35 PT); not deployed or evaluated yet.** Same recipe as SFT B, trained from the **base** model (not from SFT B); only the data changes.
+
+| Field | Value |
+|---|---|
+| Base | `accounts/fireworks/models/glm-5p3-flash` (tokenizer zai-org/GLM-5.3-Flash), renderer `glm53_flash`, loss on assistant messages |
+| Data | `train_clean.jsonl`: 1,283 of the 2,924 train_modern rows that pass all 4 gates (`gates.check(user, assistant)`), sha256[:16] `090a75fc371b96cb`. Valid: `valid_clean.jsonl`, 84 rows, `89048ae43dc036de` (files built by the eval session; kept outside the repo) |
+| LoRA / optimizer | rank 16, alpha 32; 1 epoch, batch 16 → 81 steps, LR 1.5e-4 constant, max_seq_len 4096, DCP every 50 |
+| Session / run | `ts-7f97e88aeb624bce88c3ac90b9214139` / `run-caabad5715094faf863b5ac2dbed214a` |
+| Output model | `accounts/ruslan-kan-1eth024hr/models/humanlm-glm-sft-clean` (HF_PEFT_ADDON, READY), from checkpoint `run-caabad5715094faf863b5ac2dbed214a-step-81-2b8c7b17` |
+| Time (PT) | started 14:20:58, step 1 at 14:22:45, step 81 at 14:33:51, READY 14:35:16 (about 14 min, about 9 s/step) |
+| Train loss | step 1: 0.889 · step 50: 0.554 · step 80: 0.659 · step 81: 1.143 (last, partial batch of 1,157 tokens) · mean of the last 10 steps 0.712 |
+| Valid loss (84 rows, `client.forward`, no sampler) | before training 1.116 → after epoch 1 **0.752** (ppl 3.05 → 2.12) |
+| vs SFT B | SFT B train loss: step 1 1.144, step 183 0.699, mean of the last 10 0.699. SFT B had no valid set, so there is no valid loss to compare |
+| Tokens | 455,951 train (81 steps) + 2 × 12,782 eval |
+| Cost | **estimate**: (455,951 + 25,564) tokens × $8.89/M ≈ $4.28 (not from a bill) |
+| Deployment | `humanlm-sftc` (same shape as `humanlm-o4m`) **not created by this agent**: the create call was blocked by the agent's permission system ("real-world transactions" need the user's own go-ahead in that session) |
+
+- Deployment for SFT C eval: `humanlm-sftc` (4x B300 FP8 shape, 1 replica) created 14:36:45 PT by Ruslan's session (Ruslan approved one brief deployment in that session); sampled with no harness (`--loops 0`) on eval_all + heldout, then deleted with `?ignoreChecks=true`. End time and minutes are appended when it is deleted.
