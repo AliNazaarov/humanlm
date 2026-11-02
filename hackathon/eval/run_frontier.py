@@ -8,8 +8,14 @@ Requests:  make_client(provider) (SDK retries off, timeout 120 s); complete(...)
            (5 attempts, exp backoff, Retry-After honoured; only 429/5xx/timeout/connection errors).
 Run:       run(eval_rows, out_path, client, ...) -> (rows, failures). Resumes by id, appends under a lock, rewrites
            OUT sorted by id; failures go to OUT + ".failures.jsonl". check_out(...) -> list of problems.
-CLI:       python run_frontier.py EVAL.jsonl OUT.jsonl --provider anthropic|openai --model ID --arm live|strong
+Manifest:  build_manifest(...) -> dict; write_manifest(m) -> hackathon/runs/<slug(label)>.json, rewritten every run
+           (prompt + eval sha256, decoding, prices, git commit, row count, UTC times, cost, latency p50/p95).
+CLI:       python run_frontier.py EVAL.jsonl [OUT.jsonl] --provider anthropic|openai --model ID --arm live|strong
                   [--concurrency 4] [--limit N] [--price-in X --price-out Y]
+           OUT defaults to default_out(): evals/runs/hack_<arm>_<model>.jsonl, + "_heldout" when EVAL is
+           evals/heldout_pairs.jsonl. Run eval_all.jsonl (130) and heldout_pairs.jsonl (120) as separate files.
+           F1 = --provider anthropic --model claude-opus-5-5 --arm strong, plus an --arm live row.
+           No Gemini provider: google-genai is not installed here.
 Rows add, beyond the shared schema: temperature, top_p, max_tokens, top_p_dropped, truncated, attempts,
 retry_wait_ms, price_in, price_out (USD per 1M), and decoding_note when top_p was dropped.
 Disclosure: infer.py also uses repetition_penalty=1.05 and enable_thinking=False on the open models; frontier APIs
@@ -20,9 +26,12 @@ from __future__ import annotations
 
 import argparse
 import ast
+import datetime as dt
+import hashlib
 import json
 import os
 import re
+import subprocess
 import sys
 import threading
 import time
@@ -33,6 +42,8 @@ ROOT = os.path.dirname(os.path.dirname(HERE))
 INFER_PATH = os.path.join(ROOT, "pipeline", "infer.py")
 STRONG_PATH = os.path.join(HERE, "FRONTIER_STRONG.md")
 PRICES_PATH = os.path.join(ROOT, "hackathon", "report", "PRICES.md")
+RUNS_DIR = os.path.join(ROOT, "hackathon", "runs")  # manifests
+OUT_DIR = os.path.join(ROOT, "evals", "runs")
 
 TEMPERATURE, TOP_P, MAX_TOKENS = 0.7, 0.9, 400
 MAX_ATTEMPTS, TIMEOUT_S, BACKOFF_S, BACKOFF_CAP_S = 5, 120, 1.0, 60.0
@@ -342,10 +353,91 @@ def summary(rows: list[dict], label: str, failures: list[dict] = ()) -> str:
     return line
 
 
+# --- manifest ---
+
+def slug(text: str) -> str:
+    return text.replace(":", "_").replace("/", "_")
+
+
+def is_heldout(eval_path: str) -> bool:
+    return "heldout" in os.path.basename(eval_path)
+
+
+def default_out(arm: str, model: str, eval_path: str) -> str:
+    return os.path.join(OUT_DIR, f"hack_{arm}_{slug(model)}{'_heldout' if is_heldout(eval_path) else ''}.jsonl")
+
+
+def sha256_text(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def sha256_file(path: str) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 16), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def git_commit() -> str:
+    try:
+        return subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True,
+                              timeout=10, check=True).stdout.strip() or "unknown"
+    except Exception:
+        return "unknown"
+
+
+def _pct(sorted_vals: list[float], q: float) -> float | None:
+    """Nearest-rank percentile."""
+    if not sorted_vals:
+        return None
+    return sorted_vals[min(len(sorted_vals) - 1, max(0, -(-len(sorted_vals) * q // 100) - 1))]
+
+
+def _rel(path: str) -> str:
+    try:
+        return os.path.relpath(path, ROOT).replace(os.sep, "/")
+    except ValueError:  # other drive on Windows
+        return path
+
+
+def utc_now() -> str:
+    return dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def build_manifest(rows: list[dict], *, provider: str, model: str, arm: str, eval_path: str, out_path: str,
+                   price_in: float, price_out: float, started: str, finished: str) -> dict:
+    label = f"frontier-{arm}:{model}"
+    lat = sorted(r["latency_ms"] for r in rows)
+    return {
+        "system": label, "provider": provider, "model": model, "arm": arm,
+        "prompt_sha256": sha256_text(system_prompt(arm)),
+        "decoding": {"temperature": TEMPERATURE, "top_p": TOP_P, "max_tokens": MAX_TOKENS,
+                     "top_p_dropped": sum(1 for r in rows if r.get("top_p_dropped"))},
+        "price_in": price_in, "price_out": price_out, "price_unit": "USD per 1M tokens",
+        "git_commit": git_commit(),
+        "eval_path": _rel(eval_path), "eval_sha256": sha256_file(eval_path), "out_path": _rel(out_path),
+        "rows": len(rows), "started_utc": started, "finished_utc": finished,
+        "cost_usd": round(sum(r["cost_usd"] for r in rows), 8),
+        "latency_ms_p50": _pct(lat, 50), "latency_ms_p95": _pct(lat, 95),
+    }
+
+
+def write_manifest(m: dict, eval_path: str, runs_dir: str | None = None) -> str:
+    """hackathon/runs/<slug(label)>[_heldout].json; the suffix keeps the two eval sets from overwriting."""
+    runs_dir = runs_dir or RUNS_DIR
+    os.makedirs(runs_dir, exist_ok=True)
+    path = os.path.join(runs_dir, slug(m["system"]) + ("_heldout" if is_heldout(eval_path) else "") + ".json")
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(m, f, indent=2)
+        f.write("\n")
+    return path
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("eval")
-    ap.add_argument("out")
+    ap.add_argument("out", nargs="?", help="default: evals/runs/hack_<arm>_<model>[_heldout].jsonl")
     ap.add_argument("--provider", required=True, choices=["anthropic", "openai"])
     ap.add_argument("--model", required=True)
     ap.add_argument("--arm", required=True, choices=["live", "strong"])
@@ -361,8 +453,9 @@ def main(argv: list[str] | None = None) -> int:
     except PriceError as e:
         print(f"ERROR: {e}", file=sys.stderr)
         return 2
+    a.out = a.out or default_out(a.arm, a.model, a.eval)
     eval_rows = read_jsonl(a.eval)
-    label = f"frontier-{a.arm}:{a.model}"
+    label, started = f"frontier-{a.arm}:{a.model}", utc_now()
     try:
         rows, failures = run(eval_rows, a.out, make_client(a.provider), a.provider, a.model, a.arm,
                              p_in, p_out, a.concurrency, a.limit)
@@ -371,6 +464,9 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     selected = eval_rows[:a.limit] if a.limit is not None else eval_rows
     problems = check_out(rows, {r["id"] for r in selected}, {r["id"] for r in eval_rows})
+    m = build_manifest(rows, provider=a.provider, model=a.model, arm=a.arm, eval_path=a.eval, out_path=a.out,
+                       price_in=p_in, price_out=p_out, started=started, finished=utc_now())
+    print(f"manifest: {write_manifest(m, a.eval)}")
     print(summary(rows, label, failures))
     if problems:
         print("ERROR: " + "; ".join(problems) + (f" (see {a.out}.failures.jsonl)" if failures else ""),

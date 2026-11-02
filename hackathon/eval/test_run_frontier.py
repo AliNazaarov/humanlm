@@ -66,10 +66,11 @@ class Base(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.out = os.path.join(self.tmp.name, "out.jsonl")
-        self._sleep, rf.SLEEP = rf.SLEEP, lambda s: None
+        self._saved = rf.SLEEP, rf.RUNS_DIR, rf.git_commit
+        rf.SLEEP, rf.RUNS_DIR, rf.git_commit = (lambda s: None), os.path.join(self.tmp.name, "runs"), lambda: "abc123"
 
     def tearDown(self):
-        rf.SLEEP = self._sleep
+        rf.SLEEP, rf.RUNS_DIR, rf.git_commit = self._saved
         self.tmp.cleanup()
 
     def write(self, path, text):
@@ -291,6 +292,78 @@ class TestRun(Base):
         finally:
             rf.make_client = orig
         self.assertEqual(code, 1)
+
+
+class TestManifest(Base):
+    FIELDS = {"system", "provider", "model", "arm", "prompt_sha256", "decoding", "price_in", "price_out",
+              "git_commit", "eval_path", "eval_sha256", "rows", "started_utc", "finished_utc", "cost_usd",
+              "latency_ms_p50", "latency_ms_p95"}
+
+    def eval_file(self, name="eval_all.jsonl"):
+        return self.write(os.path.join(self.tmp.name, name), "".join(json.dumps(e) + "\n" for e in EVAL))
+
+    def manifest(self, arm="strong", ev=None):
+        ev = ev or self.eval_file()
+        rows, _ = self.go(FakeAnthropic(), model="claude-opus-5-5", arm=arm)
+        return rf.build_manifest(rows, provider="anthropic", model="claude-opus-5-5", arm=arm, eval_path=ev,
+                                 out_path=self.out, price_in=3.0, price_out=15.0, started="s", finished="f")
+
+    def test_fields_and_values(self):
+        m = self.manifest()
+        self.assertTrue(self.FIELDS <= set(m), self.FIELDS - set(m))
+        self.assertEqual(m["system"], "frontier-strong:claude-opus-5-5")
+        self.assertEqual((m["rows"], m["git_commit"]), (5, "abc123"))
+        self.assertEqual(m["decoding"], {"temperature": 0.7, "top_p": 0.9, "max_tokens": 400, "top_p_dropped": 0})
+        self.assertAlmostEqual(m["cost_usd"], 5 * (100 * 3 + 50 * 15) / 1e6)
+        self.assertIsNotNone(m["latency_ms_p95"])
+
+    def test_hashes_stable_and_arm_specific(self):
+        ev = self.eval_file()
+        a, b = self.manifest(ev=ev), self.manifest(ev=ev)
+        self.assertEqual((a["prompt_sha256"], a["eval_sha256"]), (b["prompt_sha256"], b["eval_sha256"]))
+        self.assertEqual(a["prompt_sha256"], rf.sha256_text(rf.load_system() + "\n\n" + open(rf.STRONG_PATH, encoding="utf-8").read().strip()))
+        os.remove(self.out)
+        self.assertNotEqual(self.manifest(arm="live", ev=ev)["prompt_sha256"], a["prompt_sha256"])
+        self.assertEqual(len(a["eval_sha256"]), 64)
+
+    def test_write_paths_and_slug(self):
+        ev = self.eval_file()
+        m = self.manifest(ev=ev)
+        p = rf.write_manifest(m, ev)
+        self.assertEqual(os.path.basename(p), "frontier-strong_claude-opus-5-5.json")
+        hp = rf.write_manifest(m, os.path.join(self.tmp.name, "heldout_pairs.jsonl"))
+        self.assertTrue(hp.endswith("_heldout.json"))
+        with open(p, encoding="utf-8") as f:
+            self.assertEqual(json.load(f)["eval_sha256"], m["eval_sha256"])
+        self.assertEqual(rf.slug("a:b/c"), "a_b_c")
+
+    def test_default_out(self):
+        self.assertTrue(rf.default_out("strong", "claude-opus-5-5", "evals/eval_all.jsonl")
+                        .endswith(os.path.join("evals", "runs", "hack_strong_claude-opus-5-5.jsonl")))
+        self.assertTrue(rf.default_out("live", "x/y", "evals/heldout_pairs.jsonl").endswith("hack_live_x_y_heldout.jsonl"))
+
+    def test_main_writes_manifest_on_resume(self):
+        ev = self.eval_file()
+        orig = rf.make_client
+        rf.make_client = lambda p: FakeAnthropic()
+        args = [ev, self.out, "--provider", "anthropic", "--model", "m", "--arm", "live",
+                "--price-in", "1", "--price-out", "2"]
+        try:
+            self.assertEqual(rf.main(args + ["--limit", "2"]), 0)
+            mp = os.path.join(rf.RUNS_DIR, "frontier-live_m.json")
+            with open(mp, encoding="utf-8") as f:
+                self.assertEqual(json.load(f)["rows"], 2)
+            self.assertEqual(rf.main(args), 0)
+            with open(mp, encoding="utf-8") as f:
+                self.assertEqual(json.load(f)["rows"], 5)
+        finally:
+            rf.make_client = orig
+
+    def test_percentile(self):
+        self.assertEqual(rf._pct(list(range(1, 101)), 50), 50)
+        self.assertEqual(rf._pct(list(range(1, 101)), 95), 95)
+        self.assertEqual(rf._pct([7], 95), 7)
+        self.assertIsNone(rf._pct([], 50))
 
 
 if __name__ == "__main__":
