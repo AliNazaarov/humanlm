@@ -1,5 +1,7 @@
 # FeatherLM
 
+Repo: https://github.com/AliNazaarov/humanlm (public, full history; the submission repo).
+
 ## What it does
 FeatherLM is a copy editor for AI-drafted text: it rewrites AI-sounding marketing copy (landing pages, launch emails, LinkedIn posts) so it reads like a skilled human wrote it, without changing any fact. It runs an open model on Fireworks inside a verify-and-revise harness; the evaluation uses marketing copy, and the fine-tuning data is licence-clean general human prose (Common Pile).
 
@@ -125,6 +127,7 @@ Set `RUN_LIVE = True` in its first code cell to rewrite the same draft live on F
 
 ## Setup
 ```bash
+git clone https://github.com/AliNazaarov/humanlm.git && cd humanlm   # on Windows, clone to a short path (one judge file name is long)
 pip install -r requirements.txt
 cp .env.example .env   # add your keys
 ```
