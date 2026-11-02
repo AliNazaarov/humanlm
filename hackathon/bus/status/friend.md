@@ -53,3 +53,4 @@
 2026-11-02T21:52:46Z 13:53 PT: O4m deployment still CREATING; O7 blocked by Fireworks sampler (reference logprobs). Judging O3m now, O3n next.
 2026-11-02T22:04:15Z 14:04 PT: O7 training starting (DPO retry -> ORPO fallback), 300 pairs from SFT B. No deployment without Ruslan's OK.
 2026-11-02T22:15:33Z README pass-2 done (bb7119c, f390c67); O7 not trained (DPO stalled on serverless sampler, ORPO needs dedicated GPUs, awaiting Ruslan); votes refreshed 81cf771; next: 15:00 make eval, 15:15 vote freeze
+2026-11-02T22:33:00Z pass-3 README done; R3/E1/E2 scored with ensemble costs (a986244); SFT C training (81 steps); waiting on Ali's E1 judges + R3 price
