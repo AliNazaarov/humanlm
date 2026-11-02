@@ -36,3 +36,4 @@
 2026-11-02T20:39:39Z O3k scored; judging O3k vs Claude with Kimi + Qwen now (~5 min). O3l next when it lands.
 2026-11-02T20:41:59Z O3k judged: worst prose (Kimi style 11/68). Starting O7 = DPO toward real human references on top of SFT model B (Ruslan's key), target 14:25.
 2026-11-02T20:46:01Z VERIFY pass 1 friend FAILs fixed and pushed. SFT B can't finish before freeze (step ~85/183); O7 DPO dropped.
+2026-11-02T20:51:03Z 3 licence-unclear held-out ids excluded from scoring (247 items). Spot-the-human test running (Kimi + Qwen). VERIFY fixes pushed.
