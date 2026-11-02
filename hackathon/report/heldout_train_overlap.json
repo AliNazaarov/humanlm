@@ -1,0 +1,184 @@
+{
+ "rule": "8+ consecutive \\w+ tokens shared with hackathon/data/train.jsonl or valid.jsonl",
+ "n_heldout_overlapping": 22,
+ "ids": [
+  "ho-003",
+  "ho-006",
+  "ho-012",
+  "ho-016",
+  "ho-037",
+  "ho-042",
+  "ho-044",
+  "ho-045",
+  "ho-046",
+  "ho-069",
+  "ho-071",
+  "ho-073",
+  "ho-077",
+  "ho-079",
+  "ho-081",
+  "ho-086",
+  "ho-088",
+  "ho-093",
+  "ho-098",
+  "ho-107",
+  "ho-116",
+  "ho-118"
+ ],
+ "rows": [
+  {
+   "id": "ho-003",
+   "human_shared": 0,
+   "human_total": 112,
+   "draft_shared": 13,
+   "draft_total": 178
+  },
+  {
+   "id": "ho-006",
+   "human_shared": 0,
+   "human_total": 129,
+   "draft_shared": 3,
+   "draft_total": 153
+  },
+  {
+   "id": "ho-012",
+   "human_shared": 0,
+   "human_total": 76,
+   "draft_shared": 3,
+   "draft_total": 90
+  },
+  {
+   "id": "ho-016",
+   "human_shared": 0,
+   "human_total": 114,
+   "draft_shared": 5,
+   "draft_total": 162
+  },
+  {
+   "id": "ho-037",
+   "human_shared": 84,
+   "human_total": 96,
+   "draft_shared": 13,
+   "draft_total": 111
+  },
+  {
+   "id": "ho-042",
+   "human_shared": 1,
+   "human_total": 176,
+   "draft_shared": 1,
+   "draft_total": 144
+  },
+  {
+   "id": "ho-044",
+   "human_shared": 2,
+   "human_total": 81,
+   "draft_shared": 0,
+   "draft_total": 105
+  },
+  {
+   "id": "ho-045",
+   "human_shared": 6,
+   "human_total": 114,
+   "draft_shared": 0,
+   "draft_total": 99
+  },
+  {
+   "id": "ho-046",
+   "human_shared": 0,
+   "human_total": 92,
+   "draft_shared": 8,
+   "draft_total": 96
+  },
+  {
+   "id": "ho-069",
+   "human_shared": 1,
+   "human_total": 78,
+   "draft_shared": 1,
+   "draft_total": 76
+  },
+  {
+   "id": "ho-071",
+   "human_shared": 0,
+   "human_total": 83,
+   "draft_shared": 2,
+   "draft_total": 132
+  },
+  {
+   "id": "ho-073",
+   "human_shared": 6,
+   "human_total": 83,
+   "draft_shared": 0,
+   "draft_total": 81
+  },
+  {
+   "id": "ho-077",
+   "human_shared": 0,
+   "human_total": 96,
+   "draft_shared": 9,
+   "draft_total": 155
+  },
+  {
+   "id": "ho-079",
+   "human_shared": 0,
+   "human_total": 74,
+   "draft_shared": 3,
+   "draft_total": 92
+  },
+  {
+   "id": "ho-081",
+   "human_shared": 1,
+   "human_total": 79,
+   "draft_shared": 0,
+   "draft_total": 83
+  },
+  {
+   "id": "ho-086",
+   "human_shared": 0,
+   "human_total": 213,
+   "draft_shared": 11,
+   "draft_total": 279
+  },
+  {
+   "id": "ho-088",
+   "human_shared": 47,
+   "human_total": 97,
+   "draft_shared": 47,
+   "draft_total": 95
+  },
+  {
+   "id": "ho-093",
+   "human_shared": 44,
+   "human_total": 97,
+   "draft_shared": 44,
+   "draft_total": 97
+  },
+  {
+   "id": "ho-098",
+   "human_shared": 27,
+   "human_total": 87,
+   "draft_shared": 10,
+   "draft_total": 122
+  },
+  {
+   "id": "ho-107",
+   "human_shared": 0,
+   "human_total": 102,
+   "draft_shared": 5,
+   "draft_total": 132
+  },
+  {
+   "id": "ho-116",
+   "human_shared": 0,
+   "human_total": 174,
+   "draft_shared": 1,
+   "draft_total": 207
+  },
+  {
+   "id": "ho-118",
+   "human_shared": 0,
+   "human_total": 128,
+   "draft_shared": 5,
+   "draft_total": 189
+  }
+ ]
+}

@@ -33,6 +33,7 @@ Pairwise judge (both orders; A wins / B wins / ties, two-sided sign test):
 - `hack_O3_glm_harness.jsonl` vs `hack_F2_gpt61_terra.jsonl` (kimi-k3): overall 35/46/49 (p=0.266), style 32/38/60 (p=0.550)
 - `hack_O3_glm_harness.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 34/57/39 (p=0.021), style 25/56/49 (p=0.001)
 - `hack_O3b_glm_prompt_harness.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 35/60/35 (p=0.013), style 26/60/44 (p=0.000)
+- `hack_O3c_glm_prompt_harness_style.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` (kimi-k3): overall 35/52/43 (p=0.086), style 33/46/51 (p=0.177)
 <!-- HEADLINE:END -->
 
 Full tables (every split, every gate, secondary metrics, all judge columns): [hackathon/report/RESULTS.md](hackathon/report/RESULTS.md). Chart: [hackathon/report/leaderboard.png](hackathon/report/leaderboard.png).
@@ -75,6 +76,8 @@ Re-running a system calls its API: `hackathon/eval/run_frontier.py` for the fron
 - **Many comparisons.** We report 9 systems on 5 splits and 6 judge pairs without a family-wise correction. The headline differences are p < 0.001 and survive one; the judge results near p = 0.02 should be read as suggestive.
 - **Latency is not measured the same way for every row.** Harness rows include every revise loop and any retry wait; the frontier runner times only the successful call.
 - **The Gemini row is not a frontier baseline.** Gemini 4 Argon was not tested (no paid quota on the day). The Gemini row is Gemini Flash-Lite, a small free-tier model, and is labelled as such. The reference baseline is Claude Opus 5.5 with the strong prompt.
+- **Held-out near-duplicates of the training data.** The split keeps held-out and training pairs apart by id and exact text, not by overlap. 22 of the 120 held-out items share an 8-word run with the SFT training data, mostly template text, licence footers and reused news sentences (`hackathon/report/heldout_train_overlap.json`, provenance audit in `hackathon/report/HELDOUT_PROVENANCE.md`). Prompted and harness rows are unaffected; for fine-tuned rows, read the "Held-out, excluding ids that overlap the SFT train data" table.
+- **Licence detail for one source.** 73 held-out items come from Common Pile's CC-licensed web subset, where each document carries its own CC licence; our pipeline stored "see source" rather than the per-document licence, so those items need their licence recovered from Common Pile metadata before redistribution.
 - **The judge is an LLM.** It has its own biases, including length and position. We run both orders and report the flip rate, but we have not calibrated it against human labels.
 - **The fact checks are strict but crude.** Numbers and capitalised names are matched as strings, so a correct paraphrase of a name can count as a loss, and a fact that changes without any number or name changing is missed.
 - **The frontier APIs can't match every decoding setting.** The open-model runs also use repetition_penalty 1.05, which the frontier APIs don't offer, and a model that rejects top_p runs at temperature only. Both are recorded per row.

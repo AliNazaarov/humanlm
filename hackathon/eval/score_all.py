@@ -254,6 +254,12 @@ def judges(report_dir: str) -> list[dict]:
     return out
 
 
+def heldout_overlap() -> set[str]:
+    """Held-out ids sharing 8+ words with the SFT train data (hackathon/eval/heldout_overlap.py); empty if not built."""
+    p = os.path.join(ROOT, "hackathon/report/heldout_train_overlap.json")
+    return set(json.load(open(p, encoding="utf-8"))["ids"]) if os.path.exists(p) else set()
+
+
 def build(paths: list[str], items: dict, band: dict, reference: str | None, report_dir: str) -> dict:
     systems = [score_system(s, items, band) for s in load_systems(paths, items).values()]
     if not systems:
@@ -267,7 +273,8 @@ def build(paths: list[str], items: dict, band: dict, reference: str | None, repo
                         **{k: s[k] for k in ("cost_per_1k_usd", "latency_ms") if k in s}} for s in systems],
            "blocks": {"all": block(systems, sorted(i for i in items if split_of(i) != "real"), ref),
                       "main": block(systems, by_split["dev"] + by_split["trick"], ref),
-                      **{sp: block(systems, ids, ref) for sp, ids in by_split.items()}},
+                      **{sp: block(systems, ids, ref) for sp, ids in by_split.items()},
+                      "heldout_clean": block(systems, [i for i in by_split["heldout"] if i not in heldout_overlap()], ref)},
            "judges": judges(report_dir)}
     return res
 
@@ -327,6 +334,7 @@ def render(res: dict) -> str:
     out += leaderboard(res, "all", "Leaderboard, all items")
     for key, title in (("main", "Main eval: dev + trick"), ("dev", "Dev split"), ("trick", "Trick split"),
                        ("heldout", "Held-out pairs (real human references)"),
+                       ("heldout_clean", "Held-out, excluding ids that overlap the SFT train data"),
                        ("real", "Real README copy (GitHub, permissive licences; no reference)")):
         if res["blocks"][key]["systems"]:
             out += leaderboard(res, key, title)

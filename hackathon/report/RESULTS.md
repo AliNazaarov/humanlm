@@ -102,6 +102,23 @@ Gate columns show the share of items that pass each gate. An item a system refus
 
 Gate columns show the share of items that pass each gate. An item a system refused or failed is scored as an empty rewrite (G1 and G3 pass, G2 and G4 fail), so it counts against that system.
 
+## Held-out, excluding ids that overlap the SFT train data (98 items)
+
+| System | Fact-safe human rate | Δ vs reference | G1 invented | G2 lost | G3 tells | G4 gutted | $ / 1k | p50 latency |
+|---|---|---|---|---|---|---|---|---|
+| `O3b_glm_prompt_harness` | 99% [94, 100] | +27 pp [+18, +36], significant (p=0.000) | 99% | 100% | 100% | 100% | $0.55 | 1.6s |
+| `O3c_glm_prompt_harness_style` | 99% [94, 100] | +27 pp [+18, +36], significant (p=0.000) | 99% | 100% | 100% | 100% | $0.81 | 3.3s |
+| `F1H_opus_harness` (2 refused/failed, counted as fails) | 96% [90, 99] | +23 pp [+15, +32], significant (p=0.000) | 98% | 98% | 100% | 98% | $16.44 | 4.9s |
+| `O3_glm_harness` | 96% [90, 99] | +23 pp [+15, +33], significant (p=0.000) | 96% | 100% | 100% | 100% | $0.28 | 2.6s |
+| `O2_glm_prompt` | 77% [67, 85] | +4 pp [-6, +14], n.s. (p=0.428) | 93% | 91% | 88% | 99% | $0.31 | 1.2s |
+| `frontier-strong:claude-opus-5-5` (2 refused/failed, counted as fails) | 72% [63, 81] | reference | 85% | 92% | 92% | 98% | $8.93 | 3.9s |
+| `frontier-live:claude-opus-5-5` (2 refused/failed, counted as fails) | 65% [55, 75] | -7 pp [-15, +0], n.s. (p=0.060) | 78% | 86% | 92% | 98% | $7.21 | 3.7s |
+| `F2_gpt61_terra` | 60% [50, 70] | -12 pp [-23, +0], significant (p=0.045) | 93% | 93% | 69% | 100% | $0.86 | 2.6s |
+| `X0_copy_draft (no rewrite: control)` | 54% [44, 64] | -18 pp [-32, -5], significant (p=0.006) | 100% | 100% | 54% | 100% | n/a | 0.0s |
+| `O1_glm_base` | 35% [25, 45] | -38 pp [-50, -26], significant (p=0.000) | 86% | 88% | 44% | 100% | $0.10 | 1.2s |
+
+Gate columns show the share of items that pass each gate. An item a system refused or failed is scored as an empty rewrite (G1 and G3 pass, G2 and G4 fail), so it counts against that system.
+
 ## Secondary metrics (main split)
 
 | System | Fact hard-fails | In human range | Stock /100w | Length ratio | Must-keep (crude) |
@@ -130,3 +147,4 @@ A wins / B wins / ties, with a two-sided sign test on wins vs losses (ties dropp
 | `hack_O3_glm_harness.jsonl` vs `hack_F2_gpt61_terra.jsonl` | `accounts/fireworks/models/kimi-k3` | 130 | 35/46/49 (p=0.266) | 7/9/114 (p=0.804) | 32/38/60 (p=0.550) | n/a | 38% | 54% |
 | `hack_O3_glm_harness.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` | `accounts/fireworks/models/kimi-k3` | 130 | 34/57/39 (p=0.021) | 13/8/109 (p=0.383) | 25/56/49 (p=0.001) | n/a | 29% | 51% |
 | `hack_O3b_glm_prompt_harness.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` | `accounts/fireworks/models/kimi-k3` | 130 | 35/60/35 (p=0.013) | 15/5/110 (p=0.041) | 26/60/44 (p=0.000) | n/a | 26% | 50% |
+| `hack_O3c_glm_prompt_harness_style.jsonl` vs `hack_strong_claude-opus-5-5.jsonl` | `accounts/fireworks/models/kimi-k3` | 130 | 35/52/43 (p=0.086) | 9/15/106 (p=0.307) | 33/46/51 (p=0.177) | n/a | 33% | 56% |

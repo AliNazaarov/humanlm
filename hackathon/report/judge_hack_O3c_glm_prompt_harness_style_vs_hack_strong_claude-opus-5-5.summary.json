@@ -1,0 +1,65 @@
+{
+  "a": "hack_O3c_glm_prompt_harness_style.jsonl",
+  "b": "hack_strong_claude-opus-5-5.jsonl",
+  "model": "accounts/fireworks/models/kimi-k3",
+  "judge_family": "kimi",
+  "mock": false,
+  "heldout": false,
+  "provider": "fireworks",
+  "reasoning_effort": "none",
+  "max_tokens": 4096,
+  "eval": "evals/eval_all.jsonl",
+  "cfg": "e7dec4baee9f9573",
+  "win": 35,
+  "loss": 52,
+  "tie": 43,
+  "n": 130,
+  "flip_rate": 0.3308,
+  "pos1_rate": 0.5608,
+  "facts": {
+    "win": 9,
+    "loss": 15,
+    "tie": 106,
+    "n": 130,
+    "flip_rate": 0.2308
+  },
+  "style": {
+    "win": 33,
+    "loss": 46,
+    "tie": 51,
+    "n": 130,
+    "flip_rate": 0.3692
+  },
+  "n_expected": 130,
+  "missing_in_a": {
+    "count": 0,
+    "first": []
+  },
+  "missing_in_b": {
+    "count": 0,
+    "first": []
+  },
+  "not_in_eval": {
+    "count": 0,
+    "first": []
+  },
+  "dup_ids": {
+    "count": 0,
+    "first": []
+  },
+  "n_complete": 130,
+  "incomplete_ids": {
+    "count": 0,
+    "first": []
+  },
+  "empty_facts": 0,
+  "unparsed": 0,
+  "finish_length": 0,
+  "errors": 0,
+  "skipped_resume": 0,
+  "limit": null,
+  "seed": 0,
+  "prompt_tokens_total": 193532,
+  "completion_tokens_total": 22120,
+  "reasoning_tokens_total": 0
+}
