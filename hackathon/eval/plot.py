@@ -199,6 +199,8 @@ DISPLAY = {
     "O2_glm_prompt": "GLM-5.3 + better prompt",
     "O2h_glm_humanizer": "GLM-5.3 + humanizer",
     "O4m_glm_sft_modern": "GLM-5.3 fine-tuned (SFT B)",
+    "O4c_glm_sft_clean": "GLM-5.3 fine-tuned (SFT C, gate-clean)",
+    "R3t_deepseek_ali_taste": "DeepSeek + harness, Ali's taste",
     "E1_ensemble": "FeatherLM ensemble (per-item pick)",
     "E2_ensemble_glm_deepseek": "FeatherLM ensemble + DeepSeek",
     "R3_deepseek_harness": "DeepSeek V4.1 Flash + harness",
