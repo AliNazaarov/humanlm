@@ -20,13 +20,13 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 from matplotlib.ticker import FuncFormatter  # noqa: E402
-from matplotlib.transforms import blended_transform_factory, offset_copy  # noqa: E402
+from matplotlib.transforms import Bbox, blended_transform_factory, offset_copy  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, "../.."))
 GATES = ("G1", "G2", "G3", "G4")
 GATE_NAMES = {"G1": "G1 nothing\ninvented", "G2": "G2 nothing\nlost", "G3": "G3 no AI\ntells", "G4": "G4 not\ngutted"}
-BLOCKS = ("all", "main", "heldout", "dev", "trick")
+BLOCKS = ("all", "main", "heldout", "heldout_clean", "dev", "trick", "real")
 # colorblind-safe pair from the dataviz reference palette (blue / orange); text stays in ink, never series color
 SYS, REF = "#2a78d6", "#eb6834"
 INK, INK2, GRID = "#0b0b0b", "#52514e", "#e4e3df"
@@ -158,6 +158,28 @@ def _leaderboard(ax, rows: list[tuple], name: str, n_items, notes: dict[str, str
     ax.set_axisbelow(True)
 
 
+# Label positions tried in order (offset in points, alignment); far ones get a leader line.
+_SPOTS = [(7, 4, "left"), (-8, 4, "right"), (7, -24, "left"), (-8, -24, "right"), (12, 22, "left"),
+          (-12, 22, "right"), (16, -46, "left"), (-16, -46, "right"), (40, 0, "left"), (-40, 0, "right")]
+
+
+def _place_labels(ax, points: list[tuple]) -> None:
+    """Greedy: highest rate first, each label at the first spot whose box hits no earlier label and no point."""
+    r = ax.figure.canvas.get_renderer()
+    pts = [Bbox.from_bounds(x - 7, y - 7, 14, 14) for x, y in ax.transData.transform([(p[1], p[2]) for p in points])]
+    boxes = []
+    for lab, cost, rate, p50, is_ref in sorted(points, key=lambda p: (-p[2], p[1])):
+        txt = lab + (f"\n{p50:.1f} s p50" if p50 is not None else "")
+        for i, (dx, dy, ha) in enumerate(_SPOTS):
+            a = ax.annotate(txt, (cost, rate), xytext=(dx, dy), textcoords="offset points", ha=ha, fontsize=8.5,
+                            color=INK, arrowprops=dict(arrowstyle="-", color=INK2, lw=0.6) if i >= 4 else None)
+            bb = a.get_window_extent(r).expanded(1.03, 1.08)
+            if i == len(_SPOTS) - 1 or not any(bb.overlaps(b) for b in boxes + pts):
+                boxes.append(bb)
+                break
+            a.remove()
+
+
 def _pareto(ax, points: list[tuple], no_cost: list[str], name: str) -> None:
     ax.set_title(f"Pass rate vs cost (block '{name}')", loc="left", fontsize=12, color=INK)
     ax.set_ylabel("Fact-safe human rate (%)")
@@ -167,18 +189,14 @@ def _pareto(ax, points: list[tuple], no_cost: list[str], name: str) -> None:
         fp = sorted((p for p in points if p[0] in front), key=lambda p: p[1])
         ax.step([p[1] for p in fp], [p[2] for p in fp], where="post", color=INK2, linewidth=1, linestyle="--",
                 zorder=1, label="cost/rate frontier")
-        placed = []  # (log cost, rate) of labels already drawn; a close neighbour puts this label left of its point
-        for lab, cost, rate, p50, is_ref in sorted(points, key=lambda p: (-p[2], p[1])):
-            ax.scatter(cost, rate, s=90, color=REF if is_ref else SYS, marker="D" if is_ref else "o",
-                       edgecolor="white", linewidth=2, zorder=3)
-            txt = lab + (f"\n{p50:.1f} s p50" if p50 is not None else "")
-            near = any(abs(math.log10(cost) - c) < 0.5 and abs(rate - r) < 8 for c, r in placed)
-            ax.annotate(txt, (cost, rate), xytext=(-8, 4) if near else (7, 4), textcoords="offset points",
-                        ha="right" if near else "left", fontsize=8.5, color=INK)
-            placed.append((math.log10(cost), rate))
         ax.set_xscale("log")
         costs = [p[1] for p in points]
         ax.set_xlim(min(costs) / 2, max(costs) * 4)
+        ax.set_ylim(0, 112)  # limits first: label placement below measures in display space
+        for lab, cost, rate, p50, is_ref in points:
+            ax.scatter(cost, rate, s=90, color=REF if is_ref else SYS, marker="D" if is_ref else "o",
+                       edgecolor="white", linewidth=2, zorder=3)
+        _place_labels(ax, points)
         ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"${v:g}"))
         ax.xaxis.set_minor_formatter(FuncFormatter(lambda v, _: f"${v:g}" if str(f"{v:g}")[0] in "25" else ""))
         ax.legend(loc="lower right", fontsize=8, frameon=False)

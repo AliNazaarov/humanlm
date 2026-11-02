@@ -44,27 +44,45 @@ class TestBuildPairs(unittest.TestCase):
 
 
 class TestExportVotes(unittest.TestCase):
+    PUB = bp.public(AB, flip=False)  # sys-k -> X, sys-z -> Y
+    SETS = {VER: ev.pair_set(AB, PUB)}
     DUMP = [{"id": "u_1", "data": {"ballots": {
         "b1": {"version": VER, "picks": {"1": {"pick": "a", "first": "b", "reason": "warmer"}, "2": {"pick": "tie", "first": "a"}}},
         "b2": {"version": VER, "picks": {"2": {"pick": "b", "first": "a"}, "9": {"pick": "a"}, "1": {"pick": ""}}},
-        "b3": {"version": "old", "picks": {"1": {"pick": "a"}}}}}}]
+        "b3": {"version": "0ld0ld0ld0ld0ld0", "picks": {"1": {"pick": "a"}}}}}}]
 
-    def test_rows_map_votes_to_systems(self):
-        stale = []
-        rs = ev.rows(self.DUMP, AB, stale)
-        self.assertEqual(len(rs), 3)  # unknown pid 9, blank pick and the stale ballot are skipped
-        self.assertEqual(stale, ["b3"])
+    def test_store_maps_votes_to_systems(self):
+        dropped = []
+        rs = ev.from_store(self.DUMP, self.SETS, dropped)
+        self.assertEqual(len(rs), 3)  # unknown pid 9, blank pick and the other-version ballot are skipped
+        self.assertEqual([d[1] for d in dropped], ["b3"])
         r = rs[0]
-        self.assertEqual((r["ballot"], r["pid"], r["vote"], r["a_system"], r["first_shown"]), ("b1", 1, "A", "sys-z", "b"))
+        self.assertEqual((r["source"], r["ballot"], r["pid"], r["vote"], r["winner"], r["first_shown"]),
+                         ("page", "b1", 1, "A", "sys-z", "b"))
         self.assertEqual([r["vote"] for r in rs], ["A", "tie", "B"])
+        self.assertIsNone(rs[1]["winner"])
 
-    def test_accepts_documents_wrapper_and_writes_file(self):
-        with tempfile.TemporaryDirectory() as d:
-            dump, ab, out = (os.path.join(d, n) for n in ("dump.json", "ab.json", "out.jsonl"))
-            with open(dump, "w") as f: json.dump({"documents": self.DUMP}, f)
-            with open(ab, "w") as f: json.dump(AB, f)
-            self.assertEqual(ev.main([dump, ab, out]), 0)
-            with open(out) as f: self.assertEqual(len(f.read().splitlines()), 3)
+    def test_store_accepts_documents_wrapper(self):
+        self.assertEqual(len(ev.from_store({"documents": self.DUMP}, self.SETS, [])), 3)
+
+    def test_codes(self):
+        text = f"hi! my code FLM1:{VER[:8]}:abc123:bt and again FLM1:{VER[:8]}:abc123:bt FLM1:deadbeef:zz:ab"
+        dropped = []
+        rs = ev.from_codes(text, self.SETS, dropped)
+        self.assertEqual([(r["pid"], r["vote"], r["winner"]) for r in rs], [(1, "B", "sys-k"), (2, "tie", None)])
+        self.assertEqual(len(dropped), 1)  # unknown version; the duplicate paste is ignored, not dropped
+
+    def test_telegram_groups_map_through_pairs(self):
+        votes = {"votes": [{"pid": 1, "choice": "X", "version": VER, "voter_hash": "h1"},   # X = sys-k = pair 1's b
+                           {"pid": 2, "choice": "X", "version": VER, "voter_hash": "h1"},   # X = sys-k = pair 2's a
+                           {"pid": 2, "choice": "Y", "version": VER, "voter_hash": "h1"},   # duplicate: first kept
+                           {"pid": 1, "choice": "both_bad", "version": VER, "voter_hash": "h2"},
+                           {"pid": 1, "choice": "X", "version": "nope", "voter_hash": "h3"}]}
+        dropped = []
+        rs = ev.from_telegram(votes, self.SETS, dropped)
+        self.assertEqual([(r["ballot"], r["pid"], r["vote"], r["winner"]) for r in rs],
+                         [("tg:h1", 1, "B", "sys-k"), ("tg:h1", 2, "A", "sys-k"), ("tg:h2", 1, "both_bad", None)])
+        self.assertEqual(len(dropped), 1)
 
 
 if __name__ == "__main__":

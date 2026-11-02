@@ -112,6 +112,9 @@ details.draft .text { margin-top: 0.6rem; font-size: 0.9375rem; }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-family: var(--f-mono); font-size: var(--step--1); font-variant-numeric: tabular-nums; }
 .legend b { font-family: var(--f-display); }
 .small { font-size: var(--step--1); color: var(--ink-soft); }
+.coderow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.coderow code { font-family: var(--f-mono); font-size: var(--step-0); background: var(--paper); border: 1px dashed var(--rule);
+  border-radius: 6px; padding: 0.55rem 0.7rem; overflow-wrap: anywhere; min-width: 0; flex: 1 1 260px; user-select: all; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
 </style>
 
@@ -169,6 +172,12 @@ details.draft .text { margin-top: 0.6rem; font-size: 0.9375rem; }
       <div class="legend" id="legend"></div>
       <p class="small" id="tallyNote">System names stay hidden until the test ends.</p>
     </div>
+    <div class="tally" id="codeBox" hidden>
+      <span class="label">Your vote code</span>
+      <p class="small">Your picks didn't reach the shared tally from this view. Copy this code and send it to the organiser, for example in the Telegram chat. It holds your 20 picks and nothing else.</p>
+      <div class="coderow"><code id="voteCode"></code><button class="btn ghost" id="copyCode" type="button">Copy code</button></div>
+      <p class="small" id="copyNote" aria-live="polite"></p>
+    </div>
     <div class="cta-row">
       <button class="btn" id="nextPerson" type="button">Hand to the next person</button>
       <button class="btn ghost" id="review" type="button">Change my picks</button>
@@ -215,6 +224,18 @@ details.draft .text { margin-top: 0.6rem; font-size: 0.9375rem; }
     S.doc.ballots[S.ballot] = { started: new Date().toISOString(), version: S.version, picks: {} };
     S.order = orderFor(S.ballot); S.i = 0;
     store.set({ ...store.get(), ballot: S.ballot, local: S.doc });
+  }
+
+  // Readers who can't write to the store (outside the organisation, signed out) send this code instead.
+  // FLM1:<pairs version 8>:<ballot tail 6>:<one letter per pair in pid order: a, b, t (tie), - (no pick)>
+  function voteCode() {
+    const p = picks();
+    const seq = S.pairs.slice().sort((x, y) => x.pid - y.pid).map((q) => ({ a: "a", b: "b", tie: "t" })[p[q.pid]?.pick] || "-").join("");
+    return `FLM1:${(S.version || "").slice(0, 8)}:${(S.ballot || "").slice(-6)}:${seq}`;
+  }
+  function renderCode() {
+    $("codeBox").hidden = S.canSave && !S.unsaved;
+    $("voteCode").textContent = voteCode(); $("copyNote").textContent = "";
   }
 
   function saveNote() {
@@ -294,7 +315,7 @@ details.draft .text { margin-top: 0.6rem; font-size: 0.9375rem; }
 
   function go(d) {
     saveReason();
-    if (d > 0 && S.i === S.order.length - 1) { saveNote(); renderTally(); show("done"); window.scrollTo(0, 0); return; }
+    if (d > 0 && S.i === S.order.length - 1) { saveNote(); renderTally(); renderCode(); show("done"); window.scrollTo(0, 0); return; }
     S.i = Math.max(0, Math.min(S.order.length - 1, S.i + d)); renderPair(); window.scrollTo(0, 0);
   }
 
@@ -331,6 +352,12 @@ details.draft .text { margin-top: 0.6rem; font-size: 0.9375rem; }
   $("why").addEventListener("change", saveReason);
   $("nextPerson").onclick = () => { newBallot(); show("intro"); $("start").textContent = "Start reading"; window.scrollTo(0, 0); };
   $("review").onclick = () => { S.order = orderFor(S.ballot); S.i = 0; show("pairView"); renderPair(); };
+  $("copyCode").onclick = () => {
+    const code = $("voteCode").textContent;
+    const selectIt = () => { const r = document.createRange(); r.selectNodeContents($("voteCode"));
+      const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); $("copyNote").textContent = "Selected. Copy it with your device's copy command."; };
+    try { navigator.clipboard.writeText(code).then(() => { $("copyNote").textContent = "Copied."; }, selectIt); } catch { selectIt(); }
+  };
   $("draftBox").addEventListener("toggle", () => store.set({ ...store.get(), draftOpen: $("draftBox").open }));
   document.addEventListener("keydown", (e) => {
     if ($("pairView").hidden || e.target === $("why") || e.metaKey || e.ctrlKey || e.altKey) return;
@@ -370,9 +397,10 @@ details.draft .text { margin-top: 0.6rem; font-size: 0.9375rem; }
       db.doc("meta/reveal").onSnapshot((d) => { S.reveal = d.exists ? d.data() : null; if (!$("done").hidden) renderTally(); }, () => {});
       $("see").hidden = !(user && (await user.isOwner()));
     } else {
-      status("Not signed in to the vote store: picks stay on this device and won't reach the tally.");
+      status("Your picks stay on this device. At the end you'll get a short code to send to the organiser.");
     }
-    if (saved.ballot && S.doc.ballots[saved.ballot]) {
+    // Resume only a ballot cast on these pairs; one from an older pairs version keeps its picks but isn't reopened.
+    if (saved.ballot && S.doc.ballots[saved.ballot] && S.doc.ballots[saved.ballot].version === S.version) {
       S.ballot = saved.ballot;
       if (!S.doc.ballots[S.ballot].finished) $("start").textContent = "Continue where you left off";
     }
