@@ -26,7 +26,7 @@ Fact-safe human rewrite rate on 247 items (eval 130 + held-out 117), 95% CI; Δ 
 
 Human preference, O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-5 (blind A/B; FeatherLM / Claude / tie):
 
-- page: 0 / 4 / 1 (1 voter(s), 5 votes, sign test p=0.125); Ali (founder; knows the project, so treat as a check, not a gold rater)
+- page: 13 / 23 / 7 (11 voter(s), 43 votes, sign test p=0.132); Ali (founder; knows the project, so treat as a check, not a gold rater)
 - Not counted: Ali reports 5 Minerva classmates gave the same answer (preferred the Claude side) in an informal, unlogged session; not counted as data.
 
 Spot the human (held-out real originals vs each rewrite, both orders; fooled = the rewrite picked as human in both orders; fooled-or-split adds order disagreements):
