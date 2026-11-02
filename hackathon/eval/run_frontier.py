@@ -20,7 +20,7 @@ Rows add, beyond the shared schema: temperature, top_p, max_tokens, top_p_droppe
 retry_wait_ms, price_in, price_out (USD per 1M), and decoding_note when top_p was dropped.
 Disclosure: infer.py also uses repetition_penalty=1.05 and enable_thinking=False on the open models; frontier APIs
 have no repetition penalty, and thinking is simply not requested here. Those settings cannot be replicated exactly.
-Keys come from the environment or the repo .env; they are never printed, and neither are raw error messages.
+Keys come from the environment, ~/.config/humanlm/keys.env ($HUMANLM_KEYS), then the repo .env; they are never printed, and neither are raw error messages.
 """
 from __future__ import annotations
 
@@ -131,6 +131,8 @@ def cost_usd(prompt_tokens: int, completion_tokens: int, price_in: float, price_
 
 def make_client(provider: str):
     from dotenv import load_dotenv
+    # keys.env outside the repo first (CONTRACT with Ali), then repo .env; first value wins
+    load_dotenv(os.environ.get("HUMANLM_KEYS", os.path.expanduser("~/.config/humanlm/keys.env")))
     load_dotenv(os.path.join(ROOT, ".env"))
     if provider == "anthropic":
         import anthropic

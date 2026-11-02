@@ -20,7 +20,7 @@ Run:       preflight(...) -> join report; run(...) -> summary dict (also <out>.s
 CLI:       python judge.py A.jsonl B.jsonl --model ID [--eval PATH] [--out PATH] [--mock] [--heldout]
                   [--concurrency 4] [--limit N] [--seed 0] [--fresh] [--allow-partial]
            Exit 0 when every expected pair is complete, 2 when some are not, 1 on a refused start.
-Live calls use the OpenAI SDK against Fireworks (FIREWORKS_API_KEY from env or .env). Keys are never printed.
+Live calls use the OpenAI SDK against Fireworks (FIREWORKS_API_KEY from env, ~/.config/humanlm/keys.env or .env). Keys are never printed.
 """
 from __future__ import annotations
 
@@ -231,6 +231,8 @@ def mock_judge(heldout: bool = False) -> Judge:
 def _load_env() -> None:
     try:
         from dotenv import load_dotenv
+        # keys.env outside the repo first (CONTRACT with Ali), then repo .env; first value wins
+        load_dotenv(os.environ.get("HUMANLM_KEYS", os.path.expanduser("~/.config/humanlm/keys.env")))
         load_dotenv(os.path.join(ROOT, ".env"))
     except ImportError:
         pass
@@ -240,7 +242,7 @@ def make_live_judge(model: str, client=None) -> Judge:
     if client is None:
         _load_env()
         if not os.environ.get("FIREWORKS_API_KEY"):
-            sys.exit("FIREWORKS_API_KEY is not set (env or .env). Use --mock for an offline run.")
+            sys.exit("FIREWORKS_API_KEY is not set (env, ~/.config/humanlm/keys.env or .env). Use --mock for an offline run.")
         from openai import OpenAI
         client = OpenAI(base_url=FIREWORKS_URL, api_key=os.environ["FIREWORKS_API_KEY"], max_retries=5)
 
