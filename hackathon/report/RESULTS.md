@@ -20,6 +20,7 @@ Reference (F1): `frontier-strong:claude-opus-5-5`. 95% CIs in brackets. Δ is a 
 | `O3j_glm_bestof3_judged` | 98% [95, 99] | +26 pp [+21, +32], significant (p=0.000) | 98% | 100% | 100% | 100% | $2.56 | 11.7s |
 | `O3c_glm_prompt_harness_style` | 97% [94, 99] | +25 pp [+20, +31], significant (p=0.000) | 98% | 100% | 98% | 100% | $0.81 | 3.3s |
 | `O3e_glm_harness_cliche` | 96% [93, 98] | +25 pp [+19, +30], significant (p=0.000) | 98% | 100% | 99% | 100% | $0.81 | 3.0s |
+| `O3f_glm_calm` | 96% [92, 98] | +24 pp [+19, +30], significant (p=0.000) | 97% | 100% | 99% | 100% | $0.93 | 3.5s |
 | `O3d_glm_harness_anticopy` | 95% [92, 97] | +24 pp [+18, +30], significant (p=0.000) | 97% | 99% | 99% | 100% | $0.85 | 2.9s |
 | `O3b_glm_prompt_harness` | 94% [91, 97] | +23 pp [+18, +28], significant (p=0.000) | 97% | 100% | 97% | 100% | $0.55 | 1.6s |
 | `F1H_opus_harness` (2 refused/failed, counted as fails) | 94% [90, 96] | +22 pp [+17, +28], significant (p=0.000) | 97% | 99% | 98% | 99% | $15.83 | 4.8s |
@@ -43,6 +44,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 |---|---|---|---|---|---|---|---|---|
 | `O3j_glm_bestof3_judged` | 98% [95, 100] | +29 pp [+22, +37], significant (p=0.000) | 98% | 100% | 100% | 100% | $2.56 | 11.7s |
 | `O3e_glm_harness_cliche` | 96% [91, 99] | +27 pp [+19, +35], significant (p=0.000) | 98% | 100% | 98% | 100% | $0.81 | 3.0s |
+| `O3f_glm_calm` | 96% [91, 99] | +27 pp [+19, +35], significant (p=0.000) | 98% | 99% | 99% | 100% | $0.93 | 3.5s |
 | `O3c_glm_prompt_harness_style` | 95% [90, 98] | +26 pp [+19, +34], significant (p=0.000) | 98% | 100% | 97% | 100% | $0.81 | 3.3s |
 | `O3d_glm_harness_anticopy` | 94% [88, 97] | +25 pp [+16, +33], significant (p=0.000) | 97% | 98% | 98% | 100% | $0.85 | 2.9s |
 | `F1H_opus_harness` | 92% [86, 96] | +23 pp [+15, +32], significant (p=0.000) | 96% | 100% | 96% | 100% | $15.83 | 4.8s |
@@ -66,6 +68,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | System | Fact-safe human rate | Δ vs reference | G1 invented | G2 lost | G3 tells | G4 gutted | $ / 1k | p50 latency |
 |---|---|---|---|---|---|---|---|---|
 | `O3j_glm_bestof3_judged` | 100% [96, 100] | +31 pp [+22, +40], significant (p=0.000) | 100% | 100% | 100% | 100% | $2.56 | 11.7s |
+| `O3f_glm_calm` | 98% [93, 100] | +29 pp [+20, +38], significant (p=0.000) | 99% | 100% | 99% | 100% | $0.93 | 3.5s |
 | `O3e_glm_harness_cliche` | 97% [91, 99] | +28 pp [+19, +37], significant (p=0.000) | 99% | 100% | 98% | 100% | $0.81 | 3.0s |
 | `O3c_glm_prompt_harness_style` | 96% [90, 99] | +27 pp [+19, +36], significant (p=0.000) | 99% | 100% | 96% | 100% | $0.81 | 3.3s |
 | `O3d_glm_harness_anticopy` | 94% [87, 98] | +25 pp [+15, +35], significant (p=0.000) | 98% | 98% | 98% | 100% | $0.85 | 2.9s |
@@ -95,6 +98,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | `O3j_glm_bestof3_judged` | 93% [78, 99] | +23 pp [+10, +40], significant (p=0.000) | 93% | 100% | 100% | 100% | $2.56 | 11.7s |
 | `F1H_opus_harness` | 90% [73, 98] | +20 pp [+7, +33], significant (p=0.001) | 93% | 100% | 97% | 100% | $15.83 | 4.8s |
 | `O3_glm_harness` | 90% [73, 98] | +20 pp [+7, +37], significant (p=0.002) | 90% | 100% | 100% | 100% | $0.28 | 2.6s |
+| `O3f_glm_calm` | 90% [73, 98] | +20 pp [+7, +37], significant (p=0.002) | 93% | 97% | 100% | 100% | $0.93 | 3.5s |
 | `O3b_glm_prompt_harness` | 87% [69, 96] | +17 pp [+3, +30], significant (p=0.004) | 90% | 100% | 93% | 100% | $0.55 | 1.6s |
 | `O2_glm_prompt` | 70% [51, 85] | +0 pp [-20, +17], n.s. (p=0.996) | 90% | 93% | 77% | 100% | $0.31 | 1.2s |
 | `frontier-strong:claude-opus-5-5` | 70% [51, 85] | reference | 87% | 87% | 90% | 97% | $9.15 | 3.8s |
@@ -120,6 +124,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | `O3e_glm_harness_cliche` | 97% [92, 99] | +22 pp [+15, +31], significant (p=0.000) | 98% | 100% | 99% | 100% | $0.81 | 3.0s |
 | `F1H_opus_harness` (2 refused/failed, counted as fails) | 95% [89, 98] | +21 pp [+14, +28], significant (p=0.000) | 98% | 98% | 100% | 98% | $15.83 | 4.8s |
 | `O3_glm_harness` | 95% [89, 98] | +21 pp [+13, +28], significant (p=0.000) | 96% | 99% | 100% | 100% | $0.28 | 2.6s |
+| `O3f_glm_calm` | 95% [89, 98] | +21 pp [+13, +29], significant (p=0.000) | 96% | 100% | 99% | 100% | $0.93 | 3.5s |
 | `O2_glm_prompt` | 78% [69, 85] | +3 pp [-5, +12], n.s. (p=0.455) | 93% | 92% | 88% | 99% | $0.31 | 1.2s |
 | `frontier-strong:claude-opus-5-5` (2 refused/failed, counted as fails) | 74% [65, 82] | reference | 87% | 92% | 92% | 98% | $9.15 | 3.8s |
 | `F2h_gpt61_humanizer` | 68% [58, 76] | -7 pp [-16, +2], n.s. (p=0.142) | 90% | 92% | 86% | 89% | $7.74 | 2.5s |
@@ -143,6 +148,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | `O3e_glm_harness_cliche` | 97% [91, 99] | +24 pp [+15, +34], significant (p=0.000) | 98% | 100% | 99% | 100% | $0.81 | 3.0s |
 | `F1H_opus_harness` (2 refused/failed, counted as fails) | 96% [90, 99] | +23 pp [+15, +32], significant (p=0.000) | 98% | 98% | 100% | 98% | $15.83 | 4.8s |
 | `O3_glm_harness` | 96% [90, 99] | +23 pp [+15, +33], significant (p=0.000) | 96% | 100% | 100% | 100% | $0.28 | 2.6s |
+| `O3f_glm_calm` | 96% [90, 99] | +23 pp [+14, +33], significant (p=0.000) | 97% | 100% | 99% | 100% | $0.93 | 3.5s |
 | `O2_glm_prompt` | 77% [67, 85] | +4 pp [-6, +14], n.s. (p=0.428) | 93% | 91% | 88% | 99% | $0.31 | 1.2s |
 | `frontier-strong:claude-opus-5-5` (2 refused/failed, counted as fails) | 72% [63, 81] | reference | 85% | 92% | 92% | 98% | $9.15 | 3.8s |
 | `F2h_gpt61_humanizer` | 66% [56, 76] | -6 pp [-16, +4], n.s. (p=0.216) | 90% | 92% | 86% | 90% | $7.74 | 2.5s |
@@ -170,6 +176,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 |---|---|---|---|---|---|
 | `O3j_glm_bestof3_judged` | 2/130 (2% [0, 5]) | 71% [70, 72] | 0.00 [0.00, 0.00] | 0.89 [0.87, 0.91] | 90% [87, 92] |
 | `O3e_glm_harness_cliche` | 3/130 (2% [0, 7]) | 72% [70, 73] | 0.01 [0.00, 0.02] | 0.89 [0.87, 0.91] | 92% [89, 94] |
+| `O3f_glm_calm` | 3/130 (2% [0, 7]) | 74% [73, 76] | 0.01 [0.00, 0.02] | 0.94 [0.92, 0.96] | 91% [88, 94] |
 | `O3c_glm_prompt_harness_style` | 3/130 (2% [0, 7]) | 71% [69, 72] | 0.02 [0.01, 0.05] | 0.90 [0.88, 0.91] | 91% [89, 94] |
 | `O3d_glm_harness_anticopy` | 4/130 (3% [1, 8]) | 71% [70, 72] | 0.02 [0.00, 0.04] | 0.89 [0.87, 0.91] | 91% [88, 93] |
 | `F1H_opus_harness` | 5/130 (4% [1, 9]) | 74% [73, 75] | 0.09 [0.02, 0.19] | 0.94 [0.92, 0.96] | 92% [89, 94] |

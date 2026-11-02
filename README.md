@@ -16,6 +16,7 @@ Fact-safe human rewrite rate on 250 items (eval 130 + held-out 120), 95% CI; Δ 
 | `O3j_glm_bestof3_judged` | 98% [95, 99] | +26 pp [+21, +32], significant (p=0.000) | 99% [97, 100] | +14 pp [+10, +19], significant (p=0.000) | $2.56 | 11.7s |
 | `O3c_glm_prompt_harness_style` | 97% [94, 99] | +25 pp [+20, +31], significant (p=0.000) | 98% [95, 99] | +13 pp [+9, +18], significant (p=0.000) | $0.81 | 3.3s |
 | `O3e_glm_harness_cliche` | 96% [93, 98] | +25 pp [+19, +30], significant (p=0.000) | 99% [97, 100] | +14 pp [+10, +19], significant (p=0.000) | $0.81 | 3.0s |
+| `O3f_glm_calm` | 96% [92, 98] | +24 pp [+19, +30], significant (p=0.000) | 98% [96, 100] | +14 pp [+9, +18], significant (p=0.000) | $0.93 | 3.5s |
 | `O3d_glm_harness_anticopy` | 95% [92, 97] | +24 pp [+18, +30], significant (p=0.000) | 98% [95, 99] | +13 pp [+8, +18], significant (p=0.000) | $0.85 | 2.9s |
 | `O3b_glm_prompt_harness` | 94% [91, 97] | +23 pp [+18, +28], significant (p=0.000) | 97% [94, 99] | +12 pp [+7, +17], significant (p=0.000) | $0.55 | 1.6s |
 | `F1H_opus_harness` | 94% [90, 96] | +22 pp [+17, +28], significant (p=0.000) | 97% [94, 99] | +12 pp [+8, +17], significant (p=0.000) | $15.83 | 4.8s |
@@ -105,7 +106,7 @@ Re-running a system calls its API: `hackathon/eval/run_frontier.py` for the fron
 - **Copying the draft is a control row.** `X0_copy_draft` scores the unchanged AI draft. It passes almost nothing on the dev split, so the gates can't be passed without rewriting there. On the held-out pairs it passes over half, because those AI-polished drafts carry few of the tells G3 checks, so that split mostly tests fact safety, not style.
 - **Many comparisons.** We report 9 systems on 5 splits and 6 judge pairs without a family-wise correction. The headline differences are p < 0.001 and survive one; the judge results near p = 0.02 should be read as suggestive.
 - **Latency is not measured the same way for every row.** Harness rows include every revise loop and any retry wait; the frontier runner times only the successful call.
-- **The Gemini row is not a frontier baseline.** Gemini 4 Argon was not tested (no paid quota on the day). The Gemini row is Gemini Flash-Lite, a small free-tier model, and is labelled as such. The reference baseline is Claude Opus 5.5 with the strong prompt.
+- **No Gemini row.** Gemini 4 Argon was not tested (no paid quota on the day); a free-tier Gemini Flash-Lite run was attempted and stalled on rate limits, so it is not in the table.
 - **Held-out near-duplicates of the training data.** The split keeps held-out and training pairs apart by id and exact text, not by overlap. 22 of the 120 held-out items share an 8-word run with the SFT training data, mostly template text, licence footers and reused news sentences (`hackathon/report/heldout_train_overlap.json`, provenance audit in `hackathon/report/HELDOUT_PROVENANCE.md`). Prompted and harness rows are unaffected; for fine-tuned rows, read the "Held-out, excluding ids that overlap the SFT train data" table.
 - **Licence detail for one source.** 73 held-out items come from Common Pile's CC-licensed web subset, where each document carries its own CC licence; our pipeline stored "see source" rather than the per-document licence, so those items need their licence recovered from Common Pile metadata before redistribution.
 - **Strict vs lenient fact checks.** The strict gates treat any changed number or capitalised word as a fact change, so harmless edits ("5" to "five", "Kenyan" to "Kenya") fail. The table shows both: strict, and lenient (those artefacts forgiven, `hackathon/audit/audit.py`). The harness leads Claude Opus 5.5 under both.
@@ -127,4 +128,6 @@ We built this with AI coding assistants (Claude Code), which wrote most of the c
 - **Ruslan Kan**: evaluation, statistics, judge, report, demo.
 
 ## Licence
-_TODO: the code licence is Ali's call. The data comes from Common Pile openly licensed and public-domain subsets, each under its own licence._
+- Code: MIT (see `LICENSE`).
+- Data: training and held-out text comes from Common Pile openly licensed and public-domain subsets, each under its own licence (see `hackathon/report/HELDOUT_PROVENANCE.md`). The real-copy eval split uses README intros from MIT, Apache-2.0 and CC0 repositories, with each item's repo and licence recorded in `evals/real_readmes.jsonl`.
+- Third party: `hackathon/train/prompt_humanizer.txt` embeds SKILL.md from [github.com/blader/humanizer](https://github.com/blader/humanizer), MIT, (c) 2025 Siqi Chen; used only for the F1h/O2h/F2h baseline rows.

@@ -5,6 +5,7 @@ Fact-safe human rewrite rate on 250 items (eval 130 + held-out 120), 95% CI; Δ 
 | `O3j_glm_bestof3_judged` | 98% [95, 99] | +26 pp [+21, +32], significant (p=0.000) | 99% [97, 100] | +14 pp [+10, +19], significant (p=0.000) | $2.56 | 11.7s |
 | `O3c_glm_prompt_harness_style` | 97% [94, 99] | +25 pp [+20, +31], significant (p=0.000) | 98% [95, 99] | +13 pp [+9, +18], significant (p=0.000) | $0.81 | 3.3s |
 | `O3e_glm_harness_cliche` | 96% [93, 98] | +25 pp [+19, +30], significant (p=0.000) | 99% [97, 100] | +14 pp [+10, +19], significant (p=0.000) | $0.81 | 3.0s |
+| `O3f_glm_calm` | 96% [92, 98] | +24 pp [+19, +30], significant (p=0.000) | 98% [96, 100] | +14 pp [+9, +18], significant (p=0.000) | $0.93 | 3.5s |
 | `O3d_glm_harness_anticopy` | 95% [92, 97] | +24 pp [+18, +30], significant (p=0.000) | 98% [95, 99] | +13 pp [+8, +18], significant (p=0.000) | $0.85 | 2.9s |
 | `O3b_glm_prompt_harness` | 94% [91, 97] | +23 pp [+18, +28], significant (p=0.000) | 97% [94, 99] | +12 pp [+7, +17], significant (p=0.000) | $0.55 | 1.6s |
 | `F1H_opus_harness` | 94% [90, 96] | +22 pp [+17, +28], significant (p=0.000) | 97% [94, 99] | +12 pp [+8, +17], significant (p=0.000) | $15.83 | 4.8s |
