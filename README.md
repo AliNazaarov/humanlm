@@ -40,11 +40,11 @@ Fact-safe human rewrite rate on 247 items (eval 130 + held-out 117), 95% CI; Δ 
 
 Human preference, O3c_glm_prompt_harness_style vs frontier-strong:claude-opus-5-5 (blind A/B; FeatherLM / Claude / tie):
 
-- page: 51 / 75 / 30 (32 voter(s), 156 votes, sign test p=0.040); includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors
-- page, without 8 ballot(s) that were position-only or faster than 6 s per pick: 36 / 59 / 21 (sign test p=0.023)
+- page: 53 / 80 / 32 (35 voter(s), 165 votes, sign test p=0.024); includes one founder ballot (Ali, venue laptop: a check, not a gold rater); the other readers are public-page visitors
+- page, without 8 ballot(s) that were position-only or faster than 6 s per pick: 38 / 64 / 23 (sign test p=0.013)
 - Not counted: Ali reports 5 Minerva classmates gave the same answer (preferred the Claude side) in an informal, unlogged session; not counted as data.
 
-Judge vs human on style (item level, `O3c_glm_prompt_harness_style` vs Claude strong, 15 items with a human majority): kimi-k3: agrees 3, disagrees 6; qwen3p8-max: agrees 1, disagrees 7. Small n; the LLM judges' style verdicts are not validated against readers.
+Judge vs human on style (item level, `O3c_glm_prompt_harness_style` vs Claude strong, 17 items with a human majority): kimi-k3: agrees 4, disagrees 6; qwen3p8-max: agrees 3, disagrees 7. Small n; the LLM judges' style verdicts are not validated against readers.
 
 Spot the human (held-out real originals vs each rewrite, both orders; fooled = the rewrite picked as human in both orders; fooled-or-split adds order disagreements):
 
