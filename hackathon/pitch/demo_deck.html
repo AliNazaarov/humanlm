@@ -49,7 +49,16 @@ tr.us td{color:var(--accent);font-weight:600}
 .brand{position:absolute;top:3.5vh;left:7vw;display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:-.01em;font-size:1.2vw}
 .logo{width:2.2vw;height:2.2vw;border-radius:.6vw;background:linear-gradient(160deg,#7CCBF4,var(--sky) 55%,#3C9FD8);display:grid;place-items:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 4px 10px -4px rgba(47,143,201,.6)}
 .logo svg{width:60%;height:60%}
+table.dense{font-size:.95vw}table.dense td,table.dense th{padding:.5vh .6vw}table.xs{font-size:.7vw}table.xs th{font-size:.65vw!important}table.dense th{font-size:.75vw}table.xs td,table.xs th{padding:.18vh .5vw;white-space:nowrap;line-height:1.25}.app{justify-content:flex-start;padding-top:9vh}.tiny{font-size:.95vw;color:var(--ink3);margin-top:1.5vh}.frac{font-size:.8em;color:var(--ink3)}
 ul{padding-left:1.2em}li{margin:.6vh 0}
+@media print{
+@page{size:16in 9in;margin:0}
+html,body{height:auto;-webkit-print-color-adjust:exact;print-color-adjust:exact;background:var(--bg)}
+.slide{display:flex!important;position:relative;inset:auto;width:100vw;height:100vh;page-break-after:always;break-after:page;overflow:hidden;background:var(--bg)}
+.slide:last-of-type{page-break-after:auto;break-after:auto}
+.num{display:none}
+.brand{position:fixed}
+}
 </style>
 </head>
 <body>
@@ -118,9 +127,16 @@ First comment: Hi, I'm Kristjan, founder of Linguo Labs. There are 14 of us, wor
     <tr><td>GPT-6.1 Terra</td><td class="n">40% <span style="font-size:.8em">98/247</span></td><td><div class="bar g" style="width:39.7%"></div></td><td class="n">$0.85</td></tr>
     <tr><td>GLM-5.3 Flash, no harness</td><td class="n">27% <span style="font-size:.8em">66/247</span></td><td><div class="bar g" style="width:26.7%"></div></td><td class="n">$0.10</td></tr>
   </table>
-  <p style="margin-top:2.5vh">Out of sample, <b>80 real READMEs</b>: FeatherLM <b>98%</b> (78/80) vs Claude <b>76%</b> (61/80). Δ vs Claude on 247: +26 pp [+20, +31], p&lt;0.001 (paired bootstrap).</p>
+  <p style="margin-top:2.5vh">Out of sample, <b>80 real READMEs</b>: FeatherLM <b>97.5%</b> (78/80) vs Claude <b>76%</b> (61/80). Δ vs Claude on 247: +26 pp [+20, +31], p&lt;0.001 (paired bootstrap).</p>
 </section>
 
+<!-- SLIDE: EVAL METHOD. Notes: "How we score: four code gates, same code for every system. Strict and lenient. Then two LLM judges in both orders, a spot-the-human test, a blind human A/B, an anti-gaming audit, and a do-nothing control that copies the draft: 32%." -->
+<section class="slide"><div class="kick">How we measured</div>
+<h2>One scorer for every system, plus checks on the scorer.</h2>
+<div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+<div class="card"><h3>Gates (fact-safe = all 4)</h3><ul><li>G1 nothing invented</li><li>G2 nothing lost</li><li>G3 no AI tells</li><li>G4 length 0.7–1.3×</li></ul><p class="tiny">Strict and lenient (forgives regex artefacts). 95% CIs, paired bootstrap Δ vs Claude.</p></div>
+<div class="card"><h3>Sets</h3><ul><li>130 eval (100 dev + 30 trick)</li><li>117 held-out real human pairs</li><li>80 real READMEs, out of sample</li><li>Control: copy the draft = 32%</li></ul></div>
+<div class="card"><h3>Checks on the checks</h3><ul><li>2 LLM judges, both orders (Kimi K3, Qwen 3.8 Max)</li><li>Spot the human vs real originals</li><li>Blind human A/B (209 votes)</li><li>Anti-gaming audit: copying, dropped sentences</li></ul></div></div></section>
 <!-- SLIDE 6: BUSINESS MONEY. Notes: "Per 1,000 rewrites: $0.81 us, $9.11 Claude, $15.85 Claude with our harness, $0.85 GPT-6.1. At a million rewrites a month that's $806 vs $9,111 vs $15,850. At 10 million it's $8k vs $91k vs $158k. And at 100k rewrites, Claude ships about 25,500 more rewrites with a broken fact than we do." Cost = cost_per_1k_usd × volume/1000 from results.json. Avoided = (Claude strict fail 71/247 − ours 8/247) × 100k = 63/247 × 100k. -->
 <section class="slide">
   <div class="kick">Business · what it costs at volume</div>
@@ -170,6 +186,18 @@ First comment: Hi, I'm Kristjan, founder of Linguo Labs. There are 14 of us, wor
   </div>
 </section>
 
+<!-- SLIDE: TECHNIQUES. Notes: "What we tried, in order. Base 27%. Prompt 73%. Harness 93%. Style round, our entry O3c, 97%. Claim checker and best-of-3 99%. Ensemble with DeepSeek 100% but 4x cost. Fine-tunes lifted the base from 26.7 to 37.7, not near the harness." Numbers: HEADLINE.md / results.json. -->
+<section class="slide"><div class="kick">Ablations · what moved the number</div>
+<h2>The loop did the work. Training helped the base model, not the facts.</h2>
+<table><tr><th>Step</th><th>Technique</th><th class="n">Strict</th><th class="n">$/1k</th></tr>
+<tr><td>O1</td><td>GLM-5.3 Flash, plain</td><td class="n">27%</td><td class="n">$0.10</td></tr>
+<tr><td>O2</td><td>+ shared system prompt</td><td class="n">73%</td><td class="n">$0.31</td></tr>
+<tr><td>O3</td><td>+ harness: gates → targeted fix, ≤3 rounds</td><td class="n">93%</td><td class="n">$0.28</td></tr>
+<tr class="us"><td>O3c</td><td>+ prompt + style round (entry)</td><td class="n">97%</td><td class="n">$0.81</td></tr>
+<tr><td>O3k</td><td>+ claim checker, best-of-3</td><td class="n">99%</td><td class="n">$3.18</td></tr>
+<tr><td>E2</td><td>Ensemble GLM + DeepSeek</td><td class="n">100%</td><td class="n">$3.41</td></tr>
+<tr><td>R3</td><td>Same harness on DeepSeek</td><td class="n">95%</td><td class="n">n/a</td></tr>
+<tr><td>SFT</td><td>Fireworks Training API, reverse-distilled licence-clean Common Pile data</td><td class="n">26.7 → 32.8 → 37.7%</td><td class="n">—</td></tr></table></section>
 <!-- SLIDE 8: BUILT TODAY. Notes: "What's built: the harness, the editor, the blind A/B page, a 247-item benchmark plus 80 real READMEs. We also fine-tuned: SFT on GLM got 38% and 33% fact-safe, a 4B DPO model 8%. Fine-tuning alone didn't keep facts; the harness did. Next: fix the punchy-fragment style tell and fine-tune with the harness in the loop." Fine-tune numbers from HEADLINE.md (O4c, O4m, L2h on 100 items). -->
 <section class="slide">
   <div class="kick">Built today</div>
@@ -181,6 +209,16 @@ First comment: Hi, I'm Kristjan, founder of Linguo Labs. There are 14 of us, wor
   </div>
 </section>
 
+<!-- SLIDE: LIMITS. Notes: say each plainly. Sources: AUDIT.md, human_votes.json, TRAIN_LOG.md. -->
+<section class="slide"><div class="kick">Honest limits</div>
+<h2>What this does not show.</h2>
+<ul style="max-width:60ch">
+<li>Readers did not prefer our style: 64 vs 89 (p = 0.052), leaned to Claude.</li>
+<li>Part of the strict margin is the gates' regex penalising harmless edits. Fair number: lenient, 98% vs 85%.</li>
+<li>10% of harness (O3) outputs are near-copies of the draft (Claude: 1%).</li>
+<li>Gates check facts by matching; they don't prove meaning is unchanged.</li>
+<li>Fine-tuned models were not evaluated inside the harness on Fireworks (serving needed a paid deployment).</li>
+<li>Costs are per-token list prices from our runs, not a bill.</li></ul></section>
 <!-- SLIDE 9: CLOSE. Notes: read the line slowly. 20x = F1H Claude+harness $15.85 / O3c $0.81 = 19.7x (results.json). -->
 <section class="slide">
   <div class="kick">FeatherLM</div>
@@ -189,6 +227,82 @@ First comment: Hi, I'm Kristjan, founder of Linguo Labs. There are 14 of us, wor
   <div class="foot">Sources: hackathon/report/results.json (systems[].cost_per_1k_usd; blocks.all and blocks.real pass/pass_lenient) · hackathon/report/HEADLINE.md (247-item table, fine-tunes, judges) · hackathon/report/human_votes.json (frozen 15:15) · hackathon/report/EXAMPLES.md + evals/runs/hack_O3c_glm_prompt_harness_style.jsonl (dev-092) · Screens: hackathon/demo/app/index.html, featherlm-ab.vercel.app/round2/</div>
 </section>
 
+<!-- ===== APPENDIX ===== -->
+<!-- APPENDIX A1: full leaderboard, generated from hackathon/report/HEADLINE.md (which is generated from results.json). * = significant, p<0.001 paired bootstrap. -->
+<section class="slide app" style="padding-top:10vh"><div class="kick" style="margin-bottom:1vh">Appendix A1 · all 31 rows, 247 items (eval 130 + held-out 117)</div>
+<table class="dense xs"><tr><th>System</th><th class="n">Strict [95% CI]</th><th class="n">Δ strict vs Claude strong</th><th class="n">Lenient</th><th class="n">Δ lenient</th><th class="n">$/1k</th></tr>
+<tr><td>E2_ensemble_glm_deepseek</td><td class="n">100% [98, 100]</td><td class="n">+28 pp [+23, +34] *</td><td class="n">100% [98, 100]</td><td class="n">+15 pp [+11, +20] *</td><td class="n">$3.41 (247/327 rows)</td></tr>
+<tr><td>E1_ensemble</td><td class="n">99% [97, 100]</td><td class="n">+28 pp [+22, +34] *</td><td class="n">100% [98, 100]</td><td class="n">+15 pp [+11, +20] *</td><td class="n">$15.12 (247/327 rows)</td></tr>
+<tr><td>O3k_glm_calm_claimcheck_bo3</td><td class="n">99% [97, 100]</td><td class="n">+28 pp [+22, +34] *</td><td class="n">100% [99, 100]</td><td class="n">+15 pp [+11, +20] *</td><td class="n">$3.18</td></tr>
+<tr><td>O3l_glm_style_claimcheck_bo3</td><td class="n">98% [96, 100]</td><td class="n">+27 pp [+21, +33] *</td><td class="n">100% [99, 100]</td><td class="n">+15 pp [+11, +20] *</td><td class="n">$3.06</td></tr>
+<tr><td>O3j_glm_bestof3_judged</td><td class="n">98% [95, 99]</td><td class="n">+27 pp [+21, +32] *</td><td class="n">99% [96, 100]</td><td class="n">+14 pp [+10, +19] *</td><td class="n">$2.61</td></tr>
+<tr><td>O3m_glm_plainclaim</td><td class="n">97% [94, 99]</td><td class="n">+26 pp [+20, +32] *</td><td class="n">99% [97, 100]</td><td class="n">+15 pp [+10, +19] *</td><td class="n">$0.91</td></tr>
+<tr><td>O3t_glm_ali_taste</td><td class="n">97% [94, 99]</td><td class="n">+26 pp [+21, +32] *</td><td class="n">100% [98, 100]</td><td class="n">+15 pp [+11, +20] *</td><td class="n">$0.89</td></tr>
+<tr class="us"><td>O3c_glm_prompt_harness_style</td><td class="n">97% [94, 99]</td><td class="n">+26 pp [+20, +31] *</td><td class="n">98% [95, 99]</td><td class="n">+13 pp [+9, +18] *</td><td class="n">$0.81</td></tr>
+<tr><td>O3e_glm_harness_cliche</td><td class="n">96% [93, 98]</td><td class="n">+25 pp [+19, +31] *</td><td class="n">99% [96, 100]</td><td class="n">+14 pp [+10, +19] *</td><td class="n">$0.81</td></tr>
+<tr><td>O3f_glm_calm</td><td class="n">96% [92, 98]</td><td class="n">+24 pp [+19, +30] *</td><td class="n">98% [96, 100]</td><td class="n">+14 pp [+9, +18] *</td><td class="n">$0.93</td></tr>
+<tr><td>O3d_glm_harness_anticopy</td><td class="n">95% [92, 97]</td><td class="n">+24 pp [+18, +30] *</td><td class="n">98% [95, 99]</td><td class="n">+13 pp [+8, +18] *</td><td class="n">$0.85</td></tr>
+<tr><td>O3n_glm_frame</td><td class="n">95% [92, 97]</td><td class="n">+24 pp [+18, +30] *</td><td class="n">96% [93, 98]</td><td class="n">+12 pp [+8, +16] *</td><td class="n">$0.95</td></tr>
+<tr><td>R3_deepseek_harness</td><td class="n">95% [91, 97]</td><td class="n">+23 pp [+18, +29] *</td><td class="n">99% [96, 100]</td><td class="n">+14 pp [+10, +19] *</td><td class="n">n/a</td></tr>
+<tr><td>O3b_glm_prompt_harness</td><td class="n">94% [91, 97]</td><td class="n">+23 pp [+17, +29] *</td><td class="n">97% [94, 99]</td><td class="n">+12 pp [+7, +17] *</td><td class="n">$0.54</td></tr>
+<tr><td>R3t_deepseek_ali_taste</td><td class="n">94% [91, 97]</td><td class="n">+23 pp [+18, +29] *</td><td class="n">98% [95, 99]</td><td class="n">+13 pp [+9, +17] *</td><td class="n">n/a</td></tr>
+<tr><td>F1H_opus_harness</td><td class="n">94% [90, 96]</td><td class="n">+22 pp [+17, +28] *</td><td class="n">97% [94, 99]</td><td class="n">+13 pp [+8, +17] *</td><td class="n">$15.85</td></tr>
+<tr><td>O3_glm_harness</td><td class="n">93% [89, 96]</td><td class="n">+21 pp [+16, +27] *</td><td class="n">97% [94, 99]</td><td class="n">+12 pp [+7, +17] *</td><td class="n">$0.28</td></tr>
+<tr><td>O3g_glm_calm_retrieval_claimcheck</td><td class="n">92% [88, 95]</td><td class="n">+21 pp [+15, +27] *</td><td class="n">97% [94, 99]</td><td class="n">+13 pp [+8, +17] *</td><td class="n">$1.42</td></tr>
+<tr><td>O2_glm_prompt</td><td class="n">73% [67, 79]</td><td class="n">+2 pp [-4, +9], n.s. (p=0.535)</td><td class="n">80% [74, 85]</td><td class="n">-5 pp [-10, +0], n.s. (p=0.081)</td><td class="n">$0.31</td></tr>
+<tr><td>frontier-strong:claude-opus-5-5</td><td class="n">71% [65, 77]</td><td class="n">reference</td><td class="n">85% [80, 89]</td><td class="n">reference</td><td class="n">$9.11</td></tr>
+<tr><td>F1h_opus_humanizer</td><td class="n">60% [53, 66]</td><td class="n">-12 pp [-17, -6] *</td><td class="n">77% [71, 82]</td><td class="n">-8 pp [-13, -3], sig. (p=0.001)</td><td class="n">$50.22</td></tr>
+<tr><td>O2h_glm_humanizer</td><td class="n">53% [46, 59]</td><td class="n">-19 pp [-26, -11] *</td><td class="n">63% [56, 69]</td><td class="n">-22 pp [-28, -15] *</td><td class="n">$1.15</td></tr>
+<tr><td>frontier-live:claude-opus-5-5</td><td class="n">53% [46, 59]</td><td class="n">-19 pp [-24, -13] *</td><td class="n">77% [71, 82]</td><td class="n">-8 pp [-13, -3], sig. (p=0.003)</td><td class="n">$7.17</td></tr>
+<tr><td>F2h_gpt61_humanizer</td><td class="n">51% [45, 57]</td><td class="n">-20 pp [-27, -13] *</td><td class="n">56% [50, 63]</td><td class="n">-28 pp [-35, -22] *</td><td class="n">$7.73</td></tr>
+<tr><td>F2_gpt61_terra</td><td class="n">40% [34, 46]</td><td class="n">-32 pp [-39, -24] *</td><td class="n">44% [38, 51]</td><td class="n">-40 pp [-47, -34] *</td><td class="n">$0.85</td></tr>
+<tr><td>O4c_glm_sft_clean</td><td class="n">38% [32, 44]</td><td class="n">-34 pp [-41, -26] *</td><td class="n">43% [36, 49]</td><td class="n">-42 pp [-49, -35] *</td><td class="n">n/a</td></tr>
+<tr><td>O4m_glm_sft_modern</td><td class="n">33% [27, 39]</td><td class="n">-38 pp [-46, -31] *</td><td class="n">41% [35, 47]</td><td class="n">-44 pp [-51, -37] *</td><td class="n">n/a</td></tr>
+<tr><td>X0_copy_draft (no rewrite: control)</td><td class="n">32% [26, 38]</td><td class="n">-40 pp [-47, -32] *</td><td class="n">32% [26, 38]</td><td class="n">-53 pp [-60, -46] *</td><td class="n">n/a</td></tr>
+<tr><td>O1_glm_base</td><td class="n">27% [21, 33]</td><td class="n">-45 pp [-52, -37] *</td><td class="n">30% [24, 36]</td><td class="n">-55 pp [-62, -49] *</td><td class="n">$0.10</td></tr>
+<tr><td>frontier-persona-preexisting (130 items)</td><td class="n">12% [7, 19]</td><td class="n">-57 pp [-66, -48] *</td><td class="n">16% [10, 24]</td><td class="n">-66 pp [-74, -58] *</td><td class="n">n/a</td></tr>
+<tr><td>L2h_qwen3_4b_dpo_harness (100 items)</td><td class="n">8% [4, 15]</td><td class="n">-61 pp [-71, -50] *</td><td class="n">9% [4, 16]</td><td class="n">-73 pp [-82, -64] *</td><td class="n">n/a</td></tr>
+</table><p class="tiny">* significant (p=0.000, paired bootstrap). Missing rows count as fails. Source: hackathon/report/HEADLINE.md ← results.json.</p></section>
+<!-- APPENDIX A2: per-block strict fact-safe rates from results.json blocks.all / heldout / heldout_clean / real. -->
+<section class="slide app"><div class="kick">Appendix A2 · held-out real-human pairs and 80 real READMEs (strict)</div>
+<table class="dense"><tr><th>System</th><th class="n">All 247</th><th class="n">Held-out 117</th><th class="n">Held-out clean 96</th><th class="n">Real READMEs 80</th></tr><tr class="us"><td>O3c_glm_prompt_harness_style</td><td class='n'>96.8% <span class='frac'>239/247</span></td><td class='n'>98.3% <span class='frac'>115/117</span></td><td class='n'>99.0% <span class='frac'>95/96</span></td><td class='n'>97.5% <span class='frac'>78/80</span></td></tr><tr><td>E2_ensemble_glm_deepseek</td><td class='n'>99.6% <span class='frac'>246/247</span></td><td class='n'>99.1% <span class='frac'>116/117</span></td><td class='n'>99.0% <span class='frac'>95/96</span></td><td class='n'>98.8% <span class='frac'>79/80</span></td></tr><tr><td>O3k_glm_calm_claimcheck_bo3</td><td class='n'>99.2% <span class='frac'>245/247</span></td><td class='n'>99.1% <span class='frac'>116/117</span></td><td class='n'>99.0% <span class='frac'>95/96</span></td><td class='n'>98.8% <span class='frac'>79/80</span></td></tr><tr><td>F1H_opus_harness</td><td class='n'>93.5% <span class='frac'>231/247</span></td><td class='n'>94.9% <span class='frac'>111/117</span></td><td class='n'>95.8% <span class='frac'>92/96</span></td><td class='n'>97.5% <span class='frac'>78/80</span></td></tr><tr><td>frontier-strong:claude-opus-5-5</td><td class='n'>71.3% <span class='frac'>176/247</span></td><td class='n'>73.5% <span class='frac'>86/117</span></td><td class='n'>71.9% <span class='frac'>69/96</span></td><td class='n'>76.2% <span class='frac'>61/80</span></td></tr><tr><td>frontier-live:claude-opus-5-5</td><td class='n'>52.6% <span class='frac'>130/247</span></td><td class='n'>65.8% <span class='frac'>77/117</span></td><td class='n'>64.6% <span class='frac'>62/96</span></td><td class='n'>—</td></tr><tr><td>F1h_opus_humanizer</td><td class='n'>59.5% <span class='frac'>147/247</span></td><td class='n'>65.8% <span class='frac'>77/117</span></td><td class='n'>61.5% <span class='frac'>59/96</span></td><td class='n'>—</td></tr><tr><td>F2h_gpt61_humanizer</td><td class='n'>51.0% <span class='frac'>126/247</span></td><td class='n'>67.5% <span class='frac'>79/117</span></td><td class='n'>65.6% <span class='frac'>63/96</span></td><td class='n'>—</td></tr><tr><td>F2_gpt61_terra</td><td class='n'>39.7% <span class='frac'>98/247</span></td><td class='n'>61.5% <span class='frac'>72/117</span></td><td class='n'>59.4% <span class='frac'>57/96</span></td><td class='n'>—</td></tr><tr><td>O4c_glm_sft_clean</td><td class='n'>37.7% <span class='frac'>93/247</span></td><td class='n'>56.4% <span class='frac'>66/117</span></td><td class='n'>62.5% <span class='frac'>60/96</span></td><td class='n'>—</td></tr><tr><td>O4m_glm_sft_modern</td><td class='n'>32.8% <span class='frac'>81/247</span></td><td class='n'>49.6% <span class='frac'>58/117</span></td><td class='n'>51.0% <span class='frac'>49/96</span></td><td class='n'>—</td></tr><tr><td>X0_copy_draft (no rewrite: control)</td><td class='n'>31.6% <span class='frac'>78/247</span></td><td class='n'>56.4% <span class='frac'>66/117</span></td><td class='n'>53.1% <span class='frac'>51/96</span></td><td class='n'>—</td></tr><tr><td>O1_glm_base</td><td class='n'>26.7% <span class='frac'>66/247</span></td><td class='n'>39.3% <span class='frac'>46/117</span></td><td class='n'>33.3% <span class='frac'>32/96</span></td><td class='n'>—</td></tr></table>
+<p class="tiny">Held-out = real human originals never used in tuning; "clean" drops items flagged in heldout_excluded.json / train overlap. — = system not run on that block. Source: results.json blocks.</p></section>
+<!-- APPENDIX A3: judges + spot-the-human, from HEADLINE.md. -->
+<section class="slide app"><div class="kick">Appendix A3 · LLM judges and spot-the-human</div>
+<div class="cols"><div class="card"><h3>Pairwise judges, both orders · FeatherLM (O3c) vs Claude strong</h3>
+<table class="dense"><tr><th>Judge</th><th class="n">Overall ours/Claude/tie</th><th class="n">Style ours/Claude/tie</th></tr>
+<tr><td>Qwen 3.8 Max</td><td class="n">39/43/25 (p=0.741)</td><td class="n">44/27/37 (p=0.057)</td></tr>
+<tr><td>Kimi K3</td><td class="n">35/52/43 (p=0.086)</td><td class="n">33/46/51 (p=0.177)</td></tr></table>
+<p class="tiny" style="margin-top:1vh">Judge vs human majority (17 items): Kimi agrees 4 / disagrees 6; Qwen 3 / 7. Judges' style verdicts are not validated against readers.</p></div>
+<div class="card"><h3>Spot the human · held-out originals vs rewrite, both orders</h3>
+<table class="dense"><tr><th>System</th><th class="n">Kimi fooled / or-split</th><th class="n">Qwen fooled / or-split</th></tr>
+<tr class="us"><td>FeatherLM O3c</td><td class="n">0/117 · 27%</td><td class="n">1/117 · 42%</td></tr>
+<tr><td>Claude strong</td><td class="n">0/117 · 24%</td><td class="n">0/117 · 34%</td></tr>
+<tr><td>Claude + harness</td><td class="n">0/117 · 21%</td><td class="n">0/117 · 37%</td></tr>
+<tr><td>GLM base</td><td class="n">0/117 · 23%</td><td class="n">0/117 · 27%</td></tr>
+<tr><td>Draft copied (control)</td><td class="n">0/117 · 14%</td><td class="n">0/117 · 13%</td></tr></table>
+<p class="tiny" style="margin-top:1vh">Neither judge reliably picks any rewrite over the real human text.</p></div></div></section>
+<!-- APPENDIX A4: anti-gaming audit, hackathon/audit/AUDIT.md section F (computed by audit.py, 250 items incl. 3 later excluded). -->
+<section class="slide app"><div class="kick">Appendix A4 · anti-gaming audit (hackathon/audit/AUDIT.md)</div>
+<h2 style="font-size:2vw">Is the harness gaming its own metric? Partly, and we say so.</h2>
+<table class="dense"><tr><th>Signal</th><th>Verdict</th><th>Evidence</th></tr>
+<tr><td>Gate fairness</td><td>harness wins</td><td>Gap to best frontier +21 pp; after forgiving regex artefacts still +11 pp (97% vs 85%)</td></tr>
+<tr><td>Copying the draft</td><td>partly gaming</td><td>Harness (O3) near-copies 10% (Claude strong 1%); identical 0%; GLM base without loop 7%</td></tr>
+<tr><td>Dropping sentences</td><td>harness wins vs Claude</td><td>Deleted-sentence rate 3.3% vs Claude strong −9.38 pp [−11.55, −7.45]; tie vs GPT-6.1</td></tr>
+<tr><td>Artefacts</td><td>harness wins</td><td>Artefact share 1%; trailing numbers 0%; repeats 0%</td></tr>
+<tr><td>Hold-out tells</td><td>mixed</td><td>In-band share 68.1%; vs Claude strong −4.23 pp (worse); human originals 87.5%</td></tr>
+<tr><td>What the loop adds</td><td>disclosed</td><td>First-draft pass 23% → final 93% (O3); loops 0/1/2/3 = 57/105/61/27</td></tr></table>
+<p class="tiny">"The fair number to quote is the lenient one" (AUDIT.md): lenient 98% vs Claude 85%. Do-nothing control (copy the draft) scores 32% strict.</p></section>
+<!-- APPENDIX A5: training, from hackathon/train/TRAIN_LOG.md and results.json (O1, O4m, O4c rows). -->
+<section class="slide app"><div class="kick">Appendix A5 · training on the Fireworks Training API and locally</div>
+<table class="dense"><tr><th>Run</th><th>What</th><th>Result (strict, 247)</th></tr>
+<tr><td>Base</td><td>GLM-5.3 Flash, no harness (O1)</td><td class="n">26.7%</td></tr>
+<tr><td>SFT B (O4m)</td><td>Serverless LoRA, licence-clean reverse-distilled pairs; loss 1.144 → 0.699 (last-10 mean)</td><td class="n">32.8%</td></tr>
+<tr><td>SFT C (O4c)</td><td>Same recipe, gate-clean data; valid loss 1.116 → 0.752 (ppl 3.05 → 2.12)</td><td class="n">37.7%</td></tr>
+<tr><td>DPO → human refs (O7)</td><td>800 pairs, warm start from SFT B; serverless reference sampler hung at step 1</td><td>no model</td></tr>
+<tr><td>Local DPO (L2, Qwen3 4B, MLX)</td><td>DPO toward real human writing on top of L1; loss saturates in ~20 steps</td><td class="n">8% (100 items, with harness)</td></tr>
+<tr><td>DPO-RLAIF (O6)</td><td>66 AI-labelled pairs + script prepared</td><td>not trained</td></tr></table>
+<p class="tiny">SFT v1 (O4) trained but not evaluated (LoRA serving needed an on-demand deployment). Training lifts the open model, but not near the harness: the checks keep the facts.</p></section>
 <div class="brand"><span class="logo"><svg viewBox="0 0 64 64"><path d="M46 12c-13 2-24 12-27 28l-3 12 3 1 4-10c9-1 18-7 22-17-4 2-8 2-11 2 5-3 9-8 12-16z" fill="white"/></svg></span>FeatherLM</div>
 <div class="num" id="num"></div>
 <script>
