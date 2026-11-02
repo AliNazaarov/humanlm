@@ -146,36 +146,111 @@ def clean(t):
     return re.sub(r"<think>.*?</think>", "", t, flags=re.S).strip()
 
 
-def rewrite(item, a):
-    draft = item["ai_draft"]
+COPY_MAX = 0.9
+COPY_ASK = ("This is almost a copy of the draft. Actually rewrite it in a human voice: change sentence structure "
+            "and wording, keep every fact.")
+JUDGE_ASK = ("Rate how much this marketing text sounds like a skilled human copywriter wrote it, not an AI. "
+             "1 = obviously AI, 10 = indistinguishable from a skilled human. Judge voice, rhythm and word choice only. "
+             "Reply with one integer from 1 to 10 and nothing else.\n\nTEXT:\n")
+
+
+def copy_overlap(draft, out):
+    """Word-bigram F1 between draft and output, the audit's near-copy measure (hackathon/audit/audit.py)."""
+    import collections
+    def bi(t):
+        w = [x.lower() for x in gates.m.words(t)]
+        return [tuple(w[i:i + 2]) for i in range(len(w) - 1)]
+    da, ob = bi(draft), bi(out)
+    if not da or not ob:
+        return 0.0
+    inter = sum((collections.Counter(da) & collections.Counter(ob)).values())
+    if not inter:
+        return 0.0
+    p, r = inter / len(ob), inter / len(da)
+    return 2 * p * r / (p + r)
+
+
+def one_pass(draft, a):
+    """Draft -> verify -> targeted revise (max a.loops) -> optional style round. Returns (out, gates, loop, pt, ct, copy)."""
     msgs = [{"role": "user", "content": draft}]
-    t0 = time.time(); pt = ct = 0; best = None
+    pt = ct = 0; best = None
     for loop in range(a.loops + 1):
         text, p, c = chat(a.provider, a.model, a.system_prompt, msgs, a.dec)
         pt += p; ct += c
         out = clean(text)
         g = gates.check(draft, out)
-        cand = (g["n_fail"], -loop, out, g, loop)   # fewer failures wins; ties go to the later revision
+        cp = copy_overlap(draft, out)
+        near = a.anti_copy and cp > COPY_MAX
+        cand = (g["n_fail"] + int(near), -loop, out, g, loop, cp)   # fewer failures wins; ties go to the later revision
         best = cand if best is None or cand[:2] < best[:2] else best
-        if g["pass"] or loop == a.loops:
+        if (g["pass"] and not near) or loop == a.loops:
             break
+        problems = g["problems"] + ([COPY_ASK] if near else [])
         msgs += [{"role": "assistant", "content": out},
                  {"role": "user", "content": "Revise your rewrite. Fix only these problems and change nothing else:\n- "
-                  + "\n- ".join(g["problems"]) + "\nReply with the full revised text only."}]
-    _, _, out, g, loop = best
+                  + "\n- ".join(problems) + "\nReply with the full revised text only."}]
+    _, _, out, g, loop, cp = best
     if a.style_round and g["pass"]:
         # One style pass: a skilled copywriter's edit for voice and rhythm. Kept only if every gate still passes.
         msgs2 = [{"role": "user", "content": draft}, {"role": "assistant", "content": out},
                  {"role": "user", "content": STYLE_ASK}]
         text, p, c = chat(a.provider, a.model, a.system_prompt, msgs2, a.dec)
         pt += p; ct += c
-        out2 = clean(text); g2 = gates.check(draft, out2)
-        if g2["pass"]:
-            out, g, loop = out2, g2, loop + 1
-    return {"id": item["id"], "system": a.system_name, "output": out,
-            "latency_ms": round((time.time() - t0) * 1000), "prompt_tokens": pt, "completion_tokens": ct,
-            "cost_usd": round(pt * a.in_price / 1e6 + ct * a.out_price / 1e6, 6), "model": a.model,
-            "decoding": a.dec, "loops_used": loop, "gates": {k: v for k, v in g.items() if k != "problems"}}
+        out2 = clean(text); g2 = gates.check(draft, out2); cp2 = copy_overlap(draft, out2)
+        if g2["pass"] and not (a.anti_copy and cp2 > COPY_MAX):
+            out, g, loop, cp = out2, g2, loop + 1, cp2
+    return out, g, loop, pt, ct, cp
+
+
+def judge_score(text, a):
+    """Selection judge (GLM-5.3 by default, a different model from the eval judge). Returns (score, pt, ct)."""
+    dec = decoding("fireworks", a.select_judge_model, "low")
+    dec["temperature"] = 0.0
+    msg = [{"role": "user", "content": JUDGE_ASK + text}]
+    try:
+        r, p, c = chat("fireworks", a.select_judge_model, "You are a strict senior copy editor.", msg, dec)
+    except Exception:
+        return None, 0, 0
+    mt = re.search(r"\b(10|[1-9])\b", clean(r))
+    return (int(mt.group(1)) if mt else None), p, c
+
+
+def rewrite(item, a):
+    draft = item["ai_draft"]
+    t0 = time.time(); pt = ct = 0
+    cands = []
+    for _ in range(a.best_of):
+        out, g, loop, p, c, cp = one_pass(draft, a)
+        pt += p; ct += c
+        cands.append({"out": out, "g": g, "loop": loop, "copy": cp})
+    sel = {}
+    if a.best_of > 1:
+        ok = [x for x in cands if x["g"]["pass"] and not (a.anti_copy and x["copy"] > COPY_MAX)]
+        jpt = jct = 0
+        for x in ok:
+            x["score"], p, c = judge_score(x["out"], a)
+            jpt += p; jct += c
+        if ok:
+            pick = max(ok, key=lambda x: (x["score"] or 0, -x["copy"]))
+        else:
+            pick = min(cands, key=lambda x: (x["g"]["n_fail"] + int(a.anti_copy and x["copy"] > COPY_MAX), x["copy"]))
+        sel = {"candidates": len(cands), "eligible": len(ok), "scores": [x.get("score") for x in cands],
+               "picked": cands.index(pick), "judge_model": a.select_judge_model,
+               "judge_prompt_tokens": jpt, "judge_completion_tokens": jct,
+               "judge_cost_usd": round(jpt * a.judge_in_price / 1e6 + jct * a.judge_out_price / 1e6, 6)}
+    else:
+        pick = cands[0]
+    out, g, loop, cp = pick["out"], pick["g"], pick["loop"], pick["copy"]
+    row = {"id": item["id"], "system": a.system_name, "output": out,
+           "latency_ms": round((time.time() - t0) * 1000), "prompt_tokens": pt, "completion_tokens": ct,
+           "cost_usd": round(pt * a.in_price / 1e6 + ct * a.out_price / 1e6 + sel.get("judge_cost_usd", 0), 6),
+           "model": a.model, "decoding": a.dec, "loops_used": loop,
+           "gates": {k: v for k, v in g.items() if k != "problems"}}
+    if a.anti_copy or a.best_of > 1:
+        row["copy_overlap"] = round(cp, 4)
+    if sel:
+        row["selection"] = sel
+    return row
 
 
 def main():
@@ -188,6 +263,10 @@ def main():
     ap.add_argument("--in-price", type=float, default=0.0); ap.add_argument("--out-price", type=float, default=0.0)
     ap.add_argument("--concurrency", type=int, default=4); ap.add_argument("--limit", type=int)
     ap.add_argument("--reasoning-effort", default="low", help="low|medium|high, or omit (not sent)")
+    ap.add_argument("--anti-copy", action="store_true", help="revise near-copies of the draft (word-bigram F1 > 0.9)")
+    ap.add_argument("--best-of", type=int, default=1, help="run the whole pipeline N times, pick by --select-judge-model")
+    ap.add_argument("--select-judge-model", default="accounts/fireworks/models/glm-5p3")
+    ap.add_argument("--judge-in-price", type=float, default=0.0); ap.add_argument("--judge-out-price", type=float, default=0.0)
     ap.add_argument("--style-round", action="store_true", help="after the gates pass, one copywriter style edit, kept only if gates still pass")
     a = ap.parse_args()
     a.dec = decoding(a.provider, a.model, a.reasoning_effort)
@@ -208,7 +287,8 @@ def main():
     commit = subprocess.run(["git", "-C", ROOT, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     manifest = {"system": a.system_name, "provider": a.provider, "model": a.model, "loops": a.loops,
                 "prompt_sha256": hashlib.sha256(a.system_prompt.encode()).hexdigest()[:16],
-                "prompt_file": a.prompt_file, "decoding": a.dec, "style_round": a.style_round,
+                "prompt_file": a.prompt_file, "decoding": a.dec, "style_round": a.style_round, "anti_copy": a.anti_copy, "best_of": a.best_of,
+                "select_judge_model": a.select_judge_model if a.best_of > 1 else None,
                 "prices_usd_per_m": [a.in_price, a.out_price], "eval": a.eval, "rows": len(rows),
                 "pass_rate": sum(r["gates"]["pass"] for r in rows) / len(rows), "commit": commit,
                 "finished": time.strftime("%Y-%m-%dT%H:%M:%S%z")}
