@@ -35,6 +35,7 @@ Reference (F1): `frontier-strong:claude-opus-5-5`. 95% CIs in brackets. Δ is a 
 | `F2h_gpt61_humanizer` | 51% [45, 58] | -20 pp [-27, -14], significant (p=0.000) | 93% | 90% | 76% | 77% | $7.74 | 2.5s |
 | `F2_gpt61_terra` | 40% [34, 46] | -32 pp [-39, -24], significant (p=0.000) | 92% | 90% | 46% | 98% | $0.86 | 2.6s |
 | `X0_copy_draft (no rewrite: control)` | 32% [26, 38] | -40 pp [-47, -32], significant (p=0.000) | 100% | 100% | 32% | 100% | n/a | 0.0s |
+| `WF_Pairwise_both_orders_knockout_selector_with_fact_aware_eligibility_replace_the_1_10_judge_score_` (150 not run) (70 refused/failed, counted as fails) | 29% [20, 39] | -40 pp [-53, -27], significant (p=0.000) | 100% | 30% | 99% | 30% | $3.08 | 20.0s |
 | `O1_glm_base` | 27% [22, 33] | -44 pp [-52, -37], significant (p=0.000) | 91% | 82% | 33% | 100% | $0.10 | 1.2s |
 | `frontier-persona-preexisting` (120 not run) | 12% [7, 19] | -57 pp [-66, -48], significant (p=0.000) | 70% | 56% | 99% | 25% | n/a | n/a |
 
@@ -60,6 +61,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | `O2h_glm_humanizer` | 42% [33, 51] | -28 pp [-38, -18], significant (p=0.000) | 93% | 76% | 78% | 72% | $1.15 | 1.4s |
 | `frontier-live:claude-opus-5-5` | 41% [32, 50] | -28 pp [-37, -20], significant (p=0.000) | 76% | 68% | 83% | 95% | $7.21 | 3.7s |
 | `F2h_gpt61_humanizer` | 36% [28, 45] | -33 pp [-43, -23], significant (p=0.000) | 95% | 88% | 66% | 66% | $7.74 | 2.5s |
+| `WF_Pairwise_both_orders_knockout_selector_with_fact_aware_eligibility_replace_the_1_10_judge_score_` (30 not run) (70 refused/failed, counted as fails) | 29% [20, 39] | -40 pp [-53, -27], significant (p=0.000) | 100% | 30% | 99% | 30% | $3.08 | 20.0s |
 | `F2_gpt61_terra` | 20% [14, 28] | -49 pp [-58, -40], significant (p=0.000) | 92% | 88% | 24% | 97% | $0.86 | 2.6s |
 | `O1_glm_base` | 15% [10, 23] | -54 pp [-63, -45], significant (p=0.000) | 94% | 75% | 19% | 100% | $0.10 | 1.2s |
 | `frontier-persona-preexisting` | 12% [7, 19] | -57 pp [-66, -48], significant (p=0.000) | 70% | 56% | 99% | 25% | n/a | n/a |
@@ -87,6 +89,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | `frontier-live:claude-opus-5-5` | 40% [30, 50] | -29 pp [-39, -19], significant (p=0.000) | 78% | 68% | 81% | 96% | $7.21 | 3.7s |
 | `O2h_glm_humanizer` | 37% [28, 47] | -32 pp [-43, -20], significant (p=0.000) | 95% | 76% | 75% | 70% | $1.15 | 1.4s |
 | `F2h_gpt61_humanizer` | 30% [21, 40] | -39 pp [-50, -28], significant (p=0.000) | 95% | 88% | 62% | 60% | $7.74 | 2.5s |
+| `WF_Pairwise_both_orders_knockout_selector_with_fact_aware_eligibility_replace_the_1_10_judge_score_` (70 refused/failed, counted as fails) | 29% [20, 39] | -40 pp [-53, -27], significant (p=0.000) | 100% | 30% | 99% | 30% | $3.08 | 20.0s |
 | `F2_gpt61_terra` | 17% [10, 26] | -52 pp [-62, -42], significant (p=0.000) | 92% | 89% | 20% | 96% | $0.86 | 2.6s |
 | `O1_glm_base` | 15% [9, 24] | -54 pp [-64, -43], significant (p=0.000) | 97% | 75% | 17% | 100% | $0.10 | 1.2s |
 | `frontier-persona-preexisting` | 5% [2, 11] | -64 pp [-74, -53], significant (p=0.000) | 72% | 54% | 100% | 13% | n/a | n/a |
@@ -207,6 +210,7 @@ Gate columns show the share of items that pass each gate. An item a system refus
 | `O2h_glm_humanizer` | 9/130 (7% [3, 13]) | 70% [69, 72] | 0.10 [0.04, 0.17] | 0.78 [0.75, 0.80] | 91% [88, 94] |
 | `frontier-live:claude-opus-5-5` | 31/130 (24% [17, 32]) | 72% [70, 73] | 0.08 [0.03, 0.14] | 0.96 [0.94, 0.99] | 86% [82, 89] |
 | `F2h_gpt61_humanizer` | 6/130 (5% [2, 10]) | 68% [67, 70] | 0.13 [0.05, 0.24] | 0.77 [0.74, 0.79] | 91% [89, 94] |
+| `WF_Pairwise_both_orders_knockout_selector_with_fact_aware_eligibility_replace_the_1_10_judge_score_` | 0/100 (0% [0, 4]) | 74% [72, 77] | 0.00 [0.00, 0.00] | 0.89 [0.86, 0.92] | 94% [90, 98] |
 | `F2_gpt61_terra` | 11/130 (8% [4, 15]) | 62% [60, 64] | 0.40 [0.26, 0.57] | 0.90 [0.88, 0.91] | 90% [87, 93] |
 | `O1_glm_base` | 8/130 (6% [3, 12]) | 62% [61, 64] | 0.55 [0.39, 0.73] | 0.98 [0.97, 0.99] | 88% [84, 90] |
 | `frontier-persona-preexisting` | 39/130 (30% [22, 39]) | 70% [69, 72] | 0.02 [0.00, 0.05] | 0.61 [0.59, 0.65] | 91% [89, 94] |

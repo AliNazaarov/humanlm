@@ -23,5 +23,6 @@
  "rows": 80,
  "pass_rate": 0.975,
  "commit": "6e34ff2443045a1a81ab764fb3dc9ebdeef79a99",
- "finished": "2026-11-02T12:48:24-0700"
+ "finished": "2026-11-02T12:48:24-0700",
+ "note": "git_commit 6e34ff2 was HEAD on the run machine mid-session and was later rebased away by concurrent pushes; the run used hackathon/harness/harness.py as of origin/main ~12:50 PT. Rows: evals/runs/hack_F1H_opus_real.jsonl."
 }

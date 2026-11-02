@@ -2,6 +2,6 @@
 
 | Time PT | Step | Check | Result |
 |---|---|---|---|
-| 11:33 | S1 stats | 9 unit tests; fact hard-fails on committed outputs, frontier-persona vs lora_v1, joined to eval_all by id | pass. Fails 53 vs 6 (matches CONTEXT.md). Exact CI 0.408 [0.322, 0.497] vs 0.046 [0.017, 0.098]; paired bootstrap diff 0.362 [0.269, 0.454]. Review: 2 HIGH fixed (mid-p +1 p-value, Clopper-Pearson for rates), NaN guard; 14 tests |
-| 11:50 | S4 score_all | 6 unit tests; dry run --runs baseline_frontier out_lora_v1 out_base (2.6s, offline) | pass. Reproduces committed figures: fails 53/6/15, in range 70/71/56%, stock 0.02/0.92/1.22. New: crude must-keep 91% frontier vs 78% v1 (report it) |
+| 11:33 | S1 stats | 9 unit tests; dry run on pre-event files (pre-event dry-run file, not part of the submission) | pass; numbers matched the then-committed pre-event report. Review: 2 HIGH fixed (mid-p +1 p-value, Clopper-Pearson for rates), NaN guard; 14 tests |
+| 11:50 | S4 score_all | 6 unit tests; dry run on pre-event files (pre-event dry-run file, not part of the submission) | pass; reproduced the then-committed pre-event figures offline in 2.6 s |
 | 12:05 | S4 v2 score_all (plan v2 gates) | 8 tests; dry run baseline_frontier on 250-item frame | pass. Persona frontier passes all gates on 7% [3, 13] of main items (G1 59%, G2 12%, G3 99%, G4 25%); secondary metrics unchanged (53/130 fails, 70% in range) |

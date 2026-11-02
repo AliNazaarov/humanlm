@@ -8,3 +8,5 @@ truststore
 nbformat
 nbconvert
 nbclient
+scipy
+ipykernel

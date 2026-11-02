@@ -1,8 +1,124 @@
 {
- "generated": "2026-11-02 11:36:34",
+ "generated": "2026-11-02 13:43:13",
  "n_items": 250,
  "band": "evals/runs/band_v0.json",
  "systems": {
+  "O3k_glm_calm_claimcheck_bo3": {
+   "forensics": {
+    "official_pass": 0.992,
+    "lenient_pass": 1.0,
+    "g1_numbers_added": 0,
+    "g1_names_added_real": 0,
+    "g1_quote_new": 0,
+    "g1_quote_reworded": 2,
+    "g1_only_name_artefact": 0,
+    "g1_only_attribution_verb": 0,
+    "g2_numbers_dropped_real": 0,
+    "g2_only_spelled_out": 0,
+    "g2_names_dropped_real": 0,
+    "g2_only_name_artefact": 0,
+    "n": 250
+   },
+   "ref": {
+    "chrf": 0.6451367989866144,
+    "wordf1": 0.681375168069274,
+    "closer_than_draft": 0.15,
+    "chrf_vs_draft": 0.716711389489742,
+    "n": 120
+   },
+   "tells": {
+    "hedge_rate": 0.916,
+    "tricolon_rate": 0.892,
+    "para_opener_repeat": 0.848,
+    "one_line_para_share": 0.364,
+    "burstiness": 0.68,
+    "mattr": 0.508,
+    "all": 0.128,
+    "share": 0.7013333333333334
+   },
+   "gaming": {
+    "copy_bi_f1": 0.5664810050000926,
+    "near_copy": 0.0,
+    "identical": 0.0,
+    "deleted_sent_rate": 0.08079797979797979,
+    "any_sent_deleted": 0.372,
+    "label_stripped": 0.012,
+    "markdown_added": 0.0,
+    "markdown_stripped": 0.064,
+    "meta_note": 0.008,
+    "trailing_numbers": 0.0,
+    "repeated_sentence": 0.004,
+    "artefact_any": 0.012
+   },
+   "loops": {
+    "hist": {
+     "0": 27,
+     "1": 148,
+     "2": 44,
+     "3": 22
+    },
+    "first_draft_pass": 0.108,
+    "revised_still_fail": 2
+   }
+  },
+  "O3j_glm_bestof3_judged": {
+   "forensics": {
+    "official_pass": 0.98,
+    "lenient_pass": 0.988,
+    "g1_numbers_added": 0,
+    "g1_names_added_real": 0,
+    "g1_quote_new": 0,
+    "g1_quote_reworded": 3,
+    "g1_only_name_artefact": 0,
+    "g1_only_attribution_verb": 2,
+    "g2_numbers_dropped_real": 0,
+    "g2_only_spelled_out": 0,
+    "g2_names_dropped_real": 3,
+    "g2_only_name_artefact": 0,
+    "n": 250
+   },
+   "ref": {
+    "chrf": 0.5812818755769943,
+    "wordf1": 0.62037059960085,
+    "closer_than_draft": 0.05,
+    "chrf_vs_draft": 0.6103086736992004,
+    "n": 120
+   },
+   "tells": {
+    "hedge_rate": 0.928,
+    "tricolon_rate": 0.9,
+    "para_opener_repeat": 0.888,
+    "one_line_para_share": 0.36,
+    "burstiness": 0.688,
+    "mattr": 0.456,
+    "all": 0.132,
+    "share": 0.7033333333333334
+   },
+   "gaming": {
+    "copy_bi_f1": 0.44920602039171875,
+    "near_copy": 0.0,
+    "identical": 0.0,
+    "deleted_sent_rate": 0.15848372738372737,
+    "any_sent_deleted": 0.548,
+    "label_stripped": 0.012,
+    "markdown_added": 0.0,
+    "markdown_stripped": 0.06,
+    "meta_note": 0.016,
+    "trailing_numbers": 0.0,
+    "repeated_sentence": 0.004,
+    "artefact_any": 0.02
+   },
+   "loops": {
+    "hist": {
+     "0": 15,
+     "1": 163,
+     "2": 43,
+     "3": 23
+    },
+    "first_draft_pass": 0.06,
+    "revised_still_fail": 5
+   }
+  },
   "O3c_glm_prompt_harness_style": {
    "forensics": {
     "official_pass": 0.968,
@@ -59,6 +175,180 @@
     },
     "first_draft_pass": 0.168,
     "revised_still_fail": 8
+   }
+  },
+  "O3e_glm_harness_cliche": {
+   "forensics": {
+    "official_pass": 0.964,
+    "lenient_pass": 0.988,
+    "g1_numbers_added": 0,
+    "g1_names_added_real": 0,
+    "g1_quote_new": 0,
+    "g1_quote_reworded": 5,
+    "g1_only_name_artefact": 0,
+    "g1_only_attribution_verb": 1,
+    "g2_numbers_dropped_real": 0,
+    "g2_only_spelled_out": 0,
+    "g2_names_dropped_real": 0,
+    "g2_only_name_artefact": 0,
+    "n": 250
+   },
+   "ref": {
+    "chrf": 0.6207618024053789,
+    "wordf1": 0.664470125031585,
+    "closer_than_draft": 0.10833333333333334,
+    "chrf_vs_draft": 0.6782888895712494,
+    "n": 120
+   },
+   "tells": {
+    "hedge_rate": 0.932,
+    "tricolon_rate": 0.908,
+    "para_opener_repeat": 0.824,
+    "one_line_para_share": 0.348,
+    "burstiness": 0.696,
+    "mattr": 0.496,
+    "all": 0.14,
+    "share": 0.7006666666666667
+   },
+   "gaming": {
+    "copy_bi_f1": 0.5667159834628214,
+    "near_copy": 0.036,
+    "identical": 0.004,
+    "deleted_sent_rate": 0.11622857142857143,
+    "any_sent_deleted": 0.42,
+    "label_stripped": 0.016,
+    "markdown_added": 0.008,
+    "markdown_stripped": 0.06,
+    "meta_note": 0.004,
+    "trailing_numbers": 0.0,
+    "repeated_sentence": 0.004,
+    "artefact_any": 0.012
+   },
+   "loops": {
+    "hist": {
+     "0": 48,
+     "1": 157,
+     "2": 20,
+     "3": 24
+    },
+    "first_draft_pass": 0.192,
+    "revised_still_fail": 9
+   }
+  },
+  "O3f_glm_calm": {
+   "forensics": {
+    "official_pass": 0.956,
+    "lenient_pass": 0.984,
+    "g1_numbers_added": 0,
+    "g1_names_added_real": 0,
+    "g1_quote_new": 0,
+    "g1_quote_reworded": 4,
+    "g1_only_name_artefact": 0,
+    "g1_only_attribution_verb": 4,
+    "g2_numbers_dropped_real": 0,
+    "g2_only_spelled_out": 0,
+    "g2_names_dropped_real": 2,
+    "g2_only_name_artefact": 1,
+    "n": 250
+   },
+   "ref": {
+    "chrf": 0.6503690341529441,
+    "wordf1": 0.6859199176832684,
+    "closer_than_draft": 0.19166666666666668,
+    "chrf_vs_draft": 0.732407257970168,
+    "n": 120
+   },
+   "tells": {
+    "hedge_rate": 0.92,
+    "tricolon_rate": 0.904,
+    "para_opener_repeat": 0.84,
+    "one_line_para_share": 0.38,
+    "burstiness": 0.696,
+    "mattr": 0.544,
+    "all": 0.152,
+    "share": 0.714
+   },
+   "gaming": {
+    "copy_bi_f1": 0.5811723456785497,
+    "near_copy": 0.0,
+    "identical": 0.0,
+    "deleted_sent_rate": 0.07776709956709957,
+    "any_sent_deleted": 0.344,
+    "label_stripped": 0.016,
+    "markdown_added": 0.008,
+    "markdown_stripped": 0.06,
+    "meta_note": 0.004,
+    "trailing_numbers": 0.0,
+    "repeated_sentence": 0.004,
+    "artefact_any": 0.008
+   },
+   "loops": {
+    "hist": {
+     "0": 19,
+     "1": 151,
+     "2": 40,
+     "3": 33
+    },
+    "first_draft_pass": 0.076,
+    "revised_still_fail": 11
+   }
+  },
+  "O3d_glm_harness_anticopy": {
+   "forensics": {
+    "official_pass": 0.952,
+    "lenient_pass": 0.976,
+    "g1_numbers_added": 0,
+    "g1_names_added_real": 0,
+    "g1_quote_new": 0,
+    "g1_quote_reworded": 4,
+    "g1_only_name_artefact": 0,
+    "g1_only_attribution_verb": 3,
+    "g2_numbers_dropped_real": 2,
+    "g2_only_spelled_out": 0,
+    "g2_names_dropped_real": 2,
+    "g2_only_name_artefact": 0,
+    "n": 250
+   },
+   "ref": {
+    "chrf": 0.5964031787610703,
+    "wordf1": 0.6363315421070432,
+    "closer_than_draft": 0.08333333333333333,
+    "chrf_vs_draft": 0.6497345872571125,
+    "n": 120
+   },
+   "tells": {
+    "hedge_rate": 0.928,
+    "tricolon_rate": 0.892,
+    "para_opener_repeat": 0.852,
+    "one_line_para_share": 0.384,
+    "burstiness": 0.676,
+    "mattr": 0.468,
+    "all": 0.156,
+    "share": 0.7
+   },
+   "gaming": {
+    "copy_bi_f1": 0.5180798820591014,
+    "near_copy": 0.0,
+    "identical": 0.0,
+    "deleted_sent_rate": 0.12373414363414363,
+    "any_sent_deleted": 0.436,
+    "label_stripped": 0.012,
+    "markdown_added": 0.008,
+    "markdown_stripped": 0.056,
+    "meta_note": 0.004,
+    "trailing_numbers": 0.0,
+    "repeated_sentence": 0.004,
+    "artefact_any": 0.008
+   },
+   "loops": {
+    "hist": {
+     "0": 39,
+     "1": 146,
+     "2": 39,
+     "3": 20
+    },
+    "first_draft_pass": 0.156,
+    "revised_still_fail": 12
    }
   },
   "O3b_glm_prompt_harness": {
@@ -235,6 +525,64 @@
     "revised_still_fail": 18
    }
   },
+  "O3g_glm_calm_retrieval_claimcheck": {
+   "forensics": {
+    "official_pass": 0.924,
+    "lenient_pass": 0.972,
+    "g1_numbers_added": 0,
+    "g1_names_added_real": 0,
+    "g1_quote_new": 0,
+    "g1_quote_reworded": 5,
+    "g1_only_name_artefact": 0,
+    "g1_only_attribution_verb": 6,
+    "g2_numbers_dropped_real": 0,
+    "g2_only_spelled_out": 1,
+    "g2_names_dropped_real": 0,
+    "g2_only_name_artefact": 0,
+    "n": 250
+   },
+   "ref": {
+    "chrf": 0.6545028068075855,
+    "wordf1": 0.6958314038549935,
+    "closer_than_draft": 0.225,
+    "chrf_vs_draft": 0.6908300750788399,
+    "n": 120
+   },
+   "tells": {
+    "hedge_rate": 0.924,
+    "tricolon_rate": 0.876,
+    "para_opener_repeat": 0.872,
+    "one_line_para_share": 0.436,
+    "burstiness": 0.688,
+    "mattr": 0.548,
+    "all": 0.156,
+    "share": 0.724
+   },
+   "gaming": {
+    "copy_bi_f1": 0.5750300342070597,
+    "near_copy": 0.0,
+    "identical": 0.0,
+    "deleted_sent_rate": 0.08341672771672771,
+    "any_sent_deleted": 0.364,
+    "label_stripped": 0.112,
+    "markdown_added": 0.008,
+    "markdown_stripped": 0.06,
+    "meta_note": 0.0,
+    "trailing_numbers": 0.0,
+    "repeated_sentence": 0.004,
+    "artefact_any": 0.004
+   },
+   "loops": {
+    "hist": {
+     "0": 26,
+     "1": 107,
+     "2": 62,
+     "3": 52
+    },
+    "first_draft_pass": 0.104,
+    "revised_still_fail": 19
+   }
+  },
   "O2_glm_prompt": {
    "forensics": {
     "official_pass": 0.732,
@@ -341,6 +689,64 @@
     "artefact_any": 0.008064516129032258
    }
   },
+  "F1h_opus_humanizer": {
+   "forensics": {
+    "official_pass": 0.6048387096774194,
+    "lenient_pass": 0.7782258064516129,
+    "g1_numbers_added": 1,
+    "g1_names_added_real": 8,
+    "g1_quote_new": 0,
+    "g1_quote_reworded": 8,
+    "g1_only_name_artefact": 7,
+    "g1_only_attribution_verb": 10,
+    "g2_numbers_dropped_real": 8,
+    "g2_only_spelled_out": 21,
+    "g2_names_dropped_real": 10,
+    "g2_only_name_artefact": 15,
+    "n": 248
+   },
+   "ref": {
+    "chrf": 0.6146437686222423,
+    "wordf1": 0.6649920699185733,
+    "closer_than_draft": 0.1016949152542373,
+    "chrf_vs_draft": 0.6391441928350542,
+    "n": 118
+   },
+   "tells": {
+    "hedge_rate": 0.9153225806451613,
+    "tricolon_rate": 0.9032258064516129,
+    "para_opener_repeat": 0.8508064516129032,
+    "one_line_para_share": 0.34274193548387094,
+    "burstiness": 0.7016129032258065,
+    "mattr": 0.5120967741935484,
+    "all": 0.13709677419354838,
+    "share": 0.7043010752688171
+   },
+   "gaming": {
+    "copy_bi_f1": 0.4629435181656733,
+    "near_copy": 0.020161290322580645,
+    "identical": 0.0,
+    "deleted_sent_rate": 0.15501505662795986,
+    "any_sent_deleted": 0.5524193548387096,
+    "label_stripped": 0.0,
+    "markdown_added": 0.012096774193548387,
+    "markdown_stripped": 0.06048387096774194,
+    "meta_note": 0.0,
+    "trailing_numbers": 0.0,
+    "repeated_sentence": 0.0,
+    "artefact_any": 0.0
+   },
+   "loops": {
+    "hist": {
+     "0": 248,
+     "1": 0,
+     "2": 0,
+     "3": 0
+    },
+    "first_draft_pass": 0.6048387096774194,
+    "revised_still_fail": 0
+   }
+  },
   "frontier-live:claude-opus-5-5": {
    "forensics": {
     "official_pass": 0.5362903225806451,
@@ -387,6 +793,122 @@
     "trailing_numbers": 0.0,
     "repeated_sentence": 0.0,
     "artefact_any": 0.016129032258064516
+   }
+  },
+  "O2h_glm_humanizer": {
+   "forensics": {
+    "official_pass": 0.528,
+    "lenient_pass": 0.628,
+    "g1_numbers_added": 2,
+    "g1_names_added_real": 4,
+    "g1_quote_new": 0,
+    "g1_quote_reworded": 8,
+    "g1_only_name_artefact": 6,
+    "g1_only_attribution_verb": 6,
+    "g2_numbers_dropped_real": 8,
+    "g2_only_spelled_out": 12,
+    "g2_names_dropped_real": 18,
+    "g2_only_name_artefact": 14,
+    "n": 250
+   },
+   "ref": {
+    "chrf": 0.618022033449545,
+    "wordf1": 0.6667436040506468,
+    "closer_than_draft": 0.15,
+    "chrf_vs_draft": 0.661309366784067,
+    "n": 120
+   },
+   "tells": {
+    "hedge_rate": 0.924,
+    "tricolon_rate": 0.884,
+    "para_opener_repeat": 0.88,
+    "one_line_para_share": 0.336,
+    "burstiness": 0.684,
+    "mattr": 0.468,
+    "all": 0.116,
+    "share": 0.696
+   },
+   "gaming": {
+    "copy_bi_f1": 0.520899207173254,
+    "near_copy": 0.02,
+    "identical": 0.008,
+    "deleted_sent_rate": 0.17203554223554224,
+    "any_sent_deleted": 0.584,
+    "label_stripped": 0.036,
+    "markdown_added": 0.104,
+    "markdown_stripped": 0.036,
+    "meta_note": 0.004,
+    "trailing_numbers": 0.0,
+    "repeated_sentence": 0.004,
+    "artefact_any": 0.016
+   },
+   "loops": {
+    "hist": {
+     "0": 250,
+     "1": 0,
+     "2": 0,
+     "3": 0
+    },
+    "first_draft_pass": 0.528,
+    "revised_still_fail": 0
+   }
+  },
+  "F2h_gpt61_humanizer": {
+   "forensics": {
+    "official_pass": 0.512,
+    "lenient_pass": 0.564,
+    "g1_numbers_added": 0,
+    "g1_names_added_real": 2,
+    "g1_quote_new": 0,
+    "g1_quote_reworded": 8,
+    "g1_only_name_artefact": 1,
+    "g1_only_attribution_verb": 7,
+    "g2_numbers_dropped_real": 3,
+    "g2_only_spelled_out": 2,
+    "g2_names_dropped_real": 5,
+    "g2_only_name_artefact": 15,
+    "n": 250
+   },
+   "ref": {
+    "chrf": 0.6405446445538588,
+    "wordf1": 0.6905615447216218,
+    "closer_than_draft": 0.125,
+    "chrf_vs_draft": 0.7068994084140243,
+    "n": 120
+   },
+   "tells": {
+    "hedge_rate": 0.888,
+    "tricolon_rate": 0.88,
+    "para_opener_repeat": 0.812,
+    "one_line_para_share": 0.28,
+    "burstiness": 0.68,
+    "mattr": 0.48,
+    "all": 0.064,
+    "share": 0.67
+   },
+   "gaming": {
+    "copy_bi_f1": 0.572812877928902,
+    "near_copy": 0.02,
+    "identical": 0.0,
+    "deleted_sent_rate": 0.11620855810855811,
+    "any_sent_deleted": 0.436,
+    "label_stripped": 0.0,
+    "markdown_added": 0.028,
+    "markdown_stripped": 0.04,
+    "meta_note": 0.004,
+    "trailing_numbers": 0.0,
+    "repeated_sentence": 0.0,
+    "artefact_any": 0.004
+   },
+   "loops": {
+    "hist": {
+     "0": 250,
+     "1": 0,
+     "2": 0,
+     "3": 0
+    },
+    "first_draft_pass": 0.512,
+    "revised_still_fail": 0
    }
   },
   "F2_gpt61_terra": {
@@ -493,6 +1015,57 @@
     "trailing_numbers": 0.0,
     "repeated_sentence": 0.0,
     "artefact_any": 1.0
+   }
+  },
+  "WF_Pairwise_both_orders_knockout_selector_with_fact_aware_eligibility_replace_the_1_10_judge_score_": {
+   "forensics": {
+    "official_pass": 0.9666666666666667,
+    "lenient_pass": 0.9666666666666667,
+    "g1_numbers_added": 0,
+    "g1_names_added_real": 0,
+    "g1_quote_new": 0,
+    "g1_quote_reworded": 0,
+    "g1_only_name_artefact": 0,
+    "g1_only_attribution_verb": 0,
+    "g2_numbers_dropped_real": 0,
+    "g2_only_spelled_out": 0,
+    "g2_names_dropped_real": 0,
+    "g2_only_name_artefact": 0,
+    "n": 30
+   },
+   "tells": {
+    "hedge_rate": 0.9333333333333333,
+    "tricolon_rate": 0.9,
+    "para_opener_repeat": 0.9,
+    "one_line_para_share": 0.03333333333333333,
+    "burstiness": 0.6,
+    "mattr": 0.43333333333333335,
+    "all": 0.03333333333333333,
+    "share": 0.6333333333333333
+   },
+   "gaming": {
+    "copy_bi_f1": 0.5550894698232612,
+    "near_copy": 0.0,
+    "identical": 0.0,
+    "deleted_sent_rate": 0.11083333333333334,
+    "any_sent_deleted": 0.43333333333333335,
+    "label_stripped": 0.0,
+    "markdown_added": 0.03333333333333333,
+    "markdown_stripped": 0.0,
+    "meta_note": 0.0,
+    "trailing_numbers": 0.0,
+    "repeated_sentence": 0.0,
+    "artefact_any": 0.0
+   },
+   "loops": {
+    "hist": {
+     "0": 7,
+     "1": 16,
+     "2": 3,
+     "3": 2
+    },
+    "first_draft_pass": 0.23333333333333334,
+    "revised_still_fail": 1
    }
   },
   "O1_glm_base": {
@@ -699,6 +1272,78 @@
     "n": 248
    }
   },
+  "F2h_gpt61_humanizer": {
+   "chrf_ref": {
+    "mean": -0.007608514512975345,
+    "lo": -0.01800400771033881,
+    "hi": 0.0036615272521057485,
+    "p": 0.244,
+    "n": 120
+   },
+   "wordf1_ref": {
+    "mean": -0.025116561135875792,
+    "lo": -0.03518110871573625,
+    "hi": -0.01335668639213848,
+    "p": 0.0,
+    "n": 120
+   },
+   "inband_holdout_share": {
+    "mean": 0.01133333333333333,
+    "lo": -0.009333333333333334,
+    "hi": 0.03266666666666666,
+    "p": 0.294,
+    "n": 250
+   },
+   "inband_holdout_all": {
+    "mean": 0.048,
+    "lo": 0.012,
+    "hi": 0.088,
+    "p": 0.014,
+    "n": 250
+   },
+   "pass": {
+    "mean": 0.416,
+    "lo": 0.352,
+    "hi": 0.48,
+    "p": 0.0,
+    "n": 250
+   },
+   "pass_lenient": {
+    "mean": 0.404,
+    "lo": 0.344,
+    "hi": 0.464,
+    "p": 0.0,
+    "n": 250
+   },
+   "copy_bi_f1": {
+    "mean": 0.06402039783384907,
+    "lo": 0.04008477093178179,
+    "hi": 0.08874739489505262,
+    "p": 0.0,
+    "n": 250
+   },
+   "deleted_sent_rate": {
+    "mean": -0.08284982794982795,
+    "lo": -0.10439080919080919,
+    "hi": -0.06364309024309024,
+    "p": 0.0,
+    "n": 250
+   },
+   "any_sent_deleted": {
+    "mean": -0.264,
+    "lo": -0.328,
+    "hi": -0.204,
+    "p": 0.0,
+    "n": 250
+   },
+   "artefact_any": {
+    "mean": 0.008,
+    "lo": -0.008,
+    "hi": 0.024,
+    "p": 0.438,
+    "n": 250
+   }
+  },
   "F2_gpt61_terra": {
    "chrf_ref": {
     "mean": -0.019384403928955116,
@@ -843,6 +1488,78 @@
     "n": 250
    }
   },
+  "O2h_glm_humanizer": {
+   "chrf_ref": {
+    "mean": 0.014914096591338558,
+    "lo": 0.0015833335389585927,
+    "hi": 0.031094256706177662,
+    "p": 0.02,
+    "n": 120
+   },
+   "wordf1_ref": {
+    "mean": -0.0012986204649008408,
+    "lo": -0.014964176575232508,
+    "hi": 0.01614043451607875,
+    "p": 0.878,
+    "n": 120
+   },
+   "inband_holdout_share": {
+    "mean": -0.014666666666666665,
+    "lo": -0.033333333333333326,
+    "hi": 0.0033333333333333357,
+    "p": 0.106,
+    "n": 250
+   },
+   "inband_holdout_all": {
+    "mean": -0.004,
+    "lo": -0.04,
+    "hi": 0.036,
+    "p": 0.92,
+    "n": 250
+   },
+   "pass": {
+    "mean": 0.4,
+    "lo": 0.336,
+    "hi": 0.468,
+    "p": 0.0,
+    "n": 250
+   },
+   "pass_lenient": {
+    "mean": 0.34,
+    "lo": 0.28,
+    "hi": 0.4,
+    "p": 0.0,
+    "n": 250
+   },
+   "copy_bi_f1": {
+    "mean": 0.11593406858949701,
+    "lo": 0.09362474247396703,
+    "hi": 0.14054480504528574,
+    "p": 0.0,
+    "n": 250
+   },
+   "deleted_sent_rate": {
+    "mean": -0.13867681207681207,
+    "lo": -0.16334606504606503,
+    "hi": -0.11713270063270063,
+    "p": 0.0,
+    "n": 250
+   },
+   "any_sent_deleted": {
+    "mean": -0.412,
+    "lo": -0.472,
+    "hi": -0.352,
+    "p": 0.0,
+    "n": 250
+   },
+   "artefact_any": {
+    "mean": -0.004,
+    "lo": -0.024,
+    "hi": 0.016,
+    "p": 0.842,
+    "n": 250
+   }
+  },
   "O1_glm_base": {
    "chrf_ref": {
     "mean": 0.0014414909491633496,
@@ -919,51 +1636,103 @@
  "examples": [
   {
    "id": "trick-03",
-   "why": "`frontier-strong:claude-opus-5-5` dropped number(s) ['2000']; `frontier-live:claude-opus-5-5` dropped number(s) ['2000']; `F2_gpt61_terra` dropped number(s) ['2000']; harness passed, deleted-sentence rate 0%",
+   "why": "`frontier-strong:claude-opus-5-5` dropped number(s) ['2000']; `frontier-live:claude-opus-5-5` dropped number(s) ['2000']; `F2h_gpt61_humanizer` dropped number(s) ['2000']; `F2_gpt61_terra` dropped number(s) ['2000']; harness passed, deleted-sentence rate 0%",
    "draft": "🎉 Private beta wrap-up! 🎉 Over 2,000 freelancers (2,047 to be exact! 🙌) invoiced a whopping KES 84,312,500 with Kopa 💸 — and got paid in a median of just 3.6 days! ⚡ The future of freelancing is HERE! 🇰🇪 #Fintech #Kenya",
-   "frontier": "🎉 Our private beta has wrapped up! 🎉\n\nIn total, 2,047 freelancers invoiced KES 84,312,500 with Kopa and got paid in a median of 3.6 days. 💸⚡\n\nThe future of freelancing is here! 🇰🇪 #Fintech #Kenya",
+   "frontier": "Kopa's private beta has wrapped up. A total of 2,047 freelancers invoiced KES 84,312,500 and got paid in a median of 3.6 days.\n\n#Fintech #Kenya",
    "claude_strong": "Our private beta is done. 2,047 freelancers invoiced KES 84,312,500 through Kopa, and the median time to get paid was 3.6 days. #Fintech #Kenya",
    "harness": "Our private beta is complete. Over 2,000 freelancers (2,047 to be exact) invoiced KES 84,312,500 through Kopa, with a median payment time of just 3.6 days. The future of freelancing is here, and this is what it looks like in Kenya. #Fintech #Kenya",
    "human": null
   },
   {
    "id": "ho-018",
-   "why": "`frontier-strong:claude-opus-5-5` dropped name(s) ['despite'], changed the wording inside a quotation; `frontier-live:claude-opus-5-5` dropped name(s) ['despite'], changed the wording inside a quotation; `F2_gpt61_terra` dropped name(s) ['despite']; harness passed, deleted-sentence rate 0%",
+   "why": "`frontier-strong:claude-opus-5-5` dropped name(s) ['despite'], changed the wording inside a quotation; `frontier-live:claude-opus-5-5` dropped name(s) ['despite'], changed the wording inside a quotation; `F2h_gpt61_humanizer` dropped name(s) ['despite'], changed the wording inside a quotation; `F2_gpt61_terra` dropped name(s) ['despite']; harness passed, deleted-sentence rate 0%",
    "draft": "Takamatsu is an incredibly renowned city throughout Japan for its udon, one of the country's three major noodle specialties. These udon noodles are distinctively white, fairly thick, and chewy. While the type produced within Kagawa Prefecture is sometimes called \"Sanuki udon\" (meaning Kagawa in the pre-modern era), this regional specialty is so widely loved across Japan that it is often mistaken for the \"normal\" udon. In fact, most people imagine the traditional udon when they simply hear the word \"udon.\" Despite udon being so widespread, Takamatsu does it better and cheaper than anywhere else in the nation. There are literally hundreds of udon shops within the city limits. Because local foods are a primary driver of Japanese tourism, countless visitors flock to Takamatsu for the udon, often undertaking \"chain-eating\" tours to visit the city's most famous shops.",
-   "frontier": "Takamatsu is renowned throughout Japan for its udon, one of the country’s three major noodle specialties. The noodles are white, fairly thick, and chewy. Udon made in Kagawa Prefecture is sometimes called “Sanuki udon,” after the pre-modern name for Kagawa. This regional specialty is so widely loved across Japan that it is often mistaken for “normal” udon. In fact, most people picture traditional udon when they hear the word “udon.”\n\nAlthough udon is widespread, Takamatsu does it better and cheaper than anywhere else in Japan. The city has hundreds of udon shops. Local food is a major draw for Japanese tourists, and countless visitors come to Takamatsu for its udon, often taking “chain-eating” tours of the city’s most famous shops.",
+   "frontier": "Takamatsu is famous throughout Japan for udon, one of the country's three major noodle specialties. The noodles are white, fairly thick, and chewy. Udon made in Kagawa Prefecture is sometimes called \"Sanuki udon,\" after the pre-modern name for Kagawa. The regional specialty is so popular across Japan that it is often mistaken for \"normal\" udon; most people picture this traditional style when they hear the word \"udon.\"\n\nThough udon is widespread, Takamatsu does it better and cheaper than anywhere else in Japan. The city has hundreds of udon shops. Local food is a major draw for Japanese tourists, and many visit Takamatsu for its udon, often going on \"chain-eating\" tours of the city's most famous shops.",
    "claude_strong": "Takamatsu is famous across Japan for udon, one of the country's three major noodle specialties. The noodles are white and fairly thick, with a chewy texture. The version made in Kagawa Prefecture is sometimes called \"Sanuki udon,\" after the pre-modern name for Kagawa. It is so widely loved that people often take it for \"normal\" udon, and when most Japanese hear the word \"udon,\" this is the noodle they picture. Udon is eaten everywhere, but Takamatsu makes it better and cheaper than anywhere else in the country. The city has hundreds of udon shops. Local food is one of the main reasons people travel in Japan, so visitors come to Takamatsu in large numbers for the udon, and many go on \"chain-eating\" tours of its best-known shops.",
    "harness": "Takamatsu is famous throughout Japan for its udon, one of the country's three major noodle specialties. The noodles are white, fairly thick, and chewy. The version made in Kagawa Prefecture is sometimes called Sanuki udon (Sanuki being the old name for Kagawa), but the style is so widely loved across Japan that it's often mistaken for the normal udon—in fact, most people picture it when they simply hear the word udon. Despite how widespread udon is, Takamatsu makes it better and cheaper than anywhere else in the country. There are literally hundreds of udon shops within the city limits. Since local food is a major driver of Japanese tourism, visitors flock to Takamatsu for the udon, often going on \"chain-eating\" tours to hit the city's most famous shops.",
    "human": "Takamatsu is extremely well-known throughout Japan for its udon, one of the three major types of Japanese noodle dishes. Udon noodles are distinctive in that they are white, fairly thick, and chewy. Kagawa Prefecture is famous for this food, and the type made within the prefecture is sometimes called Sanuki udon, 'Sanuki' being Kagawa's name before the modern era. While this can be considered a regional specialty of Kagawa, the Sanuki variety is so widely-loved throughout Japan that it is often thought of as the 'normal' type, and is what most people imagine when they hear the word 'udon'. Despite udon being so widespread, Takamatsu does it better and cheaper than anywhere else in the country. There are literally hundreds of udon shops within the city limits. Because local foods are often a driving force in Japanese tourism, many people flock to the city for the udon, often doing \"chain-eating\" tours around the city to famous shops."
   },
   {
-   "id": "dev-016",
-   "why": "`frontier-strong:claude-opus-5-5` dropped number(s) ['1']; `frontier-live:claude-opus-5-5` dropped number(s) ['1']; harness passed, deleted-sentence rate 17%",
-   "draft": "Simple, Transparent Pricing That Grows With You\nAt Stackhand, we believe world-class monitoring should be accessible to everyone. That's why we offer flexible plans designed to scale seamlessly alongside your business.\n🆓 Free — Perfect for getting started. Monitor up to 3 endpoints with lightning-fast 1-minute checks.\n🚀 Team — Just $29/month for 50 monitors, with the same 1-minute checks.\nNo hidden fees. No surprises. Just peace of mind.\nStart free today!",
-   "frontier": "## Simple, Transparent Pricing That Grows With You\n\nAt Stackhand, we believe world-class monitoring should be accessible to everyone. Our flexible plans scale with your business.\n\n🆓 **Free** — Get started with up to 3 endpoints and fast, 1-minute checks.\n\n🚀 **Team** — Monitor 50 endpoints for $29/month, with the same 1-minute checks.\n\nNo hidden fees. No surprises. Just peace of mind.\n\nStart free today!",
-   "claude_strong": "Pricing That Grows With You\n\nStackhand plans scale as your business grows, so you can start small and add monitors when you need them.\n\nFree: Monitor up to 3 endpoints with checks every minute.\nTeam: $29/month for 50 monitors, also checked every minute.\n\nThere are no hidden fees.\n\nStart free today.",
-   "harness": "# Simple, Transparent Pricing That Grows With You\n\nAt Stackhand, we think monitoring of the highest quality should be within everyone's reach. That's why our plans are flexible and built to scale right alongside your business.\n\n**Free.** Perfect for getting started. Monitor up to 3 endpoints with fast 1-minute checks.\n\n**Team.** $29/month gets you 50 monitors, with the same 1-minute checks.\n\nNo hidden fees. No surprises. Just peace of mind.\n\nStart free today.",
+   "id": "dev-068",
+   "why": "`frontier-strong:claude-opus-5-5` dropped name(s) ['trust']; `frontier-live:claude-opus-5-5` added name(s) ['when'], dropped name(s) ['no', 'trust']; `F2h_gpt61_humanizer` dropped number(s) ['2', '3', '4'], dropped name(s) ['downtime', 'no', 'trust']; harness passed, deleted-sentence rate 0%",
+   "draft": "🚀 BIG NEWS: Stackhand Status Pages are LIVE! 🎉 🧵👇\n\n1/ Downtime happens. But leaving your customers in the dark? That's optional. 💡 Today we're launching status pages that update themselves — powered by our lightning-fast 1-minute checks.\n\n2/ No more scrambling to post updates during an incident. Your monitors do the talking. Transparency on autopilot. ✨\n\n3/ 🆓 Free plan: one status page on a stackhand.page subdomain\n💼 Team plan ($29/mo): bring your own custom domain\n\n4/ Trust is built in the hard moments. Make yours count. 👉 stackhand.dev/status\n\n#DevOps #SRE #Startups #BuildInPublic",
+   "frontier": "Stackhand Status Pages are live. They update automatically using 1-minute checks, so your customers can see what's happening without you posting updates during an incident.\n\nThe free plan includes one status page on a stackhand.page subdomain. The Team plan costs $29/mo and supports a custom domain.\n\nstackhand.dev/status\n\n#DevOps #SRE #Startups #BuildInPublic",
+   "claude_strong": "Stackhand Status Pages are live. Thread below.\n\n1/ Downtime happens. Leaving your customers without information is a choice. Today we're launching status pages that update themselves, driven by our 1-minute checks.\n\n2/ You no longer have to write and post updates in the middle of an incident. Your monitors update the page for you.\n\n3/ Free plan: one status page on a stackhand.page subdomain\nTeam plan ($29/mo): use your own custom domain\n\n4/ Customers judge you by how you handle outages. stackhand.dev/status\n\n#DevOps #SRE #Startups #BuildInPublic",
+   "harness": "Big news: Stackhand status pages are live.\n\n1/ Downtime happens. Leaving your customers in the dark doesn't have to. Today we're launching status pages that update themselves, powered by our 1-minute checks.\n\n2/ No more scrambling to post updates during an incident. Your monitors do the talking, transparency on autopilot.\n\n3/ The free plan includes one status page on a stackhand.page subdomain. The Team plan ($29/mo) lets you bring your own custom domain.\n\n4/ Trust is built in the hard moments. Make yours count: stackhand.dev/status\n\n#DevOps #SRE #Startups #BuildInPublic",
    "human": null
   },
   {
    "id": "ho-062",
    "why": "harness FAILS here (gates: G1=0 G2=1 G3=1 G4=1; detail {\"attribution_verb_added\": true, \"len_ratio\": 0.93}); frontier pass=0",
    "draft": "Discover the truth about alcohol consumption in our community! While the legal age to buy and consume alcohol is 18, you'll be surprised that many teenagers under 18 find it surprisingly easy to purchase alcohol in smaller pubs and off-licences. However, if you're over 18 but appear younger, be prepared to prove your age, especially in popular city spots. In fact, in certain locations, if you look under 21 or 25, you must prove you are over 18—a system known as \"Challenge 21(25).\" Additionally, some premises enforce proof-of-age requirements for all drinks after a specific time due to restrictions on who can be on-site.\n\nFor entry, the most trustworthy forms of ID are a passport or driving licence, which clearly display your photograph and date of birth. ID cards are generally accepted provided they include a photograph, and official proof-of-age cards are available for application via post, though please note they take several weeks to issue. Please be advised: any other form of ID will not be accepted. Conversely, in private residences, the minimum age to drink alcohol is 5 years old; however, if a 5 or 6-year-old (or similar) appears intoxicated, authorities may intervene and bring the matter before the courts as a case of child neglect.",
-   "frontier": "The legal age to buy and consume alcohol is 18, but many teenagers under 18 find it easy to buy alcohol in smaller pubs and off-licences. If you are over 18 but look younger, be prepared to prove your age, especially in popular city venues. In some places, anyone who looks under 21 or 25 must prove they are over 18. This is known as “Challenge 21(25).” Some premises also require proof of age for all drinks after a certain time because of restrictions on who can be on-site.\n\nFor entry, the most trustworthy forms of ID are a passport or driving licence, both of which clearly display your photograph and date of birth. ID cards are generally accepted if they include a photograph. You can also apply by post for an official proof-of-age card, though it takes several weeks to be issued. No other form of ID will be accepted.\n\nIn private residences, the minimum age to drink alcohol is 5. However, if a 5- or 6-year-old, or a child of a similar age, appears intoxicated, authorities may intervene and bring the matter before the courts as a case of child neglect.",
+   "frontier": "The legal age to buy and consume alcohol is 18, but many teenagers under 18 find it easy to buy alcohol in smaller pubs and off-licences. If you're over 18 but look younger, you may need to prove your age, especially in popular city spots. Some venues use \"Challenge 21(25)\": if you look under 21 or 25, you must prove you are over 18. Some premises also require proof of age for all drinks after a specific time because of restrictions on who can be on-site.\n\nA passport or driving licence is the most reliable ID for entry, as both display your photograph and date of birth. ID cards are generally accepted if they include a photograph. You can also apply by post for an official proof-of-age card, though it takes several weeks to issue. Other forms of ID will not be accepted.\n\nIn private residences, the minimum age to drink alcohol is 5. If a 5- or 6-year-old, or a child of similar age, appears intoxicated, authorities may intervene and bring the matter before the courts as a case of child neglect.",
    "claude_strong": "The legal age to buy and drink alcohol here is 18. Even so, many teenagers under 18 find it easy to buy alcohol in smaller pubs and off-licences. If you are over 18 but look younger, expect to prove your age, especially in popular city venues. Some places run a system called \"Challenge 21(25)\": if you look under 21 or 25, you must show that you are over 18. Some premises also ask for proof of age for every drink after a certain time, because of restrictions on who can be on site.\n\nA passport or driving licence is the most reliable ID for entry, since both show your photograph and date of birth. ID cards are usually accepted if they include a photograph. You can apply for an official proof-of-age card by post, but it takes several weeks to arrive. No other form of ID will be accepted.\n\nIn private homes, the minimum drinking age is 5. If a child of 5 or 6 (or around that age) appears drunk, the authorities may step in and take the matter to court as a case of child neglect.",
    "harness": "The legal drinking age here is 18, but in practice many teenagers under that age have little trouble buying alcohol from smaller pubs and off-licences. If you're over 18 but look young, though, expect to be asked for ID, particularly in busy parts of the city. Some venues operate a Challenge 21 or Challenge 25 policy, meaning anyone who looks under 21 or 25 must prove they're over 18. Additionally, certain premises require proof of age for all drinks after a set time, because of restrictions on who is allowed on the premises.\n\nFor identification, a passport or driving licence is your safest bet—both show your photograph and date of birth. ID cards are usually accepted as long as they include a photo, and official proof-of-age cards can be applied for by post, though they take several weeks to arrive. Be aware that no other form of ID will be accepted.\n\nAt home, the rules are different: children as young as 5 may legally drink alcohol in a private residence. That said, if a child of 5 or 6 (or thereabouts) turns up drunk, the authorities can step in and take the case to court as child neglect.",
    "human": "The legal age to buy and consume alcohol is 18 but many teenagers younger than 18 have seemingly little problem in purchasing alcohol in smaller pubs and from off licences. Nevertheless, if you're over 18 but lucky enough to look younger, expect to be asked to prove your age when buying alcohol (also, in certain places if you look under 21 or 25, you have to prove you're over 18, known as \"Challenge 21(25)\"), especially in popular city spots. Some premises will require proof of age for all drinks after a certain time of night due to restrictions on the age of people who can be on the premises. The most trustworthy form of ID is a passport or driving licence which shows both your photograph and date of birth. ID cards are likely to be accepted (providing there is a photograph) and proof of age cards are available which must be applied for by post and take several weeks to issue. Any other form of ID willl not be accepted. In private residences the minimum age to drink alcohol is 5 years old, although it is likely that if a 5 or 6 year old etc. were getting drunk, the matter would be brought before the courts as child neglect."
   },
   {
    "id": "dev-053",
-   "why": "harness's highest copy score on a 40+ word draft (bigram-F1 vs draft 1.000): its least-changed rewrite; frontier bigram-F1 0.843",
+   "why": "harness's highest copy score on a 40+ word draft (bigram-F1 vs draft 1.000): its least-changed rewrite; frontier bigram-F1 0.580",
    "draft": "Why we stopped billing by the hour — and never looked back. 🙌\n\nWhen we started Fernway Studio, we did what every agency does: we charged hourly.\n\nThe result? 4 of our first 6 projects went over budget. 😬\n\nClients were frustrated. We were frustrated. Trust was eroding.\n\nSo in 2024, we made a bold decision. We switched to a fixed price: KES 450,000 per Shopify store. Period.\n\nAnd it changed everything.\n\n✅ Clients know exactly what they're paying\n✅ We're incentivized to work smarter, not longer\n✅ Relationships are built on trust, not timesheets\n\nSince then, we've launched 31 stores. Only 2 went over our 6-week timeline.\n\nPricing isn't just a number. It's a promise. 💯\n\nFounders — how do you price your services? Let me know in the comments!\n\n#Entrepreneurship #Africa #Shopify #AgencyLife #Pricing",
-   "frontier": "Why we stopped billing by the hour — and never looked back. 🙌\n\nWhen we started Fernway Studio, we did what every agency does: we charged by the hour.\n\nFour of our first six projects went over budget. 😬\n\nClients were frustrated. So were we. Trust was eroding.\n\nIn 2024, we made a bold decision: a fixed price of KES 450,000 per Shopify store. Period.\n\nIt changed everything.\n\n✅ Clients know exactly what they’re paying  \n✅ We’re incentivized to work smarter, not longer  \n✅ Relationships are built on trust, not timesheets\n\nSince then, we’ve launched 31 stores. Only 2 went beyond our 6-week timeline.\n\nPricing isn’t just a number. It’s a promise. 💯\n\nFounders, how do you price your services? Let me know in the comments!\n\n#Entrepreneurship #Africa #Shopify #AgencyLife #Pricing",
+   "frontier": "Why we stopped billing by the hour 🙌\n\nWhen we started Fernway Studio, we charged hourly. Then 4 of our first 6 projects went over budget. 😬\n\nOur clients were frustrated, and so were we. Trust was eroding.\n\nIn 2024, we switched to a fixed price of KES 450,000 per Shopify store. Clients now know what they'll pay, and we have an incentive to work smarter instead of longer. Our relationships are built on trust rather than timesheets.\n\nSince then, we've launched 31 stores. Only 2 went over our 6-week timeline.\n\nFounders, how do you price your services?\n\n#Entrepreneurship #Africa #Shopify #AgencyLife #Pricing",
    "claude_strong": "Why we stopped billing by the hour, and why we haven't gone back.\n\nWhen we started Fernway Studio, we charged hourly, like every other agency.\n\nFour of our first six projects went over budget.\n\nClients were frustrated, and so were we. Trust was wearing thin.\n\nSo in 2024 we switched to a fixed price: KES 450,000 per Shopify store.\n\nThat one change fixed most of the problem.\n\n- Clients know exactly what they're paying.\n- We have a reason to work efficiently instead of logging extra hours.\n- Our client relationships rest on trust instead of timesheets.\n\nSince then we've launched 31 stores. Only 2 ran past our 6-week timeline.\n\nA price is a promise to the client.\n\nFounders, I'd like to hear how you price your services. Tell me in the comments.\n\n#Entrepreneurship #Africa #Shopify #AgencyLife #Pricing",
    "harness": "Why we stopped billing by the hour and never looked back.\n\nWhen we started Fernway Studio, we did what every agency does: we charged hourly.\n\nThe result? 4 of our first 6 projects went over budget.\n\nClients were frustrated. We were frustrated. Trust was eroding.\n\nSo in 2024, we made a bold decision. We switched to a fixed price: KES 450,000 per Shopify store. Period.\n\nAnd it changed everything.\n\nClients know exactly what they're paying.\nWe're incentivized to work smarter, not longer.\nRelationships are built on trust, not timesheets.\n\nSince then, we've launched 31 stores. Only 2 went over our 6-week timeline.\n\nPricing isn't just a number. It's a promise.\n\nFounders, how do you price your services? Let me know in the comments.\n\n#Entrepreneurship #Africa #Shopify #AgencyLife #Pricing",
    "human": null
   }
  ],
  "leaderboard": {
+  "O3k_glm_calm_claimcheck_bo3": {
+   "all": {
+    "rate": 0.992,
+    "lo": 0.9713048854232084,
+    "hi": 0.9978034088831621,
+    "n": 250
+   },
+   "main": {
+    "rate": 0.9923076923076923,
+    "lo": 0.9577135163674926,
+    "hi": 0.9986408607469472,
+    "n": 130
+   },
+   "heldout": {
+    "rate": 0.9916666666666667,
+    "lo": 0.9543025846256777,
+    "hi": 0.9985274821693252,
+    "n": 120
+   },
+   "gates": {
+    "G1": 0.992,
+    "G2": 1.0,
+    "G3": 1.0,
+    "G4": 1.0
+   }
+  },
+  "O3j_glm_bestof3_judged": {
+   "all": {
+    "rate": 0.98,
+    "lo": 0.9540437045850131,
+    "hi": 0.9914278020553485,
+    "n": 250
+   },
+   "main": {
+    "rate": 0.9846153846153847,
+    "lo": 0.9456404572030683,
+    "hi": 0.9957708827689584,
+    "n": 130
+   },
+   "heldout": {
+    "rate": 0.975,
+    "lo": 0.9290687625956524,
+    "hi": 0.9914619799012145,
+    "n": 120
+   },
+   "gates": {
+    "G1": 0.98,
+    "G2": 1.0,
+    "G3": 1.0,
+    "G4": 1.0
+   }
+  },
   "O3c_glm_prompt_harness_style": {
    "all": {
     "rate": 0.968,
@@ -987,6 +1756,84 @@
     "G1": 0.98,
     "G2": 1.0,
     "G3": 0.984,
+    "G4": 1.0
+   }
+  },
+  "O3e_glm_harness_cliche": {
+   "all": {
+    "rate": 0.964,
+    "lo": 0.9330088524397113,
+    "hi": 0.980946937312638,
+    "n": 250
+   },
+   "main": {
+    "rate": 0.9615384615384616,
+    "lo": 0.9131204109992452,
+    "hi": 0.9834618175455421,
+    "n": 130
+   },
+   "heldout": {
+    "rate": 0.9666666666666667,
+    "lo": 0.9174184205147198,
+    "hi": 0.9869626598330794,
+    "n": 120
+   },
+   "gates": {
+    "G1": 0.976,
+    "G2": 1.0,
+    "G3": 0.988,
+    "G4": 1.0
+   }
+  },
+  "O3f_glm_calm": {
+   "all": {
+    "rate": 0.956,
+    "lo": 0.9229414729274126,
+    "hi": 0.9752564583809309,
+    "n": 250
+   },
+   "main": {
+    "rate": 0.9615384615384616,
+    "lo": 0.9131204109992452,
+    "hi": 0.9834618175455421,
+    "n": 130
+   },
+   "heldout": {
+    "rate": 0.95,
+    "lo": 0.8951958053541377,
+    "hi": 0.9768859506955258,
+    "n": 120
+   },
+   "gates": {
+    "G1": 0.968,
+    "G2": 0.996,
+    "G3": 0.992,
+    "G4": 1.0
+   }
+  },
+  "O3d_glm_harness_anticopy": {
+   "all": {
+    "rate": 0.952,
+    "lo": 0.9179869282923764,
+    "hi": 0.9723320737939639,
+    "n": 250
+   },
+   "main": {
+    "rate": 0.9384615384615385,
+    "lo": 0.883262024591287,
+    "hi": 0.9684910925262609,
+    "n": 130
+   },
+   "heldout": {
+    "rate": 0.9666666666666667,
+    "lo": 0.9174184205147198,
+    "hi": 0.9869626598330794,
+    "n": 120
+   },
+   "gates": {
+    "G1": 0.972,
+    "G2": 0.988,
+    "G3": 0.992,
     "G4": 1.0
    }
   },
@@ -1068,6 +1915,32 @@
     "G4": 1.0
    }
   },
+  "O3g_glm_calm_retrieval_claimcheck": {
+   "all": {
+    "rate": 0.924,
+    "lo": 0.8843577467284998,
+    "hi": 0.9508087508038197,
+    "n": 250
+   },
+   "main": {
+    "rate": 0.9307692307692308,
+    "lo": 0.8736567808329254,
+    "hi": 0.9631532991422094,
+    "n": 130
+   },
+   "heldout": {
+    "rate": 0.9166666666666666,
+    "lo": 0.8533762622701224,
+    "hi": 0.9541068451832697,
+    "n": 120
+   },
+   "gates": {
+    "G1": 0.956,
+    "G2": 0.996,
+    "G3": 0.976,
+    "G4": 0.996
+   }
+  },
   "O2_glm_prompt": {
    "all": {
     "rate": 0.732,
@@ -1120,6 +1993,32 @@
     "G4": 0.9798387096774194
    }
   },
+  "F1h_opus_humanizer": {
+   "all": {
+    "rate": 0.6,
+    "lo": 0.5382005167677087,
+    "hi": 0.6587727137823666,
+    "n": 250
+   },
+   "main": {
+    "rate": 0.5384615384615384,
+    "lo": 0.452892181678906,
+    "hi": 0.6218230040331596,
+    "n": 130
+   },
+   "heldout": {
+    "rate": 0.6666666666666666,
+    "lo": 0.5783093452093498,
+    "hi": 0.744683897772007,
+    "n": 120
+   },
+   "gates": {
+    "G1": 0.8669354838709677,
+    "G2": 0.782258064516129,
+    "G3": 0.8991935483870968,
+    "G4": 0.9516129032258065
+   }
+  },
   "frontier-live:claude-opus-5-5": {
    "all": {
     "rate": 0.532,
@@ -1144,6 +2043,58 @@
     "G2": 0.7741935483870968,
     "G3": 0.8709677419354839,
     "G4": 0.9758064516129032
+   }
+  },
+  "O2h_glm_humanizer": {
+   "all": {
+    "rate": 0.528,
+    "lo": 0.4661614622155369,
+    "hi": 0.5889910423384842,
+    "n": 250
+   },
+   "main": {
+    "rate": 0.4153846153846154,
+    "lo": 0.3342905969843901,
+    "hi": 0.5013359944490656,
+    "n": 130
+   },
+   "heldout": {
+    "rate": 0.65,
+    "lo": 0.5612115776488139,
+    "hi": 0.7294823410344072,
+    "n": 120
+   },
+   "gates": {
+    "G1": 0.904,
+    "G2": 0.804,
+    "G3": 0.832,
+    "G4": 0.828
+   }
+  },
+  "F2h_gpt61_humanizer": {
+   "all": {
+    "rate": 0.512,
+    "lo": 0.45032599170719884,
+    "hi": 0.5733107959588102,
+    "n": 250
+   },
+   "main": {
+    "rate": 0.36153846153846153,
+    "lo": 0.2840193143959103,
+    "hi": 0.44700601704065346,
+    "n": 130
+   },
+   "heldout": {
+    "rate": 0.675,
+    "lo": 0.5869001692187791,
+    "hi": 0.7522427359116458,
+    "n": 120
+   },
+   "gates": {
+    "G1": 0.928,
+    "G2": 0.904,
+    "G3": 0.756,
+    "G4": 0.772
    }
   },
   "F2_gpt61_terra": {
@@ -1195,6 +2146,27 @@
     "G1": 1.0,
     "G2": 1.0,
     "G3": 0.32,
+    "G4": 1.0
+   }
+  },
+  "WF_Pairwise_both_orders_knockout_selector_with_fact_aware_eligibility_replace_the_1_10_judge_score_": {
+   "all": {
+    "rate": 0.29,
+    "lo": 0.21014706973984146,
+    "hi": 0.38539074940007934,
+    "n": 100
+   },
+   "main": {
+    "rate": 0.29,
+    "lo": 0.21014706973984146,
+    "hi": 0.38539074940007934,
+    "n": 100
+   },
+   "heldout": null,
+   "gates": {
+    "G1": 1.0,
+    "G2": 1.0,
+    "G3": 0.9666666666666667,
     "G4": 1.0
    }
   },
@@ -1369,6 +2341,31 @@
   },
   {
    "system": "frontier-live:claude-opus-5-5",
+   "id": "ho-115",
+   "what": "added name(s) ['january']"
+  },
+  {
+   "system": "F2h_gpt61_humanizer",
+   "id": "dev-064",
+   "what": "dropped number(s) ['4']"
+  },
+  {
+   "system": "F2h_gpt61_humanizer",
+   "id": "dev-068",
+   "what": "dropped number(s) ['2', '3', '4']"
+  },
+  {
+   "system": "F2h_gpt61_humanizer",
+   "id": "trick-03",
+   "what": "dropped number(s) ['2000']"
+  },
+  {
+   "system": "F2h_gpt61_humanizer",
+   "id": "ho-052",
+   "what": "added name(s) ['february']"
+  },
+  {
+   "system": "F2h_gpt61_humanizer",
    "id": "ho-115",
    "what": "added name(s) ['january']"
   },
