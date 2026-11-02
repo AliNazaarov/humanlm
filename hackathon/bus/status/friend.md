@@ -6,3 +6,4 @@
 2026-11-02T18:44:12Z S8 README draft committed: headline metric + gates, setup, make eval, method, limitations, pre-existing vs built-today, AI disclosure. Waiting on keys for live runs.
 2026-11-02T18:49:09Z Key loading aligned to keys.env. Ready to run F1/F1-live/F1+H/F2 + judge once keys are in ~/.config/humanlm/keys.env. README draft in.
 2026-11-02T18:55:31Z Keys in (outside repo). TLS proxy fixed (truststore). S5 plot.py leaderboard + S6 blind A/B page done (2nd session). Now running in parallel: F1 Opus 5.5 strong+live and F2 GPT on 250 items; F1+H harness; judge fix for reasoning models (all candidate judges truncate at 1024 tok).
+2026-11-02T19:01:08Z F1 unblocked: Opus 5.5 rejects sampling params -> send none, adaptive thinking effort low, max_tokens 1500, disclosed (Ruslan's call). Smoke 3/3 OK, ~$0.008/item. Full F1 strong+live x (130+120) running. F1+H waits on harness.py CONTRACT. Judge being made reasoning-safe + Gemini provider.
