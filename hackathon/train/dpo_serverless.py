@@ -1,7 +1,7 @@
 """DPO on Ali's human preference labels, Fireworks serverless training, starting from the SFT LoRA.
 
-Pairs: hackathon/train/human_rl/labels.jsonl rows that have both `chosen` and `rejected`
-(an edited row's `chosen` is Ali's own edit). Prompt = `ai_draft` for that id in
+Pairs: hackathon/train/human_rl/ai_labels.jsonl (GLM-5.3 RLAIF labels, both orders agree, both candidates pass gates;
+Ali's own labels override per id, an edited row's `chosen` is Ali's edit). --labels labels.jsonl for Ali-only. Prompt = `ai_draft` for that id in
 hackathon/train/human_rl/pref_prompts.jsonl (training prompts tr-*, never eval). System = pipeline/infer.py SYSTEM.
 
 Warm start from SFT: serverless DPO in the cookbook only "resumes", so we hand it the SFT run as the run to
@@ -22,11 +22,11 @@ sys.path.insert(0, str(ROOT / "hackathon/harness"))
 from harness import SYSTEM  # noqa: E402  (same string as pipeline/infer.py)
 
 
-def build_pairs(out_path):
+def build_pairs(out_path, labels_file):
     prompts = {json.loads(l)["id"]: json.loads(l)["ai_draft"] for l in open(HR / "pref_prompts.jsonl")}
-    n = edited = skipped = 0
+    n = edited = skipped = ali = 0
     with open(out_path, "w") as o:
-        for l in open(HR / "labels.jsonl") if (HR / "labels.jsonl").exists() else []:
+        for l in open(labels_file) if labels_file.exists() else []:
             r = json.loads(l)
             ch, rj = (r.get("chosen") or "").strip(), (r.get("rejected") or "").strip()
             if not ch or not rj or ch == rj or r["id"] not in prompts or not r["id"].startswith("tr-"):
@@ -37,7 +37,8 @@ def build_pairs(out_path):
                                 "rejected": {"messages": p + [{"role": "assistant", "content": rj}]}}) + "\n")
             n += 1
             edited += bool(r.get("edited"))
-    return n, edited, skipped
+            ali += r.get("judge") == "ali"
+    return n, edited, skipped, ali
 
 
 def main():
@@ -49,10 +50,12 @@ def main():
     ap.add_argument("--epochs", type=int, default=2)
     ap.add_argument("--batch-size", type=int, default=4)
     ap.add_argument("--output-model-id")
+    ap.add_argument("--labels", default=str(HR / "ai_labels.jsonl"),
+                    help="ai_labels.jsonl (GLM-5.3 RLAIF + Ali overrides) or labels.jsonl (Ali only)")
     a = ap.parse_args()
     pairs = HR / "dpo_pairs.jsonl"
-    n, edited, skipped = build_pairs(pairs)
-    print(f"pairs={n} edited={edited} skipped={skipped} -> {pairs}")
+    n, edited, skipped, ali = build_pairs(pairs, Path(a.labels))
+    print(f"pairs={n} ali={ali} edited={edited} skipped={skipped} -> {pairs}")
     if a.dry_run or n == 0:
         return
     import training.recipes.dpo_loop as dpo_loop

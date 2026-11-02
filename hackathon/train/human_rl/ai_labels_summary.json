@@ -1,0 +1,13 @@
+{
+ "candidates": 120,
+ "breakdown": {
+  "kept": 65,
+  "orders_disagree": 51,
+  "gate_fail": 4
+ },
+ "ai_kept": 65,
+ "ali_labels": 3,
+ "ali_ai_overlap": 2,
+ "ali_ai_agreement": 1.0,
+ "final_pairs": 66
+}
