@@ -1042,6 +1042,68 @@
      "tagline": 2.3076923076923075
     }
    },
+   "O3u_glm_dedupe": {
+    "any_share": 0.36923076923076925,
+    "ids_with_tells": [
+     "dev-001",
+     "dev-002",
+     "dev-006",
+     "dev-009",
+     "dev-011",
+     "dev-013",
+     "dev-017",
+     "dev-021",
+     "dev-028",
+     "dev-030",
+     "dev-034",
+     "dev-035",
+     "dev-046",
+     "dev-050",
+     "dev-052",
+     "dev-054",
+     "dev-055",
+     "dev-057",
+     "dev-058",
+     "dev-059",
+     "dev-060",
+     "dev-061",
+     "dev-063",
+     "dev-064",
+     "dev-065",
+     "dev-066",
+     "dev-067",
+     "dev-068",
+     "dev-070",
+     "dev-071",
+     "dev-072",
+     "dev-073",
+     "dev-074",
+     "dev-078",
+     "dev-079",
+     "dev-080",
+     "dev-085",
+     "dev-088",
+     "dev-098",
+     "trick-02",
+     "trick-04",
+     "trick-08",
+     "trick-10",
+     "trick-18",
+     "trick-19",
+     "trick-25",
+     "trick-28",
+     "trick-29"
+    ],
+    "n": 130,
+    "per_100_outputs": {
+     "echo": 3.8461538461538463,
+     "fragment_run": 26.923076923076923,
+     "hook": 9.23076923076923,
+     "rhetorical_qa": 10.0,
+     "slogan": 6.153846153846154,
+     "tagline": 3.076923076923077
+    }
+   },
    "O4c_glm_sft_clean": {
     "any_share": 0.3076923076923077,
     "ids_with_tells": [
@@ -1900,6 +1962,29 @@
      "echo": 0.0,
      "fragment_run": 2.5,
      "hook": 4.166666666666667,
+     "rhetorical_qa": 6.666666666666667,
+     "slogan": 0.0,
+     "tagline": 0.0
+    }
+   },
+   "O3u_glm_dedupe": {
+    "any_share": 0.075,
+    "ids_with_tells": [
+     "ho-007",
+     "ho-029",
+     "ho-046",
+     "ho-063",
+     "ho-082",
+     "ho-087",
+     "ho-107",
+     "ho-113",
+     "ho-115"
+    ],
+    "n": 120,
+    "per_100_outputs": {
+     "echo": 0.0,
+     "fragment_run": 0.8333333333333334,
+     "hook": 0.8333333333333334,
      "rhetorical_qa": 6.666666666666667,
      "slogan": 0.0,
      "tagline": 0.0
