@@ -1,0 +1,22 @@
+{
+ "system": "F2h_gpt61_humanizer",
+ "provider": "openai",
+ "model": "gpt-6.1-terra",
+ "loops": 0,
+ "prompt_sha256": "eb268c83a6ebc18f",
+ "prompt_file": "hackathon/train/prompt_humanizer.txt",
+ "decoding": {
+  "max_completion_tokens": 1500,
+  "reasoning_effort": "low"
+ },
+ "style_round": false,
+ "prices_usd_per_m": [
+  0.0,
+  0.0
+ ],
+ "eval": "evals/eval_all.jsonl",
+ "rows": 130,
+ "pass_rate": 0.36153846153846153,
+ "commit": "11f8b11801aa10fbe63ab3d88589528b5a108389",
+ "finished": "2026-11-02T11:41:47-0800"
+}
