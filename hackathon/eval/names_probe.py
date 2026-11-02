@@ -1,7 +1,8 @@
 """Probe (evidence for the name-proxy fix): how much does the name proxy move the headline? Patched _names treats each line start and the word
-after ':' as sentence-initial, and skips Title Case lines (>= 60% capitalised words, e.g. headlines)."""
-import json, re, sys
+after ':' as sentence-initial, and skips Title Case lines (>= 60% capitalised words, e.g. headlines).
 Usage: python hackathon/eval/names_probe.py <repo root> RUN.jsonl [RUN.jsonl ...]
+"""
+import json, re, sys
 ROOT = sys.argv[1]
 sys.path[:0] = [ROOT + "/pipeline", ROOT + "/hackathon/harness", ROOT + "/hackathon/eval"]
 import metrics as m, gates as gt, score_all as sa

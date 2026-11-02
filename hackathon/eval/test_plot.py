@@ -53,6 +53,15 @@ class TestNotes(unittest.TestCase):
         self.assertEqual(rows["O1-base"][4], "-3.0 pp vs F1 · n.s.")
         self.assertEqual(rows["O6-rl-failed"][4], "-41.0 pp vs F1 · significant")
 
+    def test_coverage_note(self):
+        full = dict(_entry("F1", 0.5), counted_as_fail=2)
+        self.assertEqual(pl.coverage_note(full, 250), "n=100, 2 refusals/no-output counted as fail")
+        part = dict(_entry("P", 0.1, _vs(-0.3, 0.001)), missing=120)
+        part["vs_reference"]["n_shared"] = 130
+        part["summary"]["pass"]["n"] = 130
+        self.assertEqual(pl.coverage_note(part, 250), "n=130 of 250 items only; Δ on 130 shared items")
+        self.assertEqual(pl.coverage_note(_entry("Q", 0.2), 100), "n=100")
+
     def test_rows_keep_order_and_zero_rate(self):
         rows = pl.bar_rows(synthetic()["blocks"]["all"], "F1")
         self.assertEqual([r[0] for r in rows], ["O4-sft", "F1", "O1-base", "O6-rl-failed"])

@@ -20,7 +20,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 from matplotlib.ticker import FuncFormatter  # noqa: E402
-from matplotlib.transforms import blended_transform_factory  # noqa: E402
+from matplotlib.transforms import blended_transform_factory, offset_copy  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, "../.."))
@@ -108,7 +108,20 @@ def gate_rows(block: dict) -> tuple[list[str], list[list[float]]]:
     return labels, mat
 
 
-def _leaderboard(ax, rows: list[tuple], name: str, n_items, missing: dict[str, int], ns: dict[str, int]) -> None:
+def coverage_note(entry: dict, n_items) -> str:
+    """'n=250', or 'n=130 of 250 items only' when the system never ran part of the block, plus counted refusals."""
+    n = ((entry.get("summary") or {}).get("pass") or {}).get("n", entry.get("n", "?"))
+    note = f"n={n} of {n_items} items only" if entry.get("missing") else f"n={n}"
+    shared = (entry.get("vs_reference") or {}).get("n_shared")
+    if entry.get("missing") and shared:
+        note += f"; Δ on {shared} shared items"
+    if entry.get("counted_as_fail"):
+        k = entry["counted_as_fail"]
+        note += f", {k} refusal{'s' if k != 1 else ''}/no-output counted as fail"
+    return note
+
+
+def _leaderboard(ax, rows: list[tuple], name: str, n_items, notes: dict[str, str]) -> None:
     y = list(range(len(rows)))[::-1]  # first (best) row on top
     for yi, (lab, r, lo, hi, note, is_ref) in zip(y, rows):
         if math.isnan(r):
@@ -126,12 +139,13 @@ def _leaderboard(ax, rows: list[tuple], name: str, n_items, missing: dict[str, i
     ax.set_xlabel("Fact-safe human rewrite rate (%), passes G1-G4; whiskers = 95% CI")
     ax.set_title(f"Leaderboard: block '{name}', {n_items} items", loc="left", fontsize=14, color=INK)
     tr = blended_transform_factory(ax.transAxes, ax.transData)
+    below = offset_copy(tr, fig=ax.figure, y=-13, units="points")  # third line: coverage
     for yi, (lab, r, lo, hi, note, is_ref) in zip(y, rows):
-        miss = f"  n={ns.get(lab, '?')}" + (f", {missing[lab]} items missing" if missing.get(lab) else "")
         head = "n/a" if math.isnan(r) else f"{r:.1f}% [{lo:.1f}, {hi:.1f}]"
-        ax.text(1.02, yi, head + miss, transform=tr, va="bottom", fontsize=10.5,
+        ax.text(1.02, yi, head, transform=tr, va="bottom", fontsize=10.5,
                 color=INK, fontweight="bold" if is_ref else "normal")
         ax.text(1.02, yi, note, transform=tr, va="top", fontsize=9.5, color=INK2)
+        ax.text(1.02, yi, notes.get(lab, ""), transform=below, va="top", fontsize=8.5, color=INK2)
     ax.grid(axis="x", color=GRID, zorder=0)
     ax.set_axisbelow(True)
 
@@ -154,6 +168,7 @@ def _pareto(ax, points: list[tuple], no_cost: list[str], name: str) -> None:
         costs = [p[1] for p in points]
         ax.set_xlim(min(costs) / 2, max(costs) * 4)
         ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"${v:g}"))
+        ax.xaxis.set_minor_formatter(FuncFormatter(lambda v, _: f"${v:g}" if str(f"{v:g}")[0] in "25" else ""))
         ax.legend(loc="lower right", fontsize=8, frameon=False)
     else:
         ax.text(0.5, 0.5, "no systems with cost data", transform=ax.transAxes, ha="center", va="center", color=INK2)
@@ -162,7 +177,7 @@ def _pareto(ax, points: list[tuple], no_cost: list[str], name: str) -> None:
     ax.grid(color=GRID, zorder=0)
     ax.set_axisbelow(True)
     if no_cost:
-        ax.text(0, -0.30, "not on the log axis (cost unknown or $0): " + ", ".join(no_cost), transform=ax.transAxes, fontsize=8.5,
+        ax.text(0, -0.24, "not on the log axis (cost unknown or $0): " + ", ".join(no_cost), transform=ax.transAxes, fontsize=8.5,
                 color=INK2, va="top", wrap=True)
 
 
@@ -188,14 +203,12 @@ def render(res: dict, name: str, out: str) -> str:
     plt.rcParams.update({"font.family": "DejaVu Sans", "axes.edgecolor": INK2, "axes.labelcolor": INK2,
                          "xtick.color": INK2, "ytick.color": INK, "axes.spines.top": False,
                          "axes.spines.right": False})
-    fig = plt.figure(figsize=(16, 10), dpi=100, facecolor="white")
-    gs = fig.add_gridspec(2, 2, width_ratios=[1.35, 1], height_ratios=[1.15, 1], left=0.18, right=0.97,
-                          top=0.90, bottom=0.08, wspace=0.62, hspace=0.62)
-    missing = {e.get("label"): e.get("missing") or 0 for e in b["systems"]}
-    ns = {e.get("label"): ((e.get("summary") or {}).get("pass") or {}).get("n", e.get("n", "?")) for e in b["systems"]}
-    _leaderboard(fig.add_subplot(gs[:, 0]), rows, name, b.get("n_items", "?"), missing, ns)
-    _pareto(fig.add_subplot(gs[0, 1]), points, no_cost, name)
-    _gates(fig.add_subplot(gs[1, 1]), *gate_rows(b))
+    # Leaderboard across the top with its notes in a wide right-hand column; Pareto and gates share the bottom row.
+    fig = plt.figure(figsize=(16, 11), dpi=100, facecolor="white")
+    notes = {e.get("label"): coverage_note(e, b.get("n_items", "?")) for e in b["systems"]}
+    _leaderboard(fig.add_axes((0.22, 0.50, 0.40, 0.38)), rows, name, b.get("n_items", "?"), notes)
+    _pareto(fig.add_axes((0.06, 0.12, 0.34, 0.26)), points, no_cost, name)
+    _gates(fig.add_axes((0.62, 0.08, 0.35, 0.30)), *gate_rows(b))
     fig.suptitle("HumanLM: fact-safe human rewrite rate vs the frontier reference", x=0.015, ha="left",
                  fontsize=16, fontweight="bold", color=INK)
     ref_line = (f"Reference (hatched orange): {ref}." if any(r[5] for r in rows)
