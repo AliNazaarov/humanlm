@@ -62,6 +62,12 @@ class TestNotes(unittest.TestCase):
         self.assertEqual(pl.coverage_note(part, 250), "n=130 of 250 items only; Δ on 130 shared items")
         self.assertEqual(pl.coverage_note(_entry("Q", 0.2), 100), "n=100")
 
+    def test_cost_note(self):
+        self.assertEqual(pl.cost_note({"cost_per_1k_usd": 8.925, "latency_ms": {"p50": 3867.0}}),
+                         "$8.93 per 1k rewrites · 3.9 s p50")
+        self.assertEqual(pl.cost_note({"cost_per_1k_usd": 0.0}), "cost n/a")
+        self.assertEqual(pl.cost_note({}), "cost n/a")
+
     def test_rows_keep_order_and_zero_rate(self):
         rows = pl.bar_rows(synthetic()["blocks"]["all"], "F1")
         self.assertEqual([r[0] for r in rows], ["O4-sft", "F1", "O1-base", "O6-rl-failed"])

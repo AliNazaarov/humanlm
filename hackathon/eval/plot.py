@@ -121,6 +121,14 @@ def coverage_note(entry: dict, n_items) -> str:
     return note
 
 
+def cost_note(meta: dict) -> str:
+    """'$8.93 per 1k rewrites · 3.9 s p50' from a top-level systems[] entry; 'cost n/a' when unknown or $0."""
+    cost = _num(meta.get("cost_per_1k_usd"))
+    p50 = _num((meta.get("latency_ms") or {}).get("p50"))
+    note = f"${cost:.2f} per 1k rewrites" if cost and cost > 0 else "cost n/a"
+    return note + (f" · {p50 / 1000:.1f} s p50" if p50 is not None else "")
+
+
 def _leaderboard(ax, rows: list[tuple], name: str, n_items, notes: dict[str, str]) -> None:
     y = list(range(len(rows)))[::-1]  # first (best) row on top
     for yi, (lab, r, lo, hi, note, is_ref) in zip(y, rows):
@@ -159,11 +167,15 @@ def _pareto(ax, points: list[tuple], no_cost: list[str], name: str) -> None:
         fp = sorted((p for p in points if p[0] in front), key=lambda p: p[1])
         ax.step([p[1] for p in fp], [p[2] for p in fp], where="post", color=INK2, linewidth=1, linestyle="--",
                 zorder=1, label="cost/rate frontier")
-        for lab, cost, rate, p50, is_ref in points:
+        placed = []  # (log cost, rate) of labels already drawn; a close neighbour puts this label left of its point
+        for lab, cost, rate, p50, is_ref in sorted(points, key=lambda p: (-p[2], p[1])):
             ax.scatter(cost, rate, s=90, color=REF if is_ref else SYS, marker="D" if is_ref else "o",
                        edgecolor="white", linewidth=2, zorder=3)
             txt = lab + (f"\n{p50:.1f} s p50" if p50 is not None else "")
-            ax.annotate(txt, (cost, rate), xytext=(7, 4), textcoords="offset points", fontsize=8.5, color=INK)
+            near = any(abs(math.log10(cost) - c) < 0.5 and abs(rate - r) < 8 for c, r in placed)
+            ax.annotate(txt, (cost, rate), xytext=(-8, 4) if near else (7, 4), textcoords="offset points",
+                        ha="right" if near else "left", fontsize=8.5, color=INK)
+            placed.append((math.log10(cost), rate))
         ax.set_xscale("log")
         costs = [p[1] for p in points]
         ax.set_xlim(min(costs) / 2, max(costs) * 4)
@@ -173,7 +185,8 @@ def _pareto(ax, points: list[tuple], no_cost: list[str], name: str) -> None:
     else:
         ax.text(0.5, 0.5, "no systems with cost data", transform=ax.transAxes, ha="center", va="center", color=INK2)
         ax.set_xticks([])
-    ax.set_ylim(0, 100)
+    ax.set_ylim(0, 112)  # headroom so labels of ~95% points stay under the title
+    ax.set_yticks(range(0, 101, 20))
     ax.grid(color=GRID, zorder=0)
     ax.set_axisbelow(True)
     if no_cost:
@@ -204,11 +217,13 @@ def render(res: dict, name: str, out: str) -> str:
                          "xtick.color": INK2, "ytick.color": INK, "axes.spines.top": False,
                          "axes.spines.right": False})
     # Leaderboard across the top with its notes in a wide right-hand column; Pareto and gates share the bottom row.
-    fig = plt.figure(figsize=(16, 11), dpi=100, facecolor="white")
-    notes = {e.get("label"): coverage_note(e, b.get("n_items", "?")) for e in b["systems"]}
-    _leaderboard(fig.add_axes((0.22, 0.50, 0.40, 0.38)), rows, name, b.get("n_items", "?"), notes)
-    _pareto(fig.add_axes((0.06, 0.12, 0.34, 0.26)), points, no_cost, name)
-    _gates(fig.add_axes((0.62, 0.08, 0.35, 0.30)), *gate_rows(b))
+    fig = plt.figure(figsize=(16, 13), dpi=100, facecolor="white")
+    meta = {s.get("label"): s for s in res.get("systems") or []}
+    notes = {e.get("label"): coverage_note(e, b.get("n_items", "?")) + " · " + cost_note(meta.get(e.get("label")) or {})
+             for e in b["systems"]}
+    _leaderboard(fig.add_axes((0.22, 0.46, 0.40, 0.45)), rows, name, b.get("n_items", "?"), notes)
+    _pareto(fig.add_axes((0.06, 0.10, 0.34, 0.25)), points, no_cost, name)
+    _gates(fig.add_axes((0.62, 0.06, 0.35, 0.30)), *gate_rows(b))
     fig.suptitle("FeatherLM: fact-safe human rewrite rate vs the frontier reference", x=0.015, ha="left",
                  fontsize=16, fontweight="bold", color=INK)
     ref_line = (f"Reference (hatched orange): {ref}." if any(r[5] for r in rows)
